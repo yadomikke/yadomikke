@@ -1,0 +1,275 @@
+{
+  "site": {
+    "name": "ヤドミッケ",
+    "url": "https://yadomikke.com",
+    "analytics_id": "",
+    "same_as": [],
+    "indexnow_key": "9cbf1c549e5face00ef7362366dcbabc"
+  },
+  "search": {
+    "adults": 2,
+    "nights": 1,
+    "days_ahead": 31,
+    "probe_checks": 5,
+    "max_pages": 3,
+    "scene_days_ahead": 150
+  },
+  "refresh": {
+    "hotels_days": 7,
+    "near_days": 7,
+    "mid_days": 14,
+    "near_hours": 8,
+    "mid_hours": 16,
+    "far_hours": 36
+  },
+  "api": {
+    "base": "https://openapi.rakuten.co.jp/engine/api/Travel",
+    "versions": {
+      "VacantHotelSearch": "20170426",
+      "SimpleHotelSearch": "20260731",
+      "GetAreaClass": "20140210"
+    }
+  },
+  "features": {
+    "roten": {
+      "label": "客室露天風呂",
+      "keywords": [
+        "露天"
+      ],
+      "fields": [
+        "roomClass",
+        "roomName"
+      ]
+    },
+    "pet": {
+      "label": "ペット可の客室",
+      "keywords": [
+        "ペット",
+        "愛犬",
+        "わんちゃん",
+        "ワンちゃん",
+        "わんこ"
+      ],
+      "fields": [
+        "roomClass",
+        "roomName"
+      ]
+    }
+  },
+  "areas": {
+    "hakone": {
+      "label": "箱根",
+      "large": "japan",
+      "middle": "kanagawa",
+      "small": "hakone",
+      "detail": "auto",
+      "days_ahead": 31
+    },
+    "atami": {
+      "label": "熱海",
+      "large": "japan",
+      "middle": "shizuoka",
+      "small": "atami",
+      "detail": "auto",
+      "days_ahead": 31
+    },
+    "ito": {
+      "label": "伊東",
+      "large": "japan",
+      "middle": "shizuoka",
+      "small": "ito",
+      "detail": "auto",
+      "days_ahead": 21
+    },
+    "kinugawa": {
+      "label": "鬼怒川",
+      "large": "japan",
+      "middle": "tochigi",
+      "small": "kinugawa",
+      "detail": "auto",
+      "days_ahead": 21
+    },
+    "kusatsu": {
+      "label": "草津",
+      "large": "japan",
+      "middle": "gunma",
+      "small": "kusatsu",
+      "detail": "auto",
+      "days_ahead": 21
+    },
+    "karuizawa": {
+      "label": "軽井沢",
+      "large": "japan",
+      "middle": "nagano",
+      "small": "karuizawa",
+      "detail": "auto",
+      "days_ahead": 21
+    },
+    "arima": {
+      "label": "有馬",
+      "large": "japan",
+      "middle": "hyogo",
+      "small": "arima",
+      "detail": "auto",
+      "days_ahead": 21
+    },
+    "yufuin": {
+      "label": "湯布院",
+      "large": "japan",
+      "middle": "oita",
+      "small": "yufuin",
+      "detail": "auto",
+      "days_ahead": 21
+    }
+  },
+  "pages": [
+    {
+      "slug": "hakone-roten",
+      "area": "hakone",
+      "feature": "roten",
+      "title": "箱根で今空いている客室露天風呂の宿",
+      "lead": "箱根で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "hakone-pet",
+      "area": "hakone",
+      "feature": "pet",
+      "title": "箱根で今空いているペット可の客室の宿",
+      "lead": "箱根で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "atami-roten",
+      "area": "atami",
+      "feature": "roten",
+      "title": "熱海で今空いている客室露天風呂の宿",
+      "lead": "熱海で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "atami-pet",
+      "area": "atami",
+      "feature": "pet",
+      "title": "熱海で今空いているペット可の客室の宿",
+      "lead": "熱海で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "ito-roten",
+      "area": "ito",
+      "feature": "roten",
+      "title": "伊東で今空いている客室露天風呂の宿",
+      "lead": "伊東で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "ito-pet",
+      "area": "ito",
+      "feature": "pet",
+      "title": "伊東で今空いているペット可の客室の宿",
+      "lead": "伊東で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "kinugawa-roten",
+      "area": "kinugawa",
+      "feature": "roten",
+      "title": "鬼怒川で今空いている客室露天風呂の宿",
+      "lead": "鬼怒川で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "kinugawa-pet",
+      "area": "kinugawa",
+      "feature": "pet",
+      "title": "鬼怒川で今空いているペット可の客室の宿",
+      "lead": "鬼怒川で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "kusatsu-roten",
+      "area": "kusatsu",
+      "feature": "roten",
+      "title": "草津で今空いている客室露天風呂の宿",
+      "lead": "草津で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "karuizawa-roten",
+      "area": "karuizawa",
+      "feature": "roten",
+      "title": "軽井沢で今空いている客室露天風呂の宿",
+      "lead": "軽井沢で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "karuizawa-pet",
+      "area": "karuizawa",
+      "feature": "pet",
+      "title": "軽井沢で今空いているペット可の客室の宿",
+      "lead": "軽井沢で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "arima-roten",
+      "area": "arima",
+      "feature": "roten",
+      "title": "有馬で今空いている客室露天風呂の宿",
+      "lead": "有馬で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "yufuin-roten",
+      "area": "yufuin",
+      "feature": "roten",
+      "title": "湯布院で今空いている客室露天風呂の宿",
+      "lead": "湯布院で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    }
+  ],
+  "force_include": [],
+  "exclude": [],
+  "holidays": [
+    "2026-11-03",
+    "2026-11-23",
+    "2027-01-01",
+    "2027-01-11",
+    "2027-02-11",
+    "2027-02-23",
+    "2027-03-22",
+    "2027-04-29",
+    "2027-05-03",
+    "2027-05-04",
+    "2027-05-05",
+    "2027-07-19",
+    "2027-08-11",
+    "2027-09-20",
+    "2027-09-23",
+    "2027-10-11",
+    "2027-11-03",
+    "2027-11-23"
+  ],
+  "operator": {
+    "name": "",
+    "contact": "",
+    "note": ""
+  },
+  "badges": [
+    {
+      "id": "ichido",
+      "label": "一度は泊まりたい★",
+      "icon": "",
+      "min_review": 4.5,
+      "min_reviews": 50,
+      "min_price": 100000,
+      "desc": "口コミ評価4.5以上(50件以上)で、料金が10万円以上の、特別な宿"
+    },
+    {
+      "id": "cospa",
+      "label": "コスパ良し",
+      "icon": "",
+      "min_review": 4.0,
+      "min_reviews": 30,
+      "max_price": 100000,
+      "desc": "口コミ評価4.0以上(30件以上)で、料金が10万円未満"
+    },
+    {
+      "id": "many",
+      "label": "レビュー多数",
+      "icon": "",
+      "min_review": 3.7,
+      "min_reviews": 500,
+      "desc": "口コミ評価3.7以上で、口コミが500件以上"
+    }
+  ],
+  "badge_max": 1,
+  "badge_priority_note": "条件が重なった場合は、一度は泊まりたい > コスパ良し > レビュー多数 の順で、1つだけ表示します(badges の並び順が優先順位です)"
+}
