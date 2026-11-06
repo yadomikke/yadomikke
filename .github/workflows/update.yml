@@ -1,0 +1,67 @@
+name: 空室データの自動更新
+
+on:
+  schedule:
+    - cron: "17 */3 * * *"   # 3時間おき(毎時17分)
+  workflow_dispatch:          # 手動で実行したいとき用(Actionsタブの「Run workflow」)
+    inputs:
+      reprobe:
+        description: "「露天あり」の判定をやり直す(普段はオフのまま)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-vacancy
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 楽天トラベルから空室を取得
+        env:
+          RAKUTEN_APP_ID: ${{ secrets.RAKUTEN_APP_ID }}
+          RAKUTEN_ACCESS_KEY: ${{ secrets.RAKUTEN_ACCESS_KEY }}
+          RAKUTEN_AFFILIATE_ID: ${{ secrets.RAKUTEN_AFFILIATE_ID }}
+        run: |
+          if [ "${{ inputs.reprobe }}" = "true" ]; then
+            python scripts/update.py --budget-minutes 25 --reprobe
+          else
+            python scripts/update.py --budget-minutes 25
+          fi
+
+      - name: ページを作成
+        run: python scripts/build.py
+
+      - name: 変更があれば保存(公開サイトも自動で更新されます)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data public
+          if git diff --cached --quiet; then
+            echo "変更なし"
+          else
+            git commit -m "空室データを更新"
+            git push
+          fi
+
+      - name: 更新をBing等に通知(IndexNow)
+        continue-on-error: true
+        run: |
+          sleep 180   # 公開サイトが更新されるのを待つ
+          python scripts/indexnow.py
+          git add data/indexnow.json || true
+          if ! git diff --cached --quiet; then
+            git commit -m "IndexNow通知の記録 [CF-Pages-Skip]"
+            git push
+          fi
