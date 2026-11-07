@@ -345,7 +345,7 @@ a{color:var(--link)}
 .logo{font-size:24px;font-weight:900;color:var(--cta);text-decoration:none;letter-spacing:.06em;display:inline-flex;align-items:center;gap:6px}
 .logo svg{width:38px;height:38px;flex:none}
 .hdr small{font-size:13px;color:var(--sub)}
-.disc{background:#fff7dd;border-bottom:1px solid #efd88a;font-size:13px;line-height:1.6;padding:8px 16px;color:#53430a}
+.disc{background:#fff7dd;border-bottom:1px solid #efd88a;font-size:12px;line-height:1.5;padding:3px 16px;color:#53430a;text-align:right}
 .demo{background:#b42318;color:#fff;text-align:center;padding:10px 12px;font-size:14px;font-weight:700}
 .wrap{max-width:960px;margin:0 auto;padding:0 12px}
 .hero{padding:18px 4px 6px}
@@ -663,8 +663,7 @@ def header_html(cfg, demo, root="../"):
         out += '<div class="demo">これは見本です。宿・料金・空室はすべて架空のデータです(公開されません)</div>'
     out += (f'<header class="hdr"><a class="logo" href="{root}">{esc(cfg["site"]["name"])}<svg viewBox="0 0 32 32" role="img" aria-label="フクロウのキャラクター">{OWL_SVG}</svg></a>'
             "<small>宿の空室をまとめてチェック</small></header>"
-            '<div class="disc">【広告】当サイトは楽天トラベルのアフィリエイトリンクを含む、<b>非公式</b>の空室まとめサイトです。'
-            "予約・決済は楽天トラベル上で行われます。</div>")
+            )
     return out
 
 
@@ -672,6 +671,7 @@ def footer_html(cfg, root="../"):
     return (f'<nav class="fnav"><a href="{root}">トップ</a> ・ <a href="{root}about/">データの取得方法と注意点</a> ・ '
             f'<a href="{root}privacy/">プライバシーポリシー</a></nav>'
             f'© {esc(cfg["site"]["name"])}<br>'
+            "<b>【PR】当サイトは広告(アフィリエイト)を含みます。</b><br>"
             "当サイトは楽天トラベルのアフィリエイトプログラムに参加しており、掲載リンクから予約が行われると運営者に報酬が発生する場合があります。<br>"
             "楽天トラベル公式サイトではありません。掲載の空室・料金は取得時点の情報で、変更される場合があります。最終的な内容は楽天トラベルの予約ページでご確認ください。<br>"
             '<a href="https://webservice.rakuten.co.jp/" target="_blank" rel="noopener">Supported by Rakuten Developers</a>')
