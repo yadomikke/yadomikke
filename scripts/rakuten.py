@@ -60,7 +60,9 @@ class Client:
         url = f"{self.base}/{api}/{self.versions[api]}?" + urllib.parse.urlencode(query)
         headers = {"accessKey": self.access_key, "User-Agent": "vacancy-site/1.0"}
         if self.referer:
-            headers["Referer"] = self.referer
+            # 「許可されたウェブサイト」の確認には、RefererまたはOriginが使われる。両方を送っておく
+            headers["Referer"] = self.referer.rstrip("/") + "/"
+            headers["Origin"] = self.referer.rstrip("/")
 
         last_err = None
         for attempt in range(1, 5):
