@@ -52,7 +52,11 @@ jobs:
             echo "変更なし"
           else
             git commit -m "空室データを更新"
-            git push
+            # 実行中に誰かが(自分でファイルを更新したときなど)保存していた場合は、取り込んでからやり直す
+            for i in 1 2 3; do
+              git push && break
+              git pull --rebase -X theirs origin main
+            done
           fi
 
       - name: 更新をBing等に通知(IndexNow)
@@ -63,5 +67,8 @@ jobs:
           git add data/indexnow.json || true
           if ! git diff --cached --quiet; then
             git commit -m "IndexNow通知の記録 [CF-Pages-Skip]"
-            git push
+            for i in 1 2 3; do
+              git push && break
+              git pull --rebase -X theirs origin main
+            done
           fi
