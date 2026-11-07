@@ -194,7 +194,8 @@ def embed_data(cfg, rows, dates, info, state, feat, holidays, default, now):
         k = d.isoformat()
         n, low = info[k]
         ds.append({"d": k, "l": day_label(d, holidays), "k": day_class(d, holidays), "n": n, "p": low,
-                   "r": 1 if k in ren else 0, "c": 1 if k in crown else 0})
+                   "r": 1 if k in ren else 0, "c": 1 if k in crown else 0,
+                   "u": 0 if any(status(state["cells"].get(h["no"], {}).get(k), feat) != "none" for h in rows) else 1})
     return {"dates": ds, "hotels": hs, "def": default.isoformat(), "badges": badge_defs(cfg),
             "owls": {"sleepy": owl_html("sleepy")}}
 
@@ -421,7 +422,7 @@ td.c i{font-style:normal;font-size:12px;font-weight:700;color:var(--ink)}
 td.ok a,td.ok span{background:var(--okbg);color:var(--ok)}
 td.part a,td.part span{background:var(--partbg);color:var(--part)}
 td.full a,td.full span{color:#7d848c;font-weight:500;font-size:14px}
-td.none span{color:#aab0b7;font-weight:400}
+td.nd span{color:#aab0b7;font-weight:400}
 .legend{font-size:13px;color:var(--sub);margin:10px 2px;line-height:1.8}
 .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px 16px 10px;margin:22px 0}
 .card h2{font-size:18px;margin:10px 0 4px;color:var(--navy)}
@@ -582,8 +583,8 @@ function render(){
   else{
     var n=el('div','none');n.innerHTML=D.owls.sleepy;var nt=el('div','nt');n.appendChild(nt);
     if(favOnly&&!Object.keys(fav).length){nt.appendChild(el('b',null,'お気に入りの宿がまだありません。'));nt.appendChild(el('p',null,'カードの♡を押すと、この端末に保存されます。'));}
-    else{nt.appendChild(el('b',null,(favOnly||filterId)?'この日は、選んだ条件に合う宿が見つかりませんでした。':'この日は「'+FL+'」の空きが見つかりませんでした。'));
-    nt.appendChild(el('p',null,'空きのある日を選んでみてください。'));}
+    else{nt.appendChild(el('b',null,di.u?'この日はまだ空室を取得できていません(満室ではありません)。':((favOnly||filterId)?'この日は、選んだ条件に合う宿が見つかりませんでした。':'この日は「'+FL+'」の空きが見つかりませんでした。')));
+    nt.appendChild(el('p',null,di.u?'自動更新で順番に取得しています。取得済みの日を選んでみてください。':'空きのある日を選んでみてください。'));}
     var near=D.dates.filter(function(x){return x.n>0;});
     var ci=D.dates.indexOf(di);
     near.sort(function(a,b){return Math.abs(D.dates.indexOf(a)-ci)-Math.abs(D.dates.indexOf(b)-ci);});
@@ -606,10 +607,10 @@ function pick(d,scroll){cur=d;render();
   if(scroll&&finder){var r=document.getElementById('rhead').getBoundingClientRect();
     if(r.top<0||r.top>window.innerHeight*0.6){window.scrollTo({top:window.pageYOffset+r.top-90,behavior:'smooth'});}}}
 D.dates.forEach(function(x){
-  var b=el('button','dchip'+(x.k?' '+x.k:'')+(x.n?'':' zero'));b.type='button';b.setAttribute('data-d',x.d);
+  var b=el('button','dchip'+(x.k?' '+x.k:'')+(x.n?'':' zero')+(x.u?' wait':''));b.type='button';b.setAttribute('data-d',x.d);
   var mk=[];if(x.c){mk.push('👑 空き最多');}if(x.r){mk.push('連休');}
   if(mk.length){b.appendChild(el('span','mk',mk.join(' ')));}
-  b.appendChild(el('span','l',x.l));b.appendChild(el('span','n'+(x.n===1?' last':''),x.n===1?'のこり1軒':(x.n?('空 '+x.n+'軒'):'空きなし')));
+  b.appendChild(el('span','l',x.l));b.appendChild(el('span','n'+(x.n===1?' last':''),x.n===1?'のこり1軒':(x.n?('空 '+x.n+'軒'):(x.u?'取得待ち':'空きなし'))));
   if(x.p){b.appendChild(el('span','p',(x.p>=10000?(x.p/10000).toFixed(1)+'万':x.p.toLocaleString())+'〜'));}
   b.addEventListener('click',function(){pick(x.d,false);});strip.appendChild(b);});
 document.getElementById('dstrip').hidden=false;
@@ -1350,7 +1351,7 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
             st = status(c, feat)
             w = i // 7
             if st == "none":
-                cs.append(f'<td class="c none" data-w="{w}"><span>—</span></td>')
+                cs.append(f'<td class="c nd" data-w="{w}"><span>—</span></td>')
             elif st == "full":
                 cs.append(f'<td class="c full" data-w="{w}">{btn_plain(h.get("url"), "満")}</td>')
             elif st == "ok":
