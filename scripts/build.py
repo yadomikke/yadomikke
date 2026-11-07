@@ -638,7 +638,11 @@ render();
 def head(cfg, title, desc, canonical, demo, extra="", noindex=False):
     ga = cfg["site"].get("analytics_id", "")
     gtag = ""
-    if ga and not demo:
+    if ga and not demo and ga.startswith("GTM-"):
+        gtag = (f'<script async src="https://www.googletagmanager.com/gtm.js?id={esc(ga)}"></script>'
+                "<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}"
+                "gtag('js',new Date());</script>")
+    elif ga and not demo:
         gtag = (f'<script async src="https://www.googletagmanager.com/gtag/js?id={esc(ga)}"></script>'
                 f"<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments)}}"
                 f"gtag('js',new Date());gtag('config','{esc(ga)}');</script>")
