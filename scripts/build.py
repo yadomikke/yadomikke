@@ -12,6 +12,7 @@
 import argparse
 import html
 import json
+import os
 import re
 import shutil
 import urllib.parse
@@ -66,6 +67,42 @@ def safe_url(u):
     if u.startswith(("https://", "http://", "data:image/")):
         return u
     return "#"
+
+
+def stay_link(aff, no, day, adults, nights):
+    """宿のプラン一覧(日付・人数つき)へ行く、楽天アフィリエイトのリンク。ログインなしで開けるページです"""
+    co = day + timedelta(days=nights)
+    target = (f"https://hotel.travel.rakuten.co.jp/hotelinfo/plan/{no}?f_teikei="
+              f"&f_nen1={day.year}&f_tuki1={day.month}&f_hi1={day.day}"
+              f"&f_nen2={co.year}&f_tuki2={co.month}&f_hi2={co.day}"
+              f"&f_heya_su=1&f_otona_su={adults}&f_s1=0&f_s2=0&f_y1=0&f_y2=0&f_y3=0&f_y4=0")
+    if not aff:
+        return target
+    q = urllib.parse.quote(target, safe="")
+    return f"https://hb.afl.rakuten.co.jp/hgc/{aff}/?pc={q}&m={q}"
+
+
+def rewrite_links(cfg, state, aff):
+    """空室の行き先を、予約手続きのページ(ログインが必要)から、日付つきのプラン一覧に付け替える"""
+    adults = int(cfg["search"].get("adults", 2))
+    nights = int(cfg["search"].get("nights", 1))
+    n = 0
+    for no, days in state.get("cells", {}).items():
+        if not re.fullmatch(r"[0-9A-Za-z_-]+", str(no)):
+            continue
+        for dk, c in days.items():
+            try:
+                day = datetime.strptime(dk, "%Y-%m-%d").date()
+            except ValueError:
+                continue
+            url = stay_link(aff, no, day, adults, nights)
+            for f in c.get("f", {}).values():
+                if len(f) > 1:
+                    f[1] = url
+                    n += 1
+            if c.get("any"):
+                c["any"][1] = url
+    return n
 
 
 def btn(url, cls, text, ext=True):
@@ -1479,6 +1516,9 @@ def main():
     hotels = load_json(data_dir / "hotels.json", {"areas": {}})
     state = load_json(data_dir / "state.json", {"cells": {}, "fetched_by": {}, "meta": {}})
     state.setdefault("cells", {})
+    aff = os.environ.get("RAKUTEN_AFFILIATE_ID", "").strip() or str(load_json(data_dir / "site_meta.json", {}).get("affiliate_id", ""))
+    if not args.demo:
+        rewrite_links(cfg, state, aff)
     state.setdefault("fetched_by", {})
     state.setdefault("meta", {})
     stats = load_json(data_dir / "stats.json", {}) or {}
