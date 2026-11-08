@@ -335,7 +335,8 @@ def share_html(url, text):
             f'<a class="sh x" href="https://twitter.com/intent/tweet?url={u}&amp;text={t}" target="_blank" rel="noopener nofollow">Xでポスト</a></div>')
 
 
-CSS = """
+CSS = """.bul{margin:6px 0 4px;padding-left:20px;line-height:1.9}
+
 :root{--ink:#222;--sub:#5b6168;--bg:#f2f2f2;--card:#fff;--line:#dedede;--cta:#d9261c;--cta2:#b81d14;--price:#c8102e;--navy:#1d3557;--ok:#17703f;--okbg:#e3f4ea;--part:#7a4e00;--partbg:#fff1d0;--star:#f2a100;--link:#0a58a8}
 *{box-sizing:border-box;margin:0;padding:0}
 html{font-size:16px;-webkit-text-size-adjust:100%}
@@ -1096,6 +1097,46 @@ def render_hub(cfg, fkey, sc, scene_list, area_ctxs, now, demo):
 
 # ---- 宿ごとのページ ---------------------------------------------------
 
+def scene_lines(cfg, h, state, feat, today, holidays):
+    """今夜・明日・今週末・連休・年末年始・クリスマスごとの、この宿の状態(文章と、(名前, 状態, 最安) の一覧)"""
+    items = [("今夜", [today]), ("明日", [today + timedelta(days=1)])]
+    for sc in all_scenes(cfg, today):
+        if sc["slug"] in ("shumatsu", "renkyu", "nenmatsu", "xmas") and sc["dates"]:
+            items.append((sc["name"], sc["dates"]))
+    out = []
+    for name, ds in items:
+        sts, best = [], None
+        for d in ds:
+            c = state["cells"].get(h["no"], {}).get(d.isoformat())
+            st = status(c, feat)
+            sts.append(st)
+            if st == "ok":
+                p = c["f"][feat][0]
+                if best is None or p < best[1]:
+                    best = (d, p)
+        if best:
+            state_txt = f"空室あり({day_label(best[0], holidays)} {yen_full(best[1])}〜)"
+            kind = "ok"
+        elif sts and all(x == "full" for x in sts):
+            state_txt, kind = "満室", "full"
+        elif sts and all(x == "none" for x in sts):
+            state_txt, kind = "取得待ち", "none"
+        elif "part" in sts:
+            state_txt, kind = "対象の部屋は見つかっていません", "part"
+        else:
+            state_txt, kind = "満室または取得待ち", "part"
+        out.append((name, kind, state_txt))
+    return out
+
+
+def geo_ok(h):
+    try:
+        la, ln = float(h.get("lat")), float(h.get("lng"))
+    except (TypeError, ValueError):
+        return None
+    return (la, ln) if 20 <= la <= 46 and 122 <= ln <= 154 else None
+
+
 def render_hotel(cfg, page, h, ctx, state, stats, demo):
     site, feat, flabel, alabel = cfg["site"], ctx["feat"], ctx["flabel"], ctx["alabel"]
     dates, holidays, newest = ctx["dates"], ctx["holidays"], ctx["newest"]
@@ -1126,6 +1167,9 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
         details.append(f"「観測での最安」は、当サイトが観測を始めてからの記録です(観測日 {hist['min'][2].replace('-', '/')})。過去の全期間の価格ではありません。")
     details.append(f"料金は{cond_text(cfg)}の最安値で、楽天トラベルの空室検索APIから取得した値です。リアルタイムではないため、最終確認は楽天トラベルでお願いします。")
     s1, s2 = lead, " ".join(b + "。" for b in bullets[:4])
+    scl = scene_lines(cfg, h, state, feat, ctx["today"], holidays)
+    scene_txt = "。".join(f"{n}は{t}" for n, k, t in scl if k != "none") + ("。" if any(k != "none" for _, k, _ in scl) else "")
+    desc = (f"{h['name']}の{flabel}。" + (f"{asof}時点で、" if asof else "") + scene_txt + (" " + s2 if s2 else ""))[:300]
 
     # 31日カレンダー(曜日を揃える)
     cal = "".join(f'<div class="h">{w}</div>' for w in "月火水木金土日")
@@ -1153,6 +1197,10 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
     cta_url = (ok[0][2] if ok else None) or h.get("plan_url") or h.get("url")
     body.append('<p style="margin:10px 0">' + btn(cta_url, "cta", "楽天トラベルで空室・料金を確認 ›") + "</p>")
     body.append(share_html(canonical, f"{h['name']}の{flabel} 空室状況 | {site['name']}"))
+    if scl:
+        body.append('<section class="sec"><h2>日付別の空き状況</h2><ul class="bul">'
+                    + "".join(f"<li><b>{esc(n)}</b>: {esc(t)}</li>" for n, k, t in scl) + "</ul>"
+                    '<p class="sub">「取得待ち」は、まだ取得できていない日で、満室という意味ではありません。</p></section>')
     if ok:
         body.append('<section class="dsec"><h2>空きのある日と料金</h2><ul class="rowl">'
                     + "".join(f'<li><div class="t"><span class="n">{esc(day_label(d, holidays))}</span><small>{esc(rn)}</small></div>'
@@ -1171,16 +1219,35 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
          (f"最新の取得は{newest:%Y-%m-%d %H:%M}(日本時間)です。" if newest else "取得前です。") + "リアルタイムではないため、予約前に楽天トラベルでご確認ください。"),
     ]
     body.append(faq_html(faq))
-    hotel_ld = {"@type": "Hotel", "name": h["name"]}
+    hotel_ld = {"@type": "Hotel", "name": h["name"], "url": canonical}
     if h.get("address"):
-        hotel_ld["address"] = h["address"]
+        addr = {"@type": "PostalAddress", "addressCountry": "JP", "streetAddress": h["address"]}
+        if h.get("zip"):
+            addr["postalCode"] = str(h["zip"])
+        hotel_ld["address"] = addr
+    g = geo_ok(h)
+    if g:
+        hotel_ld["geo"] = {"@type": "GeoCoordinates", "latitude": g[0], "longitude": g[1]}
+    try:
+        rv = float(h.get("review"))
+        if rv > 0 and h.get("reviews"):
+            hotel_ld["aggregateRating"] = {"@type": "AggregateRating", "ratingValue": rv, "bestRating": 5, "ratingCount": int(h["reviews"])}
+    except (TypeError, ValueError):
+        pass
+    if prices:
+        hotel_ld["priceRange"] = f"{yen_full(min(prices))}〜{yen_full(max(prices))}"
+    if h.get("image", "").startswith("https://"):
+        hotel_ld["image"] = h["image"]
     ld = [breadcrumb_ld([(site["name"], ctx["base"] + "/"), (page["title"], f"{ctx['base']}/{page['slug']}/"), (h["name"], canonical)]),
           {"@context": "https://schema.org", "@type": "WebPage", "name": f"{h['name']}の{flabel} 空室状況", "url": canonical, "inLanguage": "ja",
            "dateModified": (newest or datetime.now(JST)).isoformat(timespec="seconds"), "about": hotel_ld,
            "isPartOf": {"@type": "WebSite", "name": site["name"], "url": ctx["base"] + "/"}},
           faq_ld(faq)]
-    title = f"{h['name']}の{flabel} 空室状況と料金【{md(ctx['today'])}時点】 | {site['name']}"
-    return shell(cfg, demo, "../../../", title, (s1 + s2)[:220], canonical, "".join(body), ld)
+    if ok:
+        title = f"{h['name']}の{flabel}:{md(ok[0][0])}から空きあり({yen_full(min(prices))}〜)【{md(ctx['today'])}時点】 | {site['name']}"
+    else:
+        title = f"{h['name']}の{flabel} 空室状況と料金【{md(ctx['today'])}時点】 | {site['name']}"
+    return shell(cfg, demo, "../../../", title, desc, canonical, "".join(body), ld)
 
 
 # ---- 運営方法 -------------------------------------------
@@ -1615,3 +1682,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
