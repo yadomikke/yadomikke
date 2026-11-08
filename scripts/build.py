@@ -69,6 +69,15 @@ def safe_url(u):
     return "#"
 
 
+def aff_wrap(aff, url):
+    """楽天トラベルのURLが、アフィリエイト経由になっていなければ、経由するURLに付け替える(念のための安全策)"""
+    u = str(url or "")
+    if not aff or not u.startswith("https://hotel.travel.rakuten.co.jp/"):
+        return u
+    q = urllib.parse.quote(u, safe="")
+    return f"https://hb.afl.rakuten.co.jp/hgc/{aff}/?pc={q}&m={q}"
+
+
 def stay_link(aff, no, day, adults, nights):
     """宿のプラン一覧(日付・人数つき)へ行く、楽天アフィリエイトのリンク。ログインなしで開けるページです"""
     co = day + timedelta(days=nights)
@@ -335,7 +344,35 @@ def share_html(url, text):
             f'<a class="sh x" href="https://twitter.com/intent/tweet?url={u}&amp;text={t}" target="_blank" rel="noopener nofollow">Xでポスト</a></div>')
 
 
-CSS = """.bul{margin:6px 0 4px;padding-left:20px;line-height:1.9}
+CSS = """.mc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 8px 12px;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.mc-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 2px 8px;background:#1f3a5f;color:#fff;border-radius:10px;padding:6px 8px}
+.mc-t{font-size:20px;font-weight:900;letter-spacing:.04em}
+.mc-nav{font:inherit;font-size:22px;font-weight:900;line-height:1;width:44px;height:40px;border:0;border-radius:8px;background:#fff;color:#1f3a5f;cursor:pointer}
+.mc-nav:disabled{opacity:.3;cursor:default}
+.mc-w,.mc-g{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.mc-w span{text-align:center;font-size:12px;font-weight:700;color:#5b6168;padding:2px 0}
+.mc-w .sat{color:#1e62b0}.mc-w .sun{color:#c8102e}
+.mc-c{font:inherit;border:2px solid transparent;border-radius:8px;background:#f1f2f4;min-height:62px;padding:3px 0;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:1px;line-height:1.2;color:#555;text-decoration:none;cursor:default}
+.mc-c.pad{background:transparent}
+.mc-c.off{background:transparent;color:#c3c7cc}
+.mc-d{font-size:13px;font-weight:800}
+.mc-c.sat .mc-d{color:#1e62b0}.mc-c.sun .mc-d{color:#c8102e}
+.mc-l{font-size:11px;font-weight:700;white-space:nowrap}
+.mc-l.pr{color:var(--price);font-size:11px}
+.mc-c.ok{background:#e7f4ea;color:#256b3a;cursor:pointer}
+.mc-c.ok .mc-l{color:#256b3a}.mc-c.ok .mc-l.pr{color:var(--price)}
+.mc-c.part{background:#fff1d1;color:#7a5200}
+.mc-c.full,.mc-c.zero{background:#eceef2;color:#6b7078}
+.mc-c.wait{background:#fff;border-color:#e3e5e8;color:#a0a5ab}
+.mc-c.on{border-color:var(--cta);box-shadow:0 0 0 2px rgba(200,56,40,.25)}
+.mc-c.ok:hover{border-color:#256b3a}
+.mc-note{font-size:12px;color:#5b6168;margin:8px 4px 0;line-height:1.6}
+.calbtn{white-space:nowrap;font:inherit;font-size:14px;font-weight:700;border:2px solid #1f3a5f;color:#1f3a5f;background:#fff;border-radius:999px;padding:8px 14px;min-height:40px;cursor:pointer}
+.calbtn[aria-expanded=true]{background:#1f3a5f;color:#fff}
+.hcal{grid-column:1/-1;margin-top:6px}
+.mstack .mh{background:#1f3a5f;color:#fff;font-size:18px;font-weight:900;border-radius:10px;padding:6px 12px;margin:14px 0 8px}
+@media (max-width:420px){.mc-c{min-height:58px}.mc-t{font-size:18px}.mc-l{font-size:10.5px}}
+.bul{margin:6px 0 4px;padding-left:20px;line-height:1.9}
 
 :root{--ink:#222;--sub:#5b6168;--bg:#f2f2f2;--card:#fff;--line:#dedede;--cta:#d9261c;--cta2:#b81d14;--price:#c8102e;--navy:#1d3557;--ok:#17703f;--okbg:#e3f4ea;--part:#7a4e00;--partbg:#fff1d0;--star:#f2a100;--link:#0a58a8}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -357,8 +394,8 @@ h1{font-size:24px;line-height:1.4;font-weight:800;color:var(--navy);text-wrap:ba
 .quick button{font:inherit;font-size:15px;font-weight:700;padding:10px 16px;min-height:44px;border:2px solid var(--cta);color:var(--cta);background:#fff;border-radius:999px;cursor:pointer}
 .quick button:active,.quick button.on{background:var(--cta);color:#fff}
 .finder{margin-top:6px}
-.dstrip{position:sticky;top:0;z-index:20;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,.08)}
-.dscroll{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px;scroll-snap-type:x proximity}
+.dstrip{background:transparent}
+.dscroll{padding:6px}
 .dchip{flex:0 0 100px;scroll-snap-align:start;font:inherit;border:2px solid var(--line);border-radius:12px;background:#fff;text-align:center;padding:7px 2px;cursor:pointer;line-height:1.35;min-height:92px;position:relative}
 .dchip .l{display:block;font-size:15px;font-weight:800}
 .dchip .n{display:block;font-size:15px;font-weight:700;color:var(--ok)}
@@ -534,6 +571,40 @@ function btn(url,cls,text){
   if(!url||url==='#'){return el('span',cls,text);}
   var a=el('a',cls,text);a.href=url;a.target='_blank';a.rel='sponsored nofollow noopener';return a;}
 function dinfo(d){for(var i=0;i<D.dates.length;i++){if(D.dates[i].d===d)return D.dates[i];}return null;}
+function mcal(ids,cellFn){
+  var root=el('div','mc'),ms=[],map={},mi=0;
+  ids.forEach(function(d){var m=d.slice(0,7);if(ms.indexOf(m)<0)ms.push(m);map[d]=1;});
+  var head=el('div','mc-h'),prev=el('button','mc-nav','‹'),next=el('button','mc-nav','›'),ttl=el('div','mc-t');
+  prev.type=next.type='button';prev.setAttribute('aria-label','前の月');next.setAttribute('aria-label','次の月');
+  head.appendChild(prev);head.appendChild(ttl);head.appendChild(next);root.appendChild(head);
+  var wk=el('div','mc-w');'月火水木金土日'.split('').forEach(function(w,i){wk.appendChild(el('span',i===5?'sat':(i===6?'sun':''),w));});
+  var grid=el('div','mc-g');root.appendChild(wk);root.appendChild(grid);
+  function two(n){return n<10?'0'+n:''+n;}
+  function draw(){
+    var ym=ms[mi].split('-'),y=+ym[0],m=+ym[1];
+    ttl.textContent=y+'年'+m+'月';prev.disabled=(mi===0);next.disabled=(mi===ms.length-1);
+    grid.textContent='';
+    var pad=(new Date(y,m-1,1).getDay()+6)%7,nd=new Date(y,m,0).getDate(),i;
+    for(i=0;i<pad;i++){grid.appendChild(el('span','mc-c pad'));}
+    for(var d=1;d<=nd;d++){
+      var iso=ms[mi]+'-'+two(d),dow=(pad+d-1)%7,wc=dow===5?' sat':(dow===6?' sun':''),inf=map[iso]?cellFn(iso):null,c;
+      if(!inf){c=el('span','mc-c off'+wc);c.appendChild(el('span','mc-d',String(d)));grid.appendChild(c);continue;}
+      if(inf.href){c=btn(inf.href,'mc-c '+inf.cls+wc,'');}
+      else if(inf.click){c=el('button','mc-c '+inf.cls+wc);c.type='button';c.addEventListener('click',inf.click);}
+      else{c=el('span','mc-c '+inf.cls+wc);}
+      c.textContent='';c.appendChild(el('span','mc-d',(inf.mark||'')+d));
+      inf.lines.forEach(function(t){var ln=el('span','mc-l'+(t.charAt(0)==='¥'||/万/.test(t)?' pr':''),t);c.appendChild(ln);});
+      if(inf.label){c.setAttribute('aria-label',inf.label);}
+      grid.appendChild(c);
+    }
+  }
+  prev.addEventListener('click',function(){if(mi>0){mi--;draw();}});
+  next.addEventListener('click',function(){if(mi<ms.length-1){mi++;draw();}});
+  root.refresh=draw;
+  root.goto=function(iso){var k=ms.indexOf(iso.slice(0,7));if(k>=0&&k!==mi){mi=k;}draw();};
+  draw();return root;}
+function shortYen(p){return (p>=10000?(Math.round(p/1000)/10)+'万':String(p).replace(/\B(?=(\d{3})+(?!\d))/g,','))+'〜';}
+
 function card(h,c,kind){
   var art=el('article',kind==='o'?'hc':'hc part');
   if(h.im){var a=btn(h.u,'himg','');if(a.tagName==='A'){a.tabIndex=-1;}var im=el('img');im.src=h.im;im.alt='';im.loading='lazy';a.appendChild(im);art.appendChild(a);}
@@ -548,7 +619,24 @@ function card(h,c,kind){
   if(kind==='o'){var fg=el('p','flags');
     var di0=dinfo(cur);if(di0&&di0.n===1){fg.appendChild(el('span','fg-only','この日はここだけ'));}
     if(fg.childNodes.length){b.appendChild(fg);}}
-  if(h.hp){var il=el('p','il'),ia=el('a',null,'この宿の空室カレンダー・料金 ›');ia.href=h.hp;il.appendChild(ia);b.appendChild(il);}
+  var il=el('p','il');
+  var cb=el('button','calbtn','📅 空室カレンダー');cb.type='button';cb.setAttribute('aria-expanded','false');
+  cb.addEventListener('click',function(){
+    var open=cb.getAttribute('aria-expanded')==='true';
+    if(!art._cal){var box=el('div','hcal');
+      var cal=mcal(D.dates.map(function(x){return x.d;}),function(iso){var cc=h.c[iso];
+        if(!cc)return {cls:'wait',lines:['—'],label:iso+' 未取得'};
+        if(cc[0]==='o')return {cls:'ok',lines:['◯',shortYen(cc[1])],href:cc[2]||h.u,label:iso+' 空きあり'};
+        if(cc[0]==='p')return {cls:'part',lines:['△'],label:iso+' 対象の部屋は未確認'};
+        return {cls:'full',lines:['満'],label:iso+' 満室'};});
+      cal.goto(cur);box.appendChild(cal);
+      box.appendChild(el('p','mc-note','◯=空きあり(数字は最安) ／ △=宿に空きはあるが該当の部屋は確認できない ／ 満=空室なし ／ —=未取得(満室ではありません)。◯を押すと、その日の楽天トラベルのページが開きます。'));
+      art._cal=box;art.appendChild(box);}
+    art._cal.hidden=open;cb.setAttribute('aria-expanded',open?'false':'true');
+    if(!open){var cc2=art._cal.firstChild;if(cc2&&cc2.goto)cc2.goto(cur);}});
+  il.appendChild(cb);
+  if(h.hp){il.appendChild(document.createTextNode('　'));var ia=el('a',null,'宿の詳細ページ ›');ia.href=h.hp;il.appendChild(ia);}
+  b.appendChild(il);
   art.appendChild(b);
   var hp=el('div','hp');
   if(kind==='o'&&c[4]&&c[4].length){var bg=el('p','bdg');
@@ -596,24 +684,24 @@ function render(){
     for(i=0;i<parts.length;i++)dp.appendChild(card(parts[i][0],parts[i][1],'p'));cards.appendChild(dp);}
   if(fulls.length){var df=el('details','more');df.appendChild(el('summary',null,'満室の宿('+fulls.length+'軒)'));
     var ul=el('ul','fl');fulls.forEach(function(x){ul.appendChild(el('li',null,x.n));});df.appendChild(ul);cards.appendChild(df);}
-  var chips=strip.children;
-  for(i=0;i<chips.length;i++){chips[i].classList.toggle('on',chips[i].getAttribute('data-d')===cur);}
+  if(areaCal){areaCal.goto(cur);}
   var ths=document.querySelectorAll('thead th[data-d]');
   for(i=0;i<ths.length;i++){ths[i].classList.toggle('sel',ths[i].getAttribute('data-d')===cur);}
   var qb=document.querySelectorAll('.quick button');
   for(i=0;i<qb.length;i++){qb[i].classList.toggle('on',qb[i].getAttribute('data-d')===cur);}
 }
+var areaCal=null;
 function pick(d,scroll){cur=d;render();
-  var on=strip.querySelector('.on');if(on&&on.scrollIntoView){try{on.scrollIntoView({inline:'center',block:'nearest'});}catch(e){}}
   if(scroll&&finder){var r=document.getElementById('rhead').getBoundingClientRect();
     if(r.top<0||r.top>window.innerHeight*0.6){window.scrollTo({top:window.pageYOffset+r.top-90,behavior:'smooth'});}}}
-D.dates.forEach(function(x){
-  var b=el('button','dchip'+(x.k?' '+x.k:'')+(x.n?'':' zero')+(x.u?' wait':''));b.type='button';b.setAttribute('data-d',x.d);
-  var mk=[];if(x.c){mk.push('👑 空き最多');}if(x.r){mk.push('連休');}
-  if(mk.length){b.appendChild(el('span','mk',mk.join(' ')));}
-  b.appendChild(el('span','l',x.l));b.appendChild(el('span','n'+(x.n===1?' last':''),x.n===1?'のこり1軒':(x.n?('空 '+x.n+'軒'):(x.u?'取得待ち':'空きなし'))));
-  if(x.p){b.appendChild(el('span','p',(x.p>=10000?(x.p/10000).toFixed(1)+'万':x.p.toLocaleString())+'〜'));}
-  b.addEventListener('click',function(){pick(x.d,false);});strip.appendChild(b);});
+areaCal=mcal(D.dates.map(function(x){return x.d;}),function(iso){var x=dinfo(iso);
+  var on=iso===cur?' on':'',mk=x.c?'👑':'';
+  if(x.n>0){return {cls:'ok'+on,mark:mk,lines:['空'+x.n+'軒',x.p?shortYen(x.p):''].filter(Boolean),click:function(){pick(iso,true);},label:x.l+' 空き'+x.n+'軒'};}
+  if(x.u){return {cls:'wait'+on,lines:['—'],click:function(){pick(iso,true);},label:x.l+' 取得待ち'};}
+  return {cls:'zero'+on,lines:['空きなし'],click:function(){pick(iso,true);},label:x.l+' 空きなし'};});
+strip.appendChild(areaCal);
+strip.appendChild(el('p','mc-note','数字は、その日に空きのある宿の軒数と最安値です。👑=空きがいちばん多い日 ／ —=まだ取得できていない日(満室ではありません)。日付を押すと、下に宿の一覧が出ます。'));
+areaCal.goto(cur);
 document.getElementById('dstrip').hidden=false;
 sortSel.addEventListener('change',function(){mode=sortSel.value;render();});
 var fs=document.getElementById('fltsel');if(fs){fs.addEventListener('change',function(){filterId=fs.value;render();});}
@@ -1171,25 +1259,35 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
     scene_txt = "。".join(f"{n}は{t}" for n, k, t in scl if k != "none") + ("。" if any(k != "none" for _, k, _ in scl) else "")
     desc = (f"{h['name']}の{flabel}。" + (f"{asof}時点で、" if asof else "") + scene_txt + (" " + s2 if s2 else ""))[:300]
 
-    # 31日カレンダー(曜日を揃える)
-    cal = "".join(f'<div class="h">{w}</div>' for w in "月火水木金土日")
-    cal += '<span class="pad"></span>' * dates[0].weekday()
-    for d in dates:
+    # 月ごとのカレンダー(月の見出しつき・曜日を揃える)
+    def _cell(d):
         c = state["cells"].get(h["no"], {}).get(d.isoformat())
-        s = status(c, feat)
-        lab = f"<b>{d.month}/{d.day}</b>" if (d.day == 1 or d == dates[0]) else f"<b>{d.day}</b>"
-        if s == "ok":
+        s_ = status(c, feat)
+        lab = f"<b>{d.day}</b>"
+        if s_ == "ok":
             p, url, _ = c["f"][feat]
             inner_c = f"{lab}<i>◯</i><b>{yen(p)}</b>"
             u = safe_url(url or h.get("url"))
-            cal += (f'<a class="ok" href="{esc(u)}" target="_blank" rel="sponsored nofollow noopener">{inner_c}</a>'
+            return (f'<a class="ok" href="{esc(u)}" target="_blank" rel="sponsored nofollow noopener" aria-label="{d.month}月{d.day}日 空きあり">{inner_c}</a>'
                     if u != "#" else f'<span class="ok">{inner_c}</span>')
-        elif s == "part":
-            cal += f'<span class="part">{lab}<i>△</i></span>'
-        elif s == "full":
-            cal += f'<span class="full">{lab}<i>満</i></span>'
-        else:
-            cal += f"<span>{lab}<i>—</i></span>"
+        if s_ == "part":
+            return f'<span class="part">{lab}<i>△</i></span>'
+        if s_ == "full":
+            return f'<span class="full">{lab}<i>満</i></span>'
+        return f"<span>{lab}<i>—</i></span>"
+
+    cal = ""
+    months = []
+    for d in dates:
+        if not months or months[-1][0] != (d.year, d.month):
+            months.append(((d.year, d.month), []))
+        months[-1][1].append(d)
+    for (yy, mm), ds_ in months:
+        cal += f'<div class="mstack"><div class="mh">{yy}年{mm}月</div><div class="mini">'
+        cal += "".join(f'<div class="h">{w}</div>' for w in "月火水木金土日")
+        cal += '<span class="pad"></span>' * ds_[0].weekday()
+        cal += "".join(_cell(d) for d in ds_)
+        cal += "</div></div>"
 
     body = [f'<div class="hero"><div class="crumb"><a href="../../../">{esc(site["name"])}</a> › <a href="../../">{esc(page["title"])}</a> › {esc(h["name"])}</div>'
             f"<h1>{esc(h['name'])}の{esc(flabel)} 空室状況</h1><p class=\"lead\">{esc(hotel_sub(h))}</p></div>",
@@ -1202,12 +1300,12 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
                     + "".join(f"<li><b>{esc(n)}</b>: {esc(t)}</li>" for n, k, t in scl) + "</ul>"
                     '<p class="sub">「取得待ち」は、まだ取得できていない日で、満室という意味ではありません。</p></section>')
     if ok:
-        body.append('<section class="dsec"><h2>空きのある日と料金</h2><ul class="rowl">'
+        body.append('<section class="dsec"><details><summary><b>空きのある日と料金を一覧で見る</b>(' + str(len(ok)) + '日)</summary><ul class="rowl">'
                     + "".join(f'<li><div class="t"><span class="n">{esc(day_label(d, holidays))}</span><small>{esc(rn)}</small></div>'
                               f'<div class="pr">{yen_full(p)}<span>〜</span></div>' + btn(url or h.get("url"), "cta", "予約ページへ ›") + "</li>"
-                              for d, p, url, rn in ok) + "</ul></section>")
+                              for d, p, url, rn in ok) + "</ul></details></section>")
     body.append(f'<section class="sec"><h2>{len(dates)}日間のカレンダー</h2><p class="sub">◯=空きあり(数字は最安) ／ △=宿に空きはあるが該当の部屋は確認できない ／ 満=空室なし ／ —=未取得</p>'
-                f'<div class="mini">{cal}</div></section>')
+                f'{cal}</section>')
     body.append(f'<p><a href="../../">{esc(alabel)}の{esc(flabel)} 全{len(ctx["rows"])}軒の空室表に戻る</a></p>')
 
     faq = [
@@ -1591,6 +1689,15 @@ def main():
     aff = os.environ.get("RAKUTEN_AFFILIATE_ID", "").strip() or str(load_json(data_dir / "site_meta.json", {}).get("affiliate_id", ""))
     if not args.demo:
         rewrite_links(cfg, state, aff)
+        for _lst in hotels.get("areas", {}).values():
+            for _h in (_lst if isinstance(_lst, list) else []):
+                for _k in ("url", "plan_url"):
+                    if _h.get(_k):
+                        _h[_k] = aff_wrap(aff, _h[_k])
+        for _days in state.get("cells", {}).values():
+            for _c in _days.values():
+                if _c.get("any") and len(_c["any"]) > 1:
+                    _c["any"][1] = aff_wrap(aff, _c["any"][1])
     state.setdefault("fetched_by", {})
     state.setdefault("meta", {})
     stats = load_json(data_dir / "stats.json", {}) or {}
