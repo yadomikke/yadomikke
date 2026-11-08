@@ -23,6 +23,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from scenes import all_scenes, holiday_blocks, area_days  # noqa: E402
+import hotelfeat  # noqa: E402
 
 JST = timezone(timedelta(hours=9))
 ROOT = Path(__file__).resolve().parent.parent
@@ -30,6 +31,63 @@ WD = "月火水木金土日"
 
 
 # ---- 小さな部品 -------------------------------------------------------
+
+CUR_AUTO = False     # いま作っているのが「宿の条件ページ」(大浴場など)かどうか
+HOTEL_HREF = {}      # 施設番号 -> 既に作った宿ページへの、サイト直下からのパス(条件ページから案内するため)
+
+
+def is_hotel_feat(cfg, feat):
+    return bool(cfg["features"][feat].get("hotel"))
+
+
+def fdesc(cfg, feat):
+    """「◯◯」はどう判定しているか(ページに載せる説明の中身)"""
+    f = cfg["features"][feat]
+    if f.get("hotel"):
+        return f["def"]
+    return "部屋名に「" + "」「".join(f["keywords"]) + "」を含む部屋"
+
+
+def hotel_href(h):
+    """宿の詳細ページへのリンク(なければ空文字)"""
+    if not CUR_AUTO:
+        return "hotel/" + h["no"] + "/"
+    return HOTEL_HREF.get(h["no"], "")
+
+
+def apply_hotel_features(cfg, hotels, state, detail):
+    """宿の条件(大浴場など)を、既存の仕組み(特徴・セル)に載せる。
+    ・cfg["features"] に条件を足す  ・条件に合う宿を「seen」にする
+    ・空きのある日のセルに、宿全体の最安(any)を「その条件の◯」として入れる
+    ・宿が3軒以上あるエリア×条件のページ定義を cfg["pages"] に足す"""
+    nmin = int(cfg.get("hotel_page_min", 3))
+    keys = list(hotelfeat.FEATURES)
+    for k in keys:
+        fd = hotelfeat.FEATURES[k]
+        cfg["features"][k] = {"label": fd["label"], "keywords": [], "hotel": True, "def": fd["def"], "short": fd["short"]}
+    added = 0
+    for area, lst in hotels.get("areas", {}).items():
+        if area not in cfg["areas"]:
+            continue
+        alabel = cfg["areas"][area]["label"]
+        for k in keys:
+            hit = [h for h in lst if hotelfeat.matches(k, h, detail.get(h["no"]))]
+            n_cells = 0
+            for h in hit:
+                state.setdefault("meta", {}).setdefault(h["no"], {"checks": 0, "seen": {}}).setdefault("seen", {})[k] = True
+                for d, c in state.get("cells", {}).get(h["no"], {}).items():
+                    if c.get("s") == "v" and c.get("any") and c["any"][0]:
+                        c.setdefault("f", {})[k] = [c["any"][0], c["any"][1], "宿全体の最安プラン"]
+                        n_cells += 1
+            if len(hit) >= nmin:
+                fd = hotelfeat.FEATURES[k]
+                cfg["pages"].append({
+                    "slug": f"{area}-{k}", "area": area, "feature": k, "auto": True,
+                    "title": f"{alabel}で今空いている{fd['label']}",
+                    "lead": f"{alabel}で、{fd['short']}の条件に当てはまる宿の空きを、日付ごとにまとめています。"})
+                added += 1
+    return added
+
 
 DEFAULT_THEMES = [
     {"slug": "high-rated", "name": "口コミ高評価(4.5以上)", "kind": "rating", "min": 4.5},
@@ -199,7 +257,7 @@ def embed_data(cfg, rows, dates, info, state, feat, holidays, default, now):
                 cells[d.isoformat()] = ["f"]
         hs.append({"no": h["no"], "n": h["name"], "u": safe_url(h.get("url")), "pu": safe_url(h.get("plan_url") or h.get("url")),
                    "rv": h.get("review"), "rc": h.get("reviews"), "st": h.get("station", ""),
-                   "hp": "hotel/" + h["no"] + "/", "ad": h.get("address", ""), "im": safe_url(h.get("image")) if h.get("image") else "", "c": cells})
+                   "hp": hotel_href(h), "ad": h.get("address", ""), "im": safe_url(h.get("image")) if h.get("image") else "", "c": cells})
     ren = set()
     for a, b in holiday_blocks(dates, holidays):
         for i in range((b - a).days + 1):
@@ -277,7 +335,7 @@ def card_html(h, cell, feat, flabel, kind, bd="", flags="", got=None):
                  + btn(a[1] or h.get("plan_url") or h.get("url"), "cta ghost", "プラン一覧を見る ›"))
         cls = "hc part"
     return (f'<article class="{cls}">{imgtag}<div class="hb"><h3>{btn(h.get("url"), "hn", esc(h["name"]))}</h3>'
-            f'{rv}<p class="loc">{esc(loc)}</p>{tag}{flags}{('<p class="gt">取得: ' + time_html(got) + '</p>') if got else ''}<p class="il"><a href="hotel/{esc(h["no"])}/">この宿の空室カレンダー・料金 ›</a></p></div><div class="hp">{price}</div></article>')
+            f'{rv}<p class="loc">{esc(loc)}</p>{tag}{flags}{('<p class="gt">取得: ' + time_html(got) + '</p>') if got else ''}{('<p class="il"><a href="' + esc(hotel_href(h)) + '">この宿の空室カレンダー・料金 ›</a></p>') if hotel_href(h) else ''}</div><div class="hp">{price}</div></article>')
 
 
 def results_html(cfg, rows, state, feat, flabel, day, dates, info, holidays, now):
@@ -931,7 +989,6 @@ def answer_parts(cfg, page, rows, state, today, dates, info, scene_list, newest,
     feat = page["feature"]
     flabel = cfg["features"][feat]["label"]
     alabel = cfg["areas"][page["area"]]["label"]
-    kws = "」「".join(cfg["features"][feat]["keywords"])
     asof = fmt_dt(newest) if newest else ""
     n0, l0 = info[today.isoformat()]
     items = [(f"今日({day_label(today, holidays)})", n0, l0)]
@@ -960,7 +1017,9 @@ def answer_parts(cfg, page, rows, state, today, dates, info, scene_list, newest,
     if pk:
         bullets.append(pk)
     bullets.append(f"確認できた宿: {len(rows)}軒")
-    details = [f"「{flabel}」は、部屋名に「{kws}」を含む部屋のことです。軒数は、その部屋に空きがある宿の数です。料金は{cond_text(cfg)}の最安値です。",
+    details = [(f"「{flabel}」は、{fdesc(cfg, feat)}のことです。軒数は、その条件の宿のうち、その日に空きのある宿の数です。料金は、宿全体で空いているプランの{cond_text(cfg)}の最安値です。"
+                if is_hotel_feat(cfg, feat) else
+                f"「{flabel}」は、{fdesc(cfg, feat)}のことです。軒数は、その部屋に空きがある宿の数です。料金は{cond_text(cfg)}の最安値です。"),
                f"楽天トラベルの空室検索APIから{freq_text(cfg)}に取得した値で、リアルタイムの在庫ではありません。"
                "予約の前に、楽天トラベルの予約ページで空室と料金をご確認ください。"]
     return asof, lead, bullets, details
@@ -1000,10 +1059,9 @@ def chips_html(scene_list, root, current=None):
 def facts_html(cfg, page, nrows, newest, oldest):
     feat = page["feature"]
     flabel = cfg["features"][feat]["label"]
-    kws = "」「".join(cfg["features"][feat]["keywords"])
     rows = [
         ("対象エリア", cfg["areas"][page["area"]]["label"]),
-        ("対象の部屋", f"{flabel}(部屋名に「{kws}」を含む部屋)"),
+        ("対象の宿" if is_hotel_feat(cfg, feat) else "対象の部屋", f"{flabel}({fdesc(cfg, feat)})"),
         ("検索条件", cond_text(cfg)),
         ("掲載している宿", f"{nrows}軒"),
         ("最新の取得", f"{fmt_dt(newest)}(日本時間)" if newest else "取得前"),
@@ -1134,7 +1192,7 @@ def render_scene(cfg, page, sc, scene_list, ctx, state, stats, demo):
             bullets.append(f"{day_label(d, holidays)}: " + (f"{n}軒{price_txt(low)}" if fetched else "取得待ち"))
         if st["got"] < st["n"]:
             details.append("「取得待ち」の日は、まだ楽天トラベルから取得できていない日です(満室という意味ではありません)。")
-    details += [f"{sc['note']}「{flabel}」は、部屋名に「{'」「'.join(cfg['features'][feat]['keywords'])}」を含む部屋のことです。料金は{cond_text(cfg)}の最安値です。",
+    details += [f"{sc['note']}「{flabel}」は、{fdesc(cfg, feat)}のことです。料金は{cond_text(cfg)}の最安値です。",
                 f"楽天トラベルの空室検索APIから{freq_text(cfg)}に取得した値で、リアルタイムの在庫ではありません。"]
     parts = [lead, " / ".join(bullets)]
 
@@ -1243,7 +1301,7 @@ def render_hub(cfg, fkey, sc, scene_list, area_ctxs, now, demo):
     if sc["dates"]:
         for page, ctx, st in per_area:
             bullets.append(f"{ctx['alabel']}: " + (f"{st['hotels']}軒{price_txt(st['low'])}" if st["got"] else "取得待ち"))
-    details += [f"{sc['note']}「{flabel}」は、部屋名に「{'」「'.join(cfg['features'][fkey]['keywords'])}」を含む部屋のことです。料金は{cond_text(cfg)}の最安値です。",
+    details += [f"{sc['note']}「{flabel}」は、{fdesc(cfg, fkey)}のことです。料金は{cond_text(cfg)}の最安値です。",
                 f"楽天トラベルの空室検索APIから{freq_text(cfg)}に取得した値で、リアルタイムの在庫ではありません。"]
 
     body = [f'<div class="hero"><div class="crumb"><a href="../../">{esc(site["name"])}</a> › {esc(flabel)} › {esc(sc["name"])}</div>'
@@ -1575,15 +1633,18 @@ def render_about(cfg, ctxs, stats, now, demo):
         f"{r['near_days']}日以内の取得は約{r['near_hours']}時間ごとですが、取得の混み具合により遅れることがあります。"
         "各ページには、取得した日時を表示しています。リアルタイムの在庫ではありません。</p>",
         "<h2>表示の見方</h2><table><tbody>"
-        "<tr><th>◯</th><td>そのページの条件(客室露天風呂など)に合う部屋に空きがある</td></tr>"
+        "<tr><th>◯</th><td>そのページの条件(客室露天風呂など)に合う部屋に空きがある。大浴場・貸切風呂など<b>宿の条件</b>のページでは、その条件の宿に空室がある(客室の種類は問いません)</td></tr>"
         "<tr><th>△</th><td>宿には空きがあるが、条件に合う部屋の空きは確認できない</td></tr>"
         "<tr><th>満</th><td>その日は宿全体で空室が見つからない</td></tr>"
         "<tr><th>—</th><td>まだ取得していない(満室という意味ではありません)</td></tr></tbody></table>"
         f"<p>料金は{esc(cond_text(cfg))}の最安値です。人数・泊数・プランによって変わります。</p>",
         "<h2>条件(客室露天風呂など)の判定方法と限界</h2>"
-        "<p>楽天トラベルから届く<b>部屋の名前に、次のキーワードが含まれるか</b>で、機械的に判定しています。宿を1軒ずつ人が確認しているわけではありません。</p><ul>"
-        + "".join(f"<li>「{esc(cfg['features'][f]['label'])}」: 部屋名に「{esc('」「'.join(cfg['features'][f]['keywords']))}」を含む</li>" for f in feats)
+        "<p>「客室露天風呂」「ペット可」などの部屋の条件は、楽天トラベルから届く<b>部屋の名前に、キーワードが含まれるか</b>で、機械的に判定しています。"
+        "「大浴場」「貸切風呂」などの宿の条件は、楽天トラベルの<b>施設情報(設備・風呂・客室数・チェックイン時刻・アクセス・口コミ点数)</b>から機械的に判定しています。"
+        "宿を1軒ずつ人が確認しているわけではありません。</p><ul>"
+        + "".join(f"<li>「{esc(cfg['features'][f]['label'])}」: {esc(fdesc(cfg, f))}</li>" for f in feats)
         + "</ul><ul><li>部屋名に書かれていない設備(たとえば、部屋名に出ていない露天風呂)は、拾えません。</li>"
+        "<li>宿の条件は、宿が楽天トラベルに登録している情報の書き方に左右されます。記載がない設備は拾えず、古い記載が残っていることもあります。</li>"
         "<li>キーワードを含む別の意味の部屋名を、誤って拾う可能性があります。</li>"
         "<li>設備の最終確認は、各宿・楽天トラベルのページでお願いします。</li></ul>",
         "<h2>AIの利用について</h2>"
@@ -1708,14 +1769,17 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
          f"{md(today)}時点で、今日の「{flabel}」の空きは{t0[0]}軒です。日付を選ぶと、その日に泊まれる宿が一覧で表示されます。"
          "データは楽天トラベルの空室情報を定期的に取得したもので、リアルタイムではありません。"),
         ("表の◯・△・満・—は何ですか?",
-         f"◯は「{flabel}」と判定した部屋に空きがあること、△は宿に空きはあるが該当の部屋の空きは確認できないこと、"
-         "満は空室なし、—はまだ取得していない日です(満室ではありません)。判定は1泊2名の条件です。"),
+         (f"◯は「{flabel}」の宿に空室があること(客室の種類は問いません)、満は空室なし、—はまだ取得していない日です(満室ではありません)。判定は1泊2名の条件です。"
+          if is_hotel_feat(cfg, feat) else
+          f"◯は「{flabel}」と判定した部屋に空きがあること、△は宿に空きはあるが該当の部屋の空きは確認できないこと、"
+          "満は空室なし、—はまだ取得していない日です(満室ではありません)。判定は1泊2名の条件です。")),
         ("料金はいつのものですか?",
          (f"{newest:%Y-%m-%d %H:%M}(日本時間)までに取得した、1泊2名・楽天トラベル掲載料金の最安値です。" if newest else "取得後に表示されます。")
          + "人数や泊数を変えると変わります。最終確認は楽天トラベルでお願いします。"),
         (f"「{flabel}」はどう判定していますか?",
-         f"楽天トラベルから取得した部屋名に「{'」「'.join(cfg['features'][feat]['keywords'])}」が含まれる部屋を自動で判定しています。"
-         "個別に確認した情報ではないため、実際の設備は宿のページでご確認ください。"),
+         (f"{fdesc(cfg, feat)}を、楽天トラベルの施設情報から自動で判定しています。" if is_hotel_feat(cfg, feat)
+          else f"楽天トラベルから取得した部屋名に「{'」「'.join(cfg['features'][feat]['keywords'])}」が含まれる部屋を自動で判定しています。")
+         + "個別に確認した情報ではないため、実際の設備は宿のページでご確認ください。"),
         ("このサイトの利用料金は?", "閲覧は無料です。予約は楽天トラベルで行います。"),
     ]
 
@@ -1767,8 +1831,9 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
 
     if rows:
         out.append(answer_html(*ans, mood=("happy" if any(info[d.isoformat()][0] for d in dates) else "sleepy")))
-        out.append(chips_html(scene_list, "./"))
-        out.append(theme_nav_html(themes_for(cfg, page, rows, state, dates), "./"))
+        if not page.get("auto"):
+            out.append(chips_html(scene_list, "./"))
+            out.append(theme_nav_html(themes_for(cfg, page, rows, state, dates), "./"))
         out.append(share_html(canonical, title))
     if not rows:
         out.append('<div class="empty"><b>データを準備中です。</b><br>初回の自動更新が終わると、ここに空室が表示されます。'
@@ -1787,7 +1852,7 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
                    '<p class="sub">日付(数字)をタップすると、その日の宿が上の一覧に表示されます。</p>'
                    f'<div class="tabs" id="tabs" hidden>{tabs}</div>'
                    '<div class="scroll"><table><thead><tr>' + "".join(thead) + "</tr></thead><tbody>" + "".join(body) + "</tbody></table></div>"
-                   f'<p class="legend"><b>◯</b>=「{esc(flabel)}」の部屋に空きあり(数字は1泊2名の最安) ／ <b>△</b>=宿に空きはあるが該当の部屋は確認できない ／ '
+                   f'<p class="legend"><b>◯</b>=' + (f"「{esc(flabel)}」の宿に空きあり(数字は宿全体の1泊2名の最安) ／ " if is_hotel_feat(cfg, feat) else f"「{esc(flabel)}」の部屋に空きあり(数字は1泊2名の最安) ／ <b>△</b>=宿に空きはあるが該当の部屋は確認できない ／ ") + ""
                    "<b>満</b>=空室なし ／ <b>—</b>=未取得(満室ではありません)"
                    + (f"<br>取得: 最新 {newest:%m/%d %H:%M} ・ 最古 {oldest:%m/%d %H:%M}(日本時間)。リアルタイムではありません。最終確認は楽天トラベルでお願いします。" if newest else "")
                    + "</p></section>")
@@ -1797,7 +1862,7 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
         for h in rows:
             hf = hotel_facts(h, state, feat, dates)
             nxt = (f" ・ 直近の空き {day_label(hf['ok'][0][0], holidays)} {yen_full(hf['ok'][0][1])}〜" if hf["ok"] else "")
-            hl.append(f'<li><a href="hotel/{esc(h["no"])}/">{esc(h["name"])}</a>'
+            hl.append(f'<li>{('<a href="' + esc(hotel_href(h)) + '">' + esc(h["name"]) + "</a>") if hotel_href(h) else btn_plain(h.get("url"), esc(h["name"]))}'
                       f"<small>{esc(hotel_sub(h))}<br>{len(dates)}日中 {len(hf['ok'])}日に空き{esc(nxt)}</small></li>")
         out.append(f'<section class="card" id="hotels"><h2>{esc(alabel)}の{esc(flabel)}の宿 一覧({len(rows)}軒)</h2><ul class="hl">{"".join(hl)}</ul></section>')
         data = embed_data(cfg, rows, dates, info, state, feat, holidays, default, now)
@@ -1840,9 +1905,11 @@ def render_home(cfg, digests, now, demo, scene_list=()):
             lis.append(f'<a href="{esc(p["slug"])}/">{esc(alabel)}<small>{esc(sub)}</small></a>')
         inner.append(f'<section class="card fsec" data-f="{esc(fkey)}"><h2>{esc(f["label"])}の宿を、エリアからさがす</h2>'
                      f'<nav class="chips achips" aria-label="エリアを選ぶ">{"".join(lis)}</nav>'
-                     f'<nav class="chips" aria-label="日程から全エリアを探す"><b>日程から全エリアを探す</b>'
-                     + "".join(f'<a href="{esc(hub_slug(cfg, fkey))}/{esc(sc["slug"])}/">{esc(sc["name"])}</a>' for sc in scene_list)
-                     + '</nav></section>')
+                     + ("" if is_hotel_feat(cfg, fkey) else
+                        f'<nav class="chips" aria-label="日程から全エリアを探す"><b>日程から全エリアを探す</b>'
+                        + "".join(f'<a href="{esc(hub_slug(cfg, fkey))}/{esc(sc["slug"])}/">{esc(sc["name"])}</a>' for sc in scene_list)
+                        + '</nav>')
+                     + '</section>')
     if len(feats) > 1:
         inner.append("<script>(function(){var t=document.getElementById('ftabs');if(!t)return;t.hidden=false;"
                      "var b=t.querySelectorAll('button'),s=document.querySelectorAll('.fsec');"
@@ -1920,6 +1987,12 @@ def main():
     state.setdefault("fetched_by", {})
     state.setdefault("meta", {})
     stats = load_json(data_dir / "stats.json", {}) or {}
+    detail = load_json(data_dir / "hotel_detail.json", {})
+    if detail:
+        n_auto = apply_hotel_features(cfg, hotels, state, detail)
+        print(f"宿の条件ページ: {n_auto} 枚(詳細取得済み {len(detail)} 軒)")
+    # 部屋名ベースのページを先に作り、そのあと宿の条件ページを作る(宿ページへのリンクを共有するため)
+    cfg["pages"].sort(key=lambda p: bool(p.get("auto")))
     now = datetime.now(JST)
     base = cfg["site"]["url"].rstrip("/")
 
@@ -1931,8 +2004,10 @@ def main():
         ps = dict(state, fetched=state.get("fetched_by", {}).get(page["area"], {}))
         if hotels_for_page(cfg, hotels, ps, page) or not ps["fetched"]:
             LIVE.append(page)
+    global CUR_AUTO
     for page in cfg["pages"]:
         area = page["area"]
+        CUR_AUTO = bool(page.get("auto"))
         # このエリアだけの見え方(取得日時・履歴は、エリアごとに貯めている)
         pstate = dict(state, fetched=state.get("fetched_by", {}).get(area, {}))
         pre = f"{area}/"
@@ -1951,6 +2026,9 @@ def main():
         paths.append(page["slug"] + "/")
         print(f"{page['slug']}: 宿 {n_rows} 軒 / 本日◯ {today_n} 軒 / {len(text) // 1024} KB")
 
+        if page.get("auto"):
+            print("  (宿の条件ページ: 日付別・テーマ別・宿ページは作りません)")
+            continue
         ctx = page_ctx(cfg, hotels, pstate, page, now)
         ctxs[page["slug"]] = ctx
         scene_list = all_scenes(cfg, now.date())
@@ -1970,11 +2048,15 @@ def main():
             if re.fullmatch(r"[0-9A-Za-z_-]+", str(h["no"])):
                 write_page(out_dir, f"{page['slug']}/hotel/{h['no']}", render_hotel(cfg, page, h, ctx, pstate, pstats, args.demo))
                 paths.append(f"{page['slug']}/hotel/{h['no']}/")
+                HOTEL_HREF.setdefault(h["no"], f"../{page['slug']}/hotel/{h['no']}/")
                 n_h += 1
         print(f"  日付別ページ {len(scene_list)} 枚 / 条件別ページ {len(avail)} 枚 / 宿ページ {n_h} 枚")
 
     scene_list = all_scenes(cfg, now.date())
+    CUR_AUTO = False
     for fkey in cfg["features"]:
+        if is_hotel_feat(cfg, fkey):
+            continue
         area_ctxs = [(pg, ctxs[pg["slug"]]) for pg in cfg["pages"] if pg["feature"] == fkey and pg["slug"] in ctxs]
         if not area_ctxs:
             continue
