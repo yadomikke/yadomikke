@@ -61,7 +61,7 @@ def _search_area(client, large, middle, small, details):
                     "SimpleHotelSearch",
                     largeClassCode=large, middleClassCode=middle,
                     smallClassCode=small, detailClassCode=dc,
-                    hits=30, page=page, responseType="small",
+                    hits=30, page=page, responseType="small", datumType=1,
                 )
             except rk.NotFound:
                 break
