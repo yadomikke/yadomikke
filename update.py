@@ -21,6 +21,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import rakuten as rk  # noqa: E402
 import scenes  # noqa: E402
+import hotelfeat  # noqa: E402
 
 JST = timezone(timedelta(hours=9))
 ROOT = Path(__file__).resolve().parent.parent
@@ -162,7 +163,7 @@ def matches(room, feat):
     return any(k in text for k in feat["keywords"])
 
 
-def fetch_date(client, cfg, active, day):
+def fetch_date(client, cfg, active, day, light=frozenset()):
     """1日ぶんの空室を取る。戻り値: {施設番号: セル}, {施設番号: 判定メモ}"""
     s = cfg["search"]
     base = dict(
@@ -192,6 +193,15 @@ def fetch_date(client, cfg, active, day):
     for no in active:
         if no not in vacant:
             cells[no] = {"s": "f"}
+            continue
+
+        if no in light:
+            # 宿そのものの条件だけで載せる宿は、部屋の細かい確認(手順B)を省く
+            basic = vacant[no]["basic"]
+            cell = {"s": "v"}
+            if rk.to_int(basic.get("hotelMinCharge")):
+                cell["any"] = [rk.to_int(basic["hotelMinCharge"]), basic.get("planListUrl", "")]
+            cells[no] = cell
             continue
 
         # 手順B: 空きのある宿だけ、部屋・プラン単位で細かく見る
@@ -228,6 +238,45 @@ def fetch_date(client, cfg, active, day):
         cells[no] = cell
         notes[no] = {"rooms_seen": len(rooms), "features": list(feats)}
     return cells, notes
+
+
+# ---- 宿の詳細(大浴場・貸切風呂・客室数・口コミ点数など) ----------------------
+DETAIL_REFRESH_DAYS = 30
+
+
+def enrich_hotels(client, hotels, data_dir, deadline, cap):
+    """施設詳細APIで、宿ごとの設備・客室数・口コミ点数を取り、data/hotel_detail.json に貯める。
+    1回の実行で取りすぎないよう cap 軒までにし、まだ取っていない宿を優先する。"""
+    path = data_dir / "hotel_detail.json"
+    detail = load_json(path, {})
+    nos = [h["no"] for lst in hotels["areas"].values() for h in lst]
+    cutoff = (now() - timedelta(days=DETAIL_REFRESH_DAYS)).isoformat(timespec="seconds")
+    todo = [no for no in nos if no not in detail]
+    todo += sorted((no for no in nos if no in detail and detail[no].get("stamp", "") < cutoff),
+                   key=lambda no: detail[no].get("stamp", ""))
+    todo = todo[:cap]
+    if not todo:
+        return detail
+    log(f"宿の詳細を取得します: {len(todo)}軒(未取得の残り {sum(1 for n in nos if n not in detail)}軒)")
+    got = 0
+    for no in todo:
+        if time.time() > deadline:
+            break
+        try:
+            data = client.call("HotelDetailSearch", hotelNo=no, responseType="large", datumType=1)
+        except rk.NotFound:
+            detail[no] = {"stamp": now().isoformat(timespec="seconds"), "none": True}
+            continue
+        parts = rk.parse_detail(data)
+        d = hotelfeat.compact(parts)
+        d["stamp"] = now().isoformat(timespec="seconds")
+        detail[no] = d
+        got += 1
+        if got % 20 == 0:
+            save_json(path, detail)
+    save_json(path, detail)
+    log(f"宿の詳細を {got}軒ぶん保存しました")
+    return detail
 
 
 # ---- 優先順位 ---------------------------------------------------------
@@ -381,11 +430,19 @@ def main():
         excluded = {str(x) for x in cfg["exclude"]}
         probe = cfg["search"]["probe_checks"]
 
-        def is_active(no):
+        # 宿の詳細(大浴場など)を、1回に最大60軒ずつ貯める。最初の数回で全宿ぶんがそろう
+        detail = enrich_hotels(client, hotels, data_dir, min(deadline, time.time() + 300), cap=60)
+        hotel_hit = set().union(*hotelfeat.matched_nos(hotels["areas"], detail).values())
+
+        def is_room_active(no):
             if no in excluded:
                 return False
             m = state["meta"].get(no, {})
             return bool(m.get("seen")) or m.get("checks", 0) < probe or no in {str(x) for x in cfg["force_include"]}
+
+        def is_active(no):
+            # 部屋名での判定が済んだ宿に加え、宿そのものの条件(大浴場など)に当てはまる宿も、空き状況を取る
+            return is_room_active(no) or (no in hotel_hit and no not in excluded)
 
         units = pick_units(cfg, state, today)
         if not units:
@@ -402,7 +459,8 @@ def main():
             active = [n for n in all_nos if is_active(n)]
             if not active:
                 continue
-            cells, notes = fetch_date(client, cfg, active, day)
+            light = {n for n in active if not is_room_active(n)}   # 部屋単位の確認が不要な宿(宿全体の空きと最安だけ取る)
+            cells, notes = fetch_date(client, cfg, active, day, light)
             dk = day.isoformat()
             fetched = state["fetched_by"].setdefault(area, {})
             old = {no: state["cells"].get(no, {}).get(dk) for no in cells}
