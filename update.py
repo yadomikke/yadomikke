@@ -77,6 +77,11 @@ def _search_area(client, large, middle, small, details):
                     "address": (str(b.get("address1", "")) + str(b.get("address2", ""))),
                     "station": b.get("nearestStation", ""),
                     "image": b.get("hotelThumbnailUrl", ""),
+                    "lat": b.get("latitude"),
+                    "lng": b.get("longitude"),
+                    "zip": b.get("postalCode", ""),
+                    "access": b.get("access", ""),
+                    "parking": b.get("parkingInformation", ""),
                 }
             if page >= rk.page_count(data):
                 break
