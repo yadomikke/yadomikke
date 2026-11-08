@@ -1582,6 +1582,15 @@ def main():
             paths.append(f"{hub_slug(cfg, fkey)}/{sc['slug']}/")
     write_page(out_dir, "about", render_about(cfg, ctxs, stats, now, args.demo))
     write_page(out_dir, "privacy", render_privacy(cfg, now, args.demo))
+    # 存在しないURLに、トップページを200で返さず、正しく404を返すためのページ(Cloudflare Pagesは 404.html があれば使う)
+    site0 = cfg["site"]
+    inner404 = ('<div class="hero"><h1>ページが見つかりません</h1></div>'
+                '<div class="empty"><b>お探しのページは存在しないか、移動した可能性があります。</b><br>'
+                '下のリンクから、宿の空室を探してみてください。</div>'
+                '<p style="margin:16px 0"><a href="/">' + esc(site0["name"]) + ' トップへ</a></p>')
+    (out_dir / "404.html").write_text(
+        shell(cfg, args.demo, "/", f"ページが見つかりません | {site0['name']}", "お探しのページは見つかりませんでした。",
+              site0["url"].rstrip("/") + "/", inner404, None, noindex=True), encoding="utf-8")
     (out_dir / "index.html").write_text(render_home(cfg, digests, now, args.demo, all_scenes(cfg, now.date())), encoding="utf-8")
 
     og = ROOT / "assets" / "ogp.png"
