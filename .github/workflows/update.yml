@@ -41,6 +41,8 @@ jobs:
           fi
 
       - name: ページを作成
+        env:
+          RAKUTEN_AFFILIATE_ID: ${{ secrets.RAKUTEN_AFFILIATE_ID }}
         run: python scripts/build.py
 
       - name: 変更があれば保存(公開サイトも自動で更新されます)
