@@ -1,0 +1,224 @@
+name: ゴルワク事前確認(1回だけ手動で実行)
+
+# 楽天GORAのAPIから実データが取れるかを確かめるだけのファイルです。
+# 手動でしか動きません。ヤドミッケのサイトやデータは変更しません。
+# 記録は公開されるため、件数と項目名だけを出します(ゴルフ場名・料金の明細・リンクは出しません)。
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 楽天GORAのデータを確認
+        env:
+          RAKUTEN_APP_ID: ${{ secrets.RAKUTEN_APP_ID }}
+          RAKUTEN_ACCESS_KEY: ${{ secrets.RAKUTEN_ACCESS_KEY }}
+          RAKUTEN_AFFILIATE_ID: ${{ secrets.RAKUTEN_AFFILIATE_ID }}
+        shell: python
+        run: |
+          import collections, datetime as dt, json, os, statistics, time
+          import urllib.error, urllib.parse, urllib.request
+
+          BASE = "https://openapi.rakuten.co.jp/engine/api/Gora"
+          VERSION = "20170623"
+          SITE = "https://yadomikke.com"
+          CHIBA = 12
+          KANTO = range(8, 15)  # 茨城〜神奈川
+          APP = os.environ.get("RAKUTEN_APP_ID", "")
+          KEY = os.environ.get("RAKUTEN_ACCESS_KEY", "")
+          AFF = os.environ.get("RAKUTEN_AFFILIATE_ID", "")
+          out = []
+          last = 0.0
+
+          def say(text=""):
+              for secret in (APP, KEY, AFF):
+                  if secret:
+                      text = text.replace(secret, "***")
+              out.append(text)
+              print(text, flush=True)
+
+          def call(api, **params):
+              """(HTTP番号, 中身, エラー説明) を返す"""
+              global last
+              query = {"applicationId": APP, "format": "json", "formatVersion": 2}
+              if AFF:
+                  query["affiliateId"] = AFF
+              query.update(params)
+              url = f"{BASE}/{api}/{VERSION}?" + urllib.parse.urlencode(query)
+              headers = {"accessKey": KEY, "User-Agent": "golwaku-check/1.0",
+                         "Referer": SITE + "/", "Origin": SITE}
+              for attempt in range(1, 4):
+                  wait = 1.2 - (time.time() - last)
+                  if wait > 0:
+                      time.sleep(wait)
+                  last = time.time()
+                  try:
+                      req = urllib.request.Request(url, headers=headers)
+                      with urllib.request.urlopen(req, timeout=30) as resp:
+                          return resp.status, json.loads(resp.read().decode("utf-8")), ""
+                  except urllib.error.HTTPError as e:
+                      detail = e.read().decode("utf-8", "replace")[:300]
+                      if e.code in (429, 500, 503) and attempt < 3:
+                          time.sleep(15 * attempt)
+                          continue
+                      return e.code, None, detail
+                  except Exception as e:
+                      if attempt == 3:
+                          return 0, None, type(e).__name__
+                      time.sleep(5 * attempt)
+              return 0, None, "retry"
+
+          def walk(node):
+              if isinstance(node, dict):
+                  yield node
+                  for value in node.values():
+                      yield from walk(value)
+              elif isinstance(node, list):
+                  for value in node:
+                      yield from walk(value)
+
+          def items_of(body):
+              raw = (body or {}).get("Items") or (body or {}).get("items") or []
+              return [x.get("Item", x) if isinstance(x, dict) else x for x in raw]
+
+          def rate(part, whole):
+              return f"{part}/{whole}" + (f" ({part * 100 // whole}%)" if whole else "")
+
+          def spread(values):
+              if not values:
+                  return "なし"
+              return f"最小{min(values)} / 中央{statistics.median(values)} / 最大{max(values)}"
+
+          def number(value):
+              try:
+                  return float(value)
+              except (TypeError, ValueError):
+                  return None
+
+          def analyze(label, status, body, error):
+              say(f"[{label}] HTTP {status}")
+              if body is None:
+                  say(f"  エラー: {error}")
+                  return []
+              items = items_of(body)
+              say(f"  総件数 {body.get('count')} / 総ページ {body.get('pageCount')} / このページ {len(items)}コース")
+              per_course, plans = [], []
+              for item in items:
+                  found = [d for d in walk(item) if "planId" in d]
+                  per_course.append(len(found))
+                  plans.extend(found)
+              say(f"  1コースあたりのプラン数: {spread(per_course)} (計{len(plans)})")
+              stocks, per_plan = [], []
+              for plan in plans:
+                  found = [d for d in walk(plan) if "stockStatus" in d]
+                  per_plan.append(len(found))
+                  stocks.extend(found)
+              say(f"  1プランあたりの在庫情報: {spread(per_plan)} (計{len(stocks)})")
+              say(f"  在庫情報の日付の種類: {len({d.get('playDate') for d in stocks})}")
+              say(f"  在庫ステータス: {dict(sorted(collections.Counter(str(d.get('stockStatus')) for d in stocks).items()))}")
+              counts = [n for n in (number(d.get("stockCount")) for d in stocks) if n is not None]
+              say(f"  在庫数: {spread(counts)} / 値あり {rate(len(counts), len(stocks))}")
+              zones = [p.get("startTimeZone") for p in plans if p.get("startTimeZone") not in (None, "")]
+              say(f"  時間帯の登録あり: {rate(len(zones), len(plans))} / 内訳 {dict(collections.Counter(str(z) for z in zones).most_common(8))}")
+              prices = [n for n in (number(p.get("price")) for p in plans) if n]
+              say(f"  総額の料金: {spread(prices)} / 値あり {rate(len(prices), len(plans))}")
+              urls = [d.get("reservePageUrlPC") for d in stocks if d.get("reservePageUrlPC")]
+              hosts = collections.Counter(urllib.parse.urlsplit(u).netloc for u in urls)
+              affiliate = sum("afl.rakuten" in u for u in urls)
+              say(f"  予約リンクあり: {rate(len(urls), len(stocks))} / アフィリエイト形式 {rate(affiliate, len(urls))} / 接続先 {dict(hosts)}")
+              return items
+
+          def keys_of(node):
+              return sorted({key for d in walk(node) for key in d})
+
+          def main():
+              if not APP or not KEY:
+                  say("アプリIDまたはアクセスキーが読み込めませんでした(Secretsの名前を確認してください)")
+                  return
+              today = dt.datetime.now(dt.timezone(dt.timedelta(hours=9))).date()
+              saturday = today + dt.timedelta(days=((5 - today.weekday()) % 7 or 7))
+              wednesday = today + dt.timedelta(days=((2 - today.weekday()) % 7 or 7))
+              say(f"確認日 {today} / 対象 千葉県 / 土曜 {saturday} / 水曜 {wednesday}")
+              say()
+
+              say("■ プラン検索(空き枠)")
+              st, body, err = call("GoraPlanSearch", areaCode=CHIBA, playDate=saturday.isoformat(), hits=30)
+              items = analyze("土曜 1ページ目", st, body, err)
+              if items:
+                  say(f"  項目名: {', '.join(keys_of(items[0]))}")
+              analyze("土曜 2ページ目", *call("GoraPlanSearch", areaCode=CHIBA, playDate=saturday.isoformat(), hits=30, page=2))
+              analyze("水曜 1ページ目", *call("GoraPlanSearch", areaCode=CHIBA, playDate=wednesday.isoformat(), hits=30))
+              say()
+
+              say("■ 絞り込み(土曜)")
+              for label, extra in [("7時台", {"startTimeZone": 7}), ("昼食付", {"planLunch": 1}),
+                                   ("セルフ除外(キャディ付)", {"planCaddie": 1}), ("2サム保証", {"plan2sum": 1}),
+                                   ("早朝", {"planEarly": 1}), ("料金の安い順", {"sort": "price"})]:
+                  st, body, err = call("GoraPlanSearch", areaCode=CHIBA, playDate=saturday.isoformat(), hits=1, **extra)
+                  say(f"  {label}: HTTP {st} / 総件数 {(body or {}).get('count')} {err}")
+              say()
+
+              ids = []
+              for item in items:
+                  value = item.get("golfCourseId") if isinstance(item, dict) else None
+                  if value and value not in ids:
+                      ids.append(value)
+              say("■ ゴルフ場をまとめて指定")
+              if ids:
+                  chosen = ids[:30]
+                  st, body, err = call("GoraPlanSearch", golfCourseId=",".join(map(str, chosen)),
+                                       playDate=saturday.isoformat(), hits=30)
+                  say(f"  {len(chosen)}件を指定 → HTTP {st} / 返ったコース {len(items_of(body))} / 総件数 {(body or {}).get('count')} {err}")
+              else:
+                  say("  ゴルフ場IDを取得できず未実施")
+              say()
+
+              say("■ どこまで先の日付が取れるか(千葉県)")
+              for days in (30, 60, 90, 120, 180, 270, 365):
+                  day = today + dt.timedelta(days=days)
+                  st, body, err = call("GoraPlanSearch", areaCode=CHIBA, playDate=day.isoformat(), hits=1)
+                  say(f"  {days}日先: HTTP {st} / 総件数 {(body or {}).get('count')} {err}")
+              say()
+
+              say("■ ゴルフ場の数(ゴルフ場検索)")
+              totals = {}
+              failed = 0
+              for area in range(1, 48):
+                  st, body, err = call("GoraGolfCourseSearch", areaCode=area, reservation=1, hits=1)
+                  if body is not None:
+                      totals[area] = int(body.get("count") or 0)
+                  elif st != 404:
+                      failed += 1
+                      if failed == 1:
+                          say(f"  エラー例: HTTP {st} {err}")
+              say(f"  全国 {sum(totals.values())} / 関東 {sum(totals.get(a, 0) for a in KANTO)} / 千葉 {totals.get(CHIBA)} / 失敗 {failed}")
+              say()
+
+              say("■ ゴルフ場詳細")
+              if ids:
+                  st, body, err = call("GoraGolfCourseDetail", golfCourseId=ids[0])
+                  say(f"  HTTP {st} {err}")
+                  if body:
+                      say(f"  項目名: {', '.join(keys_of(body))}")
+              else:
+                  say("  ゴルフ場IDを取得できず未実施")
+
+          try:
+              main()
+          except Exception as e:
+              say(f"途中で止まりました: {type(e).__name__} (行 {e.__traceback__.tb_next.tb_lineno if e.__traceback__.tb_next else '?'})")
+
+          summary = os.environ.get("GITHUB_STEP_SUMMARY")
+          if summary:
+              with open(summary, "a", encoding="utf-8") as f:
+                  f.write("## ゴルワク事前確認の結果\n\n```\n" + "\n".join(out) + "\n```\n")
