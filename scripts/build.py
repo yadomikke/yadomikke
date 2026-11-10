@@ -1222,7 +1222,7 @@ def render_scene(cfg, page, sc, scene_list, ctx, state, stats, demo):
         meta = f'<p class="meta">{("取得: " + time_html(got)) if got else ""}{esc(hist)}</p>'
         if oks:
             body.append(sec + f"<b>{n}軒</b></h2>{meta}<ul class='rowl'>"
-                        + "".join(row_html(h, d, p, url, rn, "../../", flags_html(nwf, False) + badge_html(cfg, badges_for(cfg, h, p, ctx["info"][k][1] if k in ctx["info"] else None, ctx["info"][k][0] if k in ctx["info"] else 0)))
+                        + "".join(row_html(h, d, p, url, rn, "../", flags_html(nwf, False) + badge_html(cfg, badges_for(cfg, h, p, ctx["info"][k][1] if k in ctx["info"] else None, ctx["info"][k][0] if k in ctx["info"] else 0)))
                                   for p, h, url, rn, nwf in oks) + "</ul></section>")
         else:
             body.append(sec + f"<b>0軒</b></h2>{meta}<p>この日は「{esc(flabel)}」の空きが見つかっていません。</p></section>")
