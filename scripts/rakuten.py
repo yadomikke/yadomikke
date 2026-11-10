@@ -16,6 +16,7 @@ DEFAULT_BASE = "https://openapi.rakuten.co.jp/engine/api/Travel"
 DEFAULT_VERSIONS = {
     "VacantHotelSearch": "20170426",
     "SimpleHotelSearch": "20260731",
+    "HotelDetailSearch": "20260731",
     "GetAreaClass": "20140210",
 }
 
@@ -181,6 +182,19 @@ def split_hotels(data):
         if basic and not entry["basic"]:
             entry["basic"] = basic
         entry["rooms"].extend(extract_rooms(item))
+    return out
+
+
+DETAIL_KEYS = ("hotelBasicInfo", "hotelRatingInfo", "hotelDetailInfo", "hotelFacilitiesInfo")
+
+
+def parse_detail(data):
+    """施設詳細APIの結果から、{キー名: 辞書} を取り出す(見つからないキーは入らない)"""
+    out = {}
+    for k in DETAIL_KEYS:
+        ds = find_all_dicts(data, k)
+        if ds:
+            out[k] = ds[0]
     return out
 
 
