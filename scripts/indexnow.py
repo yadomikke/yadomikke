@@ -24,7 +24,9 @@ def depth(url, base):
 def pick_urls(urls, sent, today, base):
     """通知するURLを選ぶ。sent は {URL: 最後に通知した日}"""
     new = [u for u in urls if u not in sent]
-    shallow = [u for u in urls if u in sent and depth(u, base) <= 2 and sent[u] != today]
+    # 毎日通知し直すのは浅いページだけ(宿ページ /hotel/番号/ は数が多いので、新しいときだけ通知する)
+    shallow = [u for u in urls if u in sent and depth(u, base) <= 2 and sent[u] != today
+               and not u[len(base):].startswith("/hotel/")]
     return (new + shallow)[:LIMIT]
 
 

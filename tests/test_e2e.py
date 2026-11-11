@@ -122,9 +122,22 @@ with tempfile.TemporaryDirectory() as tmp:
     check('rel="sponsored nofollow noopener"' in page, "広告リンクの印(sponsored)が付く")
     check("【PR】" in page and "Supported by Rakuten Developers" in page, "広告表記(【PR】)とクレジットが入る")
     out = tmp / "out"
-    for rel in ("about", "privacy", "hakone-roten/shumatsu", "hakone-roten/nenmatsu", "hakone-roten/xmas", "hakone-roten/hotel/1", "atami-roten/hotel/11"):
+    for rel in ("about", "privacy", "hakone-roten/shumatsu", "hakone-roten/nenmatsu", "hakone-roten/xmas", "hotel/1", "hotel/11", "roten"):
         check((out / rel / "index.html").exists(), f"{rel}/ のページが作られる")
-    check(not (out / "hakone-roten" / "hotel" / "2").exists(), "露天なしの宿のページは作られない")
+    check(not (out / "hotel" / "2").exists(), "露天なしの宿のページは作られない")
+    check(not (out / "hakone-roten" / "hotel").exists(), "条件ごとの古い宿ページは作られない(1軒1ページにまとめた)")
+    rd = (out / "_redirects").read_text(encoding="utf-8")
+    check("/:slug/hotel/:no/ /hotel/:no/ 301" in rd, "古い宿ページのURLから、新しい宿ページへ自動で案内する")
+    hp1 = (out / "hotel" / "1" / "index.html").read_text(encoding="utf-8")
+    check("この宿の条件" in hp1 and "◯ 当てはまる" in hp1 and 'href="https://example.invalid/hotel/1/"' in hp1,
+          "宿ページは /hotel/番号/ で、条件の判定一覧がある")
+    check('href="/hotel/1/"' in page, "空室表から宿ページ(/hotel/番号/)へリンクする")
+    # 選び方ガイドと、全エリアまとめ
+    check('id="guide"' in page and "客室露天風呂付きの宿を選ぶポイント" in page and "予約のコツ" in page, "空室表のページに、選び方ガイドがある")
+    rh = (out / "roten" / "index.html").read_text(encoding="utf-8")
+    check("全エリアの空室とおすすめ" in rh and "hakone-roten/" in rh and "atami-roten/" in rh and '"FAQPage"' in rh,
+          "条件ごとの全エリアまとめ(/roten/)に、各エリアへのリンクとFAQがある")
+    check('href="../roten/"' in page and 'href="roten/"' in (out / "index.html").read_text(encoding="utf-8"), "空室表とトップから、全エリアまとめへ行ける")
     check("いまの空室まとめ" in page and "蓄積中" in page, "冒頭の要約と、履歴の「蓄積中」表示がある(数字は出さない)")
     hub = (out / "roten" / "shumatsu" / "index.html").read_text(encoding="utf-8")
     check("全エリア" in hub and "hakone-roten/shumatsu/" in hub and "atami-roten/shumatsu/" in hub, "全エリアの日程別まとめ(roten/shumatsu/)に、各エリアへのリンクがある")
@@ -132,7 +145,7 @@ with tempfile.TemporaryDirectory() as tmp:
     key = cfg["site"]["indexnow_key"]
     check((out / f"{key}.txt").read_text(encoding="utf-8") == key, "IndexNow用の鍵ファイルが作られる")
     sm = (out / "sitemap.xml").read_text(encoding="utf-8")
-    check("/hakone-roten/hotel/1/" in sm and "/about/" in sm and "/hakone-roten/xmas/" in sm, "sitemapに全ページが入る")
+    check("/hotel/1/" in sm and "/roten/" in sm and "/about/" in sm and "/hakone-roten/xmas/" in sm, "sitemapに全ページが入る")
     rb = (out / "robots.txt").read_text(encoding="utf-8")
     check("OAI-SearchBot" in rb and "Disallow" not in rb, "robots.txtは検索・AIの巡回を許可")
     check("ヤドミッケ" in (out / "index.html").read_text(encoding="utf-8") and "Organization" in (out / "index.html").read_text(encoding="utf-8"), "トップにサイト名とOrganization")
@@ -176,7 +189,7 @@ check(scenes.all_scenes(cfg, _d(2026, 11, 6))[2]["dates"] == [_d(2026, 11, 20), 
 
 import indexnow
 b = "https://x.example"
-urls = [b + "/", b + "/roten/shumatsu/", b + "/hakone-roten/hotel/1/", b + "/hakone-roten/"]
+urls = [b + "/", b + "/roten/shumatsu/", b + "/hotel/1/", b + "/hakone-roten/"]
 check(indexnow.pick_urls(urls, {}, "d1", b) == urls, "IndexNow: 初回はすべて通知する")
 sent = {u: "d1" for u in urls}
 check(indexnow.pick_urls(urls, sent, "d1", b) == [], "IndexNow: 同じ日に、通知済みのURLは再通知しない")
