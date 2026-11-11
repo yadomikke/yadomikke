@@ -31,13 +31,30 @@ FEATURES = {
                  "def": f"清潔感の口コミ平均が{HIGH}以上で、口コミが{MIN_REVIEWS}件以上ある宿"},
     "kids": {"label": "子連れ向けの宿", "short": "子連れ向け",
              "def": "楽天トラベルの施設情報に、キッズ・ベビー・お子様向けの設備やサービスの記載がある宿"},
+    "sauna": {"label": "サウナのある宿", "short": "サウナ",
+              "def": "楽天トラベルの施設情報(風呂・設備の欄)に「サウナ」の記載がある宿(「サウナ付き客室」だけの記載は除く)"},
+    "iou": {"label": "硫黄泉の宿", "short": "硫黄泉",
+            "def": "楽天トラベルの施設情報(風呂・泉質の欄)に「硫黄」の記載がある宿"},
+    "ganbanyoku": {"label": "岩盤浴のある宿", "short": "岩盤浴",
+                   "def": "楽天トラベルの施設情報(風呂・設備の欄)に「岩盤浴」の記載がある宿"},
+    "sougei": {"label": "送迎のある宿", "short": "送迎あり",
+               "def": "楽天トラベルの施設情報(設備・サービスの欄)に「送迎バス」「送迎あり」等の記載がある宿"},
+    "barrierfree": {"label": "バリアフリー対応の宿(車椅子可など)", "short": "バリアフリー",
+                    "def": "楽天トラベルの施設情報(設備の欄)に「バリアフリー」「車椅子可」「車椅子利用者用客室」の記載がある宿"},
 }
 
 AFTER = {
     "daiyoku": "大浴場", "kashikiri": "貸切|家族風呂|家族湯",
     "kakenagashi": "かけ流し|掛け流し|掛流し|源泉100|源泉１００",
     "kids": "キッズ|ベビー|お子様|お子さま|子供用|子ども用|ちびっこ|添い寝無料",
+    "sauna": "サウナ(?!付|はサウナ付)",
+    "iou": "硫黄",
+    "ganbanyoku": "岩盤浴",
+    "sougei": "送迎バス|送迎あり|送迎車|無料送迎|送迎サービス|送迎(?:いた|致)します",
+    "barrierfree": "バリアフリー|車椅子可|車いす可|車イス可|車椅子利用者用客室",
 }
+# 文章のどの欄で探すか(bt=風呂・泉質 / ft=設備・サービス / 指定なし=両方)
+WHERE = {"kashikiri": "bt", "kakenagashi": "bt", "iou": "bt", "kids": "ft", "sougei": "ft", "barrierfree": "ft"}
 
 
 def flat(x):
@@ -106,12 +123,8 @@ def matches(key, h, d):
     if not d:
         return False
     text = f"{d.get('bt', '')} {d.get('ft', '')}"
-    if key in ("daiyoku", "kashikiri", "kakenagashi", "kids"):
-        src = d.get("bt", "") if key in ("kashikiri", "kakenagashi") else text
-        if key == "daiyoku":
-            src = text
-        if key == "kids":
-            src = d.get("ft", "")
+    if key in AFTER:
+        src = d.get(WHERE[key], "") if key in WHERE else text
         return re.search(AFTER[key], src) is not None
     if key == "chiisana":
         return bool(d.get("rooms")) and 0 < d["rooms"] <= 10

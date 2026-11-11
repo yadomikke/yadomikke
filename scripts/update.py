@@ -135,6 +135,14 @@ def ensure_hotels(client, cfg, data_dir, force=False):
     if not force and cur.get("updated"):
         age = now() - datetime.fromisoformat(cur["updated"])
         if age < timedelta(days=cfg["refresh"]["hotels_days"]) and cur.get("areas"):
+            missing = [k for k in cfg["areas"] if k not in cur["areas"]]
+            if not missing:
+                return cur
+            # config.json に新しく足したエリアだけ、すぐに宿を集める(ほかのエリアは、いつもの周期で更新)
+            log(f"新しいエリアの宿を集めます: {', '.join(cfg['areas'][k]['label'] for k in missing)}")
+            sub = dict(cfg, areas={k: cfg["areas"][k] for k in missing})
+            cur["areas"].update(discover_hotels(client, sub))
+            save_json(path, cur)
             return cur
     found = discover_hotels(client, cfg, cur.get("areas"))
     if not any(found.values()):
@@ -301,7 +309,9 @@ def pick_units(cfg, state, today):
             off = (d - today).days
             got = fetched.get(d.isoformat())
             if got is None:
-                score = 1e9 - off
+                # まだ一度も取っていない日付。最優先にするが、新しいエリアを足したときに、
+                # 既存エリアの近い日程の更新がずっと後回しにならないよう、「期限を2倍過ぎた」程度の扱いにする
+                score = 2.0 - off / 1000
             else:
                 age = (now() - datetime.fromisoformat(got)).total_seconds() / 3600
                 score = age / target_hours(cfg, off)
@@ -370,6 +380,49 @@ def record_stats(stats, cfg, day, today, old, new, known, gap_hours, obs_day, ar
                 if "max" not in pr or p > pr["max"][0]:
                     pr["max"] = [p, day.isoformat(), od]
         stats["daily"].setdefault(od, {}).setdefault(sk, {})[day.isoformat()] = [n_ok, low]
+
+
+# ---- 空きの動き(きのうから空きが出た宿・空きが戻りやすい宿・何日前に埋まるか) ----
+#   state["changes"]          = [{"no", "a"(エリア), "d"(宿泊日), "at"(気づいた日時), "p"(最安値)}...] 直近の「満→空き」
+#   stats["hotel_moves"][施設] = [前回満室だった回数, そこから空きが出た回数, 前回空きだった回数, そこから満室になった回数]
+#   stats["fill_lead"][エリア][何日前] = [前回空きだった数, そこから満室になった数, 前回からの経過時間の合計]
+CHANGE_KEEP_HOURS = 72
+
+
+def record_moves(state, stats, area, day, today, old, new, gap_hours, at):
+    """前回の取得と比べて、満室⇔空きの入れ替わりを記録する(間が空きすぎた比較は数えない)"""
+    if gap_hours is None or gap_hours > MAX_GAP_HOURS:
+        return
+    lead = str(max((day - today).days, 0))
+    stats.setdefault("moves_since", today.isoformat())
+    hm = stats.setdefault("hotel_moves", {})
+    fl = stats.setdefault("fill_lead", {}).setdefault(area, {}).setdefault(lead, [0, 0, 0.0])
+    ch = state.setdefault("changes", [])
+    for no, cell in new.items():
+        o = old.get(no)
+        if not o or not cell:
+            continue
+        was_v, is_v = o.get("s") == "v", cell.get("s") == "v"
+        m = hm.setdefault(no, [0, 0, 0, 0])
+        if not was_v:
+            m[0] += 1
+            if is_v:
+                m[1] += 1
+                price = (cell.get("any") or [None])[0]
+                ch.append({"no": no, "a": area, "d": day.isoformat(), "at": at, "p": price})
+        else:
+            m[2] += 1
+            fl[0] += 1
+            fl[2] = round(fl[2] + gap_hours, 2)
+            if not is_v:
+                m[3] += 1
+                fl[1] += 1
+
+
+def prune_changes(state, now_dt, today):
+    cut = (now_dt - timedelta(hours=CHANGE_KEEP_HOURS)).isoformat(timespec="seconds")
+    keep = today.isoformat()
+    state["changes"] = [c for c in state.get("changes", []) if c["at"] >= cut and c["d"] >= keep]
 
 
 def prune_stats(stats, today):
@@ -469,6 +522,7 @@ def main():
             known = {f: {no for no in all_nos if state["meta"].get(no, {}).get("seen", {}).get(f)}
                      | {str(x) for x in cfg["force_include"]} for f in cfg["features"]}
             record_stats(stats, cfg, day, today, old, cells, known, gap, now().date(), area)
+            record_moves(state, stats, area, day, today, old, cells, gap, now().isoformat(timespec="seconds"))
             for no, cell in cells.items():
                 state["cells"].setdefault(no, {})[day.isoformat()] = cell
             for no, note in notes.items():
@@ -484,6 +538,7 @@ def main():
             n_ok = sum(1 for c in cells.values() if c["s"] == "v")
             log(f"{cfg['areas'][area]['label']} {day} 完了: 対象{len(active)}軒中 空きあり{n_ok}軒 (累計API {client.requests}回)")
 
+        prune_changes(state, now(), today)
         state["updated"] = now().isoformat(timespec="seconds")
         save_json(data_dir / "state.json", state)
         if done:

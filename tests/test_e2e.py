@@ -101,6 +101,10 @@ with tempfile.TemporaryDirectory() as tmp:
     state2 = json.loads((tmp / "data" / "state.json").read_text(encoding="utf-8"))
     check(state2["meta"]["2"]["checks"] >= 2, "露天なしの宿は判定回数が溜まる(外れる条件を満たす)")
 
+    # 「空きが出た宿」の表示を確かめるため、宿1の今日の日付に「満室→空き」の記録を足しておく
+    state2.setdefault("changes", []).append({"no": "1", "a": "hakone", "d": today.isoformat(),
+                                             "at": datetime.now(timezone(timedelta(hours=9))).isoformat(timespec="seconds"), "p": 50001})
+    (tmp / "data" / "state.json").write_text(json.dumps(state2, ensure_ascii=False), encoding="utf-8")
     r = subprocess.run([sys.executable, "-I", str(ROOT / "scripts" / "build.py"),
                         "--data-dir", str(tmp / "data"), "--out-dir", str(tmp / "out"),
                         "--config", str(tmp / "config.json")], capture_output=True, text=True)
@@ -170,6 +174,20 @@ with tempfile.TemporaryDirectory() as tmp:
     llms = (out / "llms.txt").read_text(encoding="utf-8")
     check(llms.startswith("# ヤドミッケ") and "/hakone-roten/" in llms and "/stats/" in llms, "AI向けの案内(llms.txt)に、主なページと統計が載る")
     check("/stats/" in sm, "sitemapに統計ページが入る")
+    # 全エリア・日程別のページ(今夜・明日など)と、トップの答えの一文
+    kp = (out / "konya" / "index.html").read_text(encoding="utf-8")
+    check("今夜泊まれる温泉地の宿" in kp and "2エリアで計" in kp and "箱根: " in kp and "熱海: " in kp and '"FAQPage"' in kp,
+          "今夜のページ(/konya/)に、全エリアの空きの数とエリア別の内訳がある")
+    check("宿1" in kp and f"https://hb.afl.rakuten.co.jp/hgc/z/?pc={plan}" in kp, "今夜のページの空き宿リンクも、アフィリエイト経由の日付つきリンクになる")
+    for rel in ("ashita", "shumatsu", "renkyu", "nenmatsu", "ugoki"):
+        check((out / rel / "index.html").exists() and f"/{rel}/" in sm, f"{rel}/ のページが作られ、sitemapに入る")
+    home = (out / "index.html").read_text(encoding="utf-8")
+    check("いま空いている宿の数" in home and "今夜は" in home and "明日は" in home and 'href="konya/"' in home and 'href="ugoki/"' in home,
+          "トップの最初に、今夜・明日などの空きの数(答えの一文)と各ページへのリンクがある")
+    ug = (out / "ugoki" / "index.html").read_text(encoding="utf-8")
+    check("満室から空きが出た宿泊日は1件(1軒)" in ug and "宿1" in ug and "今も空き" in ug, "空きが出た宿(/ugoki/)に、直近の「満室→空き」が載る")
+    check("/konya/" in llms and "/ugoki/" in llms, "llms.txt に今夜・空きが出た宿のページが載る")
+    check("aff_click" in page and "ym_landing" in page and "chatgpt" in page, "流入元(ChatGPTなど)と楽天リンクのクリックを計測するしくみが入る")
 
 # 履歴の数え方(前回◯でなかった→◯ / ◯だった→消えた)
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -186,6 +204,41 @@ check(st["trans"]["hk/roten"]["0"] == [2, 1, 1, 1], "履歴: 前回の取得か�
 check(scenes.all_scenes(cfg, _d(2026, 11, 6))[0]["dates"] == [_d(2026, 11, 6), _d(2026, 11, 7)], "今週末は金・土")
 check(scenes.all_scenes(cfg, _d(2026, 11, 6))[2]["dates"] == [_d(2026, 11, 20), _d(2026, 11, 21), _d(2026, 11, 22)], "次の連休は11/21〜23の前夜から")
 
+
+# 空きの動き: 満室→空きの記録と、何日前に埋まるか
+st = up.new_stats(_d(2026, 11, 6))
+stt = {"changes": [{"no": "x", "a": "hk", "d": "2026-11-20", "at": "2026-11-01T00:00:00+09:00", "p": 1}]}
+vac = {"s": "v", "any": [12000, "u"]}
+up.record_moves(stt, st, "hk", _d(2026, 11, 10), _d(2026, 11, 6), {"a": fullc, "b": vac, "c": fullc, "d": None},
+                {"a": vac, "b": fullc, "c": fullc, "d": vac}, 6, "2026-11-06T10:00:00+09:00")
+check([c["no"] for c in stt["changes"]] == ["x", "a"] and stt["changes"][1]["p"] == 12000, "空きの動き: 満室→空きになった宿だけを記録する")
+check(st["hotel_moves"]["a"] == [1, 1, 0, 0] and st["hotel_moves"]["b"] == [0, 0, 1, 1] and st["hotel_moves"]["c"] == [1, 0, 0, 0]
+      and "d" not in st["hotel_moves"], "空きの動き: 宿ごとの「満室だった回数/そこから空いた回数」を数える(初回観測は数えない)")
+check(st["fill_lead"]["hk"]["4"] == [1, 1, 6.0] and st["moves_since"] == "2026-11-06", "何日前に埋まるか: 宿泊日までの日数ごとに、空き→満室と経過時間を数える")
+up.record_moves(stt, st, "hk", _d(2026, 11, 10), _d(2026, 11, 6), {"a": fullc}, {"a": vac}, 200, "2026-11-06T11:00:00+09:00")
+check(len(stt["changes"]) == 2, "空きの動き: 前回の取得から間が空きすぎた比較は数えない")
+up.prune_changes(stt, _dt(2026, 11, 6, 12, tzinfo=up.JST), _d(2026, 11, 6))
+check([c["no"] for c in stt["changes"]] == ["a"], "空きの動き: 古い記録(72時間より前)は消す")
+
+# 新しく足したエリアは、宿一覧の定期更新を待たずに、すぐ宿を集める
+with tempfile.TemporaryDirectory() as tmp2:
+    tmp2 = Path(tmp2)
+    marker = [{"no": "999", "name": "前回の宿"}]
+    (tmp2 / "hotels.json").write_text(json.dumps({"updated": up.now().isoformat(timespec="seconds"), "areas": {"hakone": marker}}), encoding="utf-8")
+    cfgy = {"refresh": {"hotels_days": 7}, "areas": {
+        "hakone": {"label": "箱根", "large": "japan", "middle": "kanagawa", "small": "hakone", "detail": "auto"},
+        "atami": {"label": "熱海", "large": "japan", "middle": "shizuoka", "small": "atami2", "detail": "auto"}}}
+    hs = up.ensure_hotels(FakeClient(), cfgy, tmp2)
+    check(hs["areas"]["hakone"] == marker and len(hs["areas"]["atami"]) == 3, "新しいエリアだけ、すぐに宿一覧を取得する(既存エリアはそのまま)")
+
+# 宿の条件の判定(サウナ・バリアフリーなど)
+import hotelfeat as hf
+check(hf.matches("sauna", {}, {"bt": "大浴場 サウナ", "ft": ""}) and not hf.matches("sauna", {}, {"bt": "", "ft": "※サウナはサウナ付き客室の方のみ"}),
+      "サウナ: 浴場のサウナは◯、「サウナ付き客室」だけの記載は対象外")
+check(hf.matches("barrierfree", {}, {"bt": "", "ft": "車椅子可 バリアフリー用トイレ"}) and not hf.matches("barrierfree", {}, {"bt": "", "ft": "貸出用車椅子"}),
+      "バリアフリー: 「車椅子可」などは◯、車椅子の貸し出しだけでは対象外")
+check(hf.matches("iou", {}, {"bt": "単純硫黄泉", "ft": ""}) and not hf.matches("iou", {}, {"bt": "", "ft": "硫黄"}), "硫黄泉: 泉質の欄だけで判定する")
+check(hf.matches("sougei", {}, {"bt": "", "ft": "送迎バス"}) and not hf.matches("sougei", {}, {"bt": "", "ft": "駐車場あり"}), "送迎: 「送迎バス」などの記載で判定する")
 
 import indexnow
 b = "https://x.example"

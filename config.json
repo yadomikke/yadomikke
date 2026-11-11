@@ -120,6 +120,86 @@
       "small": "yufuin",
       "detail": "auto",
       "days_ahead": 21
+    },
+    "nasu": {
+      "label": "那須",
+      "large": "japan",
+      "middle": "tochigi",
+      "small": "nasu",
+      "detail": "auto",
+      "days_ahead": 21
+    },
+    "nikko": {
+      "label": "日光",
+      "large": "japan",
+      "middle": "tochigi",
+      "small": "nikko",
+      "detail": "auto",
+      "days_ahead": 21
+    },
+    "ikaho": {
+      "label": "伊香保",
+      "large": "japan",
+      "middle": "gunma",
+      "small": "ikaho",
+      "detail": "auto",
+      "days_ahead": 21
+    },
+    "kawaguchiko": {
+      "label": "河口湖",
+      "large": "japan",
+      "middle": "yamanashi",
+      "small": "kawaguchiko",
+      "detail": "auto",
+      "days_ahead": 21
+    },
+    "shuzenji": {
+      "label": "修善寺",
+      "large": "japan",
+      "middle": "shizuoka",
+      "small": "shuzenji",
+      "detail": "auto",
+      "days_ahead": 21
+    },
+    "gero": {
+      "label": "下呂",
+      "large": "japan",
+      "middle": "gifu",
+      "small": "gero",
+      "detail": "auto",
+      "days_ahead": 21
+    },
+    "kinosaki": {
+      "label": "城崎",
+      "large": "japan",
+      "middle": "hyogo",
+      "small": "kinosaki",
+      "detail": "auto",
+      "days_ahead": 21
+    },
+    "shirahama": {
+      "label": "白浜",
+      "large": "japan",
+      "middle": "wakayama",
+      "small": "shirahama",
+      "detail": "auto",
+      "days_ahead": 21
+    },
+    "beppu": {
+      "label": "別府",
+      "large": "japan",
+      "middle": "oita",
+      "small": "beppu",
+      "detail": "auto",
+      "days_ahead": 21
+    },
+    "kurokawa": {
+      "label": "黒川",
+      "large": "japan",
+      "middle": "kumamoto",
+      "small": "kurokawa",
+      "detail": "auto",
+      "days_ahead": 21
     }
   },
   "pages": [
@@ -213,6 +293,146 @@
       "feature": "roten",
       "title": "湯布院で今空いている客室露天風呂の宿",
       "lead": "湯布院で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "nasu-roten",
+      "area": "nasu",
+      "feature": "roten",
+      "title": "那須で今空いている客室露天風呂の宿",
+      "lead": "那須で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "nasu-pet",
+      "area": "nasu",
+      "feature": "pet",
+      "title": "那須で今空いているペット可の客室の宿",
+      "lead": "那須で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "nikko-roten",
+      "area": "nikko",
+      "feature": "roten",
+      "title": "日光で今空いている客室露天風呂の宿",
+      "lead": "日光で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "nikko-pet",
+      "area": "nikko",
+      "feature": "pet",
+      "title": "日光で今空いているペット可の客室の宿",
+      "lead": "日光で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "ikaho-roten",
+      "area": "ikaho",
+      "feature": "roten",
+      "title": "伊香保で今空いている客室露天風呂の宿",
+      "lead": "伊香保で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "ikaho-pet",
+      "area": "ikaho",
+      "feature": "pet",
+      "title": "伊香保で今空いているペット可の客室の宿",
+      "lead": "伊香保で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "kawaguchiko-roten",
+      "area": "kawaguchiko",
+      "feature": "roten",
+      "title": "河口湖で今空いている客室露天風呂の宿",
+      "lead": "河口湖で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "kawaguchiko-pet",
+      "area": "kawaguchiko",
+      "feature": "pet",
+      "title": "河口湖で今空いているペット可の客室の宿",
+      "lead": "河口湖で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "shuzenji-roten",
+      "area": "shuzenji",
+      "feature": "roten",
+      "title": "修善寺で今空いている客室露天風呂の宿",
+      "lead": "修善寺で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "shuzenji-pet",
+      "area": "shuzenji",
+      "feature": "pet",
+      "title": "修善寺で今空いているペット可の客室の宿",
+      "lead": "修善寺で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "gero-roten",
+      "area": "gero",
+      "feature": "roten",
+      "title": "下呂で今空いている客室露天風呂の宿",
+      "lead": "下呂で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "gero-pet",
+      "area": "gero",
+      "feature": "pet",
+      "title": "下呂で今空いているペット可の客室の宿",
+      "lead": "下呂で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "kinosaki-roten",
+      "area": "kinosaki",
+      "feature": "roten",
+      "title": "城崎で今空いている客室露天風呂の宿",
+      "lead": "城崎で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "kinosaki-pet",
+      "area": "kinosaki",
+      "feature": "pet",
+      "title": "城崎で今空いているペット可の客室の宿",
+      "lead": "城崎で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "shirahama-roten",
+      "area": "shirahama",
+      "feature": "roten",
+      "title": "白浜で今空いている客室露天風呂の宿",
+      "lead": "白浜で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "shirahama-pet",
+      "area": "shirahama",
+      "feature": "pet",
+      "title": "白浜で今空いているペット可の客室の宿",
+      "lead": "白浜で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "beppu-roten",
+      "area": "beppu",
+      "feature": "roten",
+      "title": "別府で今空いている客室露天風呂の宿",
+      "lead": "別府で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "beppu-pet",
+      "area": "beppu",
+      "feature": "pet",
+      "title": "別府で今空いているペット可の客室の宿",
+      "lead": "別府で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "kurokawa-roten",
+      "area": "kurokawa",
+      "feature": "roten",
+      "title": "黒川で今空いている客室露天風呂の宿",
+      "lead": "黒川で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "kurokawa-pet",
+      "area": "kurokawa",
+      "feature": "pet",
+      "title": "黒川で今空いているペット可の客室の宿",
+      "lead": "黒川で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
     }
   ],
   "force_include": [],
