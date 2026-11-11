@@ -2,7 +2,7 @@ name: 空室データの自動更新
 
 on:
   schedule:
-    - cron: "17 */3 * * *"   # 3時間おき(毎時17分)
+    - cron: "17 */2 * * *"   # 2時間おき(毎時17分)。Cloudflare Pagesの無料枠(月500回の公開)に収まる回数(月約360回)
   workflow_dispatch:          # 手動で実行したいとき用(Actionsタブの「Run workflow」)
     inputs:
       reprobe:
@@ -20,7 +20,7 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 75
     steps:
       - uses: actions/checkout@v4
 
@@ -35,9 +35,9 @@ jobs:
           RAKUTEN_AFFILIATE_ID: ${{ secrets.RAKUTEN_AFFILIATE_ID }}
         run: |
           if [ "${{ inputs.reprobe }}" = "true" ]; then
-            python scripts/update.py --budget-minutes 25 --reprobe
+            python scripts/update.py --budget-minutes 50 --reprobe
           else
-            python scripts/update.py --budget-minutes 25
+            python scripts/update.py --budget-minutes 50
           fi
 
       - name: ページを作成

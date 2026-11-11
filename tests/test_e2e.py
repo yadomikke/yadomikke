@@ -139,6 +139,24 @@ with tempfile.TemporaryDirectory() as tmp:
     check("og:image" in page and "social-plugins.line.me" in page and "twitter.com/intent/tweet" in page, "共有画像(og:image)とLINE・Xの共有リンクがある")
     check("id=\"favtog\"" in page, "お気に入りの切り替えボタンがある")
     check((tmp / "out" / "sitemap.xml").exists() and (tmp / "out" / "robots.txt").exists(), "sitemap.xml と robots.txt が作られる")
+    # ページを軽くする工夫(表のマスに長い予約リンクを載せない)
+    table = page.split("<table>")[1].split("</table>")[0]
+    check("hb.afl.rakuten" not in table and 'data-h="1"' in table, "カレンダー表のマスには予約リンクを載せず、宿番号だけを持たせる")
+    import re as _re
+    vdata = json.loads(_re.search(r"window.__V=(.*?)</script>", page, _re.S).group(1).replace("<\\/", "</"))
+    c1 = next(v for v in vdata["hotels"][0]["c"].values() if v[0] == "o")
+    check(c1[2] == "" and vdata["lt"] == {"a": "z", "ad": 2, "n": 1}, "埋め込みデータも、組み立てられるリンクは省き、材料(アフィリエイトID・人数・泊数)だけ持つ")
+    # 引用されやすい冒頭の一文
+    check(f"{today.year}年{today.month}月{today.day}日" in page and "(楽天トラベルの空室データ)で、箱根の客室露天風呂が確認できた宿1軒のうち" in page,
+          "冒頭の一文に、年つきの日時・出どころ・母数(宿の数)が入る")
+    # 空室データ統計・CSV・AI向け案内
+    stp = (out / "stats" / "index.html").read_text(encoding="utf-8")
+    check("温泉地の空室データ統計" in stp and '"Dataset"' in stp and "蓄積中" in stp, "空室データ統計ページ(Dataset)ができ、履歴が足りない数字は出さない")
+    csv = (out / "stats" / "latest.csv").read_text(encoding="utf-8").splitlines()
+    check(csv[0].startswith("area,area_label,condition") and len(csv) >= 1, "統計のCSVが作られる")
+    llms = (out / "llms.txt").read_text(encoding="utf-8")
+    check(llms.startswith("# ヤドミッケ") and "/hakone-roten/" in llms and "/stats/" in llms, "AI向けの案内(llms.txt)に、主なページと統計が載る")
+    check("/stats/" in sm, "sitemapに統計ページが入る")
 
 # 履歴の数え方(前回◯でなかった→◯ / ◯だった→消えた)
 sys.path.insert(0, str(ROOT / "scripts"))
