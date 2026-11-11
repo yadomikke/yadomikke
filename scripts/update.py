@@ -21,7 +21,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import rakuten as rk  # noqa: E402
 import scenes  # noqa: E402
-import hotelfeat  # noqa: E402
+import hotelfeat
+import areastat  # noqa: E402
 
 JST = timezone(timedelta(hours=9))
 ROOT = Path(__file__).resolve().parent.parent
@@ -309,13 +310,13 @@ def pick_units(cfg, state, today):
             off = (d - today).days
             got = fetched.get(d.isoformat())
             if got is None:
-                # まだ一度も取っていない日付。最優先にするが、新しいエリアを足したときに、
-                # 既存エリアの近い日程の更新がずっと後回しにならないよう、「期限を2倍過ぎた」程度の扱いにする
-                score = 2.0 - off / 1000
+                # まだ一度も取っていない日付(新しく足したエリアなど)。既存エリアの更新を先に済ませ、
+                # 残った時間で近い日付から順に埋める(既存エリアの「今夜」「明日」の数字を古くしないため)
+                score = 0.99 - off / 1000
             else:
                 age = (now() - datetime.fromisoformat(got)).total_seconds() / 3600
                 score = age / target_hours(cfg, off)
-            if score >= 1:
+            if score >= 1 or got is None:
                 plan.append((score, area, d))
     plan.sort(key=lambda x: -x[0])
     return [(a, d) for _, a, d in plan]
@@ -428,6 +429,8 @@ def prune_changes(state, now_dt, today):
 def prune_stats(stats, today):
     cut = (today - timedelta(days=KEEP_DAYS)).isoformat()
     stats["daily"] = {k: v for k, v in stats["daily"].items() if k >= cut}
+    if "area_daily" in stats:
+        stats["area_daily"] = {k: v for k, v in stats["area_daily"].items() if k >= cut}
 
 
 def main():
@@ -539,6 +542,8 @@ def main():
             log(f"{cfg['areas'][area]['label']} {day} 完了: 対象{len(active)}軒中 空きあり{n_ok}軒 (累計API {client.requests}回)")
 
         prune_changes(state, now(), today)
+        # その日のエリアごとのまとめ(月別レポートの材料)。同じ日のうちは、最後の更新の値で上書きする
+        stats.setdefault("area_daily", {})[today.isoformat()] = areastat.snapshot(cfg, hotels, state, today)
         state["updated"] = now().isoformat(timespec="seconds")
         save_json(data_dir / "state.json", state)
         if done:

@@ -148,7 +148,7 @@
     "kawaguchiko": {
       "label": "河口湖",
       "large": "japan",
-      "middle": "yamanashi",
+      "middle": "yamanasi",
       "small": "kawaguchiko",
       "detail": "auto",
       "days_ahead": 21
@@ -157,14 +157,14 @@
       "label": "修善寺",
       "large": "japan",
       "middle": "shizuoka",
-      "small": "shuzenji",
+      "small": "naka",
       "detail": "auto",
       "days_ahead": 21
     },
     "gero": {
       "label": "下呂",
       "large": "japan",
-      "middle": "gifu",
+      "middle": "gihu",
       "small": "gero",
       "detail": "auto",
       "days_ahead": 21
@@ -173,7 +173,7 @@
       "label": "城崎",
       "large": "japan",
       "middle": "hyogo",
-      "small": "kinosaki",
+      "small": "kita",
       "detail": "auto",
       "days_ahead": 21
     },
@@ -188,7 +188,7 @@
     "beppu": {
       "label": "別府",
       "large": "japan",
-      "middle": "oita",
+      "middle": "ooita",
       "small": "beppu",
       "detail": "auto",
       "days_ahead": 21

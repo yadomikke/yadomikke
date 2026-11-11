@@ -105,6 +105,15 @@ with tempfile.TemporaryDirectory() as tmp:
     state2.setdefault("changes", []).append({"no": "1", "a": "hakone", "d": today.isoformat(),
                                              "at": datetime.now(timezone(timedelta(hours=9))).isoformat(timespec="seconds"), "p": 50001})
     (tmp / "data" / "state.json").write_text(json.dumps(state2, ensure_ascii=False), encoding="utf-8")
+    # 月別レポート: 毎日のまとめが記録されていることを確かめ、3日分あるように見せかける
+    st2 = json.loads((tmp / "data" / "stats.json").read_text(encoding="utf-8"))
+    snap = st2.get("area_daily", {}).get(today.isoformat())
+    check(snap and snap["hakone"]["t"] == [3, 2] and snap["atami"]["t"][0] == 3, "毎日のエリアのまとめ(今夜の確認数・空き数)が記録される")
+    ym = today.isoformat()[:7]
+    fake_days = {f"{ym}-0{i}": {"hakone": {"t": [10, 3], "s": [10, 1], "p_wd": 20000, "p_sat": 30000},
+                                "atami": {"t": [10, 8], "s": [10, 5], "p_wd": 15000, "p_sat": 18000}} for i in (1, 2, 3)}
+    st2["area_daily"] = dict(fake_days, **st2.get("area_daily", {}))
+    (tmp / "data" / "stats.json").write_text(json.dumps(st2, ensure_ascii=False), encoding="utf-8")
     r = subprocess.run([sys.executable, "-I", str(ROOT / "scripts" / "build.py"),
                         "--data-dir", str(tmp / "data"), "--out-dir", str(tmp / "out"),
                         "--config", str(tmp / "config.json")], capture_output=True, text=True)
@@ -187,6 +196,16 @@ with tempfile.TemporaryDirectory() as tmp:
     ug = (out / "ugoki" / "index.html").read_text(encoding="utf-8")
     check("満室から空きが出た宿泊日は1件(1軒)" in ug and "宿1" in ug and "今も空き" in ug, "空きが出た宿(/ugoki/)に、直近の「満室→空き」が載る")
     check("/konya/" in llms and "/ugoki/" in llms, "llms.txt に今夜・空きが出た宿のページが載る")
+    ar = (out / "hakone" / "index.html").read_text(encoding="utf-8")
+    check("箱根の宿の空室【今夜・明日・今週末】" in ar and "箱根(楽天トラベル掲載3軒)で空きがある宿は、今夜は" in ar and 'href="../hakone-roten/"' in ar and "/hakone/" in sm,
+          "エリアページ(/hakone/)に、今夜などの空き数と、条件別ページへのリンクがある")
+    check('href="../hakone/"' in page and 'href="../hakone/"' in kp and 'href="hakone/"' in home, "条件別ページ・今夜のページ・トップから、エリアページへ行ける")
+    sb = (out / "souba" / "index.html").read_text(encoding="utf-8")
+    check("温泉地の宿の料金相場" in sb and '"Dataset"' in sb and "/souba/" in sm, "料金相場のページ(/souba/)ができる")
+    rp = (out / "report" / ym / "index.html").read_text(encoding="utf-8")
+    check("温泉地の空室レポート" in rp and "最も空きやすかったのは熱海(80%)、最も埋まっていたのは箱根(30%)" in rp and '"Report"' in rp and f"/report/{ym}/" in sm,
+          "月別レポート(/report/年-月/)に、空き率の高いエリア・低いエリアが載る")
+    check(f'href="{ym}/"' in (out / "report" / "index.html").read_text(encoding="utf-8"), "レポートの一覧ページから各月へ行ける")
     check("aff_click" in page and "ym_landing" in page and "chatgpt" in page, "流入元(ChatGPTなど)と楽天リンクのクリックを計測するしくみが入る")
 
 # 履歴の数え方(前回◯でなかった→◯ / ◯だった→消えた)
@@ -219,6 +238,17 @@ up.record_moves(stt, st, "hk", _d(2026, 11, 10), _d(2026, 11, 6), {"a": fullc}, 
 check(len(stt["changes"]) == 2, "空きの動き: 前回の取得から間が空きすぎた比較は数えない")
 up.prune_changes(stt, _dt(2026, 11, 6, 12, tzinfo=up.JST), _d(2026, 11, 6))
 check([c["no"] for c in stt["changes"]] == ["a"], "空きの動き: 古い記録(72時間より前)は消す")
+
+# 更新の順番: 期限を過ぎた既存エリアの日付が先、まだ一度も取っていない日付(新エリア)はそのあと
+_now = up.now()
+_t = _now.date()
+cfgz = {"areas": {"old": {"days_ahead": 2}, "new": {"days_ahead": 2}}, "search": {"days_ahead": 2, "scene_days_ahead": 0},
+        "refresh": {"near_days": 7, "mid_days": 14, "near_hours": 8, "mid_hours": 16, "far_hours": 36}, "holidays": []}
+stz = {"fetched_by": {"old": {_t.isoformat(): (_now - timedelta(hours=9)).isoformat(),
+                              (_t + timedelta(days=1)).isoformat(): (_now - timedelta(hours=1)).isoformat()}}}
+order = up.pick_units(cfgz, stz, _t)
+check(order == [("old", _t), ("new", _t), ("new", _t + timedelta(days=1))],
+      "更新の順番: 既存エリアの古くなった日付を先に、新しいエリアは残りの時間で近い日付から取る(まだ新しい日付は取らない)")
 
 # 新しく足したエリアは、宿一覧の定期更新を待たずに、すぐ宿を集める
 with tempfile.TemporaryDirectory() as tmp2:

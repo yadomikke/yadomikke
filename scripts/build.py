@@ -24,6 +24,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from scenes import all_scenes, holiday_blocks, area_days  # noqa: E402
 import hotelfeat  # noqa: E402
+import areastat  # noqa: E402
 
 JST = timezone(timedelta(hours=9))
 ROOT = Path(__file__).resolve().parent.parent
@@ -884,7 +885,7 @@ def header_html(cfg, demo, root="../"):
 
 def footer_html(cfg, root="../"):
     return (f'<nav class="fnav"><a href="{root}">トップ</a> ・ <a href="{root}about/">データの取得方法と注意点</a> ・ '
-            f'<a href="{root}stats/">空室データ統計</a> ・ <a href="{root}privacy/">プライバシーポリシー</a></nav>'
+            f'<a href="{root}stats/">空室データ統計</a> ・ <a href="{root}souba/">料金の相場</a> ・ <a href="{root}report/">空室レポート</a> ・ <a href="{root}privacy/">プライバシーポリシー</a></nav>'
             f'© {esc(cfg["site"]["name"])}<br>'
             "<b>【PR】当サイトは広告(アフィリエイト)を含みます。</b><br>"
             "当サイトは楽天トラベルのアフィリエイトプログラムに参加しており、掲載リンクから予約が行われると運営者に報酬が発生する場合があります。<br>"
@@ -1870,6 +1871,11 @@ def llms_txt(cfg, digests, snaps_ok, now, wl=()):
         lines += ["", "## 日程ごとの全エリアまとめ(条件を問わない空き)", ""]
         lines += [f"- [{when_title(k, n)}]({base}/{k}/): 全エリアの空きのある宿の数・最安値・口コミ上位の空き宿" for k, n, *_ in wl]
         lines.append(f"- [きのうから空きが出た宿]({base}/ugoki/): 前回満室で、今回空きが見つかった宿と日付(直近24時間)")
+        lines += ["", "## エリアごとのページ(条件を問わない空きと料金相場)", ""]
+        lines += [f"- [{a['label']}の宿の空室]({base}/{k}/): 今夜・明日・今週末などの空き数、曜日別の料金相場" for k, a in cfg["areas"].items()]
+        lines += ["", "## 料金と月別レポート", "",
+                  f"- [温泉地の宿の料金相場]({base}/souba/): エリア・曜日別の最安値の中央値",
+                  f"- [温泉地の空室レポート(月別)]({base}/report/): 毎日の観測を月ごとにまとめたレポート"]
     lines += ["", "## 宿ごとのページ", "", f"- {base}/hotel/(施設番号)/ : 宿ごとの空室カレンダー・料金と、条件(客室露天風呂・大浴場など)の判定結果", ""]
     lines += ["", "## データと方法", "",
               f"- [温泉地の空室データ統計]({base}/stats/): エリア・条件・曜日ごとの空き率と最安値の中央値" + ("(CSVあり)" if snaps_ok else ""),
@@ -2368,7 +2374,7 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
     ld_html = '<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False).replace("</", "<\\/") + "</script>"
 
     out = [head(cfg, title, desc, canonical, demo, ld_html), header_html(cfg, demo), '<div class="wrap">']
-    out.append(f'<div class="hero"><div class="crumb"><a href="../">{esc(site["name"])}</a> › <a href="../{esc(hub_slug(cfg, feat))}/">{esc(flabel)}(全エリア)</a> › {esc(alabel)}</div>'
+    out.append(f'<div class="hero"><div class="crumb"><a href="../">{esc(site["name"])}</a> › <a href="../{esc(hub_slug(cfg, feat))}/">{esc(flabel)}(全エリア)</a> › <a href="../{esc(page["area"])}/">{esc(alabel)}</a></div>'
                f'<h1>{esc(page["title"])}</h1><p class="lead">{esc(page.get("lead", ""))}</p></div>')
     out.append(switcher_html(cfg, page, "../"))
 
@@ -2518,7 +2524,7 @@ def render_when(cfg, hotels, state, slug, name, ds, note, wl, now, demo):
         nv = len(v["vacant"])
         if v["checked"]:
             bullets.append(f"{alabel}: {len(v['checked'])}軒中{nv}軒{price_txt(v['low'])}")
-        rows += (f"<tr><th>{esc(alabel)}</th><td>{len(v['checked']) or '取得中'}</td><td>{nv if v['checked'] else '—'}</td>"
+        rows += (f"<tr><th><a href=\"../{esc(area)}/\">{esc(alabel)}</a></th><td>{len(v['checked']) or '取得中'}</td><td>{nv if v['checked'] else '—'}</td>"
                  f"<td>{esc(yen_full(v['low'])) + '〜' if v['low'] else '—'}</td><td>{time_html(v['got']) or '—'}</td>"
                  f"<td>{area_pages_links(cfg, area, '../')}</td></tr>")
         top = sorted([x for x in v["vacant"] if (x[0].get("reviews") or 0) >= PICK_MIN_REVIEWS],
@@ -2564,6 +2570,255 @@ def render_when(cfg, hotels, state, slug, name, ds, note, wl, now, demo):
     return shell(cfg, demo, "../", title, lead, canonical, "".join(inner), ld), sm
 
 
+# ---- エリアページ(/hakone/ など)・料金の相場(/souba/)・月別レポート(/report/) -----------------
+
+def price_cells(cfg, hotels, state, area, today):
+    """{区分: 相場 or None}"""
+    holidays = set(cfg.get("holidays", []))
+    return {g: areastat.summary(ps) for g, ps in areastat.prices(hotels, state, area, today, holidays).items()}
+
+
+def souba_cell(sm):
+    """表のマス用: 中央値を大きく、範囲を小さく(スマホで縦長にならないように)"""
+    if not sm:
+        return "—"
+    return f"<b>{esc(yen_full(sm['med']))}</b><br><small>{esc(yen_full(sm['p25']))}〜{esc(yen_full(sm['p75']))}</small>"
+
+
+def sat_diff(pc):
+    """平日と比べた、土曜・祝前日の料金の差(%)"""
+    if not (pc.get("wd") and pc.get("sat")):
+        return "—"
+    d = round((pc["sat"]["med"] / pc["wd"]["med"] - 1) * 100)
+    return "±0%" if d == 0 else f"{d:+d}%"
+
+
+def souba_txt(sm):
+    return f"{yen_full(sm['med'])}(多くは{yen_full(sm['p25'])}〜{yen_full(sm['p75'])})" if sm else "—"
+
+
+def render_area(cfg, hotels, state, area, wl, sums, now, demo):
+    site = cfg["site"]
+    base = site["url"].rstrip("/")
+    canonical = f"{base}/{area}/"
+    holidays = set(cfg.get("holidays", []))
+    alabel = cfg["areas"][area]["label"]
+    today = now.date()
+    rows, parts, bullets, picks_html, ld_items = "", [], [], [], []
+    newest = None
+    for slug, name, ds, note in wl:
+        if not ds:
+            continue
+        v = dict(sums[slug]["per"])[area]
+        sp = span_txt(ds, holidays)
+        lbl = name if slug in ("konya", "ashita") else f"{name}({sp})"
+        if v["got"]:
+            newest = v["got"] if newest is None else max(newest, v["got"])
+        nv = len(v["vacant"])
+        if v["checked"]:
+            parts.append(f"{lbl}は{nv}軒")
+        rows += (f'<tr><th><a href="../{esc(slug)}/">{esc(lbl)}</a></th><td>{len(v["checked"]) or "取得中"}</td><td>{nv if v["checked"] else "—"}</td>'
+                 f"<td>{esc(yen_full(v['low'])) + '〜' if v['low'] else '—'}</td><td>{time_html(v['got']) or '—'}</td></tr>")
+        if slug in ("konya", "shumatsu"):
+            top = sorted([x for x in v["vacant"] if (x[0].get("reviews") or 0) >= PICK_MIN_REVIEWS],
+                         key=lambda x: (-_rv(x[0]), x[1] or 9e9, x[0]["name"]))[:5]
+            if top:
+                lis = "".join(
+                    f"<li>{name_link(h, d)}<small>★{esc(h.get('review'))}(口コミ{(h.get('reviews') or 0):,}件)"
+                    + (f" ・ 最安{yen_full(p)}〜" if p else "") + (f"({esc(day_label(d, holidays))})" if len(ds) > 1 else "")
+                    + f' ・ {btn_plain(book_link(h, d), "楽天トラベルで空室を見る【PR】")}</small></li>' for h, p, d in top)
+                picks_html.append(f'<section class="card"><h2>{esc(alabel)}で{esc(lbl)}空いている、口コミ評価の高い宿</h2><ol class="hl picks">{lis}</ol></section>')
+                ld_items += [h for h, p, d in top]
+    pc = price_cells(cfg, hotels, state, area, today)
+    n_h = len(areastat.area_nos(hotels, area))
+    if parts:
+        lead = (f"{when_txt(newest)}{alabel}(楽天トラベル掲載{n_h}軒)で空きがある宿は、" + "、".join(parts)
+                + f"です({cond_text(cfg)}、条件を問わない数)。")
+    else:
+        lead = f"{alabel}の空室は、いま取得を進めています。"
+    souba_lead = ""
+    if pc.get("wd") or pc.get("sat"):
+        souba_lead = (f"空きのある宿の最安値の中央値は、" + "、".join(f"{lbl}{yen_full(pc[g]['med'])}" for g, lbl in areastat.GROUPS if pc.get(g))
+                      + f"です(今後{areastat.PRICE_DAYS}日の宿泊日・{cond_text(cfg)})。")
+        bullets.append(souba_lead)
+    feats = [p for p in LIVE if p["area"] == area]
+    inner = [f'<div class="hero"><div class="crumb"><a href="../">{esc(site["name"])}</a> › {esc(alabel)}</div>'
+             f"<h1>{esc(alabel)}の宿の空室【今夜・明日・今週末】</h1>"
+             f'<p class="lead">{esc(alabel)}の宿の空きを、日程ごとに自動で数えています。条件(客室露天風呂など)で絞り込むこともできます。</p></div>',
+             answer_html(fmt_dt(newest) if newest else "", lead, bullets,
+                         [f"楽天トラベルの空室検索APIから{freq_text(cfg)}に取得した値で、リアルタイムではありません。予約前に楽天トラベルでご確認ください。",
+                          "「確認できた宿」は、当サイトがその日程の空室を確認した宿の数です。"],
+                         f"{alabel}の空室まとめ", mood=("happy" if parts else "sleepy"))]
+    inner.append('<section class="card"><h2>日程ごとの空き</h2><div class="scroll"><table class="stat"><thead><tr><th>日程</th><th>確認できた宿</th>'
+                 f"<th>空きのある宿</th><th>最安値</th><th>取得</th></tr></thead><tbody>{rows}</tbody></table></div></section>")
+    if any(pc.values()):
+        inner.append(f'<section class="card"><h2>{esc(alabel)}の宿の料金相場(曜日別)</h2><div class="scroll"><table class="stat"><thead><tr><th>宿泊日</th><th>最安値の中央値(多くの宿の範囲)</th><th>件数</th></tr></thead><tbody>'
+                     + "".join(f"<tr><th>{esc(lbl)}</th><td>{souba_cell(pc.get(g))}</td><td>{pc[g]['n'] if pc.get(g) else '—'}</td></tr>" for g, lbl in areastat.GROUPS)
+                     + f"</tbody></table></div><p class='legend'>今後{areastat.PRICE_DAYS}日の宿泊日について、空きのある宿ごとの最安値({esc(cond_text(cfg))})を集計。"
+                     "「多くの宿の範囲」は中央の半分(25%〜75%)です。満室の宿は含みません。<a href=\"../souba/\">全エリアの相場を比べる ›</a></p></section>")
+    if feats:
+        inner.append('<nav class="chips" aria-label="条件で絞り込む"><b>条件で絞り込む</b>'
+                     + "".join(f'<a href="../{esc(p["slug"])}/">{esc(cfg["features"][p["feature"]]["label"])}</a>' for p in feats) + "</nav>")
+    inner += picks_html
+    faq = [(f"{alabel}で今夜泊まれる宿はありますか?", lead)]
+    if souba_lead:
+        faq.append((f"{alabel}の宿の相場はいくらですか?", souba_lead))
+    inner.append(faq_html(faq))
+    ld = [breadcrumb_ld([(site["name"], base + "/"), (alabel, canonical)]),
+          {"@context": "https://schema.org", "@type": "CollectionPage", "name": f"{alabel}の宿の空室", "url": canonical, "inLanguage": "ja",
+           "description": lead, "dateModified": (newest or now).isoformat(timespec="seconds"),
+           "about": {"@type": "Place", "name": alabel},
+           "mainEntity": {"@type": "ItemList", "itemListElement": [
+               {"@type": "ListItem", "position": i + 1, "name": h["name"], "url": base + HOTEL_HREF[h["no"]]}
+               for i, h in enumerate(x for x in dict((y["no"], y) for y in ld_items).values() if HOTEL_HREF.get(x["no"]))]}},
+          faq_ld(faq)]
+    title = f"{alabel}の宿の空室【今夜・明日・今週末 {md(today)}時点】 | {site['name']}"
+    return shell(cfg, demo, "../", title, lead, canonical, "".join(inner), ld)
+
+
+def render_souba(cfg, hotels, state, now, demo):
+    site = cfg["site"]
+    base = site["url"].rstrip("/")
+    canonical = f"{base}/souba/"
+    today = now.date()
+    data = [(a, price_cells(cfg, hotels, state, a, today)) for a in cfg["areas"]]
+    ok = [(a, pc) for a, pc in data if pc.get("wd") and pc.get("sat")]
+    rows = "".join(f'<tr><th><a href="../{esc(a)}/">{esc(cfg["areas"][a]["label"])}</a></th>'
+                   + "".join(f"<td>{souba_cell(pc.get(g))}</td>" for g, _ in areastat.GROUPS)
+                   + f"<td>{sat_diff(pc)}</td>"
+                   + "</tr>" for a, pc in data)
+    newest = max([x for x in (parse_dt(v) for f in state.get("fetched_by", {}).values() for v in f.values()) if x], default=None)
+    bullets = []
+    if ok:
+        cheap = min(ok, key=lambda x: x[1]["sat"]["med"])
+        dear = max(ok, key=lambda x: x[1]["sat"]["med"])
+        gap = max(ok, key=lambda x: x[1]["sat"]["med"] / x[1]["wd"]["med"])
+        lead = (f"{when_txt(newest)}今後{areastat.PRICE_DAYS}日の土曜・祝前日に泊まる場合、空きのある宿の最安値の中央値が最も安いのは"
+                f"{cfg['areas'][cheap[0]]['label']}({yen_full(cheap[1]['sat']['med'])})、最も高いのは"
+                f"{cfg['areas'][dear[0]]['label']}({yen_full(dear[1]['sat']['med'])})です({cond_text(cfg)})。")
+        bullets = [f"平日との差が最も大きいのは{cfg['areas'][gap[0]]['label']}(平日{yen_full(gap[1]['wd']['med'])} → 土曜・祝前日{yen_full(gap[1]['sat']['med'])})。"]
+        bullets += [f"{cfg['areas'][a]['label']}: 平日{yen_full(pc['wd']['med'])} / 土曜・祝前日{yen_full(pc['sat']['med'])}" for a, pc in ok]
+    else:
+        lead = "料金の相場は、データがそろいしだい表示します。"
+    inner = [f'<div class="hero"><div class="crumb"><a href="../">{esc(site["name"])}</a> › 料金の相場</div>'
+             "<h1>温泉地の宿の料金相場【エリア・曜日別】</h1>"
+             '<p class="lead">楽天トラベルで空きのある宿の最安値を、エリアと曜日ごとにまとめています。毎日自動で更新します。</p></div>',
+             answer_html(fmt_dt(newest) if newest else "", lead, bullets,
+                         [f"今後{areastat.PRICE_DAYS}日の宿泊日について、空きのある宿ごと・日ごとの最安値({cond_text(cfg)})を集めた中央値です。",
+                          "満室の宿は含まないため、人気の宿が埋まった日は低めに出ることがあります。",
+                          f"件数が{areastat.PRICE_MIN_N}件未満の区分は「—」です。"],
+                         "料金相場のまとめ")]
+    inner.append('<section class="card"><h2>エリア別・曜日別の料金相場</h2><div class="scroll"><table class="stat"><thead><tr><th>エリア</th>'
+                 + "".join(f"<th>{esc(lbl)}</th>" for _, lbl in areastat.GROUPS) + "<th>土曜の差</th></tr></thead>"
+                 f"<tbody>{rows}</tbody></table></div><p class='legend'>大きい数字は最安値の中央値、小さい数字は中央の半分の宿が入る範囲(25%〜75%)。「土曜の差」は平日と比べた土曜・祝前日の差です。</p></section>")
+    faq = [("温泉地の宿の相場はいくらですか?", lead + (" " + " ".join(bullets[:1]) if bullets else "")),
+           ("土曜は平日よりどのくらい高いですか?", (bullets[0] if bullets else "データがそろいしだい表示します。"))]
+    inner.append(faq_html(faq))
+    ld = [breadcrumb_ld([(site["name"], base + "/"), ("料金の相場", canonical)]),
+          {"@context": "https://schema.org", "@type": "Dataset", "name": "温泉地の宿の料金相場(エリア・曜日別)", "url": canonical,
+           "description": lead, "inLanguage": "ja", "dateModified": (newest or now).isoformat(timespec="seconds"),
+           "creator": {"@type": "Organization", "name": site["name"], "url": base + "/"},
+           "isBasedOn": "https://travel.rakuten.co.jp/",
+           "variableMeasured": ["最安値の中央値(1泊・大人2名・1部屋)", "曜日区分"]},
+          faq_ld(faq)]
+    title = f"温泉地の宿の料金相場【エリア・曜日別 {md(today)}更新】 | {site['name']}"
+    return shell(cfg, demo, "../", title, lead, canonical, "".join(inner), ld)
+
+
+REPORT_MIN_DAYS = 3   # 観測がこの日数未満の月は、数字を出さない
+RATE_MIN = 5          # 1日の確認数がこれ未満の日は、空き率の平均に入れない
+
+
+def month_stats(cfg, days):
+    """月の観測(days: [(日付, {エリア: 記録})])から、エリアごとの平均を出す"""
+    out = {}
+    for area in cfg["areas"]:
+        recs = [r[area] for _, r in days if area in r]
+        def rate(k):
+            xs = [x[k][1] / x[k][0] for x in recs if x.get(k) and x[k][0] >= RATE_MIN]
+            return (sum(xs) / len(xs), len(xs)) if xs else (None, 0)
+        def med(k):
+            xs = [x[k] for x in recs if x.get(k)]
+            return int(statistics.median(xs)) if xs else None
+        out[area] = {"t": rate("t"), "s": rate("s"), "p_wd": med("p_wd"), "p_sat": med("p_sat")}
+    return out
+
+
+def render_report(cfg, stats, ym, months, now, demo):
+    site = cfg["site"]
+    base = site["url"].rstrip("/")
+    canonical = f"{base}/report/{ym}/"
+    y, m = int(ym[:4]), int(ym[5:])
+    days = sorted((d, r) for d, r in stats.get("area_daily", {}).items() if d.startswith(ym))
+    nd = len(days)
+    cur = (now.year, now.month) == (y, m)
+    period = f"{y}年{m}月" + (f"({int(days[0][0][8:])}日〜{int(days[-1][0][8:])}日の{nd}日分" + ("・月の途中" if cur else "") + ")" if nd else "")
+    ms = month_stats(cfg, days)
+    ok_t = [(a, v) for a, v in ms.items() if v["t"][0] is not None and v["t"][1] >= REPORT_MIN_DAYS]
+    ok_p = [(a, v) for a, v in ms.items() if v["p_sat"] and v["p_wd"]]
+    lab = lambda a: cfg["areas"][a]["label"]
+    bullets = []
+    if nd >= REPORT_MIN_DAYS and ok_t:
+        avg = sum(v["t"][0] for _, v in ok_t) / len(ok_t)
+        hi = max(ok_t, key=lambda x: x[1]["t"][0])
+        lo = min(ok_t, key=lambda x: x[1]["t"][0])
+        lead = (f"{period}の当サイトの観測では、温泉地{len(ok_t)}エリアで「今夜泊まれる宿」の割合は平均{avg * 100:.0f}%でした。"
+                f"最も空きやすかったのは{lab(hi[0])}({hi[1]['t'][0] * 100:.0f}%)、最も埋まっていたのは{lab(lo[0])}({lo[1]['t'][0] * 100:.0f}%)です。")
+        ok_s = [(a, v) for a, v in ms.items() if v["s"][0] is not None and v["s"][1] >= REPORT_MIN_DAYS]
+        if ok_s:
+            ls = min(ok_s, key=lambda x: x[1]["s"][0])
+            bullets.append(f"直近の土曜泊が最も埋まっていたのは{lab(ls[0])}(空きのある宿{ls[1]['s'][0] * 100:.0f}%)。")
+        if ok_p:
+            ch = min(ok_p, key=lambda x: x[1]["p_sat"])
+            dr = max(ok_p, key=lambda x: x[1]["p_sat"])
+            bullets.append(f"土曜・祝前日の最安値の中央値が最も安かったのは{lab(ch[0])}({yen_full(ch[1]['p_sat'])})、最も高かったのは{lab(dr[0])}({yen_full(dr[1]['p_sat'])})。")
+        state_txt = "ready"
+    else:
+        lead = f"{y}年{m}月の観測は{nd}日分です。{REPORT_MIN_DAYS}日分たまったら、数字を表示します。"
+        state_txt = "wait"
+    pct = lambda r: f"{r[0] * 100:.0f}%" if r[0] is not None and r[1] >= REPORT_MIN_DAYS else "—"
+    rows = "".join(f'<tr><th><a href="../../{esc(a)}/">{esc(lab(a))}</a></th><td>{pct(v["t"])}</td><td>{pct(v["s"])}</td>'
+                   f"<td>{yen_full(v['p_wd']) if v['p_wd'] else '—'}</td><td>{yen_full(v['p_sat']) if v['p_sat'] else '—'}</td></tr>" for a, v in ms.items())
+    others = "".join(f'<a href="../{esc(x)}/"' + (' aria-current="page"' if x == ym else "") + f">{int(x[:4])}年{int(x[5:])}月</a>" for x in months)
+    inner = [f'<div class="hero"><div class="crumb"><a href="../../">{esc(site["name"])}</a> › <a href="../">空室レポート</a> › {y}年{m}月</div>'
+             f"<h1>温泉地の空室レポート {y}年{m}月</h1>"
+             f'<p class="lead">楽天トラベルの空室データを、当サイトが毎日自動で記録してまとめた月別のレポートです。{esc(period)}</p></div>',
+             answer_html("", lead, bullets,
+                         ["「今夜泊まれる宿の割合」は、毎日の取得時点で、その日にチェックインできる空きがあった宿の割合の、月の平均です。",
+                          "「土曜泊の空き」は、各日の時点で、次の土曜に空きがあった宿の割合の平均です。",
+                          f"料金は、空きのある宿の最安値({cond_text(cfg)})の中央値です。リアルタイムの値ではありません。"],
+                         f"{y}年{m}月のまとめ", mood=("happy" if state_txt == "ready" else "sleepy"))]
+    if state_txt == "ready":
+        inner.append('<section class="card"><h2>エリア別の数字</h2><div class="scroll"><table class="stat"><thead><tr><th>エリア</th><th>今夜泊まれる宿の割合</th>'
+                     "<th>次の土曜に空きのある宿の割合</th><th>平日の最安値(中央値)</th><th>土曜・祝前日の最安値(中央値)</th></tr></thead>"
+                     f"<tbody>{rows}</tbody></table></div><p class='legend'>観測が{REPORT_MIN_DAYS}日分未満のエリアは「—」です。</p></section>")
+    inner.append(f'<nav class="chips" aria-label="月を選ぶ"><b>ほかの月</b>{others}</nav>')
+    faq = [(f"{y}年{m}月、温泉地の宿は空いていましたか?", lead + (" " + " ".join(bullets) if bullets else ""))]
+    inner.append(faq_html(faq))
+    mod = (days[-1][0] if days else now.date().isoformat())
+    ld = [breadcrumb_ld([(site["name"], base + "/"), ("空室レポート", base + "/report/"), (f"{y}年{m}月", canonical)]),
+          {"@context": "https://schema.org", "@type": "Report", "headline": f"温泉地の空室レポート {y}年{m}月", "url": canonical,
+           "inLanguage": "ja", "description": lead, "datePublished": f"{ym}-01", "dateModified": mod,
+           "author": {"@type": "Organization", "name": cfg.get("operator", {}).get("name") or site["name"]},
+           "publisher": {"@type": "Organization", "name": site["name"], "url": base + "/"}},
+          faq_ld(faq)]
+    title = f"温泉地の空室レポート {y}年{m}月 | {site['name']}"
+    return shell(cfg, demo, "../../", title, lead, canonical, "".join(inner), ld, noindex=(state_txt != "ready"))
+
+
+def render_report_index(cfg, stats, months, now, demo):
+    site = cfg["site"]
+    base = site["url"].rstrip("/")
+    canonical = f"{base}/report/"
+    lis = "".join(f'<li><a href="{esc(x)}/">温泉地の空室レポート {int(x[:4])}年{int(x[5:])}月</a></li>' for x in reversed(months))
+    lead = "楽天トラベルの空室データを、当サイトが毎日記録してまとめた、月ごとのレポートの一覧です。"
+    inner = (f'<div class="hero"><div class="crumb"><a href="../">{esc(site["name"])}</a> › 空室レポート</div>'
+             f'<h1>温泉地の空室レポート(月別)</h1><p class="lead">{esc(lead)}</p></div>'
+             f'<section class="card"><ul class="bul">{lis or "<li>集計中です</li>"}</ul></section>')
+    ld = [breadcrumb_ld([(site["name"], base + "/"), ("空室レポート", canonical)])]
+    return shell(cfg, demo, "../", f"温泉地の空室レポート(月別) | {site['name']}", lead, canonical, inner, ld)
+
+
 def home_answer(cfg, sums, wl, holidays):
     """トップページの最初に出す、答えの文(全エリアの今夜・明日・今週末…)"""
     parts, items = [], []
@@ -2582,7 +2837,10 @@ def home_answer(cfg, sums, wl, holidays):
     lead = (f"{when_txt(newest)}温泉地{len(cfg['areas'])}エリアで空きがある宿は、" + "、".join(parts)
             + f"です({cond_text(cfg)}、条件を問わない数)。")
     html = (f'<section class="answer" id="answer">{owl_html("happy")}<h2>いま空いている宿の数<small>{esc(fmt_dt(newest))} 時点</small></h2>'
-            f'<p class="lead2">{esc(lead)}</p><ul class="ab">{"".join(items)}<li><a href="ugoki/">きのうから空きが出た宿</a></li></ul></section>')
+            f'<p class="lead2">{esc(lead)}</p><ul class="ab">{"".join(items)}<li><a href="ugoki/">きのうから空きが出た宿</a></li>'
+            '<li><a href="souba/">エリア・曜日別の料金相場</a></li><li><a href="report/">月別の空室レポート</a></li></ul></section>'
+            '<nav class="chips" aria-label="エリアから探す"><b>エリアから探す(条件なし)</b>'
+            + "".join(f'<a href="{esc(a)}/">{esc(v["label"])}</a>' for a, v in cfg["areas"].items()) + "</nav>")
     return html, lead
 
 
@@ -2952,6 +3210,19 @@ def main():
         paths.append(f"{slug}/")
     write_page(out_dir, "ugoki", render_ugoki(cfg, hotels, state, stats, wl, now, args.demo))
     paths.append("ugoki/")
+    for area in cfg["areas"]:
+        write_page(out_dir, area, render_area(cfg, hotels, state, area, wl, when_sums, now, args.demo))
+        paths.append(f"{area}/")
+    write_page(out_dir, "souba", render_souba(cfg, hotels, state, now, args.demo))
+    paths.append("souba/")
+    months = sorted({d[:7] for d in stats.get("area_daily", {})})
+    shutil.rmtree(out_dir / "report", ignore_errors=True)
+    for ym in months:
+        write_page(out_dir, f"report/{ym}", render_report(cfg, stats, ym, months, now, args.demo))
+        if len([d for d in stats["area_daily"] if d.startswith(ym)]) >= REPORT_MIN_DAYS:
+            paths.append(f"report/{ym}/")
+    write_page(out_dir, "report", render_report_index(cfg, stats, months, now, args.demo))
+    paths.append("report/")
     newest_all = max([x for x in (parse_dt(v) for f in state.get("fetched_by", {}).values() for v in f.values()) if x], default=None)
     write_page(out_dir, "stats", render_stats(cfg, snaps, stats, newest_all, now, args.demo))
     ok_snaps = [x for x in snaps if x["hotels"] >= STAT_MIN_HOTELS and x["days"]]
