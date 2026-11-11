@@ -863,6 +863,7 @@ def head(cfg, title, desc, canonical, demo, extra="", noindex=False):
             f'<meta name="viewport" content="width=device-width,initial-scale=1">'
             f'<title>{esc(title)}</title><meta name="description" content="{esc(desc)}">'
             f'<link rel="canonical" href="{esc(canonical)}">{robots}'
+            f'<link rel="alternate" type="application/json" title="空室・料金データ(JSON)" href="{esc(cfg["site"]["url"].rstrip("/"))}/data/latest.json">'
             f'<meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(desc)}">'
             f'<meta property="og:type" content="website"><meta property="og:url" content="{esc(canonical)}">'
             f'<meta property="og:image" content="{esc(cfg["site"]["url"].rstrip("/"))}/ogp.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
@@ -1846,7 +1847,8 @@ def render_stats(cfg, snaps, stats, newest, now, demo):
            "creator": {"@type": "Organization", "name": site["name"], "url": base + "/"},
            "isBasedOn": "楽天トラベル 空室検索API(楽天ウェブサービス)",
            "variableMeasured": ["空き率(空きがある宿の割合)", "最安値の中央値(1泊・大人2名・1部屋)"],
-           "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": canonical + "latest.csv"}]}]
+           "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": canonical + "latest.csv"},
+                            {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": f"{base}/{DATA_JSON}"}]}]
     return shell(cfg, demo, "../", f"温泉地の空室データ統計(曜日別の空き率・最安値) | {site['name']}", desc, canonical, inner, ld)
 
 
@@ -1875,7 +1877,9 @@ def llms_txt(cfg, digests, snaps_ok, now, wl=()):
         lines += [f"- [{a['label']}の宿の空室]({base}/{k}/): 今夜・明日・今週末などの空き数、曜日別の料金相場" for k, a in cfg["areas"].items()]
         lines += ["", "## 料金と月別レポート", "",
                   f"- [温泉地の宿の料金相場]({base}/souba/): エリア・曜日別の最安値の中央値",
-                  f"- [温泉地の空室レポート(月別)]({base}/report/): 毎日の観測を月ごとにまとめたレポート"]
+                  f"- [温泉地の空室レポート(月別)]({base}/report/): 毎日の観測を月ごとにまとめたレポート",
+                  "", "## 機械向けのデータ", "",
+                  f"- [空室・料金データ(JSON)]({base}/data/latest.json): 全エリアの今夜・明日・今週末などの空き数・最安値・取得日時と、曜日別の料金相場。ページと同じ頻度で更新"]
     lines += ["", "## 宿ごとのページ", "", f"- {base}/hotel/(施設番号)/ : 宿ごとの空室カレンダー・料金と、条件(客室露天風呂・大浴場など)の判定結果", ""]
     lines += ["", "## データと方法", "",
               f"- [温泉地の空室データ統計]({base}/stats/): エリア・条件・曜日ごとの空き率と最安値の中央値" + ("(CSVあり)" if snaps_ok else ""),
@@ -2719,7 +2723,8 @@ def render_souba(cfg, hotels, state, now, demo):
            "description": lead, "inLanguage": "ja", "dateModified": (newest or now).isoformat(timespec="seconds"),
            "creator": {"@type": "Organization", "name": site["name"], "url": base + "/"},
            "isBasedOn": "https://travel.rakuten.co.jp/",
-           "variableMeasured": ["最安値の中央値(1泊・大人2名・1部屋)", "曜日区分"]},
+           "variableMeasured": ["最安値の中央値(1泊・大人2名・1部屋)", "曜日区分"],
+           "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": f"{base}/{DATA_JSON}"}]},
           faq_ld(faq)]
     title = f"温泉地の宿の料金相場【エリア・曜日別 {md(today)}更新】 | {site['name']}"
     return shell(cfg, demo, "../", title, lead, canonical, "".join(inner), ld)
@@ -2817,6 +2822,61 @@ def render_report_index(cfg, stats, months, now, demo):
              f'<section class="card"><ul class="bul">{lis or "<li>集計中です</li>"}</ul></section>')
     ld = [breadcrumb_ld([(site["name"], base + "/"), ("空室レポート", canonical)])]
     return shell(cfg, demo, "../", f"温泉地の空室レポート(月別) | {site['name']}", lead, canonical, inner, ld)
+
+
+# ---- 機械向けのデータ(/data/latest.json) ----------------------------------------
+# AIアシスタントやエージェントが、ページを読まずに数字だけを取り出せるようにする。
+DATA_JSON = "data/latest.json"
+
+
+def data_json(cfg, hotels, state, wl, sums, now):
+    site = cfg["site"]
+    base = site["url"].rstrip("/")
+    holidays = set(cfg.get("holidays", []))
+    today = now.date()
+    groups = dict(areastat.GROUPS)
+    areas = []
+    for area, a in cfg["areas"].items():
+        avail = {}
+        for slug, name, ds, note in wl:
+            if not ds:
+                continue
+            v = dict(sums[slug]["per"])[area]
+            avail[slug] = {"label": name, "checkin_dates": [d.isoformat() for d in ds],
+                           "hotels_checked": len(v["checked"]), "hotels_with_vacancy": len(v["vacant"]),
+                           "min_price_jpy": v["low"], "fetched_at": v["got"].isoformat(timespec="minutes") if v["got"] else None}
+        price = {}
+        for g, sm in price_cells(cfg, hotels, state, area, today).items():
+            if sm:
+                price[g] = {"label": groups[g], "median_jpy": sm["med"], "p25_jpy": sm["p25"], "p75_jpy": sm["p75"], "samples": sm["n"]}
+        areas.append({"key": area, "label": a["label"], "page_url": f"{base}/{area}/",
+                      "hotels_listed": len(areastat.area_nos(hotels, area)),
+                      "availability": avail, "price_next_30_days": price,
+                      "condition_pages": [{"condition": cfg["features"][p["feature"]]["label"], "url": f"{base}/{p['slug']}/"}
+                                          for p in LIVE if p["area"] == area]})
+    total = {slug: {"label": name, "checkin_dates": [d.isoformat() for d in ds],
+                    "hotels_checked": sums[slug]["checked"], "hotels_with_vacancy": sums[slug]["vacant"],
+                    "min_price_jpy": sums[slug]["low"], "page_url": f"{base}/{slug}/"}
+             for slug, name, ds, note in wl if ds}
+    return {
+        "name": f"{site['name']} 温泉地の空室・料金データ",
+        "description": "楽天トラベルの空室検索APIから自動で取得し、ヤドミッケが集計した、温泉地の宿の空き数と料金の最新値です。",
+        "generated_at": now.isoformat(timespec="seconds"),
+        "source": "楽天トラベル 空室検索API(楽天ウェブサービス)",
+        "attribution": "ヤドミッケ(楽天トラベルの空室データをもとに集計)",
+        "site_url": base + "/",
+        "notes": [
+            f"料金は{cond_text(cfg)}の、取得時点の最安値(円)です。",
+            "hotels_with_vacancy は、その日程(複数日なら、どれか1日)に1部屋でも空きがあった宿の数です。条件(露天風呂など)は問いません。",
+            f"更新の目安: {freq_text(cfg)}。リアルタイムの在庫ではありません。予約前に楽天トラベルでの確認が必要です。",
+            "price_next_30_days は、今後30日の宿泊日で空きのある宿の最安値の中央値と、中央の半分の範囲(p25〜p75)です。満室の宿は含みません。",
+            "引用の際は、数字に fetched_at(取得日時)を添えてください。",
+        ],
+        "all_areas": total,
+        "areas": areas,
+        "links": {"price_overview": f"{base}/souba/", "monthly_reports": f"{base}/report/", "new_vacancies": f"{base}/ugoki/",
+                  "statistics": f"{base}/stats/", "methodology": f"{base}/about/"},
+    }
 
 
 def home_answer(cfg, sums, wl, holidays):
@@ -3213,6 +3273,10 @@ def main():
     for area in cfg["areas"]:
         write_page(out_dir, area, render_area(cfg, hotels, state, area, wl, when_sums, now, args.demo))
         paths.append(f"{area}/")
+    (out_dir / "data").mkdir(parents=True, exist_ok=True)
+    (out_dir / DATA_JSON).write_text(json.dumps(data_json(cfg, hotels, state, wl, when_sums, now), ensure_ascii=False, indent=1), encoding="utf-8")
+    # どのサイトからでも読めるようにする(Cloudflare Pages の _headers)
+    (out_dir / "_headers").write_text("/data/*\n  Access-Control-Allow-Origin: *\n  Cache-Control: public, max-age=600\n", encoding="utf-8")
     write_page(out_dir, "souba", render_souba(cfg, hotels, state, now, args.demo))
     paths.append("souba/")
     months = sorted({d[:7] for d in stats.get("area_daily", {})})

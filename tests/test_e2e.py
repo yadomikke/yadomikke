@@ -206,6 +206,14 @@ with tempfile.TemporaryDirectory() as tmp:
     check("温泉地の空室レポート" in rp and "最も空きやすかったのは熱海(80%)、最も埋まっていたのは箱根(30%)" in rp and '"Report"' in rp and f"/report/{ym}/" in sm,
           "月別レポート(/report/年-月/)に、空き率の高いエリア・低いエリアが載る")
     check(f'href="{ym}/"' in (out / "report" / "index.html").read_text(encoding="utf-8"), "レポートの一覧ページから各月へ行ける")
+    dj = json.loads((out / "data" / "latest.json").read_text(encoding="utf-8"))
+    hk = next(a for a in dj["areas"] if a["key"] == "hakone")
+    check(dj["all_areas"]["konya"]["hotels_checked"] == 6 and hk["availability"]["konya"]["hotels_with_vacancy"] == 2
+          and hk["availability"]["konya"]["fetched_at"] and hk["page_url"] == "https://example.invalid/hakone/" and dj["generated_at"],
+          "機械向けのデータ(/data/latest.json)に、エリアごとの今夜の空き数・取得日時・ページURLが入る")
+    check("Access-Control-Allow-Origin: *" in (out / "_headers").read_text(encoding="utf-8")
+          and 'type="application/json"' in page and "/data/latest.json" in llms and "application/json" in sb,
+          "データはどのサイトからも読め、各ページ・llms.txt・相場ページ(Dataset)から場所が分かる")
     check("aff_click" in page and "ym_landing" in page and "chatgpt" in page, "流入元(ChatGPTなど)と楽天リンクのクリックを計測するしくみが入る")
 
 # 履歴の数え方(前回◯でなかった→◯ / ◯だった→消えた)
