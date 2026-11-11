@@ -1,7 +1,7 @@
 {
  "name": "ヤドミッケ 温泉地の空室・料金データ",
  "description": "楽天トラベルの空室検索APIから自動で取得し、ヤドミッケが集計した、温泉地の宿の空き数と料金の最新値です。",
- "generated_at": "2026-11-12T04:52:51+09:00",
+ "generated_at": "2026-11-12T07:32:29+09:00",
  "source": "楽天トラベル 空室検索API(楽天ウェブサービス)",
  "attribution": "ヤドミッケ(楽天トラベルの空室データをもとに集計)",
  "site_url": "https://yadomikke.com/",
@@ -143,24 +143,24 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 21060,
-     "p25_jpy": 8909,
-     "p75_jpy": 50965,
-     "samples": 2961
+     "median_jpy": 18590,
+     "p25_jpy": 8000,
+     "p75_jpy": 45000,
+     "samples": 3352
     },
     "fri": {
      "label": "金曜",
-     "median_jpy": 18975,
-     "p25_jpy": 7875,
-     "p75_jpy": 51270,
-     "samples": 765
+     "median_jpy": 15400,
+     "p25_jpy": 7325,
+     "p75_jpy": 46462,
+     "samples": 843
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 19900,
-     "p25_jpy": 7850,
-     "p75_jpy": 73403,
-     "samples": 282
+     "median_jpy": 15000,
+     "p25_jpy": 6790,
+     "p75_jpy": 53630,
+     "samples": 349
     }
    },
    "condition_pages": [
@@ -295,24 +295,24 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 17400,
-     "p25_jpy": 9570,
-     "p75_jpy": 38450,
-     "samples": 2265
+     "median_jpy": 14500,
+     "p25_jpy": 8800,
+     "p75_jpy": 34560,
+     "samples": 2900
     },
     "fri": {
      "label": "金曜",
-     "median_jpy": 19477,
-     "p25_jpy": 9900,
-     "p75_jpy": 46150,
-     "samples": 516
+     "median_jpy": 15776,
+     "p25_jpy": 9230,
+     "p75_jpy": 39215,
+     "samples": 638
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 15900,
-     "p25_jpy": 8178,
-     "p75_jpy": 52690,
-     "samples": 304
+     "median_jpy": 13456,
+     "p25_jpy": 7150,
+     "p75_jpy": 41800,
+     "samples": 395
     }
    },
    "condition_pages": [
@@ -443,10 +443,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 12760,
-     "p25_jpy": 6184,
-     "p75_jpy": 25900,
-     "samples": 860
+     "median_jpy": 12496,
+     "p25_jpy": 5800,
+     "p75_jpy": 24100,
+     "samples": 920
     },
     "fri": {
      "label": "金曜",
@@ -587,10 +587,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 16000,
-     "p25_jpy": 6600,
-     "p75_jpy": 26775,
-     "samples": 568
+     "median_jpy": 15500,
+     "p25_jpy": 6500,
+     "p75_jpy": 26400,
+     "samples": 610
     },
     "fri": {
      "label": "金曜",
@@ -739,10 +739,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 28640,
-     "p25_jpy": 14300,
-     "p75_jpy": 49600,
-     "samples": 475
+     "median_jpy": 24000,
+     "p25_jpy": 12200,
+     "p75_jpy": 44000,
+     "samples": 546
     },
     "fri": {
      "label": "金曜",
@@ -887,10 +887,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 33000,
-     "p25_jpy": 20000,
-     "p75_jpy": 56300,
-     "samples": 521
+     "median_jpy": 32000,
+     "p25_jpy": 18158,
+     "p75_jpy": 56144,
+     "samples": 541
     },
     "fri": {
      "label": "金曜",
@@ -915,6 +915,38 @@
     {
      "condition": "ペット可の客室",
      "url": "https://yadomikke.com/karuizawa-pet/"
+    },
+    {
+     "condition": "大浴場のある宿",
+     "url": "https://yadomikke.com/karuizawa-daiyoku/"
+    },
+    {
+     "condition": "夜遅くても泊まれる宿(最終チェックイン22時以降)",
+     "url": "https://yadomikke.com/karuizawa-osoitsuki/"
+    },
+    {
+     "condition": "夕食の口コミ評価が高い宿",
+     "url": "https://yadomikke.com/karuizawa-yushoku/"
+    },
+    {
+     "condition": "お風呂の口コミ評価が高い宿",
+     "url": "https://yadomikke.com/karuizawa-furohyoka/"
+    },
+    {
+     "condition": "清潔さの口コミ評価が高い宿",
+     "url": "https://yadomikke.com/karuizawa-seiketsu/"
+    },
+    {
+     "condition": "サウナのある宿",
+     "url": "https://yadomikke.com/karuizawa-sauna/"
+    },
+    {
+     "condition": "送迎のある宿",
+     "url": "https://yadomikke.com/karuizawa-sougei/"
+    },
+    {
+     "condition": "バリアフリー対応の宿(車椅子可など)",
+     "url": "https://yadomikke.com/karuizawa-barrierfree/"
     }
    ]
   },
@@ -987,10 +1019,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 41526,
-     "p25_jpy": 18650,
-     "p75_jpy": 69250,
-     "samples": 357
+     "median_jpy": 41663,
+     "p25_jpy": 18775,
+     "p75_jpy": 70325,
+     "samples": 358
     },
     "fri": {
      "label": "金曜",
@@ -1083,10 +1115,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 41586,
+     "median_jpy": 41760,
      "p25_jpy": 28000,
-     "p75_jpy": 64400,
-     "samples": 756
+     "p75_jpy": 64800,
+     "samples": 757
     },
     "fri": {
      "label": "金曜",
@@ -1181,8 +1213,8 @@
      "label": "平日(日〜木)",
      "median_jpy": 28500,
      "p25_jpy": 17000,
-     "p75_jpy": 46935,
-     "samples": 990
+     "p75_jpy": 46920,
+     "samples": 988
     },
     "fri": {
      "label": "金曜",
@@ -1283,7 +1315,7 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 26400,
+     "median_jpy": 26128,
      "p25_jpy": 16000,
      "p75_jpy": 41000,
      "samples": 547
@@ -1491,10 +1523,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 38564,
+     "median_jpy": 38280,
      "p25_jpy": 22000,
-     "p75_jpy": 55959,
-     "samples": 932
+     "p75_jpy": 55740,
+     "samples": 933
     },
     "fri": {
      "label": "金曜",
@@ -1598,7 +1630,7 @@
      "median_jpy": 29260,
      "p25_jpy": 16456,
      "p75_jpy": 40920,
-     "samples": 454
+     "samples": 453
     },
     "fri": {
      "label": "金曜",
@@ -1695,9 +1727,9 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 26620,
-     "p25_jpy": 15400,
-     "p75_jpy": 42430,
+     "median_jpy": 25560,
+     "p25_jpy": 13688,
+     "p75_jpy": 42060,
      "samples": 202
     },
     "fri": {
@@ -1799,10 +1831,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 31610,
-     "p25_jpy": 15750,
-     "p75_jpy": 52400,
-     "samples": 294
+     "median_jpy": 32000,
+     "p25_jpy": 15800,
+     "p75_jpy": 52200,
+     "samples": 293
     },
     "fri": {
      "label": "金曜",
@@ -1904,9 +1936,9 @@
     "wd": {
      "label": "平日(日〜木)",
      "median_jpy": 20000,
-     "p25_jpy": 11778,
+     "p25_jpy": 11602,
      "p75_jpy": 31240,
-     "samples": 636
+     "samples": 633
     },
     "fri": {
      "label": "金曜",
@@ -2007,10 +2039,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 22834,
-     "p25_jpy": 11000,
+     "median_jpy": 22668,
+     "p25_jpy": 10043,
      "p75_jpy": 39600,
-     "samples": 824
+     "samples": 825
     },
     "fri": {
      "label": "金曜",
@@ -2111,7 +2143,7 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 30800,
+     "median_jpy": 30600,
      "p25_jpy": 21400,
      "p75_jpy": 57200,
      "samples": 139
