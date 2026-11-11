@@ -90,6 +90,10 @@ class Client:
             except (urllib.error.URLError, TimeoutError, ConnectionError) as e:
                 last_err = ApiError(0, "network", str(e))
                 time.sleep(5 * attempt)
+            except ValueError as e:
+                # 楽天側の一時的な不調で、空や壊れた返事が来ることがある。時間をおいて問い合わせ直す
+                last_err = ApiError(0, "bad_response", str(e)[:200])
+                time.sleep(5 * attempt)
         raise last_err
 
 

@@ -115,9 +115,12 @@ with tempfile.TemporaryDirectory() as tmp:
     check("hakone-roten/" in home and "atami-roten/" in home and "hakone-pet/" not in home, "トップに、あるページだけが並ぶ")
     check("宿2" not in page.split("<tbody>")[1], "露天なしの宿は表に載らない")
     check("宿3" not in page.split("<tbody>")[1], "露天の部屋が一度も見つからない宿は表に載らない")
-    check("https://aff/r1" in page, "予約リンクはAPIが返したアフィリエイトURLをそのまま使う")
+    import urllib.parse
+    plan = urllib.parse.quote("https://hotel.travel.rakuten.co.jp/hotelinfo/plan/1?", safe="")
+    check(f"https://hb.afl.rakuten.co.jp/hgc/z/?pc={plan}" in page and "https://aff/r1" not in page,
+          "予約リンクは、ログインなしで開ける日付つきのプラン一覧(アフィリエイト経由)になる")
     check('rel="sponsored nofollow noopener"' in page, "広告リンクの印(sponsored)が付く")
-    check("【広告】" in page and "Supported by Rakuten Developers" in page, "広告表記とクレジットが入る")
+    check("【PR】" in page and "Supported by Rakuten Developers" in page, "広告表記(【PR】)とクレジットが入る")
     out = tmp / "out"
     for rel in ("about", "privacy", "hakone-roten/shumatsu", "hakone-roten/nenmatsu", "hakone-roten/xmas", "hakone-roten/hotel/1", "atami-roten/hotel/11"):
         check((out / rel / "index.html").exists(), f"{rel}/ のページが作られる")

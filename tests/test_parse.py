@@ -90,4 +90,44 @@ check(cells["333"] == {"s": "f"}, "空きの無い宿は「満」になる")
 check(cells["111"]["s"] == "v" and "f" not in cells["111"], "露天なしの空き宿は「△」(特徴なし)")
 check(cells["222"]["f"]["roten"][0] == 66000, "露天の部屋が複数あれば最安を採用")
 check(cells["222"]["f"]["roten"][1] == "https://b/r2", "最安の部屋の予約URLを使う")
+
+
+# 楽天から空・壊れた返事が来ても止まらず、問い合わせ直す
+class FakeResp:
+    def __init__(self, body):
+        self.body = body
+
+    def read(self):
+        return self.body
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *a):
+        return False
+
+
+def run_client(bodies):
+    calls = []
+
+    def fake_urlopen(req, timeout=30):
+        calls.append(1)
+        return FakeResp(bodies[len(calls) - 1])
+
+    orig_open, orig_sleep = rk.urllib.request.urlopen, rk.time.sleep
+    rk.urllib.request.urlopen, rk.time.sleep = fake_urlopen, lambda s: None
+    try:
+        c = rk.Client("app", "key", interval=0)
+        try:
+            return c.call("VacantHotelSearch", hotelNo=1), len(calls)
+        except rk.ApiError as e:
+            return e, len(calls)
+    finally:
+        rk.urllib.request.urlopen, rk.time.sleep = orig_open, orig_sleep
+
+
+got, n = run_client([b"", b"\xff", b'{"hotels": []}'])
+check(got == {"hotels": []} and n == 3, "空や壊れた返事のあとは、問い合わせ直して正しい返事を使う")
+got, n = run_client([b""] * 4)
+check(isinstance(got, rk.ApiError) and n == 4, "空の返事が続くときは、4回で諦めて楽天側のエラーとして扱う")
 print("\nすべて成功")
