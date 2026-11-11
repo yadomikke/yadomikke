@@ -1,0 +1,2 @@
+/:slug/hotel/:no/ /hotel/:no/ 301
+/:slug/hotel/:no /hotel/:no/ 301
