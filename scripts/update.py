@@ -309,13 +309,13 @@ def pick_units(cfg, state, today):
             off = (d - today).days
             got = fetched.get(d.isoformat())
             if got is None:
-                # まだ一度も取っていない日付。最優先にするが、新しいエリアを足したときに、
-                # 既存エリアの近い日程の更新がずっと後回しにならないよう、「期限を2倍過ぎた」程度の扱いにする
-                score = 2.0 - off / 1000
+                # まだ一度も取っていない日付(新しく足したエリアなど)。既存エリアの更新を先に済ませ、
+                # 残った時間で近い日付から順に埋める(既存エリアの「今夜」「明日」の数字を古くしないため)
+                score = 0.99 - off / 1000
             else:
                 age = (now() - datetime.fromisoformat(got)).total_seconds() / 3600
                 score = age / target_hours(cfg, off)
-            if score >= 1:
+            if score >= 1 or got is None:
                 plan.append((score, area, d))
     plan.sort(key=lambda x: -x[0])
     return [(a, d) for _, a, d in plan]
