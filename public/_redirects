@@ -1,2 +1,14 @@
 /:slug/hotel/:no/ /hotel/:no/ 301
 /:slug/hotel/:no /hotel/:no/ 301
+/:slug/high-rated/ /:slug/ 301
+/:slug/high-rated /:slug/ 301
+/:slug/under-30000/ /:slug/ 301
+/:slug/under-30000 /:slug/ 301
+/:slug/over-50000/ /:slug/ 301
+/:slug/over-50000 /:slug/ 301
+/:slug/many-reviews/ /:slug/ 301
+/:slug/many-reviews /:slug/ 301
+/:slug/raishu/ /:slug/ 301
+/:slug/raishu /:slug/ 301
+/:slug/xmas/ /:slug/ 301
+/:slug/xmas /:slug/ 301
