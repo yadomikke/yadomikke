@@ -230,6 +230,14 @@ with tempfile.TemporaryDirectory() as tmp:
     check("Access-Control-Allow-Origin: *" in (out / "_headers").read_text(encoding="utf-8")
           and 'type="application/json"' in page and "/data/latest.json" in llms and "application/json" in sb,
           "データはどのサイトからも読め、各ページ・llms.txt・相場ページ(Dataset)から場所が分かる")
+    # 日付をアドレスで指定して開ける(?d=YYYY-MM-DD)。AIに作り方を伝える
+    check("URLSearchParams(location.search).get('d')" in page and "history.replaceState" in page and "?d=2026-11-28" in page,
+          "条件ページは ?d=日付 で、その日付を選んだ状態で開き、日付を選び直すとアドレスも変わる")
+    check('id="dpick"' in hp1 and f'data-d="{today.isoformat()}" data-s="ok"' in hp1 and "window.ymSL" in hp1 and 'window.__LT={"a": "z"' in hp1,
+          "宿ページは ?d=日付 で、その日の空きと予約リンクを上に表示できる")
+    check("## 日付を指定してページを開く" in llms and "/hakone-roten/?d=" in llms and "/hotel/(施設番号)/?d=YYYY-MM-DD" in llms
+          and dj["date_links"]["condition_page"].endswith("/?d=YYYY-MM-DD") and hk["condition_pages"][0]["url_with_date"].endswith("?d=YYYY-MM-DD"),
+          "llms.txt と機械向けデータに、日付つきアドレスの作り方が載る")
     check("aff_click" in page and "ym_landing" in page and "chatgpt" in page, "流入元(ChatGPTなど)と楽天リンクのクリックを計測するしくみが入る")
 
 # 履歴の数え方(前回◯でなかった→◯ / ◯だった→消えた)

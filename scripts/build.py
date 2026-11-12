@@ -120,7 +120,29 @@ for(var i=0;i<as.length;i++){var a=as[i],x=a.getAttribute('data-sl').split('|'),
 d=new Date(Date.UTC(+p[0],+p[1]-1,+p[2])),c=new Date(d.getTime()+L.n*864e5),
 t='https://hotel.travel.rakuten.co.jp/hotelinfo/plan/'+x[0]+'?f_teikei=&f_nen1='+d.getUTCFullYear()+'&f_tuki1='+(d.getUTCMonth()+1)+'&f_hi1='+d.getUTCDate()
 +'&f_nen2='+c.getUTCFullYear()+'&f_tuki2='+(c.getUTCMonth()+1)+'&f_hi2='+c.getUTCDate()+'&f_heya_su=1&f_otona_su='+L.ad+'&f_s1=0&f_s2=0&f_y1=0&f_y2=0&f_y3=0&f_y4=0',
-q=encodeURIComponent(t);a.href=L.a?'https://hb.afl.rakuten.co.jp/hgc/'+L.a+'/?pc='+q+'&m='+q:t;}})();"""
+q=encodeURIComponent(t);a.href=L.a?'https://hb.afl.rakuten.co.jp/hgc/'+L.a+'/?pc='+q+'&m='+q:t;}
+window.ymSL=function(no,iso){var p=iso.split('-'),d=new Date(Date.UTC(+p[0],+p[1]-1,+p[2])),c=new Date(d.getTime()+L.n*864e5),
+t='https://hotel.travel.rakuten.co.jp/hotelinfo/plan/'+no+'?f_teikei=&f_nen1='+d.getUTCFullYear()+'&f_tuki1='+(d.getUTCMonth()+1)+'&f_hi1='+d.getUTCDate()
++'&f_nen2='+c.getUTCFullYear()+'&f_tuki2='+(c.getUTCMonth()+1)+'&f_hi2='+c.getUTCDate()+'&f_heya_su=1&f_otona_su='+L.ad+'&f_s1=0&f_s2=0&f_y1=0&f_y2=0&f_y3=0&f_y4=0',
+q=encodeURIComponent(t);return L.a?'https://hb.afl.rakuten.co.jp/hgc/'+L.a+'/?pc='+q+'&m='+q:t;};})();"""
+
+# 宿ページ: アドレスで指定された日付(?d=YYYY-MM-DD)の空きを、ページの上に表示し、カレンダーのその日に印を付ける
+DPICK_JS = r"""(function(){var q=null;try{q=new URLSearchParams(location.search).get('d');}catch(e){}
+if(!q&&/^#\d{4}-\d{2}-\d{2}$/.test(location.hash))q=location.hash.slice(1);
+var box=document.getElementById('dpick');if(!box||!q||!/^\d{4}-\d{2}-\d{2}$/.test(q))return;
+var p=q.split('-'),wd='日月火水木金土'[new Date(Date.UTC(+p[0],+p[1]-1,+p[2])).getUTCDay()],lab=(+p[1])+'月'+(+p[2])+'日('+wd+')',
+fl=box.getAttribute('data-fl'),no=box.getAttribute('data-no'),c=document.querySelector('.mini [data-d="'+q+'"]'),msg,link=null;
+if(!c){msg=lab+'は、当サイトがまだ空室を確認していない日付です。楽天トラベルで直接ご確認ください。';link=window.ymSL?ymSL(no,q):null;}
+else{c.classList.add('sel');var k=c.getAttribute('data-s'),pr=c.getAttribute('data-p');
+ if(k==='ok'){msg=lab+':'+fl+'の空きあり'+(pr?'(最安 ¥'+(+pr).toLocaleString('ja-JP')+'〜)':'');link=c.getAttribute('href');}
+ else if(k==='part'){msg=lab+':宿には空きがありますが、'+fl+'の空きは確認できませんでした。';link=window.ymSL?ymSL(no,q):null;}
+ else if(k==='full'){msg=lab+':取得時点では満室です。キャンセルで空くこともあります。';link=window.ymSL?ymSL(no,q):null;}
+ else{msg=lab+':まだ取得できていません。';link=window.ymSL?ymSL(no,q):null;}}
+var h=document.createElement('h2');h.textContent='指定の日付の空き';var t=document.createElement('p');t.className='lead2';t.textContent=msg;
+box.appendChild(h);box.appendChild(t);
+if(link){var a=document.createElement('a');a.className='cta';a.href=link;a.target='_blank';a.rel='sponsored nofollow noopener';
+ a.textContent=lab+'の楽天トラベルのページを見る【PR】';var pp=document.createElement('p');pp.appendChild(a);box.appendChild(pp);}
+box.hidden=false;})();"""
 
 
 def esc(s):
@@ -680,6 +702,7 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .hl li{padding:10px 0;border-top:1px dashed var(--line);font-size:15px}
 .hl li:first-child{border-top:0}.hl a{font-weight:800}.hl small{display:block;color:var(--sub);font-size:13px}
 .picks b.ok{color:var(--ok)}
+.mini .sel{outline:3px solid var(--cta);outline-offset:-2px;border-radius:6px}.dpick{border-left:6px solid var(--cta)}
 .stat{border-collapse:collapse;font-size:14px;margin:8px 0;width:100%}
 .stat th,.stat td{border:1px solid var(--line);padding:6px 8px;text-align:center;background:#fff}
 .stat thead th{background:#efefef;position:static;cursor:default;min-width:0;font-size:13px}
@@ -715,6 +738,11 @@ var F=D.feat,FL=D.flabel;
 var cards=document.getElementById('cards'),rt=document.getElementById('rt'),strip=document.getElementById('dscroll'),
     sortSel=document.getElementById('sortsel'),finder=document.getElementById('finder');
 var cur=D.def,mode='p',favOnly=false,filterId='',FK='yadomikke_fav',fav={};
+// アドレスで日付を指定して開ける(?d=2026-11-28 または #2026-11-28)。AIや共有のリンクから、その日付で開くため
+var urlDate=(function(){var q=null;try{q=new URLSearchParams(location.search).get('d');}catch(e){}
+  if(!q&&/^#\d{4}-\d{2}-\d{2}$/.test(location.hash))q=location.hash.slice(1);
+  return q&&D.dates.some(function(x){return x.d===q;})?q:null;})();
+if(urlDate)cur=urlDate;
 try{var raw=localStorage.getItem(FK);if(raw){JSON.parse(raw).forEach(function(n){fav[n]=1;});}}catch(e){}
 function saveFav(){try{localStorage.setItem(FK,JSON.stringify(Object.keys(fav)));}catch(e){}}
 function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;}
@@ -850,6 +878,7 @@ function render(){
 }
 var areaCal=null;
 function pick(d,scroll){cur=d;render();
+  try{var u=new URL(location.href);u.searchParams.set('d',d);u.hash='';history.replaceState(null,'',u.toString());}catch(e){}
   if(scroll&&finder){var r=document.getElementById('rhead').getBoundingClientRect();
     if(r.top<0||r.top>window.innerHeight*0.6){window.scrollTo({top:window.pageYOffset+r.top-90,behavior:'smooth'});}}}
 areaCal=mcal(D.dates.map(function(x){return x.d;}),function(iso){var x=dinfo(iso);
@@ -898,6 +927,7 @@ if(tbl){tbl.addEventListener('click',function(e){var td=e.target.closest?e.targe
       tbody.appendChild(tr);}
     tm.parentNode.removeChild(tm);if(tb)show(curTab);});}}
 render();
+if(urlDate)pick(urlDate,true);
 })();
 """
 
@@ -977,7 +1007,9 @@ def ld_script(objs):
 
 def shell(cfg, demo, root, title, desc, canonical, inner, ld=None, noindex=False, js=False):
     extra = ld_script(ld) if ld else ""
-    sl = (f"<script>window.__LT={json.dumps(LINK)};{SL_JS}</script>" if LINK and 'data-sl="' in inner else "")
+    sl = (f"<script>window.__LT={json.dumps(LINK)};{SL_JS}</script>" if LINK and ('data-sl="' in inner or 'id="dpick"' in inner) else "")
+    if 'id="dpick"' in inner:
+        sl += f"<script>{DPICK_JS}</script>"
     return (head(cfg, title, desc, canonical, demo, extra, noindex) + header_html(cfg, demo, root)
             + '<div class="wrap">' + inner + "</div>" + f"<footer>{footer_html(cfg, root)}</footer>"
             + (f"<script>{JS}</script>" if js else "") + sl + "<script>" + REL_JS + TRACK_JS + "</script></body></html>")
@@ -1646,13 +1678,14 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
             p, url, _ = c["f"][feat]
             inner_c = f"{lab}<i>◯</i><b>{yen(p)}</b>"
             u = safe_url(url or h.get("url"))
-            return (f'<a class="ok" href="{esc(u)}" target="_blank" rel="sponsored nofollow noopener" aria-label="{d.month}月{d.day}日 空きあり">{inner_c}</a>'
-                    if u != "#" else f'<span class="ok">{inner_c}</span>')
+            dd = f'data-d="{d.isoformat()}" data-s="ok" data-p="{p}"'
+            return (f'<a class="ok" {dd} href="{esc(u)}" target="_blank" rel="sponsored nofollow noopener" aria-label="{d.month}月{d.day}日 空きあり">{inner_c}</a>'
+                    if u != "#" else f'<span class="ok" {dd}>{inner_c}</span>')
         if s_ == "part":
-            return f'<span class="part">{lab}<i>△</i></span>'
+            return f'<span class="part" data-d="{d.isoformat()}" data-s="part">{lab}<i>△</i></span>'
         if s_ == "full":
-            return f'<span class="full">{lab}<i>満</i></span>'
-        return f"<span>{lab}<i>—</i></span>"
+            return f'<span class="full" data-d="{d.isoformat()}" data-s="full">{lab}<i>満</i></span>'
+        return f'<span data-d="{d.isoformat()}" data-s="none">{lab}<i>—</i></span>'
 
     cal = ""
     months = []
@@ -1669,7 +1702,8 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
 
     body = [f'<div class="hero"><div class="crumb"><a href="../../">{esc(site["name"])}</a> › <a href="../../{esc(page["area"])}/">{esc(cfg["areas"][page["area"]]["label"])}</a> › <a href="../../{esc(page["slug"])}/">{esc(page["title"])}</a> › {esc(h["name"])}</div>'
             f"<h1>{esc(nm_f)} 空室状況</h1><p class=\"lead\">{esc(hotel_sub(h))}</p></div>",
-            answer_html(asof, lead, bullets, details, "この宿の空室まとめ", mood=("happy" if ok else "sleepy"))]
+            answer_html(asof, lead, bullets, details, "この宿の空室まとめ", mood=("happy" if ok else "sleepy")),
+            f'<section class="card dpick" id="dpick" data-no="{esc(h["no"])}" data-fl="{esc(fl_txt)}" hidden></section>']
     cta_url = (ok[0][2] if ok else None) or h.get("plan_url") or h.get("url")
     body.append('<p style="margin:10px 0">' + btn(cta_url, "cta", "楽天トラベルで空室・料金を確認 ›") + "</p>")
     body.append(share_html(canonical, f"{nm_f} 空室状況 | {site['name']}"))
@@ -1938,6 +1972,13 @@ def llms_txt(cfg, digests, snaps_ok, now, wl=()):
                   f"- [温泉地の空室レポート(月別)]({base}/report/): 毎日の観測を月ごとにまとめたレポート",
                   "", "## 機械向けのデータ", "",
                   f"- [空室・料金データ(JSON)]({base}/data/latest.json): 全エリアの今夜・明日・今週末などの空き数・最安値・取得日時と、曜日別の料金相場。ページと同じ頻度で更新"]
+    lines += ["", "## 日付を指定してページを開く", "",
+              "ユーザーが日付を指定して質問した場合は、次の形のリンクを案内すると、その日付を選んだ状態でページが開きます(チェックイン日、YYYY-MM-DD)。",
+              "",
+              f"- エリア×条件のページ: {base}/(ページ名)/?d=YYYY-MM-DD  例: {base}/hakone-roten/?d=2026-11-28(箱根の客室露天風呂付きの宿の、その日の空室と料金の一覧)",
+              f"- 宿ごとのページ: {base}/hotel/(施設番号)/?d=YYYY-MM-DD (その宿の、その日の空き・最安値と、楽天トラベルの予約ページへのリンク)",
+              f"- 今夜・明日・今週末などは、日付つきのページがあります: {base}/konya/ 、{base}/ashita/ 、{base}/shumatsu/",
+              "- 取得している範囲は、おおむね今日から3〜4週間先までです(年末年始など一部の日程はそれ以上先も取得)。範囲外の日付は、ページ側で既定の日付に戻ります。"]
     lines += ["", "## 宿ごとのページ", "", f"- {base}/hotel/(施設番号)/ : 宿ごとの空室カレンダー・料金と、条件(客室露天風呂・大浴場など)の判定結果", ""]
     lines += ["", "## データと方法", "",
               f"- [温泉地の空室データ統計]({base}/stats/): エリア・条件・曜日ごとの空き率と最安値の中央値" + ("(CSVあり)" if snaps_ok else ""),
@@ -2467,7 +2508,8 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
                    '<p class="rsub">1泊・大人2名・1部屋の料金です(取得時点の掲載額)。ボタンを押すと楽天トラベルの予約ページが開きます。バッジは当サイト独自の基準で付けています(<a href="../about/#badges">基準を見る</a>)。</p>')
         out.append(f'<div id="cards">{res}</div></div>')
         out.append('<section class="sec" id="calendar"><h2>カレンダーで比べる</h2>'
-                   '<p class="sub">日付(数字)をタップすると、その日の宿が上の一覧に表示されます。◯・△・満のマスを押すと、その日の楽天トラベルのページが開きます。</p>'
+                   '<p class="sub">日付(数字)をタップすると、その日の宿が上の一覧に表示されます。◯・△・満のマスを押すと、その日の楽天トラベルのページが開きます。'
+                   'このページは、アドレスの最後に「?d=2026-11-28」のように日付を付けると、その日付を選んだ状態で開きます。</p>'
                    f'<div class="tabs" id="tabs" hidden>{tabs}</div>'
                    '<div class="scroll"><table><thead><tr>' + "".join(thead) + "</tr></thead><tbody>" + "".join(body) + "</tbody></table></div>" + more_btn +
                    f'<p class="legend"><b>◯</b>=' + (f"「{esc(flabel)}」の宿に空きあり(数字は宿全体の1泊2名の最安) ／ " if is_hotel_feat(cfg, feat) else f"「{esc(flabel)}」の部屋に空きあり(数字は1泊2名の最安) ／ <b>△</b>=宿に空きはあるが該当の部屋は確認できない ／ ") + ""
@@ -2928,7 +2970,8 @@ def data_json(cfg, hotels, state, wl, sums, now):
         areas.append({"key": area, "label": a["label"], "page_url": f"{base}/{area}/",
                       "hotels_listed": len(areastat.area_nos(hotels, area)),
                       "availability": avail, "price_next_30_days": price,
-                      "condition_pages": [{"condition": cfg["features"][p["feature"]]["label"], "url": f"{base}/{p['slug']}/"}
+                      "condition_pages": [{"condition": cfg["features"][p["feature"]]["label"], "url": f"{base}/{p['slug']}/",
+                                           "url_with_date": f"{base}/{p['slug']}/?d=YYYY-MM-DD"}
                                           for p in LIVE if p["area"] == area]})
     total = {slug: {"label": name, "checkin_dates": [d.isoformat() for d in ds],
                     "hotels_checked": sums[slug]["checked"], "hotels_with_vacancy": sums[slug]["vacant"],
@@ -2948,6 +2991,11 @@ def data_json(cfg, hotels, state, wl, sums, now):
             "price_next_30_days は、今後30日の宿泊日で空きのある宿の最安値の中央値と、中央の半分の範囲(p25〜p75)です。満室の宿は含みません。",
             "引用の際は、数字に fetched_at(取得日時)を添えてください。",
         ],
+        "date_links": {
+            "description": "ユーザーが日付を指定した場合は、?d=YYYY-MM-DD(チェックイン日)を付けたURLを案内すると、その日付を選んだ状態でページが開きます。",
+            "condition_page": f"{base}/(ページ名)/?d=YYYY-MM-DD",
+            "hotel_page": f"{base}/hotel/(施設番号)/?d=YYYY-MM-DD",
+            "example": f"{base}/hakone-roten/?d={(today + timedelta(days=14)).isoformat()}"},
         "all_areas": total,
         "areas": areas,
         "links": {"price_overview": f"{base}/souba/", "monthly_reports": f"{base}/report/", "new_vacancies": f"{base}/ugoki/",
