@@ -36,7 +36,10 @@ WD = "月火水木金土日"
 CUR_AUTO = False     # いま作っているのが「宿の条件ページ」(大浴場など)かどうか
 HOTEL_HREF = {}      # 施設番号 -> 宿ページのパス(/hotel/番号/)。main() が最初に決める
 LINK = None          # 日付つきプラン一覧リンクの材料 {"a": アフィリエイトID, "ad": 大人, "n": 泊数}。main() が決める
-TABLE_MAX = 40       # カレンダー表に最初から載せる宿の数(残りは「もっと見る」でブラウザ側が表示。ページを軽くするため)
+# 日付別ページを作る日程(「来週末」「クリスマス」は、似たページが増えすぎるので作らない。データの取得は続ける)
+PAGE_SCENES = ("shumatsu", "renkyu", "nenmatsu")
+DROPPED_SCENES = ("raishu", "xmas")
+TABLE_MAX = 25       # カレンダー表に最初から載せる宿の数(残りは「もっと見る」でブラウザ側が表示。ページを軽くするため)
 
 
 def is_hotel_feat(cfg, feat):
@@ -109,6 +112,15 @@ s=/chatgpt|openai/.test(t)?'chatgpt':/perplexity/.test(t)?'perplexity':/claude\.
 try{ss&&ss.setItem(k,s)}catch(e){}dl.push({event:'ym_landing',ym_src:s});}
 w.ymAff=function(){dl.push({event:'aff_click',ym_src:s,ym_page:location.pathname})};
 document.addEventListener('click',function(e){var a=e.target.closest?e.target.closest('a[href*="hb.afl.rakuten.co.jp"],a[href*="travel.rakuten.co.jp"]'):null;if(a)w.ymAff()},true);}catch(e){}})();"""
+
+
+# 予約リンク(日付つきプラン一覧・アフィリエイト経由)を、宿番号と日付からブラウザ側で組み立てる。stay_link() と同じ形
+SL_JS = r"""(function(){var L=window.__LT;if(!L)return;var as=document.querySelectorAll('a[data-sl]');
+for(var i=0;i<as.length;i++){var a=as[i],x=a.getAttribute('data-sl').split('|'),p=x[1].split('-'),
+d=new Date(Date.UTC(+p[0],+p[1]-1,+p[2])),c=new Date(d.getTime()+L.n*864e5),
+t='https://hotel.travel.rakuten.co.jp/hotelinfo/plan/'+x[0]+'?f_teikei=&f_nen1='+d.getUTCFullYear()+'&f_tuki1='+(d.getUTCMonth()+1)+'&f_hi1='+d.getUTCDate()
++'&f_nen2='+c.getUTCFullYear()+'&f_tuki2='+(c.getUTCMonth()+1)+'&f_hi2='+c.getUTCDate()+'&f_heya_su=1&f_otona_su='+L.ad+'&f_s1=0&f_s2=0&f_y1=0&f_y2=0&f_y3=0&f_y4=0',
+q=encodeURIComponent(t);a.href=L.a?'https://hb.afl.rakuten.co.jp/hgc/'+L.a+'/?pc='+q+'&m='+q:t;}})();"""
 
 
 def esc(s):
@@ -261,26 +273,62 @@ def summarize(rows, dates, feat, state):
     return info
 
 
+def url_template(nos, urls):
+    """どの宿のURLも「前の部分 + 施設番号 + 後ろの部分」で同じ形なら、その (前, 後ろ) を返す。半分以上が当てはまらなければ None"""
+    cnt = {}
+    for no, u in zip(nos, urls):
+        if u and u.count(no) == 1:
+            a, b = u.split(no)
+            cnt[(a, b)] = cnt.get((a, b), 0) + 1
+    if not cnt:
+        return None
+    best, n = max(cnt.items(), key=lambda x: x[1])
+    return list(best) if n * 2 >= len(nos) else None
+
+
 def embed_data(cfg, rows, dates, info, state, feat, holidays, default, now):
     """ブラウザ側(JavaScript)で日付を切り替えるためのデータ"""
-    hs = []
+    # ページを軽くするため、マスは日付の並び順の配列にし、部屋名は一覧(rn)の番号で持つ。
+    # 宿のURLが決まった形(番号だけ違う)なら、形(ut)だけを載せて省く。ブラウザ側(JS)で元の形に戻す
+    hs, rn, rni = [], [], {}
+    urls = {k: [] for k in ("u", "pu", "im")}
     for h in rows:
-        cells = {}
+        urls["u"].append(safe_url(h.get("url")))
+        urls["pu"].append(safe_url(h.get("plan_url") or h.get("url")))
+        urls["im"].append(safe_url(h.get("image")) if h.get("image") else "")
+    ut = {k: url_template([h["no"] for h in rows], v) for k, v in urls.items()}
+    for i, h in enumerate(rows):
+        cc = []
         for d in dates:
             c = state["cells"].get(h["no"], {}).get(d.isoformat())
             st = status(c, feat)
             if st == "ok":
                 p, url, name = c["f"][feat]
                 n_d, low_d = info[d.isoformat()]
-                cells[d.isoformat()] = ["o", p, link_or_blank(h["no"], d.isoformat(), safe_url(url or h.get("url"))), name, badges_for(cfg, h, p, low_d, n_d), badges_for(cfg, h, p, low_d, n_d, limit=False)]
+                if name not in rni:
+                    rni[name] = len(rn)
+                    rn.append(name)
+                v = ["o", p, rni[name], link_or_blank(h["no"], d.isoformat(), safe_url(url or h.get("url"))),
+                     badges_for(cfg, h, p, low_d, n_d), badges_for(cfg, h, p, low_d, n_d, limit=False)]
+                while len(v) > 3 and not v[-1]:
+                    v.pop()
+                cc.append(v)
             elif st == "part":
                 a = c.get("any") or [0, ""]
-                cells[d.isoformat()] = ["p", a[0], link_or_blank(h["no"], d.isoformat(), safe_url(a[1] or h.get("plan_url") or h.get("url")))]
+                lk_ = link_or_blank(h["no"], d.isoformat(), safe_url(a[1] or h.get("plan_url") or h.get("url")))
+                cc.append(["p", a[0]] + ([lk_] if lk_ else []))
             elif st == "full":
-                cells[d.isoformat()] = ["f"]
-        hs.append({"no": h["no"], "n": h["name"], "u": safe_url(h.get("url")), "pu": safe_url(h.get("plan_url") or h.get("url")),
-                   "rv": h.get("review"), "rc": h.get("reviews"), "st": h.get("station", ""),
-                   "hp": hotel_href(h), "ad": h.get("address", ""), "im": safe_url(h.get("image")) if h.get("image") else "", "c": cells})
+                cc.append("f")
+            else:
+                cc.append(0)
+        while cc and cc[-1] == 0:
+            cc.pop()
+        e = {"no": h["no"], "n": h["name"], "rv": h.get("review"), "rc": h.get("reviews"), "st": h.get("station", ""),
+             "hp": hotel_href(h), "ad": h.get("address", ""), "cc": cc}
+        for k in ("u", "pu", "im"):
+            if not ut[k] or urls[k][i] != ut[k][0] + h["no"] + ut[k][1]:
+                e[k] = urls[k][i]
+        hs.append(e)
     ren = set()
     for a, b in holiday_blocks(dates, holidays):
         for i in range((b - a).days + 1):
@@ -297,7 +345,8 @@ def embed_data(cfg, rows, dates, info, state, feat, holidays, default, now):
                    "r": 1 if k in ren else 0, "c": 1 if k in crown else 0,
                    "u": 0 if any(status(state["cells"].get(h["no"], {}).get(k), feat) != "none" for h in rows) else 1,
                    "g": (parse_dt(state.get("fetched", {}).get(k, "")) or now).isoformat(timespec="seconds") if state.get("fetched", {}).get(k) else ""})
-    return {"dates": ds, "hotels": hs, "def": default.isoformat(), "badges": badge_defs(cfg), "lt": LINK, "tm": TABLE_MAX,
+    return {"dates": ds, "hotels": hs, "rn": rn, "ut": {k: v for k, v in ut.items() if v}, "def": default.isoformat(),
+            "badges": badge_defs(cfg), "lt": LINK, "tm": TABLE_MAX,
             "owls": {"sleepy": owl_html("sleepy")}}
 
 
@@ -656,6 +705,12 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 JS = r"""
 (function(){
 var D=window.__V;if(!D||!D.hotels.length)return;
+// 軽くして送ったデータを、元の形(h.c[日付], h.u など)に戻す
+(function(){var ut=D.ut||{},rn=D.rn||[];D.hotels.forEach(function(h){
+  ['u','pu','im'].forEach(function(k){if(h[k]===undefined)h[k]=ut[k]?ut[k][0]+h.no+ut[k][1]:'';});
+  if(h.cc){var c={};h.cc.forEach(function(v,i){if(!v||!D.dates[i])return;var d=D.dates[i].d;
+    if(v==='f')c[d]=['f'];else if(v[0]==='p')c[d]=['p',v[1],v[2]||''];else c[d]=['o',v[1],v[3]||'',rn[v[2]],v[4]||[],v[5]||[]];});
+   h.c=c;delete h.cc;}});})();
 var F=D.feat,FL=D.flabel;
 var cards=document.getElementById('cards'),rt=document.getElementById('rt'),strip=document.getElementById('dscroll'),
     sortSel=document.getElementById('sortsel'),finder=document.getElementById('finder');
@@ -833,12 +888,12 @@ if(tbl){tbl.addEventListener('click',function(e){var td=e.target.closest?e.targe
   var tm=document.getElementById('tmore');
   if(tm){tm.hidden=false;tm.addEventListener('click',function(){var tbody=tbl.tBodies[0];
     for(var i=D.tm;i<D.hotels.length;i++){var h=D.hotels[i],tr=el('tr');tr.setAttribute('data-h',h.no);
-      var hn=el('th','hn');hn.scope='row';hn.appendChild(btn(h.u,'nm',h.n));hn.appendChild(el('small',null,h.rv?'★'+h.rv:''));tr.appendChild(hn);
+      var hn=el('th','hn');hn.scope='row';if(h.hp){var na=el('a','nm',h.n);na.href=h.hp;hn.appendChild(na);}else hn.appendChild(btn(h.u,'nm',h.n));hn.appendChild(el('small',null,h.rv?'★'+h.rv:''));tr.appendChild(hn);
       D.dates.forEach(function(x,j){var c=h.c[x.d],td=el('td'),sp=el('span');td.setAttribute('data-w',String(Math.floor(j/7)));
         if(!c){td.className='c nd';sp.textContent='—';}
         else if(c[0]==='f'){td.className='c full';sp.textContent='満';}
         else if(c[0]==='p'){td.className='c part';sp.textContent='△';}
-        else{td.className='c ok';td.title=c[3]+' '+yen(c[1])+'〜';sp.textContent='◯';sp.appendChild(el('i',null,c[1]>=10000?(c[1]/10000).toFixed(1)+'万':String(c[1]).replace(/\B(?=(\d{3})+(?!\d))/g,',')));}
+        else{td.className='c ok';sp.textContent='◯';sp.appendChild(el('i',null,c[1]>=10000?(c[1]/10000).toFixed(1)+'万':String(c[1]).replace(/\B(?=(\d{3})+(?!\d))/g,',')));}
         td.appendChild(sp);tr.appendChild(td);});
       tbody.appendChild(tr);}
     tm.parentNode.removeChild(tm);if(tb)show(curTab);});}}
@@ -922,9 +977,10 @@ def ld_script(objs):
 
 def shell(cfg, demo, root, title, desc, canonical, inner, ld=None, noindex=False, js=False):
     extra = ld_script(ld) if ld else ""
+    sl = (f"<script>window.__LT={json.dumps(LINK)};{SL_JS}</script>" if LINK and 'data-sl="' in inner else "")
     return (head(cfg, title, desc, canonical, demo, extra, noindex) + header_html(cfg, demo, root)
             + '<div class="wrap">' + inner + "</div>" + f"<footer>{footer_html(cfg, root)}</footer>"
-            + (f"<script>{JS}</script>" if js else "") + "<script>" + REL_JS + TRACK_JS + "</script></body></html>")
+            + (f"<script>{JS}</script>" if js else "") + sl + "<script>" + REL_JS + TRACK_JS + "</script></body></html>")
 
 
 def breadcrumb_ld(items):
@@ -1020,7 +1076,7 @@ def status_any(state, h, feat, ds):
     return any(status(state["cells"].get(h["no"], {}).get(d.isoformat()), feat) == "ok" for d in ds)
 
 
-def item_list_ld(rows, state, feat, ds, canonical, limit=60):
+def item_list_ld(rows, state, feat, ds, canonical, limit=20):
     """一覧の各宿を、料金・在庫つき(Offer)で機械に伝える。canonical はこのページのURL(宿ページは ./hotel/番号/)"""
     out = []
     for i, h in enumerate(rows):
@@ -1257,7 +1313,7 @@ def render_scene(cfg, page, sc, scene_list, ctx, state, stats, demo):
     parts = [lead, " / ".join(bullets)]
 
     title_for_share = f"{name}" + (f"【{sc['span']}】" if sc["span"] else "") + f" | {site['name']}"
-    body = [f'<div class="hero"><div class="crumb"><a href="../../">{esc(site["name"])}</a> › <a href="../">{esc(page["title"])}</a> › {esc(sc["name"])}</div>'
+    body = [f'<div class="hero"><div class="crumb"><a href="../../">{esc(site["name"])}</a> › <a href="../../{esc(page["area"])}/">{esc(cfg["areas"][page["area"]]["label"])}</a> › <a href="../">{esc(page["title"])}</a> › {esc(sc["name"])}</div>'
             f"<h1>{esc(name)}" + (f"<br><small style='font-size:.6em;color:var(--sub)'>{esc(sc['span'])}</small>" if sc["span"] else "") + "</h1></div>",
             answer_html(asof, lead, bullets, details, f"{sc['name']}の空室まとめ", mood=("happy" if st["hotels"] else "sleepy")), chips_html(scene_list, "../", sc["slug"]), share_html(canonical, title_for_share)]
     for d, fetched, n, low in st["per"]:
@@ -1295,7 +1351,8 @@ def render_scene(cfg, page, sc, scene_list, ctx, state, stats, demo):
          (f"最新の取得は{newest:%Y-%m-%d %H:%M}(日本時間)です。" if newest else "取得前です。") + f"更新は{freq_text(cfg)}です。リアルタイムではありません。"),
     ]
     body.append(faq_html(faq))
-    ld = [breadcrumb_ld([(site["name"], ctx["base"] + "/"), (page["title"], f"{ctx['base']}/{page['slug']}/"), (sc["name"], canonical)]),
+    ld = [breadcrumb_ld([(site["name"], ctx["base"] + "/"), (cfg["areas"][page["area"]]["label"], f"{ctx['base']}/{page['area']}/"),
+                         (page["title"], f"{ctx['base']}/{page['slug']}/"), (sc["name"], canonical)]),
           {"@context": "https://schema.org", "@type": "CollectionPage", "name": name, "url": canonical, "inLanguage": "ja",
            "dateModified": (newest or datetime.now(JST)).isoformat(timespec="seconds"),
            "isPartOf": {"@type": "WebSite", "name": site["name"], "url": ctx["base"] + "/"}},
@@ -1610,7 +1667,7 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
         cal += "".join(_cell(d) for d in ds_)
         cal += "</div></div>"
 
-    body = [f'<div class="hero"><div class="crumb"><a href="../../">{esc(site["name"])}</a> › <a href="../../{esc(page["slug"])}/">{esc(page["title"])}</a> › {esc(h["name"])}</div>'
+    body = [f'<div class="hero"><div class="crumb"><a href="../../">{esc(site["name"])}</a> › <a href="../../{esc(page["area"])}/">{esc(cfg["areas"][page["area"]]["label"])}</a> › <a href="../../{esc(page["slug"])}/">{esc(page["title"])}</a> › {esc(h["name"])}</div>'
             f"<h1>{esc(nm_f)} 空室状況</h1><p class=\"lead\">{esc(hotel_sub(h))}</p></div>",
             answer_html(asof, lead, bullets, details, "この宿の空室まとめ", mood=("happy" if ok else "sleepy"))]
     cta_url = (ok[0][2] if ok else None) or h.get("plan_url") or h.get("url")
@@ -1672,7 +1729,8 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
         hotel_ld["image"] = h["image"]
     if yes:
         hotel_ld["amenityFeature"] = [{"@type": "LocationFeatureSpecification", "name": y, "value": True} for y in yes]
-    ld = [breadcrumb_ld([(site["name"], ctx["base"] + "/"), (page["title"], f"{ctx['base']}/{page['slug']}/"), (h["name"], canonical)]),
+    ld = [breadcrumb_ld([(site["name"], ctx["base"] + "/"), (cfg["areas"][page["area"]]["label"], f"{ctx['base']}/{page['area']}/"),
+                         (page["title"], f"{ctx['base']}/{page['slug']}/"), (h["name"], canonical)]),
           {"@context": "https://schema.org", "@type": "WebPage", "name": f"{nm_f} 空室状況", "url": canonical, "inLanguage": "ja",
            "dateModified": (newest or datetime.now(JST)).isoformat(timespec="seconds"), "about": hotel_ld,
            "isPartOf": {"@type": "WebSite", "name": site["name"], "url": ctx["base"] + "/"}},
@@ -2258,6 +2316,10 @@ def render_privacy(cfg, now, demo):
 
 # ---- ページ本体 -------------------------------------------------------
 
+def page_scenes(cfg, today):
+    return [sc for sc in all_scenes(cfg, today) if sc["slug"] in PAGE_SCENES]
+
+
 def render_page(cfg, hotels, state, stats, page, now, demo):
     site = cfg["site"]
     feat = page["feature"]
@@ -2299,7 +2361,7 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
     quick.insert(0, ("今日", today))
 
     t0 = info[today.isoformat()] if rows else (0, None)
-    scene_list = all_scenes(cfg, today)
+    scene_list = page_scenes(cfg, today)
     ans = (answer_parts(cfg, page, rows, state, today, dates, info, scene_list, newest, holidays, now)
            if rows else ("", "", [], []))
     desc = ((ans[1] + f"{n_days}日先までの空室表と料金を、楽天トラベルの空室データから自動更新しています(リアルタイムではありません)。") if rows else
@@ -2351,11 +2413,14 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
                 cs.append(f'<td class="c full" data-w="{w}"><span>満</span></td>')
             elif st == "ok":
                 p, url, name = c["f"][feat]
-                cs.append(f'<td class="c ok" data-w="{w}" title="{esc(name)} {yen_full(p)}〜"><span>◯<i>{yen(p)}</i></span></td>')
+                cs.append(f'<td class="c ok" data-w="{w}"><span>◯<i>{yen(p)}</i></span></td>')
             else:
                 cs.append(f'<td class="c part" data-w="{w}"><span>△</span></td>')
         rv = f"★{h['review']}" if h.get("review") else ""
-        body.append(f'<tr data-h="{esc(h["no"])}"><th class="hn" scope="row">{btn_plain(h.get("url"), esc(h["name"]), "nm")}'
+        # 宿名は、宿ページがあればそちらへ(サイト内のつながりを強くする)。なければ楽天の宿情報へ
+        nm = (f'<a class="nm" href="{esc(hotel_href(h))}">{esc(h["name"])}</a>' if hotel_href(h)
+              else btn_plain(h.get("url"), esc(h["name"]), "nm"))
+        body.append(f'<tr data-h="{esc(h["no"])}"><th class="hn" scope="row">{nm}'
                     f"<small>{esc(rv)}</small></th>{''.join(cs)}</tr>")
     rest = len(rows) - TABLE_MAX
     more_btn = (f'<p class="tmore"><button type="button" id="tmore" hidden>残り{rest}軒も表に表示する</button></p>'
@@ -2368,7 +2433,8 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
     ld = [
         {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": site["name"], "item": site["url"].rstrip("/") + "/"},
-            {"@type": "ListItem", "position": 2, "name": page["title"], "item": canonical}]},
+            {"@type": "ListItem", "position": 2, "name": alabel, "item": site["url"].rstrip("/") + f"/{page['area']}/"},
+            {"@type": "ListItem", "position": 3, "name": page["title"], "item": canonical}]},
         {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
             {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]},
         {"@context": "https://schema.org", "@type": "CollectionPage", "name": page["title"], "url": canonical, "description": desc,
@@ -2378,7 +2444,7 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
     ld_html = '<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False).replace("</", "<\\/") + "</script>"
 
     out = [head(cfg, title, desc, canonical, demo, ld_html), header_html(cfg, demo), '<div class="wrap">']
-    out.append(f'<div class="hero"><div class="crumb"><a href="../">{esc(site["name"])}</a> › <a href="../{esc(hub_slug(cfg, feat))}/">{esc(flabel)}(全エリア)</a> › <a href="../{esc(page["area"])}/">{esc(alabel)}</a></div>'
+    out.append(f'<div class="hero"><div class="crumb"><a href="../">{esc(site["name"])}</a> › <a href="../{esc(page["area"])}/">{esc(alabel)}</a> › {esc(flabel)}</div>'
                f'<h1>{esc(page["title"])}</h1><p class="lead">{esc(page.get("lead", ""))}</p></div>')
     out.append(switcher_html(cfg, page, "../"))
 
@@ -2386,7 +2452,6 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
         out.append(answer_html(*ans, mood=("happy" if any(info[d.isoformat()][0] for d in dates) else "sleepy")))
         if not page.get("auto"):
             out.append(chips_html(scene_list, "./"))
-            out.append(theme_nav_html(themes_for(cfg, page, rows, state, dates), "./"))
         out.append(share_html(canonical, title))
     if not rows:
         out.append('<div class="empty"><b>データを準備中です。</b><br>初回の自動更新が終わると、ここに空室が表示されます。'
@@ -2491,9 +2556,19 @@ def book_link(h, d, cell_url=""):
     return cell_url or h.get("url", "")
 
 
+def book_a(h, d, text):
+    """日付つきプラン一覧(アフィリエイト経由)へのリンク。長いURLはページに載せず、ブラウザ側(SL_JS)で組み立てる。
+    JavaScriptが動かないときは、宿ページ(なければ楽天の宿情報)へ行く"""
+    if not LINK:
+        return btn_plain(book_link(h, d), text)
+    fb = hotel_href(h) or safe_url(h.get("url"))
+    return (f'<a href="{esc(fb)}" data-sl="{esc(h["no"])}|{d.isoformat()}" target="_blank" '
+            f'rel="sponsored nofollow noopener">{text}</a>')
+
+
 def name_link(h, d):
     href = hotel_href(h)
-    return f'<a href="{esc(href)}">{esc(h["name"])}</a>' if href else btn_plain(book_link(h, d), esc(h["name"]))
+    return f'<a href="{esc(href)}">{esc(h["name"])}</a>' if href else book_a(h, d, esc(h["name"]))
 
 
 def when_summary(cfg, hotels, state, ds):
@@ -2532,13 +2607,14 @@ def render_when(cfg, hotels, state, slug, name, ds, note, wl, now, demo):
                  f"<td>{esc(yen_full(v['low'])) + '〜' if v['low'] else '—'}</td><td>{time_html(v['got']) or '—'}</td>"
                  f"<td>{area_pages_links(cfg, area, '../')}</td></tr>")
         top = sorted([x for x in v["vacant"] if (x[0].get("reviews") or 0) >= PICK_MIN_REVIEWS],
-                     key=lambda x: (-_rv(x[0]), x[1] or 9e9, x[0]["name"]))[:5]
+                     key=lambda x: (-_rv(x[0]), x[1] or 9e9, x[0]["name"]))[:WHEN_PICKS]
         if top:
             lis = "".join(
                 f"<li>{name_link(h, d)}<small>★{esc(h.get('review'))}(口コミ{(h.get('reviews') or 0):,}件)"
                 + (f" ・ 最安{yen_full(p)}〜" if p else "") + (f"({esc(day_label(d, holidays))})" if len(ds) > 1 else "")
-                + f' ・ {btn_plain(book_link(h, d), "楽天トラベルで空室を見る【PR】")}</small></li>' for h, p, d in top)
-            picks_html.append(f'<section class="card"><h2>{esc(alabel)}で{esc(name)}空いている、口コミ評価の高い宿</h2><ol class="hl picks">{lis}</ol></section>')
+                + f' ・ {book_a(h, d, "楽天トラベルで空室を見る【PR】")}</small></li>' for h, p, d in top)
+            picks_html.append(f'<section class="card"><h2>{esc(alabel)}で{esc(name)}空いている、口コミ評価の高い宿</h2><ol class="hl picks">{lis}</ol>'
+                              f'<p class="legend"><a href="../{esc(area)}/">{esc(alabel)}の空室まとめ(ほかの宿・料金相場) ›</a></p></section>')
             ld_items += [h for h, p, d in top]
     if not ds:
         lead = f"{name}の対象になる日程は、いまはありません(次の対象日が近づくと、自動で表示します)。"
@@ -2630,7 +2706,7 @@ def render_area(cfg, hotels, state, area, wl, sums, now, demo):
                 lis = "".join(
                     f"<li>{name_link(h, d)}<small>★{esc(h.get('review'))}(口コミ{(h.get('reviews') or 0):,}件)"
                     + (f" ・ 最安{yen_full(p)}〜" if p else "") + (f"({esc(day_label(d, holidays))})" if len(ds) > 1 else "")
-                    + f' ・ {btn_plain(book_link(h, d), "楽天トラベルで空室を見る【PR】")}</small></li>' for h, p, d in top)
+                    + f' ・ {book_a(h, d, "楽天トラベルで空室を見る【PR】")}</small></li>' for h, p, d in top)
                 picks_html.append(f'<section class="card"><h2>{esc(alabel)}で{esc(lbl)}空いている、口コミ評価の高い宿</h2><ol class="hl picks">{lis}</ol></section>')
                 ld_items += [h for h, p, d in top]
     pc = price_cells(cfg, hotels, state, area, today)
@@ -2918,6 +2994,10 @@ def moves_ready(stats, today):
         return False
 
 
+UGOKI_MAX = 10      # 「空きが出た宿」に載せる、1エリアあたりの件数(今も空いている宿を優先)
+WHEN_PICKS = 3      # 今夜・明日などのページに載せる、1エリアあたりの口コミ上位の宿の数(エリアページは5軒)
+
+
 def render_ugoki(cfg, hotels, state, stats, wl, now, demo):
     site = cfg["site"]
     base = site["url"].rstrip("/")
@@ -2963,14 +3043,15 @@ def render_ugoki(cfg, hotels, state, stats, wl, now, demo):
         alabel = cfg["areas"][area]["label"]
         bullets.append(f"{alabel}: {len(lst)}件")
         lis = []
-        for at, c, still in lst[:30]:
+        for at, c, still in lst[:UGOKI_MAX]:
             h = hmap[c["no"]]
             d = date.fromisoformat(c["d"])
             st = '<b class="ok">今も空き</b>' if still else "その後また満室"
             lis.append(f"<li>{name_link(h, d)}<small>{esc(day_label(d, holidays))}泊"
                        + (f" ・ {yen_full(c['p'])}〜" if c.get("p") else "") + f" ・ {fmt_dt(at)}に空きを確認 ・ {st}"
-                       + (f' ・ {btn_plain(book_link(h, d), "楽天トラベルで見る【PR】")}' if still else "") + "</small></li>")
-        more = f"<p class='legend'>ほか{len(lst) - 30}件</p>" if len(lst) > 30 else ""
+                       + (f' ・ {book_a(h, d, "楽天トラベルで見る【PR】")}' if still else "") + "</small></li>")
+        more = (f"<p class='legend'>ほか{len(lst) - UGOKI_MAX}件(<a href=\"../{esc(area)}/\">{esc(alabel)}の空室まとめ</a>で最新の空きを確認できます)</p>"
+                if len(lst) > UGOKI_MAX else "")
         sections.append(f'<section class="card"><h2>{esc(alabel)}で空きが出た宿</h2><ul class="hl picks">{"".join(lis)}</ul>{more}</section>')
     inner = [f'<div class="hero"><div class="crumb"><a href="../">{esc(site["name"])}</a> › 空きが出た宿</div>'
              "<h1>きのうから空きが出た宿(キャンセル待ちの目安)</h1>"
@@ -3218,19 +3299,14 @@ def main():
         if page.get("auto"):
             print("  (宿の条件ページ: 日付別・テーマ別のページは作りません)")
             continue
-        scene_list = all_scenes(cfg, now.date())
+        scene_list = page_scenes(cfg, now.date())
         for sc in scene_list:
             write_page(out_dir, f"{page['slug']}/{sc['slug']}", render_scene(cfg, page, sc, scene_list, ctx, pstate, pstats, args.demo))
             paths.append(f"{page['slug']}/{sc['slug']}/")
-        avail = themes_for(cfg, page, ctx["rows"], pstate, ctx["dates"])
-        live = {th["slug"] for th, _ in avail}
-        for th in cfg.get("themes", []):
-            if th["slug"] not in live:
-                shutil.rmtree(out_dir / page["slug"] / th["slug"], ignore_errors=True)   # 条件に合う宿が減ったら、ページを消す
-        for th, got in avail:
-            write_page(out_dir, f"{page['slug']}/{th['slug']}", render_theme(cfg, page, th, got, avail, scene_list, ctx, pstate, args.demo))
-            paths.append(f"{page['slug']}/{th['slug']}/")
-        print(f"  日付別ページ {len(scene_list)} 枚 / 条件別ページ {len(avail)} 枚")
+        # テーマ別(高評価・3万円以下など)と、作らなくなった日程のページは消す(古いURLは _redirects で親ページへ)
+        for sub in [th["slug"] for th in cfg.get("themes", [])] + list(DROPPED_SCENES):
+            shutil.rmtree(out_dir / page["slug"] / sub, ignore_errors=True)
+        print(f"  日付別ページ {len(scene_list)} 枚")
 
     # 宿ページ(1軒1ページ)。古い宿ページはまとめて作り直す
     shutil.rmtree(out_dir / "hotel", ignore_errors=True)
@@ -3243,9 +3319,13 @@ def main():
         paths.append(f"hotel/{no}/")
     print(f"宿ページ: {len(primary)} 枚(1軒1ページ)")
     # 古い宿ページのURL(/エリア-条件/hotel/番号/)から、新しいURLへ自動で案内する(Cloudflare Pages の _redirects)
-    (out_dir / "_redirects").write_text("/:slug/hotel/:no/ /hotel/:no/ 301\n/:slug/hotel/:no /hotel/:no/ 301\n", encoding="utf-8")
+    # まとめたページ(テーマ別・来週末・クリスマス)の古いURLは、親のページへ自動で案内する
+    gone = [th["slug"] for th in cfg.get("themes", [])] + list(DROPPED_SCENES)
+    rules = ["/:slug/hotel/:no/ /hotel/:no/ 301", "/:slug/hotel/:no /hotel/:no/ 301"]
+    rules += [r for g in gone for r in (f"/:slug/{g}/ /:slug/ 301", f"/:slug/{g} /:slug/ 301")]
+    (out_dir / "_redirects").write_text("\n".join(rules) + "\n", encoding="utf-8")
 
-    scene_list = all_scenes(cfg, now.date())
+    scene_list = page_scenes(cfg, now.date())
     CUR_AUTO = False
     for fkey, items in hub_items.items():
         if not any(p["slug"] for p, *_ in items):
@@ -3258,6 +3338,8 @@ def main():
         area_ctxs = [(pg, ctxs[pg["slug"]]) for pg in cfg["pages"] if pg["feature"] == fkey and pg["slug"] in ctxs]
         if not area_ctxs:
             continue
+        for g in DROPPED_SCENES:
+            shutil.rmtree(out_dir / hub_slug(cfg, fkey) / g, ignore_errors=True)
         for sc in scene_list:
             write_page(out_dir, f"{hub_slug(cfg, fkey)}/{sc['slug']}", render_hub(cfg, fkey, sc, scene_list, area_ctxs, now, args.demo))
             paths.append(f"{hub_slug(cfg, fkey)}/{sc['slug']}/")
@@ -3305,7 +3387,7 @@ def main():
     (out_dir / "404.html").write_text(
         shell(cfg, args.demo, "/", f"ページが見つかりません | {site0['name']}", "お探しのページは見つかりませんでした。",
               site0["url"].rstrip("/") + "/", inner404, None, noindex=True), encoding="utf-8")
-    (out_dir / "index.html").write_text(render_home(cfg, digests, now, args.demo, all_scenes(cfg, now.date()), home_answer(cfg, when_sums, wl, set(cfg.get("holidays", [])))), encoding="utf-8")
+    (out_dir / "index.html").write_text(render_home(cfg, digests, now, args.demo, page_scenes(cfg, now.date()), home_answer(cfg, when_sums, wl, set(cfg.get("holidays", [])))), encoding="utf-8")
 
     og = ROOT / "assets" / "ogp.png"
     if og.exists():

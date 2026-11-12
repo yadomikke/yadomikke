@@ -135,7 +135,7 @@ with tempfile.TemporaryDirectory() as tmp:
     check('rel="sponsored nofollow noopener"' in page, "広告リンクの印(sponsored)が付く")
     check("【PR】" in page and "Supported by Rakuten Developers" in page, "広告表記(【PR】)とクレジットが入る")
     out = tmp / "out"
-    for rel in ("about", "privacy", "hakone-roten/shumatsu", "hakone-roten/nenmatsu", "hakone-roten/xmas", "hotel/1", "hotel/11", "roten"):
+    for rel in ("about", "privacy", "hakone-roten/shumatsu", "hakone-roten/nenmatsu", "hotel/1", "hotel/11", "roten"):
         check((out / rel / "index.html").exists(), f"{rel}/ のページが作られる")
     check(not (out / "hotel" / "2").exists(), "露天なしの宿のページは作られない")
     check(not (out / "hakone-roten" / "hotel").exists(), "条件ごとの古い宿ページは作られない(1軒1ページにまとめた)")
@@ -158,7 +158,18 @@ with tempfile.TemporaryDirectory() as tmp:
     key = cfg["site"]["indexnow_key"]
     check((out / f"{key}.txt").read_text(encoding="utf-8") == key, "IndexNow用の鍵ファイルが作られる")
     sm = (out / "sitemap.xml").read_text(encoding="utf-8")
-    check("/hotel/1/" in sm and "/roten/" in sm and "/about/" in sm and "/hakone-roten/xmas/" in sm, "sitemapに全ページが入る")
+    check("/hotel/1/" in sm and "/roten/" in sm and "/about/" in sm and "/hakone-roten/nenmatsu/" in sm, "sitemapに全ページが入る")
+    # 似たページの整理: テーマ別・来週末・クリスマスのページは作らず、古いURLは親のページへ転送する
+    check(not (out / "hakone-roten" / "xmas").exists() and not (out / "hakone-roten" / "raishu").exists()
+          and not (out / "hakone-roten" / "high-rated").exists() and not (out / "roten" / "xmas").exists()
+          and "/hakone-roten/xmas/" not in sm and "/hakone-roten/high-rated/" not in sm,
+          "似たページ(テーマ別・来週末・クリスマス)は作らず、sitemapにも載せない")
+    check("/:slug/xmas/ /:slug/ 301" in rd and "/:slug/high-rated/ /:slug/ 301" in rd and "/:slug/raishu/ /:slug/ 301" in rd,
+          "まとめたページの古いURLは、親のページへ自動で転送する")
+    check('<a href="../">ヤドミッケ</a> › <a href="../hakone/">箱根</a> › 客室露天風呂' in page
+          and '"name": "箱根", "item": "https://example.invalid/hakone/"' in page
+          and '› <a href="../../hakone/">箱根</a> › <a href="../../hakone-roten/">' in hp1,
+          "パンくずは「トップ › エリア › 条件 › 宿」にそろえ、エリアページを本命にする")
     rb = (out / "robots.txt").read_text(encoding="utf-8")
     check("OAI-SearchBot" in rb and "Disallow" not in rb, "robots.txtは検索・AIの巡回を許可")
     check("ヤドミッケ" in (out / "index.html").read_text(encoding="utf-8") and "Organization" in (out / "index.html").read_text(encoding="utf-8"), "トップにサイト名とOrganization")
@@ -170,8 +181,12 @@ with tempfile.TemporaryDirectory() as tmp:
     check("hb.afl.rakuten" not in table and 'data-h="1"' in table, "カレンダー表のマスには予約リンクを載せず、宿番号だけを持たせる")
     import re as _re
     vdata = json.loads(_re.search(r"window.__V=(.*?)</script>", page, _re.S).group(1).replace("<\\/", "</"))
-    c1 = next(v for v in vdata["hotels"][0]["c"].values() if v[0] == "o")
-    check(c1[2] == "" and vdata["lt"] == {"a": "z", "ad": 2, "n": 1}, "埋め込みデータも、組み立てられるリンクは省き、材料(アフィリエイトID・人数・泊数)だけ持つ")
+    c1 = next(v for v in vdata["hotels"][0]["cc"] if v and v != "f" and v[0] == "o")
+    check(c1[3] == "" and vdata["lt"] == {"a": "z", "ad": 2, "n": 1}, "埋め込みデータも、組み立てられるリンクは省き、材料(アフィリエイトID・人数・泊数)だけ持つ")
+    h0 = vdata["hotels"][0]
+    check("u" not in h0 and vdata["ut"]["u"] == ["https://aff/h", ""] and vdata["rn"] and isinstance(h0["cc"], list),
+          "埋め込みデータは軽い形(日付の並び順の配列・部屋名の番号・URLの形)で持つ")
+    check("title=" not in table and 'href="/hotel/1/"' in table, "表のマスに説明文を重ねて載せず、宿名は宿ページへリンクする")
     # 引用されやすい冒頭の一文
     check(f"{today.year}年{today.month}月{today.day}日" in page and "(楽天トラベルの空室データ)で、箱根の客室露天風呂が確認できた宿1軒のうち" in page,
           "冒頭の一文に、年つきの日時・出どころ・母数(宿の数)が入る")
@@ -187,7 +202,8 @@ with tempfile.TemporaryDirectory() as tmp:
     kp = (out / "konya" / "index.html").read_text(encoding="utf-8")
     check("今夜泊まれる温泉地の宿" in kp and "2エリアで計" in kp and "箱根: " in kp and "熱海: " in kp and '"FAQPage"' in kp,
           "今夜のページ(/konya/)に、全エリアの空きの数とエリア別の内訳がある")
-    check("宿1" in kp and f"https://hb.afl.rakuten.co.jp/hgc/z/?pc={plan}" in kp, "今夜のページの空き宿リンクも、アフィリエイト経由の日付つきリンクになる")
+    check("宿1" in kp and f'data-sl="1|{today.isoformat()}"' in kp and 'window.__LT={"a": "z", "ad": 2, "n": 1}' in kp,
+          "今夜のページの予約リンクは、宿番号と日付から、ブラウザ側でアフィリエイト経由の日付つきリンクを組み立てる")
     for rel in ("ashita", "shumatsu", "renkyu", "nenmatsu", "ugoki"):
         check((out / rel / "index.html").exists() and f"/{rel}/" in sm, f"{rel}/ のページが作られ、sitemapに入る")
     home = (out / "index.html").read_text(encoding="utf-8")
