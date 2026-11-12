@@ -50,9 +50,47 @@ def show(it):
     print(f"    その他の項目名: {sorted(set(it) - set(keys) - {'itemCaption'})}")
 
 
+def raw_probe():
+    """403の理由を知るため、いくつかの組み合わせで直接問い合わせ、エラーの本文をそのまま出す"""
+    import json, urllib.error, urllib.parse, urllib.request, time
+    combos = []
+    for ver in ("20220601", "20260401", "20260701"):
+        for key_in in ("header", "query"):
+            for ref in ("yadomikke.com", "none"):
+                combos.append((ver, key_in, ref))
+    ok = None
+    for ver, key_in, ref in combos:
+        q = {"applicationId": APP, "format": "json", "formatVersion": 2, "keyword": "ふるさと納税 米", "hits": 1}
+        if AFF:
+            q["affiliateId"] = AFF
+        h = {"User-Agent": "vacancy-site/1.0"}
+        if key_in == "query":
+            q["accessKey"] = KEY
+        else:
+            h["accessKey"] = KEY
+        if ref != "none":
+            h["Referer"] = "https://yadomikke.com/"
+            h["Origin"] = "https://yadomikke.com"
+        url = f"https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/{ver}?" + urllib.parse.urlencode(q)
+        time.sleep(1.3)
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url, headers=h), timeout=30) as r:
+                print(f"  版{ver} 鍵={key_in} 参照元={ref}: OK {r.status}")
+                ok = ok or (ver, key_in, ref)
+        except urllib.error.HTTPError as e:
+            body = e.read().decode("utf-8", "replace")
+            print(f"  版{ver} 鍵={key_in} 参照元={ref}: {e.code} {hide(body)[:300]}")
+    return ok
+
+
 def main():
     if not APP or not KEY:
         sys.exit("楽天のIDが設定されていません")
+    print("[0] 組み合わせの確認")
+    ok = raw_probe()
+    if ok:
+        VER["IchibaItem/Search"] = ok[0]
+        VER["IchibaItem/Ranking"] = ok[0] if ok[0] != "20220601" else "20220601"
     base = None
     for b in BASES:
         d, err = try_call(client(b), "IchibaItem/Search", keyword="ふるさと納税 米", hits=3)
