@@ -1,0 +1,26 @@
+# (一時的)楽天市場APIで、ふるさと納税の返礼品データが取れるかを確認する。作業用ブランチだけで動き、本番には入れません。
+name: ふるさと納税データの確認(一時的)
+
+on:
+  push:
+    branches: [claude/eager-bohr-xi7x4c]
+    paths: [scripts/furusato_check.py, .github/workflows/furusato-check.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: 楽天市場APIを試す
+        env:
+          RAKUTEN_APP_ID: ${{ secrets.RAKUTEN_APP_ID }}
+          RAKUTEN_ACCESS_KEY: ${{ secrets.RAKUTEN_ACCESS_KEY }}
+          RAKUTEN_AFFILIATE_ID: ${{ secrets.RAKUTEN_AFFILIATE_ID }}
+        run: python scripts/furusato_check.py
