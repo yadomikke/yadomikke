@@ -2,7 +2,7 @@
 
 > 温泉地の宿の空室を、条件(客室露天風呂・ペット可・大浴場など)と日付ごとにまとめた日本語サイトです。楽天トラベルの空室検索APIから自動で取得し、7日以内の日程は約8時間ごと、14日以内は約16時間ごと、それ以降は約36時間ごとを目安に更新しています。料金は1泊・大人2名・1部屋の最安値です。リアルタイムの在庫ではないため、予約前に楽天トラベルでの確認が必要です。
 
-最終更新: 2026-11-14 04:50(日本時間)
+最終更新: 2026-11-14 06:47(日本時間)
 
 ## 空室ページ(エリア×条件)
 
@@ -174,17 +174,19 @@
 - [伊香保で今空いている岩盤浴のある宿](https://yadomikke.com/ikaho-ganbanyoku/): 伊香保の岩盤浴のある宿 4軒の空室表(本日空き1軒)
 - [伊香保で今空いている送迎のある宿](https://yadomikke.com/ikaho-sougei/): 伊香保の送迎のある宿 12軒の空室表(本日空き2軒)
 - [伊香保で今空いているバリアフリー対応の宿(車椅子可など)](https://yadomikke.com/ikaho-barrierfree/): 伊香保のバリアフリー対応の宿(車椅子可など) 31軒の空室表(本日空き6軒)
-- [河口湖で今空いている大浴場のある宿](https://yadomikke.com/kawaguchiko-daiyoku/): 河口湖の大浴場のある宿 12軒の空室表(本日空き2軒)
-- [河口湖で今空いている貸切風呂・家族風呂のある宿](https://yadomikke.com/kawaguchiko-kashikiri/): 河口湖の貸切風呂・家族風呂のある宿 4軒の空室表(本日空き0軒)
-- [河口湖で今空いている夜遅くても泊まれる宿(最終チェックイン22時以降)](https://yadomikke.com/kawaguchiko-osoitsuki/): 河口湖の夜遅くても泊まれる宿(最終チェックイン22時以降) 6軒の空室表(本日空き1軒)
+- [河口湖で今空いている大浴場のある宿](https://yadomikke.com/kawaguchiko-daiyoku/): 河口湖の大浴場のある宿 43軒の空室表(本日空き6軒)
+- [河口湖で今空いている貸切風呂・家族風呂のある宿](https://yadomikke.com/kawaguchiko-kashikiri/): 河口湖の貸切風呂・家族風呂のある宿 14軒の空室表(本日空き0軒)
+- [河口湖で今空いている小さな宿(客室10室以下)](https://yadomikke.com/kawaguchiko-chiisana/): 河口湖の小さな宿(客室10室以下) 12軒の空室表(本日空き2軒)
+- [河口湖で今空いている夜遅くても泊まれる宿(最終チェックイン22時以降)](https://yadomikke.com/kawaguchiko-osoitsuki/): 河口湖の夜遅くても泊まれる宿(最終チェックイン22時以降) 36軒の空室表(本日空き5軒)
 - [河口湖で今空いている駅から徒歩5分以内の宿](https://yadomikke.com/kawaguchiko-ekichika/): 河口湖の駅から徒歩5分以内の宿 16軒の空室表(本日空き0軒)
-- [河口湖で今空いている夕食の口コミ評価が高い宿](https://yadomikke.com/kawaguchiko-yushoku/): 河口湖の夕食の口コミ評価が高い宿 3軒の空室表(本日空き0軒)
-- [河口湖で今空いているお風呂の口コミ評価が高い宿](https://yadomikke.com/kawaguchiko-furohyoka/): 河口湖のお風呂の口コミ評価が高い宿 3軒の空室表(本日空き0軒)
-- [河口湖で今空いている清潔さの口コミ評価が高い宿](https://yadomikke.com/kawaguchiko-seiketsu/): 河口湖の清潔さの口コミ評価が高い宿 6軒の空室表(本日空き1軒)
-- [河口湖で今空いている子連れ向けの宿](https://yadomikke.com/kawaguchiko-kids/): 河口湖の子連れ向けの宿 3軒の空室表(本日空き2軒)
-- [河口湖で今空いているサウナのある宿](https://yadomikke.com/kawaguchiko-sauna/): 河口湖のサウナのある宿 8軒の空室表(本日空き1軒)
-- [河口湖で今空いている送迎のある宿](https://yadomikke.com/kawaguchiko-sougei/): 河口湖の送迎のある宿 8軒の空室表(本日空き1軒)
-- [河口湖で今空いているバリアフリー対応の宿(車椅子可など)](https://yadomikke.com/kawaguchiko-barrierfree/): 河口湖のバリアフリー対応の宿(車椅子可など) 8軒の空室表(本日空き2軒)
+- [河口湖で今空いている夕食の口コミ評価が高い宿](https://yadomikke.com/kawaguchiko-yushoku/): 河口湖の夕食の口コミ評価が高い宿 19軒の空室表(本日空き3軒)
+- [河口湖で今空いているお風呂の口コミ評価が高い宿](https://yadomikke.com/kawaguchiko-furohyoka/): 河口湖のお風呂の口コミ評価が高い宿 11軒の空室表(本日空き2軒)
+- [河口湖で今空いている清潔さの口コミ評価が高い宿](https://yadomikke.com/kawaguchiko-seiketsu/): 河口湖の清潔さの口コミ評価が高い宿 21軒の空室表(本日空き3軒)
+- [河口湖で今空いている子連れ向けの宿](https://yadomikke.com/kawaguchiko-kids/): 河口湖の子連れ向けの宿 10軒の空室表(本日空き3軒)
+- [河口湖で今空いているサウナのある宿](https://yadomikke.com/kawaguchiko-sauna/): 河口湖のサウナのある宿 28軒の空室表(本日空き4軒)
+- [河口湖で今空いている岩盤浴のある宿](https://yadomikke.com/kawaguchiko-ganbanyoku/): 河口湖の岩盤浴のある宿 4軒の空室表(本日空き1軒)
+- [河口湖で今空いている送迎のある宿](https://yadomikke.com/kawaguchiko-sougei/): 河口湖の送迎のある宿 41軒の空室表(本日空き5軒)
+- [河口湖で今空いているバリアフリー対応の宿(車椅子可など)](https://yadomikke.com/kawaguchiko-barrierfree/): 河口湖のバリアフリー対応の宿(車椅子可など) 32軒の空室表(本日空き5軒)
 - [下呂で今空いている駅から徒歩5分以内の宿](https://yadomikke.com/gero-ekichika/): 下呂の駅から徒歩5分以内の宿 7軒の空室表(本日空き1軒)
 - [城崎で今空いている駅から徒歩5分以内の宿](https://yadomikke.com/kinosaki-ekichika/): 城崎の駅から徒歩5分以内の宿 15軒の空室表(本日空き0軒)
 - [白浜で今空いている駅から徒歩5分以内の宿](https://yadomikke.com/shirahama-ekichika/): 白浜の駅から徒歩5分以内の宿 12軒の空室表(本日空き4軒)
