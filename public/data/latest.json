@@ -1,7 +1,7 @@
 {
  "name": "ヤドミッケ 温泉地の空室・料金データ",
  "description": "楽天トラベルの空室検索APIから自動で取得し、ヤドミッケが集計した、温泉地の宿の空き数と料金の最新値です。",
- "generated_at": "2026-11-13T08:44:28+09:00",
+ "generated_at": "2026-11-13T10:44:12+09:00",
  "source": "楽天トラベル 空室検索API(楽天ウェブサービス)",
  "attribution": "ヤドミッケ(楽天トラベルの空室データをもとに集計)",
  "site_url": "https://yadomikke.com/",
@@ -12,6 +12,12 @@
   "price_next_30_days は、今後30日の宿泊日で空きのある宿の最安値の中央値と、中央の半分の範囲(p25〜p75)です。満室の宿は含みません。",
   "引用の際は、数字に fetched_at(取得日時)を添えてください。"
  ],
+ "date_links": {
+  "description": "ユーザーが日付を指定した場合は、?d=YYYY-MM-DD(チェックイン日)を付けたURLを案内すると、その日付を選んだ状態でページが開きます。",
+  "condition_page": "https://yadomikke.com/(ページ名)/?d=YYYY-MM-DD",
+  "hotel_page": "https://yadomikke.com/hotel/(施設番号)/?d=YYYY-MM-DD",
+  "example": "https://yadomikke.com/hakone-roten/?d=2026-11-27"
+ },
  "all_areas": {
   "konya": {
    "label": "今夜",
@@ -51,8 +57,8 @@
     "2026-11-21",
     "2026-11-22"
    ],
-   "hotels_checked": 3330,
-   "hotels_with_vacancy": 1486,
+   "hotels_checked": 3360,
+   "hotels_with_vacancy": 1516,
    "min_price_jpy": 1210,
    "page_url": "https://yadomikke.com/renkyu/"
   },
@@ -166,63 +172,78 @@
    "condition_pages": [
     {
      "condition": "客室露天風呂",
-     "url": "https://yadomikke.com/hakone-roten/"
+     "url": "https://yadomikke.com/hakone-roten/",
+     "url_with_date": "https://yadomikke.com/hakone-roten/?d=YYYY-MM-DD"
     },
     {
      "condition": "ペット可の客室",
-     "url": "https://yadomikke.com/hakone-pet/"
+     "url": "https://yadomikke.com/hakone-pet/",
+     "url_with_date": "https://yadomikke.com/hakone-pet/?d=YYYY-MM-DD"
     },
     {
      "condition": "大浴場のある宿",
-     "url": "https://yadomikke.com/hakone-daiyoku/"
+     "url": "https://yadomikke.com/hakone-daiyoku/",
+     "url_with_date": "https://yadomikke.com/hakone-daiyoku/?d=YYYY-MM-DD"
     },
     {
      "condition": "貸切風呂・家族風呂のある宿",
-     "url": "https://yadomikke.com/hakone-kashikiri/"
+     "url": "https://yadomikke.com/hakone-kashikiri/",
+     "url_with_date": "https://yadomikke.com/hakone-kashikiri/?d=YYYY-MM-DD"
     },
     {
      "condition": "小さな宿(客室10室以下)",
-     "url": "https://yadomikke.com/hakone-chiisana/"
+     "url": "https://yadomikke.com/hakone-chiisana/",
+     "url_with_date": "https://yadomikke.com/hakone-chiisana/?d=YYYY-MM-DD"
     },
     {
      "condition": "夜遅くても泊まれる宿(最終チェックイン22時以降)",
-     "url": "https://yadomikke.com/hakone-osoitsuki/"
+     "url": "https://yadomikke.com/hakone-osoitsuki/",
+     "url_with_date": "https://yadomikke.com/hakone-osoitsuki/?d=YYYY-MM-DD"
     },
     {
      "condition": "夕食の口コミ評価が高い宿",
-     "url": "https://yadomikke.com/hakone-yushoku/"
+     "url": "https://yadomikke.com/hakone-yushoku/",
+     "url_with_date": "https://yadomikke.com/hakone-yushoku/?d=YYYY-MM-DD"
     },
     {
      "condition": "お風呂の口コミ評価が高い宿",
-     "url": "https://yadomikke.com/hakone-furohyoka/"
+     "url": "https://yadomikke.com/hakone-furohyoka/",
+     "url_with_date": "https://yadomikke.com/hakone-furohyoka/?d=YYYY-MM-DD"
     },
     {
      "condition": "清潔さの口コミ評価が高い宿",
-     "url": "https://yadomikke.com/hakone-seiketsu/"
+     "url": "https://yadomikke.com/hakone-seiketsu/",
+     "url_with_date": "https://yadomikke.com/hakone-seiketsu/?d=YYYY-MM-DD"
     },
     {
      "condition": "子連れ向けの宿",
-     "url": "https://yadomikke.com/hakone-kids/"
+     "url": "https://yadomikke.com/hakone-kids/",
+     "url_with_date": "https://yadomikke.com/hakone-kids/?d=YYYY-MM-DD"
     },
     {
      "condition": "サウナのある宿",
-     "url": "https://yadomikke.com/hakone-sauna/"
+     "url": "https://yadomikke.com/hakone-sauna/",
+     "url_with_date": "https://yadomikke.com/hakone-sauna/?d=YYYY-MM-DD"
     },
     {
      "condition": "硫黄泉の宿",
-     "url": "https://yadomikke.com/hakone-iou/"
+     "url": "https://yadomikke.com/hakone-iou/",
+     "url_with_date": "https://yadomikke.com/hakone-iou/?d=YYYY-MM-DD"
     },
     {
      "condition": "岩盤浴のある宿",
-     "url": "https://yadomikke.com/hakone-ganbanyoku/"
+     "url": "https://yadomikke.com/hakone-ganbanyoku/",
+     "url_with_date": "https://yadomikke.com/hakone-ganbanyoku/?d=YYYY-MM-DD"
     },
     {
      "condition": "送迎のある宿",
-     "url": "https://yadomikke.com/hakone-sougei/"
+     "url": "https://yadomikke.com/hakone-sougei/",
+     "url_with_date": "https://yadomikke.com/hakone-sougei/?d=YYYY-MM-DD"
     },
     {
      "condition": "バリアフリー対応の宿(車椅子可など)",
-     "url": "https://yadomikke.com/hakone-barrierfree/"
+     "url": "https://yadomikke.com/hakone-barrierfree/",
+     "url_with_date": "https://yadomikke.com/hakone-barrierfree/?d=YYYY-MM-DD"
     }
    ]
   },
@@ -318,59 +339,73 @@
    "condition_pages": [
     {
      "condition": "客室露天風呂",
-     "url": "https://yadomikke.com/atami-roten/"
+     "url": "https://yadomikke.com/atami-roten/",
+     "url_with_date": "https://yadomikke.com/atami-roten/?d=YYYY-MM-DD"
     },
     {
      "condition": "ペット可の客室",
-     "url": "https://yadomikke.com/atami-pet/"
+     "url": "https://yadomikke.com/atami-pet/",
+     "url_with_date": "https://yadomikke.com/atami-pet/?d=YYYY-MM-DD"
     },
     {
      "condition": "大浴場のある宿",
-     "url": "https://yadomikke.com/atami-daiyoku/"
+     "url": "https://yadomikke.com/atami-daiyoku/",
+     "url_with_date": "https://yadomikke.com/atami-daiyoku/?d=YYYY-MM-DD"
     },
     {
      "condition": "貸切風呂・家族風呂のある宿",
-     "url": "https://yadomikke.com/atami-kashikiri/"
+     "url": "https://yadomikke.com/atami-kashikiri/",
+     "url_with_date": "https://yadomikke.com/atami-kashikiri/?d=YYYY-MM-DD"
     },
     {
      "condition": "小さな宿(客室10室以下)",
-     "url": "https://yadomikke.com/atami-chiisana/"
+     "url": "https://yadomikke.com/atami-chiisana/",
+     "url_with_date": "https://yadomikke.com/atami-chiisana/?d=YYYY-MM-DD"
     },
     {
      "condition": "夜遅くても泊まれる宿(最終チェックイン22時以降)",
-     "url": "https://yadomikke.com/atami-osoitsuki/"
+     "url": "https://yadomikke.com/atami-osoitsuki/",
+     "url_with_date": "https://yadomikke.com/atami-osoitsuki/?d=YYYY-MM-DD"
     },
     {
      "condition": "夕食の口コミ評価が高い宿",
-     "url": "https://yadomikke.com/atami-yushoku/"
+     "url": "https://yadomikke.com/atami-yushoku/",
+     "url_with_date": "https://yadomikke.com/atami-yushoku/?d=YYYY-MM-DD"
     },
     {
      "condition": "お風呂の口コミ評価が高い宿",
-     "url": "https://yadomikke.com/atami-furohyoka/"
+     "url": "https://yadomikke.com/atami-furohyoka/",
+     "url_with_date": "https://yadomikke.com/atami-furohyoka/?d=YYYY-MM-DD"
     },
     {
      "condition": "清潔さの口コミ評価が高い宿",
-     "url": "https://yadomikke.com/atami-seiketsu/"
+     "url": "https://yadomikke.com/atami-seiketsu/",
+     "url_with_date": "https://yadomikke.com/atami-seiketsu/?d=YYYY-MM-DD"
     },
     {
      "condition": "子連れ向けの宿",
-     "url": "https://yadomikke.com/atami-kids/"
+     "url": "https://yadomikke.com/atami-kids/",
+     "url_with_date": "https://yadomikke.com/atami-kids/?d=YYYY-MM-DD"
     },
     {
      "condition": "サウナのある宿",
-     "url": "https://yadomikke.com/atami-sauna/"
+     "url": "https://yadomikke.com/atami-sauna/",
+     "url_with_date": "https://yadomikke.com/atami-sauna/?d=YYYY-MM-DD"
     },
     {
      "condition": "岩盤浴のある宿",
-     "url": "https://yadomikke.com/atami-ganbanyoku/"
+     "url": "https://yadomikke.com/atami-ganbanyoku/",
+     "url_with_date": "https://yadomikke.com/atami-ganbanyoku/?d=YYYY-MM-DD"
     },
     {
      "condition": "送迎のある宿",
-     "url": "https://yadomikke.com/atami-sougei/"
+     "url": "https://yadomikke.com/atami-sougei/",
+     "url_with_date": "https://yadomikke.com/atami-sougei/?d=YYYY-MM-DD"
     },
     {
      "condition": "バリアフリー対応の宿(車椅子可など)",
-     "url": "https://yadomikke.com/atami-barrierfree/"
+     "url": "https://yadomikke.com/atami-barrierfree/",
+     "url_with_date": "https://yadomikke.com/atami-barrierfree/?d=YYYY-MM-DD"
     }
    ]
   },
@@ -466,55 +501,68 @@
    "condition_pages": [
     {
      "condition": "客室露天風呂",
-     "url": "https://yadomikke.com/ito-roten/"
+     "url": "https://yadomikke.com/ito-roten/",
+     "url_with_date": "https://yadomikke.com/ito-roten/?d=YYYY-MM-DD"
     },
     {
      "condition": "ペット可の客室",
-     "url": "https://yadomikke.com/ito-pet/"
+     "url": "https://yadomikke.com/ito-pet/",
+     "url_with_date": "https://yadomikke.com/ito-pet/?d=YYYY-MM-DD"
     },
     {
      "condition": "大浴場のある宿",
-     "url": "https://yadomikke.com/ito-daiyoku/"
+     "url": "https://yadomikke.com/ito-daiyoku/",
+     "url_with_date": "https://yadomikke.com/ito-daiyoku/?d=YYYY-MM-DD"
     },
     {
      "condition": "貸切風呂・家族風呂のある宿",
-     "url": "https://yadomikke.com/ito-kashikiri/"
+     "url": "https://yadomikke.com/ito-kashikiri/",
+     "url_with_date": "https://yadomikke.com/ito-kashikiri/?d=YYYY-MM-DD"
     },
     {
      "condition": "小さな宿(客室10室以下)",
-     "url": "https://yadomikke.com/ito-chiisana/"
+     "url": "https://yadomikke.com/ito-chiisana/",
+     "url_with_date": "https://yadomikke.com/ito-chiisana/?d=YYYY-MM-DD"
     },
     {
      "condition": "夜遅くても泊まれる宿(最終チェックイン22時以降)",
-     "url": "https://yadomikke.com/ito-osoitsuki/"
+     "url": "https://yadomikke.com/ito-osoitsuki/",
+     "url_with_date": "https://yadomikke.com/ito-osoitsuki/?d=YYYY-MM-DD"
     },
     {
      "condition": "夕食の口コミ評価が高い宿",
-     "url": "https://yadomikke.com/ito-yushoku/"
+     "url": "https://yadomikke.com/ito-yushoku/",
+     "url_with_date": "https://yadomikke.com/ito-yushoku/?d=YYYY-MM-DD"
     },
     {
      "condition": "お風呂の口コミ評価が高い宿",
-     "url": "https://yadomikke.com/ito-furohyoka/"
+     "url": "https://yadomikke.com/ito-furohyoka/",
+     "url_with_date": "https://yadomikke.com/ito-furohyoka/?d=YYYY-MM-DD"
     },
     {
      "condition": "清潔さの口コミ評価が高い宿",
-     "url": "https://yadomikke.com/ito-seiketsu/"
+     "url": "https://yadomikke.com/ito-seiketsu/",
+     "url_with_date": "https://yadomikke.com/ito-seiketsu/?d=YYYY-MM-DD"
     },
     {
      "condition": "子連れ向けの宿",
-     "url": "https://yadomikke.com/ito-kids/"
+     "url": "https://yadomikke.com/ito-kids/",
+     "url_with_date": "https://yadomikke.com/ito-kids/?d=YYYY-MM-DD"
     },
     {
      "condition": "サウナのある宿",
-     "url": "https://yadomikke.com/ito-sauna/"
+     "url": "https://yadomikke.com/ito-sauna/",
+     "url_with_date": "https://yadomikke.com/ito-sauna/?d=YYYY-MM-DD"
     },
     {
      "condition": "送迎のある宿",
-     "url": "https://yadomikke.com/ito-sougei/"
+     "url": "https://yadomikke.com/ito-sougei/",
+     "url_with_date": "https://yadomikke.com/ito-sougei/?d=YYYY-MM-DD"
     },
     {
      "condition": "バリアフリー対応の宿(車椅子可など)",
-     "url": "https://yadomikke.com/ito-barrierfree/"
+     "url": "https://yadomikke.com/ito-barrierfree/",
+     "url_with_date": "https://yadomikke.com/ito-barrierfree/?d=YYYY-MM-DD"
     }
    ]
   },
@@ -610,63 +658,78 @@
    "condition_pages": [
     {
      "condition": "客室露天風呂",
-     "url": "https://yadomikke.com/kinugawa-roten/"
+     "url": "https://yadomikke.com/kinugawa-roten/",
+     "url_with_date": "https://yadomikke.com/kinugawa-roten/?d=YYYY-MM-DD"
     },
     {
      "condition": "ペット可の客室",
-     "url": "https://yadomikke.com/kinugawa-pet/"
+     "url": "https://yadomikke.com/kinugawa-pet/",
+     "url_with_date": "https://yadomikke.com/kinugawa-pet/?d=YYYY-MM-DD"
     },
     {
      "condition": "大浴場のある宿",
-     "url": "https://yadomikke.com/kinugawa-daiyoku/"
+     "url": "https://yadomikke.com/kinugawa-daiyoku/",
+     "url_with_date": "https://yadomikke.com/kinugawa-daiyoku/?d=YYYY-MM-DD"
     },
     {
      "condition": "貸切風呂・家族風呂のある宿",
-     "url": "https://yadomikke.com/kinugawa-kashikiri/"
+     "url": "https://yadomikke.com/kinugawa-kashikiri/",
+     "url_with_date": "https://yadomikke.com/kinugawa-kashikiri/?d=YYYY-MM-DD"
     },
     {
      "condition": "小さな宿(客室10室以下)",
-     "url": "https://yadomikke.com/kinugawa-chiisana/"
+     "url": "https://yadomikke.com/kinugawa-chiisana/",
+     "url_with_date": "https://yadomikke.com/kinugawa-chiisana/?d=YYYY-MM-DD"
     },
     {
      "condition": "夜遅くても泊まれる宿(最終チェックイン22時以降)",
-     "url": "https://yadomikke.com/kinugawa-osoitsuki/"
+     "url": "https://yadomikke.com/kinugawa-osoitsuki/",
+     "url_with_date": "https://yadomikke.com/kinugawa-osoitsuki/?d=YYYY-MM-DD"
     },
     {
      "condition": "夕食の口コミ評価が高い宿",
-     "url": "https://yadomikke.com/kinugawa-yushoku/"
+     "url": "https://yadomikke.com/kinugawa-yushoku/",
+     "url_with_date": "https://yadomikke.com/kinugawa-yushoku/?d=YYYY-MM-DD"
     },
     {
      "condition": "お風呂の口コミ評価が高い宿",
-     "url": "https://yadomikke.com/kinugawa-furohyoka/"
+     "url": "https://yadomikke.com/kinugawa-furohyoka/",
+     "url_with_date": "https://yadomikke.com/kinugawa-furohyoka/?d=YYYY-MM-DD"
     },
     {
      "condition": "清潔さの口コミ評価が高い宿",
-     "url": "https://yadomikke.com/kinugawa-seiketsu/"
+     "url": "https://yadomikke.com/kinugawa-seiketsu/",
+     "url_with_date": "https://yadomikke.com/kinugawa-seiketsu/?d=YYYY-MM-DD"
     },
     {
      "condition": "子連れ向けの宿",
-     "url": "https://yadomikke.com/kinugawa-kids/"
+     "url": "https://yadomikke.com/kinugawa-kids/",
+     "url_with_date": "https://yadomikke.com/kinugawa-kids/?d=YYYY-MM-DD"
     },
     {
      "condition": "サウナのある宿",
-     "url": "https://yadomikke.com/kinugawa-sauna/"
+     "url": "https://yadomikke.com/kinugawa-sauna/",
+     "url_with_date": "https://yadomikke.com/kinugawa-sauna/?d=YYYY-MM-DD"
     },
     {
      "condition": "硫黄泉の宿",
-     "url": "https://yadomikke.com/kinugawa-iou/"
+     "url": "https://yadomikke.com/kinugawa-iou/",
+     "url_with_date": "https://yadomikke.com/kinugawa-iou/?d=YYYY-MM-DD"
     },
     {
      "condition": "岩盤浴のある宿",
-     "url": "https://yadomikke.com/kinugawa-ganbanyoku/"
+     "url": "https://yadomikke.com/kinugawa-ganbanyoku/",
+     "url_with_date": "https://yadomikke.com/kinugawa-ganbanyoku/?d=YYYY-MM-DD"
     },
     {
      "condition": "送迎のある宿",
-     "url": "https://yadomikke.com/kinugawa-sougei/"
+     "url": "https://yadomikke.com/kinugawa-sougei/",
+     "url_with_date": "https://yadomikke.com/kinugawa-sougei/?d=YYYY-MM-DD"
     },
     {
      "condition": "バリアフリー対応の宿(車椅子可など)",
-     "url": "https://yadomikke.com/kinugawa-barrierfree/"
+     "url": "https://yadomikke.com/kinugawa-barrierfree/",
+     "url_with_date": "https://yadomikke.com/kinugawa-barrierfree/?d=YYYY-MM-DD"
     }
    ]
   },
@@ -762,59 +825,73 @@
    "condition_pages": [
     {
      "condition": "客室露天風呂",
-     "url": "https://yadomikke.com/kusatsu-roten/"
+     "url": "https://yadomikke.com/kusatsu-roten/",
+     "url_with_date": "https://yadomikke.com/kusatsu-roten/?d=YYYY-MM-DD"
     },
     {
      "condition": "大浴場のある宿",
-     "url": "https://yadomikke.com/kusatsu-daiyoku/"
+     "url": "https://yadomikke.com/kusatsu-daiyoku/",
+     "url_with_date": "https://yadomikke.com/kusatsu-daiyoku/?d=YYYY-MM-DD"
     },
     {
      "condition": "貸切風呂・家族風呂のある宿",
-     "url": "https://yadomikke.com/kusatsu-kashikiri/"
+     "url": "https://yadomikke.com/kusatsu-kashikiri/",
+     "url_with_date": "https://yadomikke.com/kusatsu-kashikiri/?d=YYYY-MM-DD"
     },
     {
      "condition": "小さな宿(客室10室以下)",
-     "url": "https://yadomikke.com/kusatsu-chiisana/"
+     "url": "https://yadomikke.com/kusatsu-chiisana/",
+     "url_with_date": "https://yadomikke.com/kusatsu-chiisana/?d=YYYY-MM-DD"
     },
     {
      "condition": "夜遅くても泊まれる宿(最終チェックイン22時以降)",
-     "url": "https://yadomikke.com/kusatsu-osoitsuki/"
+     "url": "https://yadomikke.com/kusatsu-osoitsuki/",
+     "url_with_date": "https://yadomikke.com/kusatsu-osoitsuki/?d=YYYY-MM-DD"
     },
     {
      "condition": "夕食の口コミ評価が高い宿",
-     "url": "https://yadomikke.com/kusatsu-yushoku/"
+     "url": "https://yadomikke.com/kusatsu-yushoku/",
+     "url_with_date": "https://yadomikke.com/kusatsu-yushoku/?d=YYYY-MM-DD"
     },
     {
      "condition": "お風呂の口コミ評価が高い宿",
-     "url": "https://yadomikke.com/kusatsu-furohyoka/"
+     "url": "https://yadomikke.com/kusatsu-furohyoka/",
+     "url_with_date": "https://yadomikke.com/kusatsu-furohyoka/?d=YYYY-MM-DD"
     },
     {
      "condition": "清潔さの口コミ評価が高い宿",
-     "url": "https://yadomikke.com/kusatsu-seiketsu/"
+     "url": "https://yadomikke.com/kusatsu-seiketsu/",
+     "url_with_date": "https://yadomikke.com/kusatsu-seiketsu/?d=YYYY-MM-DD"
     },
     {
      "condition": "子連れ向けの宿",
-     "url": "https://yadomikke.com/kusatsu-kids/"
+     "url": "https://yadomikke.com/kusatsu-kids/",
+     "url_with_date": "https://yadomikke.com/kusatsu-kids/?d=YYYY-MM-DD"
     },
     {
      "condition": "サウナのある宿",
-     "url": "https://yadomikke.com/kusatsu-sauna/"
+     "url": "https://yadomikke.com/kusatsu-sauna/",
+     "url_with_date": "https://yadomikke.com/kusatsu-sauna/?d=YYYY-MM-DD"
     },
     {
      "condition": "硫黄泉の宿",
-     "url": "https://yadomikke.com/kusatsu-iou/"
+     "url": "https://yadomikke.com/kusatsu-iou/",
+     "url_with_date": "https://yadomikke.com/kusatsu-iou/?d=YYYY-MM-DD"
     },
     {
      "condition": "岩盤浴のある宿",
-     "url": "https://yadomikke.com/kusatsu-ganbanyoku/"
+     "url": "https://yadomikke.com/kusatsu-ganbanyoku/",
+     "url_with_date": "https://yadomikke.com/kusatsu-ganbanyoku/?d=YYYY-MM-DD"
     },
     {
      "condition": "送迎のある宿",
-     "url": "https://yadomikke.com/kusatsu-sougei/"
+     "url": "https://yadomikke.com/kusatsu-sougei/",
+     "url_with_date": "https://yadomikke.com/kusatsu-sougei/?d=YYYY-MM-DD"
     },
     {
      "condition": "バリアフリー対応の宿(車椅子可など)",
-     "url": "https://yadomikke.com/kusatsu-barrierfree/"
+     "url": "https://yadomikke.com/kusatsu-barrierfree/",
+     "url_with_date": "https://yadomikke.com/kusatsu-barrierfree/?d=YYYY-MM-DD"
     }
    ]
   },
@@ -910,55 +987,68 @@
    "condition_pages": [
     {
      "condition": "客室露天風呂",
-     "url": "https://yadomikke.com/karuizawa-roten/"
+     "url": "https://yadomikke.com/karuizawa-roten/",
+     "url_with_date": "https://yadomikke.com/karuizawa-roten/?d=YYYY-MM-DD"
     },
     {
      "condition": "ペット可の客室",
-     "url": "https://yadomikke.com/karuizawa-pet/"
+     "url": "https://yadomikke.com/karuizawa-pet/",
+     "url_with_date": "https://yadomikke.com/karuizawa-pet/?d=YYYY-MM-DD"
     },
     {
      "condition": "大浴場のある宿",
-     "url": "https://yadomikke.com/karuizawa-daiyoku/"
+     "url": "https://yadomikke.com/karuizawa-daiyoku/",
+     "url_with_date": "https://yadomikke.com/karuizawa-daiyoku/?d=YYYY-MM-DD"
     },
     {
      "condition": "貸切風呂・家族風呂のある宿",
-     "url": "https://yadomikke.com/karuizawa-kashikiri/"
+     "url": "https://yadomikke.com/karuizawa-kashikiri/",
+     "url_with_date": "https://yadomikke.com/karuizawa-kashikiri/?d=YYYY-MM-DD"
     },
     {
      "condition": "小さな宿(客室10室以下)",
-     "url": "https://yadomikke.com/karuizawa-chiisana/"
+     "url": "https://yadomikke.com/karuizawa-chiisana/",
+     "url_with_date": "https://yadomikke.com/karuizawa-chiisana/?d=YYYY-MM-DD"
     },
     {
      "condition": "夜遅くても泊まれる宿(最終チェックイン22時以降)",
-     "url": "https://yadomikke.com/karuizawa-osoitsuki/"
+     "url": "https://yadomikke.com/karuizawa-osoitsuki/",
+     "url_with_date": "https://yadomikke.com/karuizawa-osoitsuki/?d=YYYY-MM-DD"
     },
     {
      "condition": "夕食の口コミ評価が高い宿",
-     "url": "https://yadomikke.com/karuizawa-yushoku/"
+     "url": "https://yadomikke.com/karuizawa-yushoku/",
+     "url_with_date": "https://yadomikke.com/karuizawa-yushoku/?d=YYYY-MM-DD"
     },
     {
      "condition": "お風呂の口コミ評価が高い宿",
-     "url": "https://yadomikke.com/karuizawa-furohyoka/"
+     "url": "https://yadomikke.com/karuizawa-furohyoka/",
+     "url_with_date": "https://yadomikke.com/karuizawa-furohyoka/?d=YYYY-MM-DD"
     },
     {
      "condition": "清潔さの口コミ評価が高い宿",
-     "url": "https://yadomikke.com/karuizawa-seiketsu/"
+     "url": "https://yadomikke.com/karuizawa-seiketsu/",
+     "url_with_date": "https://yadomikke.com/karuizawa-seiketsu/?d=YYYY-MM-DD"
     },
     {
      "condition": "子連れ向けの宿",
-     "url": "https://yadomikke.com/karuizawa-kids/"
+     "url": "https://yadomikke.com/karuizawa-kids/",
+     "url_with_date": "https://yadomikke.com/karuizawa-kids/?d=YYYY-MM-DD"
     },
     {
      "condition": "サウナのある宿",
-     "url": "https://yadomikke.com/karuizawa-sauna/"
+     "url": "https://yadomikke.com/karuizawa-sauna/",
+     "url_with_date": "https://yadomikke.com/karuizawa-sauna/?d=YYYY-MM-DD"
     },
     {
      "condition": "送迎のある宿",
-     "url": "https://yadomikke.com/karuizawa-sougei/"
+     "url": "https://yadomikke.com/karuizawa-sougei/",
+     "url_with_date": "https://yadomikke.com/karuizawa-sougei/?d=YYYY-MM-DD"
     },
     {
      "condition": "バリアフリー対応の宿(車椅子可など)",
-     "url": "https://yadomikke.com/karuizawa-barrierfree/"
+     "url": "https://yadomikke.com/karuizawa-barrierfree/",
+     "url_with_date": "https://yadomikke.com/karuizawa-barrierfree/?d=YYYY-MM-DD"
     }
    ]
   },
@@ -1054,55 +1144,68 @@
    "condition_pages": [
     {
      "condition": "客室露天風呂",
-     "url": "https://yadomikke.com/arima-roten/"
+     "url": "https://yadomikke.com/arima-roten/",
+     "url_with_date": "https://yadomikke.com/arima-roten/?d=YYYY-MM-DD"
     },
     {
      "condition": "大浴場のある宿",
-     "url": "https://yadomikke.com/arima-daiyoku/"
+     "url": "https://yadomikke.com/arima-daiyoku/",
+     "url_with_date": "https://yadomikke.com/arima-daiyoku/?d=YYYY-MM-DD"
     },
     {
      "condition": "貸切風呂・家族風呂のある宿",
-     "url": "https://yadomikke.com/arima-kashikiri/"
+     "url": "https://yadomikke.com/arima-kashikiri/",
+     "url_with_date": "https://yadomikke.com/arima-kashikiri/?d=YYYY-MM-DD"
     },
     {
      "condition": "小さな宿(客室10室以下)",
-     "url": "https://yadomikke.com/arima-chiisana/"
+     "url": "https://yadomikke.com/arima-chiisana/",
+     "url_with_date": "https://yadomikke.com/arima-chiisana/?d=YYYY-MM-DD"
     },
     {
      "condition": "夜遅くても泊まれる宿(最終チェックイン22時以降)",
-     "url": "https://yadomikke.com/arima-osoitsuki/"
+     "url": "https://yadomikke.com/arima-osoitsuki/",
+     "url_with_date": "https://yadomikke.com/arima-osoitsuki/?d=YYYY-MM-DD"
     },
     {
      "condition": "夕食の口コミ評価が高い宿",
-     "url": "https://yadomikke.com/arima-yushoku/"
+     "url": "https://yadomikke.com/arima-yushoku/",
+     "url_with_date": "https://yadomikke.com/arima-yushoku/?d=YYYY-MM-DD"
     },
     {
      "condition": "お風呂の口コミ評価が高い宿",
-     "url": "https://yadomikke.com/arima-furohyoka/"
+     "url": "https://yadomikke.com/arima-furohyoka/",
+     "url_with_date": "https://yadomikke.com/arima-furohyoka/?d=YYYY-MM-DD"
     },
     {
      "condition": "清潔さの口コミ評価が高い宿",
-     "url": "https://yadomikke.com/arima-seiketsu/"
+     "url": "https://yadomikke.com/arima-seiketsu/",
+     "url_with_date": "https://yadomikke.com/arima-seiketsu/?d=YYYY-MM-DD"
     },
     {
      "condition": "子連れ向けの宿",
-     "url": "https://yadomikke.com/arima-kids/"
+     "url": "https://yadomikke.com/arima-kids/",
+     "url_with_date": "https://yadomikke.com/arima-kids/?d=YYYY-MM-DD"
     },
     {
      "condition": "サウナのある宿",
-     "url": "https://yadomikke.com/arima-sauna/"
+     "url": "https://yadomikke.com/arima-sauna/",
+     "url_with_date": "https://yadomikke.com/arima-sauna/?d=YYYY-MM-DD"
     },
     {
      "condition": "岩盤浴のある宿",
-     "url": "https://yadomikke.com/arima-ganbanyoku/"
+     "url": "https://yadomikke.com/arima-ganbanyoku/",
+     "url_with_date": "https://yadomikke.com/arima-ganbanyoku/?d=YYYY-MM-DD"
     },
     {
      "condition": "送迎のある宿",
-     "url": "https://yadomikke.com/arima-sougei/"
+     "url": "https://yadomikke.com/arima-sougei/",
+     "url_with_date": "https://yadomikke.com/arima-sougei/?d=YYYY-MM-DD"
     },
     {
      "condition": "バリアフリー対応の宿(車椅子可など)",
-     "url": "https://yadomikke.com/arima-barrierfree/"
+     "url": "https://yadomikke.com/arima-barrierfree/",
+     "url_with_date": "https://yadomikke.com/arima-barrierfree/?d=YYYY-MM-DD"
     }
    ]
   },
@@ -1198,51 +1301,63 @@
    "condition_pages": [
     {
      "condition": "客室露天風呂",
-     "url": "https://yadomikke.com/yufuin-roten/"
+     "url": "https://yadomikke.com/yufuin-roten/",
+     "url_with_date": "https://yadomikke.com/yufuin-roten/?d=YYYY-MM-DD"
     },
     {
      "condition": "大浴場のある宿",
-     "url": "https://yadomikke.com/yufuin-daiyoku/"
+     "url": "https://yadomikke.com/yufuin-daiyoku/",
+     "url_with_date": "https://yadomikke.com/yufuin-daiyoku/?d=YYYY-MM-DD"
     },
     {
      "condition": "貸切風呂・家族風呂のある宿",
-     "url": "https://yadomikke.com/yufuin-kashikiri/"
+     "url": "https://yadomikke.com/yufuin-kashikiri/",
+     "url_with_date": "https://yadomikke.com/yufuin-kashikiri/?d=YYYY-MM-DD"
     },
     {
      "condition": "小さな宿(客室10室以下)",
-     "url": "https://yadomikke.com/yufuin-chiisana/"
+     "url": "https://yadomikke.com/yufuin-chiisana/",
+     "url_with_date": "https://yadomikke.com/yufuin-chiisana/?d=YYYY-MM-DD"
     },
     {
      "condition": "夜遅くても泊まれる宿(最終チェックイン22時以降)",
-     "url": "https://yadomikke.com/yufuin-osoitsuki/"
+     "url": "https://yadomikke.com/yufuin-osoitsuki/",
+     "url_with_date": "https://yadomikke.com/yufuin-osoitsuki/?d=YYYY-MM-DD"
     },
     {
      "condition": "夕食の口コミ評価が高い宿",
-     "url": "https://yadomikke.com/yufuin-yushoku/"
+     "url": "https://yadomikke.com/yufuin-yushoku/",
+     "url_with_date": "https://yadomikke.com/yufuin-yushoku/?d=YYYY-MM-DD"
     },
     {
      "condition": "お風呂の口コミ評価が高い宿",
-     "url": "https://yadomikke.com/yufuin-furohyoka/"
+     "url": "https://yadomikke.com/yufuin-furohyoka/",
+     "url_with_date": "https://yadomikke.com/yufuin-furohyoka/?d=YYYY-MM-DD"
     },
     {
      "condition": "清潔さの口コミ評価が高い宿",
-     "url": "https://yadomikke.com/yufuin-seiketsu/"
+     "url": "https://yadomikke.com/yufuin-seiketsu/",
+     "url_with_date": "https://yadomikke.com/yufuin-seiketsu/?d=YYYY-MM-DD"
     },
     {
      "condition": "子連れ向けの宿",
-     "url": "https://yadomikke.com/yufuin-kids/"
+     "url": "https://yadomikke.com/yufuin-kids/",
+     "url_with_date": "https://yadomikke.com/yufuin-kids/?d=YYYY-MM-DD"
     },
     {
      "condition": "サウナのある宿",
-     "url": "https://yadomikke.com/yufuin-sauna/"
+     "url": "https://yadomikke.com/yufuin-sauna/",
+     "url_with_date": "https://yadomikke.com/yufuin-sauna/?d=YYYY-MM-DD"
     },
     {
      "condition": "送迎のある宿",
-     "url": "https://yadomikke.com/yufuin-sougei/"
+     "url": "https://yadomikke.com/yufuin-sougei/",
+     "url_with_date": "https://yadomikke.com/yufuin-sougei/?d=YYYY-MM-DD"
     },
     {
      "condition": "バリアフリー対応の宿(車椅子可など)",
-     "url": "https://yadomikke.com/yufuin-barrierfree/"
+     "url": "https://yadomikke.com/yufuin-barrierfree/",
+     "url_with_date": "https://yadomikke.com/yufuin-barrierfree/?d=YYYY-MM-DD"
     }
    ]
   },
@@ -1290,10 +1405,10 @@
       "2026-11-21",
       "2026-11-22"
      ],
-     "hotels_checked": 226,
-     "hotels_with_vacancy": 94,
-     "min_price_jpy": 4935,
-     "fetched_at": "2026-11-12T16:53+09:00"
+     "hotels_checked": 256,
+     "hotels_with_vacancy": 124,
+     "min_price_jpy": 2240,
+     "fetched_at": "2026-11-13T10:17+09:00"
     },
     "nenmatsu": {
      "label": "年末年始",
@@ -1315,62 +1430,106 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 28500,
-     "p25_jpy": 16000,
-     "p75_jpy": 46460,
-     "samples": 1161
+     "median_jpy": 26400,
+     "p25_jpy": 15000,
+     "p75_jpy": 45000,
+     "samples": 1244
     },
     "fri": {
      "label": "金曜",
-     "median_jpy": 24000,
-     "p25_jpy": 14300,
-     "p75_jpy": 40530,
-     "samples": 243
+     "median_jpy": 21960,
+     "p25_jpy": 13045,
+     "p75_jpy": 38640,
+     "samples": 273
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 30390,
-     "p25_jpy": 19200,
-     "p75_jpy": 61575,
-     "samples": 216
+     "median_jpy": 27024,
+     "p25_jpy": 14800,
+     "p75_jpy": 55300,
+     "samples": 243
     }
    },
    "condition_pages": [
     {
      "condition": "客室露天風呂",
-     "url": "https://yadomikke.com/nasu-roten/"
+     "url": "https://yadomikke.com/nasu-roten/",
+     "url_with_date": "https://yadomikke.com/nasu-roten/?d=YYYY-MM-DD"
     },
     {
      "condition": "ペット可の客室",
-     "url": "https://yadomikke.com/nasu-pet/"
+     "url": "https://yadomikke.com/nasu-pet/",
+     "url_with_date": "https://yadomikke.com/nasu-pet/?d=YYYY-MM-DD"
     },
     {
      "condition": "大浴場のある宿",
-     "url": "https://yadomikke.com/nasu-daiyoku/"
+     "url": "https://yadomikke.com/nasu-daiyoku/",
+     "url_with_date": "https://yadomikke.com/nasu-daiyoku/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "貸切風呂・家族風呂のある宿",
+     "url": "https://yadomikke.com/nasu-kashikiri/",
+     "url_with_date": "https://yadomikke.com/nasu-kashikiri/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "小さな宿(客室10室以下)",
+     "url": "https://yadomikke.com/nasu-chiisana/",
+     "url_with_date": "https://yadomikke.com/nasu-chiisana/?d=YYYY-MM-DD"
     },
     {
      "condition": "夜遅くても泊まれる宿(最終チェックイン22時以降)",
-     "url": "https://yadomikke.com/nasu-osoitsuki/"
+     "url": "https://yadomikke.com/nasu-osoitsuki/",
+     "url_with_date": "https://yadomikke.com/nasu-osoitsuki/?d=YYYY-MM-DD"
     },
     {
      "condition": "駅から徒歩5分以内の宿",
-     "url": "https://yadomikke.com/nasu-ekichika/"
+     "url": "https://yadomikke.com/nasu-ekichika/",
+     "url_with_date": "https://yadomikke.com/nasu-ekichika/?d=YYYY-MM-DD"
     },
     {
      "condition": "夕食の口コミ評価が高い宿",
-     "url": "https://yadomikke.com/nasu-yushoku/"
+     "url": "https://yadomikke.com/nasu-yushoku/",
+     "url_with_date": "https://yadomikke.com/nasu-yushoku/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "お風呂の口コミ評価が高い宿",
+     "url": "https://yadomikke.com/nasu-furohyoka/",
+     "url_with_date": "https://yadomikke.com/nasu-furohyoka/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "清潔さの口コミ評価が高い宿",
+     "url": "https://yadomikke.com/nasu-seiketsu/",
+     "url_with_date": "https://yadomikke.com/nasu-seiketsu/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "子連れ向けの宿",
+     "url": "https://yadomikke.com/nasu-kids/",
+     "url_with_date": "https://yadomikke.com/nasu-kids/?d=YYYY-MM-DD"
     },
     {
      "condition": "サウナのある宿",
-     "url": "https://yadomikke.com/nasu-sauna/"
+     "url": "https://yadomikke.com/nasu-sauna/",
+     "url_with_date": "https://yadomikke.com/nasu-sauna/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "硫黄泉の宿",
+     "url": "https://yadomikke.com/nasu-iou/",
+     "url_with_date": "https://yadomikke.com/nasu-iou/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "岩盤浴のある宿",
+     "url": "https://yadomikke.com/nasu-ganbanyoku/",
+     "url_with_date": "https://yadomikke.com/nasu-ganbanyoku/?d=YYYY-MM-DD"
     },
     {
      "condition": "送迎のある宿",
-     "url": "https://yadomikke.com/nasu-sougei/"
+     "url": "https://yadomikke.com/nasu-sougei/",
+     "url_with_date": "https://yadomikke.com/nasu-sougei/?d=YYYY-MM-DD"
     },
     {
      "condition": "バリアフリー対応の宿(車椅子可など)",
-     "url": "https://yadomikke.com/nasu-barrierfree/"
+     "url": "https://yadomikke.com/nasu-barrierfree/",
+     "url_with_date": "https://yadomikke.com/nasu-barrierfree/?d=YYYY-MM-DD"
     }
    ]
   },
@@ -1419,9 +1578,9 @@
       "2026-11-22"
      ],
      "hotels_checked": 111,
-     "hotels_with_vacancy": 47,
+     "hotels_with_vacancy": 48,
      "min_price_jpy": 3290,
-     "fetched_at": "2026-11-12T16:53+09:00"
+     "fetched_at": "2026-11-13T10:17+09:00"
     },
     "nenmatsu": {
      "label": "年末年始",
@@ -1444,9 +1603,9 @@
     "wd": {
      "label": "平日(日〜木)",
      "median_jpy": 26000,
-     "p25_jpy": 14600,
-     "p75_jpy": 41000,
-     "samples": 651
+     "p25_jpy": 14150,
+     "p75_jpy": 40725,
+     "samples": 652
     },
     "fri": {
      "label": "金曜",
@@ -1457,24 +1616,27 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 37400,
+     "median_jpy": 37676,
      "p25_jpy": 22300,
-     "p75_jpy": 63800,
+     "p75_jpy": 60610,
      "samples": 79
     }
    },
    "condition_pages": [
     {
      "condition": "客室露天風呂",
-     "url": "https://yadomikke.com/nikko-roten/"
+     "url": "https://yadomikke.com/nikko-roten/",
+     "url_with_date": "https://yadomikke.com/nikko-roten/?d=YYYY-MM-DD"
     },
     {
      "condition": "ペット可の客室",
-     "url": "https://yadomikke.com/nikko-pet/"
+     "url": "https://yadomikke.com/nikko-pet/",
+     "url_with_date": "https://yadomikke.com/nikko-pet/?d=YYYY-MM-DD"
     },
     {
      "condition": "駅から徒歩5分以内の宿",
-     "url": "https://yadomikke.com/nikko-ekichika/"
+     "url": "https://yadomikke.com/nikko-ekichika/",
+     "url_with_date": "https://yadomikke.com/nikko-ekichika/?d=YYYY-MM-DD"
     }
    ]
   },
@@ -1523,9 +1685,9 @@
       "2026-11-22"
      ],
      "hotels_checked": 46,
-     "hotels_with_vacancy": 25,
+     "hotels_with_vacancy": 24,
      "min_price_jpy": 4500,
-     "fetched_at": "2026-11-12T16:53+09:00"
+     "fetched_at": "2026-11-13T10:17+09:00"
     },
     "nenmatsu": {
      "label": "年末年始",
@@ -1549,8 +1711,8 @@
      "label": "平日(日〜木)",
      "median_jpy": 25000,
      "p25_jpy": 17600,
-     "p75_jpy": 40700,
-     "samples": 391
+     "p75_jpy": 40750,
+     "samples": 389
     },
     "fri": {
      "label": "金曜",
@@ -1561,24 +1723,27 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 35200,
-     "p25_jpy": 19400,
-     "p75_jpy": 68310,
+     "median_jpy": 41800,
+     "p25_jpy": 23288,
+     "p75_jpy": 71500,
      "samples": 25
     }
    },
    "condition_pages": [
     {
      "condition": "客室露天風呂",
-     "url": "https://yadomikke.com/ikaho-roten/"
+     "url": "https://yadomikke.com/ikaho-roten/",
+     "url_with_date": "https://yadomikke.com/ikaho-roten/?d=YYYY-MM-DD"
     },
     {
      "condition": "ペット可の客室",
-     "url": "https://yadomikke.com/ikaho-pet/"
+     "url": "https://yadomikke.com/ikaho-pet/",
+     "url_with_date": "https://yadomikke.com/ikaho-pet/?d=YYYY-MM-DD"
     },
     {
      "condition": "駅から徒歩5分以内の宿",
-     "url": "https://yadomikke.com/ikaho-ekichika/"
+     "url": "https://yadomikke.com/ikaho-ekichika/",
+     "url_with_date": "https://yadomikke.com/ikaho-ekichika/?d=YYYY-MM-DD"
     }
    ]
   },
@@ -1629,7 +1794,7 @@
      "hotels_checked": 443,
      "hotels_with_vacancy": 109,
      "min_price_jpy": 4235,
-     "fetched_at": "2026-11-12T16:54+09:00"
+     "fetched_at": "2026-11-13T10:17+09:00"
     },
     "nenmatsu": {
      "label": "年末年始",
@@ -1654,7 +1819,7 @@
      "median_jpy": 38282,
      "p25_jpy": 22000,
      "p75_jpy": 55836,
-     "samples": 1208
+     "samples": 1204
     },
     "fri": {
      "label": "金曜",
@@ -1665,24 +1830,27 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 50855,
+     "median_jpy": 48532,
      "p25_jpy": 22000,
-     "p75_jpy": 89426,
-     "samples": 140
+     "p75_jpy": 88882,
+     "samples": 136
     }
    },
    "condition_pages": [
     {
      "condition": "客室露天風呂",
-     "url": "https://yadomikke.com/kawaguchiko-roten/"
+     "url": "https://yadomikke.com/kawaguchiko-roten/",
+     "url_with_date": "https://yadomikke.com/kawaguchiko-roten/?d=YYYY-MM-DD"
     },
     {
      "condition": "ペット可の客室",
-     "url": "https://yadomikke.com/kawaguchiko-pet/"
+     "url": "https://yadomikke.com/kawaguchiko-pet/",
+     "url_with_date": "https://yadomikke.com/kawaguchiko-pet/?d=YYYY-MM-DD"
     },
     {
      "condition": "駅から徒歩5分以内の宿",
-     "url": "https://yadomikke.com/kawaguchiko-ekichika/"
+     "url": "https://yadomikke.com/kawaguchiko-ekichika/",
+     "url_with_date": "https://yadomikke.com/kawaguchiko-ekichika/?d=YYYY-MM-DD"
     }
    ]
   },
@@ -1731,9 +1899,9 @@
       "2026-11-22"
      ],
      "hotels_checked": 91,
-     "hotels_with_vacancy": 43,
+     "hotels_with_vacancy": 44,
      "min_price_jpy": 9000,
-     "fetched_at": "2026-11-12T16:54+09:00"
+     "fetched_at": "2026-11-13T02:44+09:00"
     },
     "nenmatsu": {
      "label": "年末年始",
@@ -1756,9 +1924,9 @@
     "wd": {
      "label": "平日(日〜木)",
      "median_jpy": 30800,
-     "p25_jpy": 16800,
-     "p75_jpy": 43268,
-     "samples": 604
+     "p25_jpy": 17020,
+     "p75_jpy": 44000,
+     "samples": 605
     },
     "fri": {
      "label": "金曜",
@@ -1769,20 +1937,22 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 49900,
-     "p25_jpy": 28762,
-     "p75_jpy": 84397,
-     "samples": 72
+     "median_jpy": 46200,
+     "p25_jpy": 30800,
+     "p75_jpy": 79600,
+     "samples": 75
     }
    },
    "condition_pages": [
     {
      "condition": "客室露天風呂",
-     "url": "https://yadomikke.com/shuzenji-roten/"
+     "url": "https://yadomikke.com/shuzenji-roten/",
+     "url_with_date": "https://yadomikke.com/shuzenji-roten/?d=YYYY-MM-DD"
     },
     {
      "condition": "ペット可の客室",
-     "url": "https://yadomikke.com/shuzenji-pet/"
+     "url": "https://yadomikke.com/shuzenji-pet/",
+     "url_with_date": "https://yadomikke.com/shuzenji-pet/?d=YYYY-MM-DD"
     }
    ]
   },
@@ -1831,9 +2001,9 @@
       "2026-11-22"
      ],
      "hotels_checked": 53,
-     "hotels_with_vacancy": 19,
+     "hotels_with_vacancy": 20,
      "min_price_jpy": 5500,
-     "fetched_at": "2026-11-12T16:54+09:00"
+     "fetched_at": "2026-11-13T02:45+09:00"
     },
     "nenmatsu": {
      "label": "年末年始",
@@ -1855,10 +2025,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 25000,
-     "p25_jpy": 12800,
-     "p75_jpy": 40040,
-     "samples": 279
+     "median_jpy": 25080,
+     "p25_jpy": 12616,
+     "p75_jpy": 40280,
+     "samples": 278
     },
     "fri": {
      "label": "金曜",
@@ -1869,24 +2039,27 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 66770,
-     "p25_jpy": 27750,
-     "p75_jpy": 94150,
-     "samples": 30
+     "median_jpy": 68200,
+     "p25_jpy": 30000,
+     "p75_jpy": 83600,
+     "samples": 31
     }
    },
    "condition_pages": [
     {
      "condition": "客室露天風呂",
-     "url": "https://yadomikke.com/gero-roten/"
+     "url": "https://yadomikke.com/gero-roten/",
+     "url_with_date": "https://yadomikke.com/gero-roten/?d=YYYY-MM-DD"
     },
     {
      "condition": "ペット可の客室",
-     "url": "https://yadomikke.com/gero-pet/"
+     "url": "https://yadomikke.com/gero-pet/",
+     "url_with_date": "https://yadomikke.com/gero-pet/?d=YYYY-MM-DD"
     },
     {
      "condition": "駅から徒歩5分以内の宿",
-     "url": "https://yadomikke.com/gero-ekichika/"
+     "url": "https://yadomikke.com/gero-ekichika/",
+     "url_with_date": "https://yadomikke.com/gero-ekichika/?d=YYYY-MM-DD"
     }
    ]
   },
@@ -1937,7 +2110,7 @@
      "hotels_checked": 129,
      "hotels_with_vacancy": 36,
      "min_price_jpy": 5000,
-     "fetched_at": "2026-11-12T16:55+09:00"
+     "fetched_at": "2026-11-13T02:45+09:00"
     },
     "nenmatsu": {
      "label": "年末年始",
@@ -1960,9 +2133,9 @@
     "wd": {
      "label": "平日(日〜木)",
      "median_jpy": 35200,
-     "p25_jpy": 15800,
-     "p75_jpy": 56000,
-     "samples": 383
+     "p25_jpy": 15817,
+     "p75_jpy": 56900,
+     "samples": 384
     },
     "fri": {
      "label": "金曜",
@@ -1982,15 +2155,18 @@
    "condition_pages": [
     {
      "condition": "客室露天風呂",
-     "url": "https://yadomikke.com/kinosaki-roten/"
+     "url": "https://yadomikke.com/kinosaki-roten/",
+     "url_with_date": "https://yadomikke.com/kinosaki-roten/?d=YYYY-MM-DD"
     },
     {
      "condition": "ペット可の客室",
-     "url": "https://yadomikke.com/kinosaki-pet/"
+     "url": "https://yadomikke.com/kinosaki-pet/",
+     "url_with_date": "https://yadomikke.com/kinosaki-pet/?d=YYYY-MM-DD"
     },
     {
      "condition": "駅から徒歩5分以内の宿",
-     "url": "https://yadomikke.com/kinosaki-ekichika/"
+     "url": "https://yadomikke.com/kinosaki-ekichika/",
+     "url_with_date": "https://yadomikke.com/kinosaki-ekichika/?d=YYYY-MM-DD"
     }
    ]
   },
@@ -2041,7 +2217,7 @@
      "hotels_checked": 142,
      "hotels_with_vacancy": 59,
      "min_price_jpy": 3500,
-     "fetched_at": "2026-11-12T16:55+09:00"
+     "fetched_at": "2026-11-13T02:46+09:00"
     },
     "nenmatsu": {
      "label": "年末年始",
@@ -2077,24 +2253,27 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 26000,
-     "p25_jpy": 14125,
-     "p75_jpy": 48372,
-     "samples": 168
+     "median_jpy": 26400,
+     "p25_jpy": 14550,
+     "p75_jpy": 48248,
+     "samples": 169
     }
    },
    "condition_pages": [
     {
      "condition": "客室露天風呂",
-     "url": "https://yadomikke.com/shirahama-roten/"
+     "url": "https://yadomikke.com/shirahama-roten/",
+     "url_with_date": "https://yadomikke.com/shirahama-roten/?d=YYYY-MM-DD"
     },
     {
      "condition": "ペット可の客室",
-     "url": "https://yadomikke.com/shirahama-pet/"
+     "url": "https://yadomikke.com/shirahama-pet/",
+     "url_with_date": "https://yadomikke.com/shirahama-pet/?d=YYYY-MM-DD"
     },
     {
      "condition": "駅から徒歩5分以内の宿",
-     "url": "https://yadomikke.com/shirahama-ekichika/"
+     "url": "https://yadomikke.com/shirahama-ekichika/",
+     "url_with_date": "https://yadomikke.com/shirahama-ekichika/?d=YYYY-MM-DD"
     }
    ]
   },
@@ -2143,9 +2322,9 @@
       "2026-11-22"
      ],
      "hotels_checked": 188,
-     "hotels_with_vacancy": 63,
+     "hotels_with_vacancy": 60,
      "min_price_jpy": 2102,
-     "fetched_at": "2026-11-12T16:56+09:00"
+     "fetched_at": "2026-11-13T02:47+09:00"
     },
     "nenmatsu": {
      "label": "年末年始",
@@ -2167,7 +2346,7 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 22506,
+     "median_jpy": 22753,
      "p25_jpy": 9500,
      "p75_jpy": 40400,
      "samples": 1070
@@ -2182,23 +2361,26 @@
     "sat": {
      "label": "土曜・祝前日",
      "median_jpy": 67250,
-     "p25_jpy": 45500,
-     "p75_jpy": 85950,
-     "samples": 66
+     "p25_jpy": 46050,
+     "p75_jpy": 86700,
+     "samples": 64
     }
    },
    "condition_pages": [
     {
      "condition": "客室露天風呂",
-     "url": "https://yadomikke.com/beppu-roten/"
+     "url": "https://yadomikke.com/beppu-roten/",
+     "url_with_date": "https://yadomikke.com/beppu-roten/?d=YYYY-MM-DD"
     },
     {
      "condition": "ペット可の客室",
-     "url": "https://yadomikke.com/beppu-pet/"
+     "url": "https://yadomikke.com/beppu-pet/",
+     "url_with_date": "https://yadomikke.com/beppu-pet/?d=YYYY-MM-DD"
     },
     {
      "condition": "駅から徒歩5分以内の宿",
-     "url": "https://yadomikke.com/beppu-ekichika/"
+     "url": "https://yadomikke.com/beppu-ekichika/",
+     "url_with_date": "https://yadomikke.com/beppu-ekichika/?d=YYYY-MM-DD"
     }
    ]
   },
@@ -2247,9 +2429,9 @@
       "2026-11-22"
      ],
      "hotels_checked": 82,
-     "hotels_with_vacancy": 24,
+     "hotels_with_vacancy": 25,
      "min_price_jpy": 13200,
-     "fetched_at": "2026-11-12T16:56+09:00"
+     "fetched_at": "2026-11-13T02:48+09:00"
     },
     "nenmatsu": {
      "label": "年末年始",
@@ -2271,10 +2453,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 35100,
+     "median_jpy": 36300,
      "p25_jpy": 23000,
-     "p75_jpy": 59680,
-     "samples": 260
+     "p75_jpy": 60030,
+     "samples": 262
     },
     "fri": {
      "label": "金曜",
@@ -2287,11 +2469,13 @@
    "condition_pages": [
     {
      "condition": "客室露天風呂",
-     "url": "https://yadomikke.com/kurokawa-roten/"
+     "url": "https://yadomikke.com/kurokawa-roten/",
+     "url_with_date": "https://yadomikke.com/kurokawa-roten/?d=YYYY-MM-DD"
     },
     {
      "condition": "ペット可の客室",
-     "url": "https://yadomikke.com/kurokawa-pet/"
+     "url": "https://yadomikke.com/kurokawa-pet/",
+     "url_with_date": "https://yadomikke.com/kurokawa-pet/?d=YYYY-MM-DD"
     }
    ]
   }
