@@ -192,6 +192,7 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .hl li{padding:10px 0;border-top:1px dashed var(--line);font-size:15px}
 .hl li:first-child{border-top:0}.hl a{font-weight:800}.hl small{display:block;color:var(--sub);font-size:13px}
 .picks b.ok{color:var(--ok)}
+.mini .sel{outline:3px solid var(--cta);outline-offset:-2px;border-radius:6px}.dpick{border-left:6px solid var(--cta)}
 .stat{border-collapse:collapse;font-size:14px;margin:8px 0;width:100%}
 .stat th,.stat td{border:1px solid var(--line);padding:6px 8px;text-align:center;background:#fff}
 .stat thead th{background:#efefef;position:static;cursor:default;min-width:0;font-size:13px}
@@ -217,7 +218,11 @@ for(var i=0;i<as.length;i++){var a=as[i],x=a.getAttribute('data-sl').split('|'),
 d=new Date(Date.UTC(+p[0],+p[1]-1,+p[2])),c=new Date(d.getTime()+L.n*864e5),
 t='https://hotel.travel.rakuten.co.jp/hotelinfo/plan/'+x[0]+'?f_teikei=&f_nen1='+d.getUTCFullYear()+'&f_tuki1='+(d.getUTCMonth()+1)+'&f_hi1='+d.getUTCDate()
 +'&f_nen2='+c.getUTCFullYear()+'&f_tuki2='+(c.getUTCMonth()+1)+'&f_hi2='+c.getUTCDate()+'&f_heya_su=1&f_otona_su='+L.ad+'&f_s1=0&f_s2=0&f_y1=0&f_y2=0&f_y3=0&f_y4=0',
-q=encodeURIComponent(t);a.href=L.a?'https://hb.afl.rakuten.co.jp/hgc/'+L.a+'/?pc='+q+'&m='+q:t;}})();</script><script>window.relt=function(){var ts=document.querySelectorAll('time.rel');for(var i=0;i<ts.length;i++){var t=ts[i],d=new Date(t.getAttribute('datetime')),m=Math.round((Date.now()-d.getTime())/60000);if(isNaN(m)||m<0)continue;if(!t.getAttribute('data-a')){t.setAttribute('data-a',t.textContent);}var r=m<60?'約'+Math.max(m,1)+'分前':(m<1440?'約'+Math.round(m/60)+'時間前':'約'+Math.round(m/1440)+'日前');t.textContent=r+'('+t.getAttribute('data-a')+')';}};relt();(function(){try{var w=window,dl=w.dataLayer=w.dataLayer||[],k='ym_src',s=null,ss=null;try{ss=w.sessionStorage;s=ss.getItem(k)}catch(e){}
+q=encodeURIComponent(t);a.href=L.a?'https://hb.afl.rakuten.co.jp/hgc/'+L.a+'/?pc='+q+'&m='+q:t;}
+window.ymSL=function(no,iso){var p=iso.split('-'),d=new Date(Date.UTC(+p[0],+p[1]-1,+p[2])),c=new Date(d.getTime()+L.n*864e5),
+t='https://hotel.travel.rakuten.co.jp/hotelinfo/plan/'+no+'?f_teikei=&f_nen1='+d.getUTCFullYear()+'&f_tuki1='+(d.getUTCMonth()+1)+'&f_hi1='+d.getUTCDate()
++'&f_nen2='+c.getUTCFullYear()+'&f_tuki2='+(c.getUTCMonth()+1)+'&f_hi2='+c.getUTCDate()+'&f_heya_su=1&f_otona_su='+L.ad+'&f_s1=0&f_s2=0&f_y1=0&f_y2=0&f_y3=0&f_y4=0',
+q=encodeURIComponent(t);return L.a?'https://hb.afl.rakuten.co.jp/hgc/'+L.a+'/?pc='+q+'&m='+q:t;};})();</script><script>window.relt=function(){var ts=document.querySelectorAll('time.rel');for(var i=0;i<ts.length;i++){var t=ts[i],d=new Date(t.getAttribute('datetime')),m=Math.round((Date.now()-d.getTime())/60000);if(isNaN(m)||m<0)continue;if(!t.getAttribute('data-a')){t.setAttribute('data-a',t.textContent);}var r=m<60?'約'+Math.max(m,1)+'分前':(m<1440?'約'+Math.round(m/60)+'時間前':'約'+Math.round(m/1440)+'日前');t.textContent=r+'('+t.getAttribute('data-a')+')';}};relt();(function(){try{var w=window,dl=w.dataLayer=w.dataLayer||[],k='ym_src',s=null,ss=null;try{ss=w.sessionStorage;s=ss.getItem(k)}catch(e){}
 if(!s){var u='',h='';try{u=(new URLSearchParams(location.search).get('utm_source')||'').toLowerCase()}catch(e){}
 try{h=document.referrer?new URL(document.referrer).hostname:''}catch(e){}if(h===location.hostname)h='';var t=u+' '+h;
 s=/chatgpt|openai/.test(t)?'chatgpt':/perplexity/.test(t)?'perplexity':/claude\.ai|anthropic/.test(t)?'claude':/gemini/.test(t)?'gemini':/copilot/.test(t)?'copilot':/google\./.test(t)?'google':/bing\./.test(t)?'bing':/yahoo\./.test(t)?'yahoo':(u||h)?'other':'direct';
