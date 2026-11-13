@@ -238,6 +238,12 @@ with tempfile.TemporaryDirectory() as tmp:
     check("## 日付を指定してページを開く" in llms and "/hakone-roten/?d=" in llms and "/hotel/(施設番号)/?d=YYYY-MM-DD" in llms
           and dj["date_links"]["condition_page"].endswith("/?d=YYYY-MM-DD") and hk["condition_pages"][0]["url_with_date"].endswith("?d=YYYY-MM-DD"),
           "llms.txt と機械向けデータに、日付つきアドレスの作り方が載る")
+    # ChatGPTから来た人が、日付を変えずにそのまま予約できるように
+    check('id="qbook"' in page and "予約する ›" in page and "lk(hh,cur,cc)" in page,
+          "条件ページは、日付の見出しのすぐ下に、その日の上位3軒の予約ボタンを出す")
+    check(hp1.index('id="dpick"') < hp1.index('id="answer"') and 'id="maincta"' in hp1
+          and "の空室・料金を楽天トラベルで確認 ›" in hp1 and "mc.href=link" in hp1,
+          "宿ページは、指定の日付の空きを宿名のすぐ下に出し、大きな予約ボタンもその日付にする(開く日付をボタンに書く)")
     check("aff_click" in page and "ym_landing" in page and "chatgpt" in page, "流入元(ChatGPTなど)と楽天リンクのクリックを計測するしくみが入る")
 
 # 履歴の数え方(前回◯でなかった→◯ / ◯だった→消えた)
