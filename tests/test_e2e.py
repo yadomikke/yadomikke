@@ -244,6 +244,15 @@ with tempfile.TemporaryDirectory() as tmp:
     check(hp1.index('id="dpick"') < hp1.index('id="answer"') and 'id="maincta"' in hp1
           and "の空室・料金を楽天トラベルで確認 ›" in hp1 and "mc.href=link" in hp1,
           "宿ページは、指定の日付の空きを宿名のすぐ下に出し、大きな予約ボタンもその日付にする(開く日付をボタンに書く)")
+    # 日付なしで来ても、最初の画面で日付を選んで予約できる。エリア・条件の切り替えはページの下へ
+    check(page.index('id="bookpanel"') < page.index('id="answer"') and 'id="dinput"' in page
+          and page.index('id="switch"') > page.index('id="calendar"') and 'href="#switch"' in page,
+          "条件ページは、最初の画面に「日付を選んで予約する」を出し、エリア・条件の切り替えはページの下に置く")
+    check('id="apick"' in ar and 'id="ainput"' in ar and "window.__AD=" in ar and "window.ymSL" in ar and "fa.href='../'+f[0]+'/?d='+iso" in ar,
+          "エリアページは ?d=日付 や日付の入力で、その日の空き数・上位3軒の予約ボタン・条件ページへのリンク(日付つき)を出す")
+    nf = (out / "404.html").read_text(encoding="utf-8")
+    check("location.replace(t+location.search)" in nf and '"h":{"1":0' in nf.replace(" ", "") and "/(エリア名)/?d=YYYY-MM-DD" in llms,
+          "消えたページに来た人は、エリアのページへ(日付も引き継いで)自動で案内する。AIにもエリアページの日付指定を伝える")
     check("aff_click" in page and "ym_landing" in page and "chatgpt" in page, "流入元(ChatGPTなど)と楽天リンクのクリックを計測するしくみが入る")
 
 # 履歴の数え方(前回◯でなかった→◯ / ◯だった→消えた)

@@ -126,6 +126,33 @@ t='https://hotel.travel.rakuten.co.jp/hotelinfo/plan/'+no+'?f_teikei=&f_nen1='+d
 +'&f_nen2='+c.getUTCFullYear()+'&f_tuki2='+(c.getUTCMonth()+1)+'&f_hi2='+c.getUTCDate()+'&f_heya_su=1&f_otona_su='+L.ad+'&f_s1=0&f_s2=0&f_y1=0&f_y2=0&f_y3=0&f_y4=0',
 q=encodeURIComponent(t);return L.a?'https://hb.afl.rakuten.co.jp/hgc/'+L.a+'/?pc='+q+'&m='+q:t;};})();"""
 
+# エリアページ: 日付(?d= または日付の入力)を選ぶと、その日の空き数・上位3軒の予約ボタン・条件ページへのリンクを出す
+AREA_JS = r"""(function(){var A=window.__AD,box=document.getElementById('apick');if(!A||!box)return;
+var out=document.getElementById('aout'),inp=document.getElementById('ainput'),WD='日月火水木金土';
+function lab(iso){var p=iso.split('-');return (+p[1])+'/'+(+p[2])+'('+WD[new Date(Date.UTC(+p[0],+p[1]-1,+p[2])).getUTCDay()]+((A.hol||[]).indexOf(iso)>=0?'祝':'')+')';}
+function yen(n){return '¥'+(+n).toLocaleString('ja-JP');}
+function mk(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;}
+function link(no,iso){return window.ymSL?ymSL(no,iso):'#';}
+function show(iso,push){out.textContent='';inp.value=iso;var x=A.d[iso];
+ var bs=box.querySelectorAll('.quick button');for(var i=0;i<bs.length;i++)bs[i].classList.toggle('on',bs[i].getAttribute('data-d')===iso);
+ if(push){try{var u=new URL(location.href);u.searchParams.set('d',iso);u.hash='';history.replaceState(null,'',u.toString());}catch(e){}}
+ if(!x){out.appendChild(mk('p','qh',lab(iso)+'は、当サイトの取得範囲外です('+lab(A.min)+'〜'+lab(A.max)+'から選んでください)。'));return;}
+ if(!x[0]){out.appendChild(mk('p','qh',lab(iso)+'は、まだ空室を取得できていません。'));return;}
+ out.appendChild(mk('p','qh',lab(iso)+':'+A.l+'で空きのある宿 '+x[1]+'軒(確認できた'+x[0]+'軒中)'+(x[2]?'・最安 '+yen(x[2])+'〜':'')));
+ x[3].forEach(function(h){var row=mk('div','qr'),nm=mk('div','qn');
+   var a=mk('a',null,h[1]);a.href=h[2]||link(h[0],iso);if(!h[2]){a.target='_blank';a.rel='sponsored nofollow noopener';}nm.appendChild(a);
+   nm.appendChild(mk('small',null,(h[4]?'★'+h[4]+' ・ ':'')+(h[3]?yen(h[3])+'〜':'')));row.appendChild(nm);
+   var b=mk('a','cta qcta','予約する ›');b.href=link(h[0],iso);b.target='_blank';b.rel='sponsored nofollow noopener';row.appendChild(b);out.appendChild(row);});
+ if(!x[3].length&&x[1])out.appendChild(mk('p','qm','口コミの多い宿の空きはありませんでした。条件ページで、ほかの宿を確認できます。'));
+ if(A.f.length){var c=mk('p','qm','条件で絞る: ');A.f.forEach(function(f,i){var fa=mk('a',null,f[1]);fa.href='../'+f[0]+'/?d='+iso;if(i)c.appendChild(document.createTextNode(' ・ '));c.appendChild(fa);});out.appendChild(c);}}
+var q=null;try{q=new URLSearchParams(location.search).get('d');}catch(e){}
+if(!q&&/^#\d{4}-\d{2}-\d{2}$/.test(location.hash))q=location.hash.slice(1);
+box.hidden=false;show(q&&/^\d{4}-\d{2}-\d{2}$/.test(q)?q:A.def,false);
+inp.addEventListener('change',function(){if(inp.value)show(inp.value,true);});
+var bs=box.querySelectorAll('.quick button');for(var i=0;i<bs.length;i++){(function(b){b.addEventListener('click',function(){show(b.getAttribute('data-d'),true);});})(bs[i]);}
+})();"""
+
+
 # 宿ページ: アドレスで指定された日付(?d=YYYY-MM-DD)の空きを、ページの上に表示し、カレンダーのその日に印を付ける
 DPICK_JS = r"""(function(){var q=null;try{q=new URLSearchParams(location.search).get('d');}catch(e){}
 if(!q&&/^#\d{4}-\d{2}-\d{2}$/.test(location.hash))q=location.hash.slice(1);
@@ -703,7 +730,9 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .hl li{padding:10px 0;border-top:1px dashed var(--line);font-size:15px}
 .hl li:first-child{border-top:0}.hl a{font-weight:800}.hl small{display:block;color:var(--sub);font-size:13px}
 .picks b.ok{color:var(--ok)}
-.qbook{background:#fff;border:2px solid var(--cta);border-radius:12px;padding:10px 12px;margin:8px 0 12px}
+.qbook{background:#fff;border:2px solid var(--cta);border-radius:12px;padding:10px 12px;margin:8px 0 4px}
+.bookpanel{margin:8px 0 12px}.bookpanel h2{font-size:18px;color:var(--navy);margin:0 0 6px}.bookpanel .quick{margin:4px 0 8px}
+.dinput{display:inline-block;font-size:15px;margin:0 0 8px}.dinput input{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;min-height:40px}
 .qbook .qh{font-weight:700;color:var(--navy);margin:0 0 6px;font-size:15px}.qbook .qm{margin:6px 0 0;font-size:13px;color:var(--sub)}
 .qbook .qr{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px dashed var(--line)}
 .qbook .qn{min-width:0;font-weight:700}.qbook .qn a{color:var(--ink)}.qbook .qn small{display:block;font-weight:400;color:var(--price)}
@@ -862,7 +891,10 @@ function render(){
   if(filterId&&D.badges[filterId]){rt.appendChild(document.createTextNode(' (絞り込み: '+D.badges[filterId].l+')'));}
   // すぐ予約できるように、この日の上位3軒の予約ボタンを、見出しのすぐ下に並べる
   var qk=document.getElementById('qbook');
-  if(qk){qk.textContent='';qk.hidden=!oks.length;
+  if(qk){qk.textContent='';
+    var dI=document.getElementById('dinput');if(dI)dI.value=cur;
+    if(!oks.length){qk.appendChild(el('p','qh',di.l+(di.u?'はまだ空室を取得できていません。':'は「'+FL+'」の空きが見つかりませんでした。')));
+      qk.appendChild(el('p','qm','ほかの日付を選んでください。'));}
     if(oks.length){qk.appendChild(el('p','qh',di.l+'に予約できる宿('+(mode==='p'?'安い順':'口コミ評価順')+'・上位'+Math.min(3,oks.length)+'軒)'));
       oks.slice(0,3).forEach(function(x){var hh=x[0],cc=x[1],row=el('div','qr'),nm=el('div','qn');
         if(hh.hp){var na=el('a',null,hh.n);na.href=hh.hp;nm.appendChild(na);}else nm.appendChild(el('span',null,hh.n));
@@ -913,7 +945,10 @@ var ft=document.getElementById('favtog');
 function updFav(){if(!ft)return;var n=Object.keys(fav).length;ft.textContent=(favOnly?'♥':'♡')+' お気に入りだけ('+n+')';ft.setAttribute('aria-pressed',favOnly?'true':'false');ft.classList.toggle('on',favOnly);}
 if(ft){ft.hidden=false;ft.addEventListener('click',function(){favOnly=!favOnly;updFav();render();});updFav();}
 var qb=document.querySelectorAll('.quick button');
-for(var q=0;q<qb.length;q++){(function(b){b.addEventListener('click',function(){pick(b.getAttribute('data-d'),true);});})(qb[q]);}
+for(var q=0;q<qb.length;q++){(function(b){b.addEventListener('click',function(){pick(b.getAttribute('data-d'),false);});})(qb[q]);}
+var dIn=document.getElementById('dinput');
+if(dIn){dIn.addEventListener('change',function(){var v=dIn.value;if(D.dates.some(function(x){return x.d===v;}))pick(v,false);
+  else{var qk=document.getElementById('qbook');if(qk){qk.textContent='';qk.appendChild(el('p','qh','この日付は、当サイトの取得範囲外です('+D.dates[0].l+'〜'+D.dates[D.dates.length-1].l+'から選んでください)。'));}}});}
 var ths=document.querySelectorAll('thead th[data-d]');
 for(var t=0;t<ths.length;t++){(function(th){th.addEventListener('click',function(){pick(th.getAttribute('data-d'),true);});})(ths[t]);}
 // カレンダー表の週タブ
@@ -944,7 +979,7 @@ if(tbl){tbl.addEventListener('click',function(e){var td=e.target.closest?e.targe
       tbody.appendChild(tr);}
     tm.parentNode.removeChild(tm);if(tb)show(curTab);});}}
 render();
-if(urlDate)pick(urlDate,true);
+if(urlDate)pick(urlDate,false);
 })();
 """
 
@@ -1024,9 +1059,12 @@ def ld_script(objs):
 
 def shell(cfg, demo, root, title, desc, canonical, inner, ld=None, noindex=False, js=False):
     extra = ld_script(ld) if ld else ""
-    sl = (f"<script>window.__LT={json.dumps(LINK)};{SL_JS}</script>" if LINK and ('data-sl="' in inner or 'id="dpick"' in inner) else "")
+    sl = (f"<script>window.__LT={json.dumps(LINK)};{SL_JS}</script>"
+          if LINK and ('data-sl="' in inner or 'id="dpick"' in inner or 'id="apick"' in inner) else "")
     if 'id="dpick"' in inner:
         sl += f"<script>{DPICK_JS}</script>"
+    if 'id="apick"' in inner:
+        sl += f"<script>{AREA_JS}</script>"
     return (head(cfg, title, desc, canonical, demo, extra, noindex) + header_html(cfg, demo, root)
             + '<div class="wrap">' + inner + "</div>" + f"<footer>{footer_html(cfg, root)}</footer>"
             + (f"<script>{JS}</script>" if js else "") + sl + "<script>" + REL_JS + TRACK_JS + "</script></body></html>")
@@ -1995,6 +2033,7 @@ def llms_txt(cfg, digests, snaps_ok, now, wl=()):
     lines += ["", "## 日付を指定してページを開く", "",
               "ユーザーが日付を指定して質問した場合は、次の形のリンクを案内すると、その日付を選んだ状態でページが開きます(チェックイン日、YYYY-MM-DD)。",
               "",
+              f"- エリアのページ: {base}/(エリア名)/?d=YYYY-MM-DD  例: {base}/hakone/?d=2026-11-28(条件を問わず、その日に空きのある宿の数・口コミ上位の空き宿・予約リンク)",
               f"- エリア×条件のページ: {base}/(ページ名)/?d=YYYY-MM-DD  例: {base}/hakone-roten/?d=2026-11-28(箱根の客室露天風呂付きの宿の、その日の空室と料金の一覧)",
               f"- 宿ごとのページ: {base}/hotel/(施設番号)/?d=YYYY-MM-DD (その宿の、その日の空き・最安値と、楽天トラベルの予約ページへのリンク)",
               f"- 今夜・明日・今週末などは、日付つきのページがあります: {base}/konya/ 、{base}/ashita/ 、{base}/shumatsu/",
@@ -2506,10 +2545,15 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
 
     out = [head(cfg, title, desc, canonical, demo, ld_html), header_html(cfg, demo), '<div class="wrap">']
     out.append(f'<div class="hero"><div class="crumb"><a href="../">{esc(site["name"])}</a> › <a href="../{esc(page["area"])}/">{esc(alabel)}</a> › {esc(flabel)}</div>'
-               f'<h1>{esc(page["title"])}</h1><p class="lead">{esc(page.get("lead", ""))}</p></div>')
-    out.append(switcher_html(cfg, page, "../"))
+               f'<h1>{esc(page["title"])}</h1><p class="lead">{esc(page.get("lead", ""))} <a href="#switch">エリア・条件を変える ↓</a></p></div>')
 
     if rows:
+        # 最初の画面に「日付を選ぶ → その日の上位3軒の予約ボタン」を出す(ChatGPTなどから来た人が、すぐ予約に進めるように)
+        qb = "".join(f'<button type="button" data-d="{d.isoformat()}">{esc(t)}</button>' for t, d in quick)
+        out.append('<section class="bookpanel" id="bookpanel"><h2>日付を選んで予約する</h2>'
+                   f'<div class="quick" aria-label="日付をすばやく選ぶ">{qb}</div>'
+                   f'<label class="dinput">ほかの日付: <input type="date" id="dinput" min="{dates[0].isoformat()}" max="{dates[-1].isoformat()}" value="{default.isoformat()}"></label>'
+                   '<div class="qbook" id="qbook"><p class="qh">読み込み中…</p></div></section>')
         out.append(answer_html(*ans, mood=("happy" if any(info[d.isoformat()][0] for d in dates) else "sleepy")))
         if not page.get("auto"):
             out.append(chips_html(scene_list, "./"))
@@ -2518,12 +2562,9 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
         out.append('<div class="empty"><b>データを準備中です。</b><br>初回の自動更新が終わると、ここに空室が表示されます。'
                    '(初回は宿の判定のため、数回の更新が必要です)</div>')
     else:
-        qb = "".join(f'<button type="button" data-d="{d.isoformat()}">{esc(t)}</button>' for t, d in quick)
-        out.append(f'<div class="quick" aria-label="日付をすばやく選ぶ">{qb}</div>')
         out.append('<div class="finder" id="finder"><div class="dstrip" id="dstrip" hidden><div class="dscroll" id="dscroll"></div></div>')
         res, n_def = results_html(cfg, rows, state, feat, flabel, default, dates, info, holidays, now)
         out.append(f'<div class="rhead" id="rhead"><h2 id="rt">{esc(day_label(default, holidays))}に泊まれる宿 <b>{n_def}軒</b></h2>'
-                   '<div class="qbook" id="qbook" hidden></div>'
                    '<div class="rctl"><button type="button" id="favtog" class="favtog" hidden aria-pressed="false">♡ お気に入りだけ</button><label class="sort">絞り込み <select id="fltsel"><option value="">すべて</option>' + "".join(f'<option value="{esc(b["id"])}">{esc(b["label"])}</option>' for b in cfg.get("badges", [])) + '</select></label><label class="sort">並び替え <select id="sortsel"><option value="p">料金が安い順</option>'
                    '<option value="r">口コミ評価が高い順</option></select></label></div></div>'
                    '<p class="rsub">1泊・大人2名・1部屋の料金です(取得時点の掲載額)。ボタンを押すと楽天トラベルの予約ページが開きます。バッジは当サイト独自の基準で付けています(<a href="../about/#badges">基準を見る</a>)。</p>')
@@ -2553,6 +2594,7 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
 
     out.append('<div class="card"><h2>よくある質問</h2>'
                + "".join(f'<details class="q"><summary>{esc(q)}</summary><p>{esc(a)}</p></details>' for q, a in faq) + "</div>")
+    out.append(f'<section class="card" id="switch"><h2>エリア・条件を変える</h2>{switcher_html(cfg, page, "../")}</section>')
     out.append(f'</div><footer>{footer_html(cfg, "../")}</footer><script>{JS}</script><script>{REL_JS}{TRACK_JS}</script></body></html>')
     digest = (ans[1] + " " + " / ".join(ans[2][:3])) if rows else ""
     return "".join(out), len(rows), t0[0], digest
@@ -2740,6 +2782,29 @@ def souba_txt(sm):
     return f"{yen_full(sm['med'])}(多くは{yen_full(sm['p25'])}〜{yen_full(sm['p75'])})" if sm else "—"
 
 
+def area_pick_html(cfg, hotels, state, area, today, holidays, feats):
+    """エリアページの「日付を選んで予約する」。日付ごとの空き数と上位3軒を、小さなデータとして埋め込む(AREA_JSが表示)"""
+    days = [today + timedelta(days=i) for i in range(area_days(cfg, area))]
+    d_ = {}
+    for d in days:
+        v = area_vacancy(hotels, state, area, [d])
+        top = sorted([x for x in v["vacant"] if (x[0].get("reviews") or 0) >= PICK_MIN_REVIEWS],
+                     key=lambda x: (-_rv(x[0]), x[1] or 9e9, x[0]["name"]))[:3]
+        d_[d.isoformat()] = [len(v["checked"]), len(v["vacant"]), v["low"],
+                             [[h["no"], h["name"], hotel_href(h), p, h.get("review")] for h, p, _ in top]]
+    sats = [d for d in days if d.weekday() == 5]
+    quick = [("今夜", today), ("明日", today + timedelta(days=1))] + ([(f"次の土曜 {md(sats[0])}", sats[0])] if sats else [])
+    data = {"l": cfg["areas"][area]["label"], "def": today.isoformat(), "min": days[0].isoformat(), "max": days[-1].isoformat(),
+            "d": d_, "f": [[p["slug"], cfg["features"][p["feature"]]["label"]] for p in feats],
+            "hol": sorted(x for x in holidays if days[0].isoformat() <= x <= days[-1].isoformat())}
+    qb = "".join(f'<button type="button" data-d="{d.isoformat()}">{esc(t)}</button>' for t, d in quick)
+    return ('<section class="bookpanel" id="apick" hidden><h2>日付を選んで予約する</h2>'
+            f'<div class="quick" aria-label="日付をすばやく選ぶ">{qb}</div>'
+            f'<label class="dinput">ほかの日付: <input type="date" id="ainput" min="{days[0].isoformat()}" max="{days[-1].isoformat()}"></label>'
+            '<div class="qbook" id="aout"></div></section>'
+            "<script>window.__AD=" + json.dumps(data, ensure_ascii=False).replace("</", "<\\/") + "</script>")
+
+
 def render_area(cfg, hotels, state, area, wl, sums, now, demo):
     site = cfg["site"]
     base = site["url"].rstrip("/")
@@ -2792,6 +2857,7 @@ def render_area(cfg, hotels, state, area, wl, sums, now, demo):
                          [f"楽天トラベルの空室検索APIから{freq_text(cfg)}に取得した値で、リアルタイムではありません。予約前に楽天トラベルでご確認ください。",
                           "「確認できた宿」は、当サイトがその日程の空室を確認した宿の数です。"],
                          f"{alabel}の空室まとめ", mood=("happy" if parts else "sleepy"))]
+    inner.insert(1, area_pick_html(cfg, hotels, state, area, today, holidays, feats))
     inner.append('<section class="card"><h2>日程ごとの空き</h2><div class="scroll"><table class="stat"><thead><tr><th>日程</th><th>確認できた宿</th>'
                  f"<th>空きのある宿</th><th>最安値</th><th>取得</th></tr></thead><tbody>{rows}</tbody></table></div></section>")
     if any(pc.values()):
@@ -2988,7 +3054,7 @@ def data_json(cfg, hotels, state, wl, sums, now):
         for g, sm in price_cells(cfg, hotels, state, area, today).items():
             if sm:
                 price[g] = {"label": groups[g], "median_jpy": sm["med"], "p25_jpy": sm["p25"], "p75_jpy": sm["p75"], "samples": sm["n"]}
-        areas.append({"key": area, "label": a["label"], "page_url": f"{base}/{area}/",
+        areas.append({"key": area, "label": a["label"], "page_url": f"{base}/{area}/", "page_url_with_date": f"{base}/{area}/?d=YYYY-MM-DD",
                       "hotels_listed": len(areastat.area_nos(hotels, area)),
                       "availability": avail, "price_next_30_days": price,
                       "condition_pages": [{"condition": cfg["features"][p["feature"]]["label"], "url": f"{base}/{p['slug']}/",
@@ -3014,6 +3080,7 @@ def data_json(cfg, hotels, state, wl, sums, now):
         ],
         "date_links": {
             "description": "ユーザーが日付を指定した場合は、?d=YYYY-MM-DD(チェックイン日)を付けたURLを案内すると、その日付を選んだ状態でページが開きます。",
+            "area_page": f"{base}/(エリア名)/?d=YYYY-MM-DD",
             "condition_page": f"{base}/(ページ名)/?d=YYYY-MM-DD",
             "hotel_page": f"{base}/hotel/(施設番号)/?d=YYYY-MM-DD",
             "example": f"{base}/hakone-roten/?d={(today + timedelta(days=14)).isoformat()}"},
@@ -3453,6 +3520,22 @@ def main():
                 '<div class="empty"><b>お探しのページは存在しないか、移動した可能性があります。</b><br>'
                 '下のリンクから、宿の空室を探してみてください。</div>'
                 '<p style="margin:16px 0"><a href="/">' + esc(site0["name"]) + ' トップへ</a></p>')
+    # 消えたページ(宿ページ・条件ページ)に来た人は、そのエリアのページへ自動で案内する(日付 ?d= も引き継ぐ)。
+    # 検索エンジンには「ページなし(404)」のまま伝わる
+    hmap = {}
+    for a_, lst in hotels.get("areas", {}).items():
+        if a_ in cfg["areas"]:
+            for h_ in lst:
+                hmap.setdefault(h_["no"], a_)
+    alist = list(cfg["areas"])
+    goto = {"a": alist, "s": sorted(ctxs), "h": {no: alist.index(a_) for no, a_ in hmap.items()}}
+    inner404 += ('<p id="mv" hidden>このページは移動しました。エリアのページへご案内します…</p>'
+                 "<script>(function(){var G=" + json.dumps(goto, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/") + ","
+                 "p=location.pathname,s=p.split('/').filter(Boolean),t=null;"
+                 "if(s[0]==='hotel'&&s[1]){var a=G.h[s[1]];t=(a!==undefined)?'/'+G.a[a]+'/':null;}"
+                 "else if(s.length){var k=s[0].split('-')[0];if(G.s.indexOf(s[0])>=0&&s.length>1)t='/'+s[0]+'/';"
+                 "else if(G.a.indexOf(k)>=0)t='/'+k+'/';}"
+                 "if(t&&t!==p){document.getElementById('mv').hidden=false;location.replace(t+location.search);}})();</script>")
     (out_dir / "404.html").write_text(
         shell(cfg, args.demo, "/", f"ページが見つかりません | {site0['name']}", "お探しのページは見つかりませんでした。",
               site0["url"].rstrip("/") + "/", inner404, None, noindex=True), encoding="utf-8")
