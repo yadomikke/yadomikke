@@ -1,7 +1,7 @@
 {
  "name": "ヤドミッケ 温泉地の空室・料金データ",
  "description": "楽天トラベルの空室検索APIから自動で取得し、ヤドミッケが集計した、温泉地の宿の空き数と料金の最新値です。",
- "generated_at": "2026-11-14T22:45:00+09:00",
+ "generated_at": "2026-11-14T23:16:48+09:00",
  "source": "楽天トラベル 空室検索API(楽天ウェブサービス)",
  "attribution": "ヤドミッケ(楽天トラベルの空室データをもとに集計)",
  "site_url": "https://yadomikke.com/",
@@ -150,9 +150,9 @@
     "wd": {
      "label": "平日(日〜木)",
      "median_jpy": 16797,
-     "p25_jpy": 7775,
+     "p25_jpy": 7700,
      "p75_jpy": 42000,
-     "samples": 3598
+     "samples": 3595
     },
     "fri": {
      "label": "金曜",
@@ -1472,8 +1472,8 @@
      "label": "平日(日〜木)",
      "median_jpy": 11020,
      "p25_jpy": 6600,
-     "p75_jpy": 20000,
-     "samples": 2303
+     "p75_jpy": 20050,
+     "samples": 2289
     },
     "fri": {
      "label": "金曜",
@@ -1643,9 +1643,9 @@
     "wd": {
      "label": "平日(日〜木)",
      "median_jpy": 9512,
-     "p25_jpy": 6000,
+     "p25_jpy": 6050,
      "p75_jpy": 17600,
-     "samples": 1227
+     "samples": 1220
     },
     "fri": {
      "label": "金曜",
@@ -1971,10 +1971,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 10400,
+     "median_jpy": 10370,
      "p25_jpy": 7300,
-     "p75_jpy": 25000,
-     "samples": 1659
+     "p75_jpy": 24000,
+     "samples": 1649
     },
     "fri": {
      "label": "金曜",
@@ -2138,10 +2138,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 21000,
-     "p25_jpy": 9900,
-     "p75_jpy": 39800,
-     "samples": 733
+     "median_jpy": 20098,
+     "p25_jpy": 9087,
+     "p75_jpy": 39600,
+     "samples": 728
     },
     "fri": {
      "label": "金曜",
@@ -2302,8 +2302,8 @@
      "label": "平日(日〜木)",
      "median_jpy": 11360,
      "p25_jpy": 8000,
-     "p75_jpy": 30800,
-     "samples": 342
+     "p75_jpy": 30640,
+     "samples": 340
     },
     "fri": {
      "label": "金曜",
@@ -2332,9 +2332,44 @@
      "url_with_date": "https://yadomikke.com/gero-pet/?d=YYYY-MM-DD"
     },
     {
+     "condition": "大浴場のある宿",
+     "url": "https://yadomikke.com/gero-daiyoku/",
+     "url_with_date": "https://yadomikke.com/gero-daiyoku/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "貸切風呂・家族風呂のある宿",
+     "url": "https://yadomikke.com/gero-kashikiri/",
+     "url_with_date": "https://yadomikke.com/gero-kashikiri/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "夜遅くても泊まれる宿(最終チェックイン22時以降)",
+     "url": "https://yadomikke.com/gero-osoitsuki/",
+     "url_with_date": "https://yadomikke.com/gero-osoitsuki/?d=YYYY-MM-DD"
+    },
+    {
      "condition": "駅から徒歩5分以内の宿",
      "url": "https://yadomikke.com/gero-ekichika/",
      "url_with_date": "https://yadomikke.com/gero-ekichika/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "お風呂の口コミ評価が高い宿",
+     "url": "https://yadomikke.com/gero-furohyoka/",
+     "url_with_date": "https://yadomikke.com/gero-furohyoka/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "サウナのある宿",
+     "url": "https://yadomikke.com/gero-sauna/",
+     "url_with_date": "https://yadomikke.com/gero-sauna/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "送迎のある宿",
+     "url": "https://yadomikke.com/gero-sougei/",
+     "url_with_date": "https://yadomikke.com/gero-sougei/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "バリアフリー対応の宿(車椅子可など)",
+     "url": "https://yadomikke.com/gero-barrierfree/",
+     "url_with_date": "https://yadomikke.com/gero-barrierfree/?d=YYYY-MM-DD"
     }
    ]
   },
@@ -2410,7 +2445,7 @@
      "median_jpy": 17200,
      "p25_jpy": 9900,
      "p75_jpy": 37400,
-     "samples": 492
+     "samples": 488
     },
     "fri": {
      "label": "金曜",
@@ -2514,10 +2549,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 12100,
+     "median_jpy": 12050,
      "p25_jpy": 5300,
      "p75_jpy": 25300,
-     "samples": 1095
+     "samples": 1096
     },
     "fri": {
      "label": "金曜",
@@ -2623,8 +2658,8 @@
      "label": "平日(日〜木)",
      "median_jpy": 10000,
      "p25_jpy": 4800,
-     "p75_jpy": 30645,
-     "samples": 1325
+     "p75_jpy": 30600,
+     "samples": 1320
     },
     "fri": {
      "label": "金曜",
@@ -2730,8 +2765,8 @@
      "label": "平日(日〜木)",
      "median_jpy": 28600,
      "p25_jpy": 16800,
-     "p75_jpy": 57050,
-     "samples": 286
+     "p75_jpy": 57000,
+     "samples": 285
     },
     "fri": {
      "label": "金曜",
