@@ -1,7 +1,7 @@
 {
  "name": "ヤドミッケ 温泉地の空室・料金データ",
  "description": "楽天トラベルの空室検索APIから自動で取得し、ヤドミッケが集計した、温泉地の宿の空き数と料金の最新値です。",
- "generated_at": "2026-11-14T23:16:48+09:00",
+ "generated_at": "2026-11-14T23:58:12+09:00",
  "source": "楽天トラベル 空室検索API(楽天ウェブサービス)",
  "attribution": "ヤドミッケ(楽天トラベルの空室データをもとに集計)",
  "site_url": "https://yadomikke.com/",
@@ -2342,6 +2342,11 @@
      "url_with_date": "https://yadomikke.com/gero-kashikiri/?d=YYYY-MM-DD"
     },
     {
+     "condition": "小さな宿(客室10室以下)",
+     "url": "https://yadomikke.com/gero-chiisana/",
+     "url_with_date": "https://yadomikke.com/gero-chiisana/?d=YYYY-MM-DD"
+    },
+    {
      "condition": "夜遅くても泊まれる宿(最終チェックイン22時以降)",
      "url": "https://yadomikke.com/gero-osoitsuki/",
      "url_with_date": "https://yadomikke.com/gero-osoitsuki/?d=YYYY-MM-DD"
@@ -2352,9 +2357,24 @@
      "url_with_date": "https://yadomikke.com/gero-ekichika/?d=YYYY-MM-DD"
     },
     {
+     "condition": "夕食の口コミ評価が高い宿",
+     "url": "https://yadomikke.com/gero-yushoku/",
+     "url_with_date": "https://yadomikke.com/gero-yushoku/?d=YYYY-MM-DD"
+    },
+    {
      "condition": "お風呂の口コミ評価が高い宿",
      "url": "https://yadomikke.com/gero-furohyoka/",
      "url_with_date": "https://yadomikke.com/gero-furohyoka/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "清潔さの口コミ評価が高い宿",
+     "url": "https://yadomikke.com/gero-seiketsu/",
+     "url_with_date": "https://yadomikke.com/gero-seiketsu/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "子連れ向けの宿",
+     "url": "https://yadomikke.com/gero-kids/",
+     "url_with_date": "https://yadomikke.com/gero-kids/?d=YYYY-MM-DD"
     },
     {
      "condition": "サウナのある宿",
@@ -2474,9 +2494,39 @@
      "url_with_date": "https://yadomikke.com/kinosaki-pet/?d=YYYY-MM-DD"
     },
     {
+     "condition": "大浴場のある宿",
+     "url": "https://yadomikke.com/kinosaki-daiyoku/",
+     "url_with_date": "https://yadomikke.com/kinosaki-daiyoku/?d=YYYY-MM-DD"
+    },
+    {
      "condition": "駅から徒歩5分以内の宿",
      "url": "https://yadomikke.com/kinosaki-ekichika/",
      "url_with_date": "https://yadomikke.com/kinosaki-ekichika/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "夕食の口コミ評価が高い宿",
+     "url": "https://yadomikke.com/kinosaki-yushoku/",
+     "url_with_date": "https://yadomikke.com/kinosaki-yushoku/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "お風呂の口コミ評価が高い宿",
+     "url": "https://yadomikke.com/kinosaki-furohyoka/",
+     "url_with_date": "https://yadomikke.com/kinosaki-furohyoka/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "清潔さの口コミ評価が高い宿",
+     "url": "https://yadomikke.com/kinosaki-seiketsu/",
+     "url_with_date": "https://yadomikke.com/kinosaki-seiketsu/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "サウナのある宿",
+     "url": "https://yadomikke.com/kinosaki-sauna/",
+     "url_with_date": "https://yadomikke.com/kinosaki-sauna/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "送迎のある宿",
+     "url": "https://yadomikke.com/kinosaki-sougei/",
+     "url_with_date": "https://yadomikke.com/kinosaki-sougei/?d=YYYY-MM-DD"
     }
    ]
   },
