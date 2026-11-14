@@ -2,7 +2,7 @@
 
 > 温泉地の宿の空室を、条件(客室露天風呂・ペット可・大浴場など)と日付ごとにまとめた日本語サイトです。楽天トラベルの空室検索APIから自動で取得し、今日・明日の日程は約4時間ごと、7日以内は約8時間ごと、14日以内は約16時間ごと、それ以降は約48時間ごとを目安に更新しています。料金は1泊・大人2名・1部屋の最安値です。リアルタイムの在庫ではないため、予約前に楽天トラベルでの確認が必要です。
 
-最終更新: 2026-11-15 01:42(日本時間)
+最終更新: 2026-11-15 02:35(日本時間)
 
 ## 空室ページ(エリア×条件)
 
@@ -219,19 +219,19 @@
 - [下呂で今空いているサウナのある宿](https://yadomikke.com/gero-sauna/): 下呂のサウナのある宿 11軒の空室表(本日空き6軒)
 - [下呂で今空いている送迎のある宿](https://yadomikke.com/gero-sougei/): 下呂の送迎のある宿 29軒の空室表(本日空き8軒)
 - [下呂で今空いているバリアフリー対応の宿(車椅子可など)](https://yadomikke.com/gero-barrierfree/): 下呂のバリアフリー対応の宿(車椅子可など) 18軒の空室表(本日空き10軒)
-- [城崎で今空いている大浴場のある宿](https://yadomikke.com/kinosaki-daiyoku/): 城崎の大浴場のある宿 36軒の空室表(本日空き10軒)
-- [城崎で今空いている貸切風呂・家族風呂のある宿](https://yadomikke.com/kinosaki-kashikiri/): 城崎の貸切風呂・家族風呂のある宿 33軒の空室表(本日空き2軒)
-- [城崎で今空いている小さな宿(客室10室以下)](https://yadomikke.com/kinosaki-chiisana/): 城崎の小さな宿(客室10室以下) 17軒の空室表(本日空き2軒)
-- [城崎で今空いている夜遅くても泊まれる宿(最終チェックイン22時以降)](https://yadomikke.com/kinosaki-osoitsuki/): 城崎の夜遅くても泊まれる宿(最終チェックイン22時以降) 14軒の空室表(本日空き5軒)
+- [城崎で今空いている大浴場のある宿](https://yadomikke.com/kinosaki-daiyoku/): 城崎の大浴場のある宿 54軒の空室表(本日空き14軒)
+- [城崎で今空いている貸切風呂・家族風呂のある宿](https://yadomikke.com/kinosaki-kashikiri/): 城崎の貸切風呂・家族風呂のある宿 53軒の空室表(本日空き8軒)
+- [城崎で今空いている小さな宿(客室10室以下)](https://yadomikke.com/kinosaki-chiisana/): 城崎の小さな宿(客室10室以下) 60軒の空室表(本日空き12軒)
+- [城崎で今空いている夜遅くても泊まれる宿(最終チェックイン22時以降)](https://yadomikke.com/kinosaki-osoitsuki/): 城崎の夜遅くても泊まれる宿(最終チェックイン22時以降) 29軒の空室表(本日空き10軒)
 - [城崎で今空いている駅から徒歩5分以内の宿](https://yadomikke.com/kinosaki-ekichika/): 城崎の駅から徒歩5分以内の宿 15軒の空室表(本日空き0軒)
-- [城崎で今空いている夕食の口コミ評価が高い宿](https://yadomikke.com/kinosaki-yushoku/): 城崎の夕食の口コミ評価が高い宿 34軒の空室表(本日空き3軒)
-- [城崎で今空いているお風呂の口コミ評価が高い宿](https://yadomikke.com/kinosaki-furohyoka/): 城崎のお風呂の口コミ評価が高い宿 28軒の空室表(本日空き1軒)
-- [城崎で今空いている清潔さの口コミ評価が高い宿](https://yadomikke.com/kinosaki-seiketsu/): 城崎の清潔さの口コミ評価が高い宿 33軒の空室表(本日空き4軒)
-- [城崎で今空いている子連れ向けの宿](https://yadomikke.com/kinosaki-kids/): 城崎の子連れ向けの宿 4軒の空室表(本日空き2軒)
-- [城崎で今空いているサウナのある宿](https://yadomikke.com/kinosaki-sauna/): 城崎のサウナのある宿 16軒の空室表(本日空き5軒)
+- [城崎で今空いている夕食の口コミ評価が高い宿](https://yadomikke.com/kinosaki-yushoku/): 城崎の夕食の口コミ評価が高い宿 55軒の空室表(本日空き5軒)
+- [城崎で今空いているお風呂の口コミ評価が高い宿](https://yadomikke.com/kinosaki-furohyoka/): 城崎のお風呂の口コミ評価が高い宿 29軒の空室表(本日空き1軒)
+- [城崎で今空いている清潔さの口コミ評価が高い宿](https://yadomikke.com/kinosaki-seiketsu/): 城崎の清潔さの口コミ評価が高い宿 46軒の空室表(本日空き5軒)
+- [城崎で今空いている子連れ向けの宿](https://yadomikke.com/kinosaki-kids/): 城崎の子連れ向けの宿 6軒の空室表(本日空き3軒)
+- [城崎で今空いているサウナのある宿](https://yadomikke.com/kinosaki-sauna/): 城崎のサウナのある宿 18軒の空室表(本日空き6軒)
 - [城崎で今空いている岩盤浴のある宿](https://yadomikke.com/kinosaki-ganbanyoku/): 城崎の岩盤浴のある宿 3軒の空室表(本日空き0軒)
-- [城崎で今空いている送迎のある宿](https://yadomikke.com/kinosaki-sougei/): 城崎の送迎のある宿 32軒の空室表(本日空き8軒)
-- [城崎で今空いているバリアフリー対応の宿(車椅子可など)](https://yadomikke.com/kinosaki-barrierfree/): 城崎のバリアフリー対応の宿(車椅子可など) 18軒の空室表(本日空き5軒)
+- [城崎で今空いている送迎のある宿](https://yadomikke.com/kinosaki-sougei/): 城崎の送迎のある宿 50軒の空室表(本日空き13軒)
+- [城崎で今空いているバリアフリー対応の宿(車椅子可など)](https://yadomikke.com/kinosaki-barrierfree/): 城崎のバリアフリー対応の宿(車椅子可など) 24軒の空室表(本日空き7軒)
 - [白浜で今空いている駅から徒歩5分以内の宿](https://yadomikke.com/shirahama-ekichika/): 白浜の駅から徒歩5分以内の宿 12軒の空室表(本日空き6軒)
 - [別府で今空いている駅から徒歩5分以内の宿](https://yadomikke.com/beppu-ekichika/): 別府の駅から徒歩5分以内の宿 21軒の空室表(本日空き6軒)
 
