@@ -290,8 +290,13 @@ def enrich_hotels(client, hotels, data_dir, deadline, cap):
 
 # ---- 優先順位 ---------------------------------------------------------
 
-def target_hours(cfg, offset):
+def target_hours(cfg, offset, extra=False):
+    """何時間ごとに取り直すか。今日・明日は短く、年末年始など通常の範囲の外の日付は長く"""
     r = cfg["refresh"]
+    if extra:
+        return r.get("extra_hours", r["far_hours"])
+    if offset <= r.get("soon_days", -1):
+        return r["soon_hours"]
     if offset <= r["near_days"]:
         return r["near_hours"]
     if offset <= r["mid_days"]:
@@ -304,7 +309,8 @@ def pick_units(cfg, state, today):
     plan = []
     for area in cfg["areas"]:
         cand = [today + timedelta(days=off) for off in range(scenes.area_days(cfg, area))]
-        cand += scenes.extra_dates(cfg, today, area)  # 年末年始など、先の日程(日付別ページ用)も取得する
+        extra = set(scenes.extra_dates(cfg, today, area))  # 年末年始など、先の日程(日付別ページ用)も取得する(間隔は長め)
+        cand += sorted(extra)
         fetched = state["fetched_by"].get(area, {})
         for d in cand:
             off = (d - today).days
@@ -315,7 +321,7 @@ def pick_units(cfg, state, today):
                 score = 0.99 - off / 1000
             else:
                 age = (now() - datetime.fromisoformat(got)).total_seconds() / 3600
-                score = age / target_hours(cfg, off)
+                score = age / target_hours(cfg, off, d in extra)
             if score >= 1 or got is None:
                 plan.append((score, area, d))
     plan.sort(key=lambda x: -x[0])

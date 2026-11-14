@@ -16,11 +16,14 @@
   },
   "refresh": {
     "hotels_days": 7,
+    "soon_days": 1,
+    "soon_hours": 4,
     "near_days": 7,
-    "mid_days": 14,
     "near_hours": 8,
+    "mid_days": 14,
     "mid_hours": 16,
-    "far_hours": 36
+    "far_hours": 48,
+    "extra_hours": 72
   },
   "api": {
     "base": "https://openapi.rakuten.co.jp/engine/api/Travel",

@@ -2,7 +2,8 @@ name: 空室データの自動更新
 
 on:
   schedule:
-    - cron: "17 */2 * * *"   # 2時間おき(毎時17分)。Cloudflare Pagesの無料枠(月500回の公開)に収まる回数(月約360回)
+    - cron: "17 * * * *"     # 1時間おき(毎時17分)に空室を取得。サイトの公開は偶数時の回だけ(下の「公開するか決める」)。
+                             # Cloudflare Pagesの無料枠(月500回の公開)に収まる回数(月約360回)
   workflow_dispatch:          # 手動で実行したいとき用(Actionsタブの「Run workflow」)
     inputs:
       reprobe:
@@ -20,13 +21,22 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 75
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
+      - name: 公開するか決める(偶数時と手動実行の回だけサイトを公開。奇数時はデータだけ保存)
+        id: plan
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ] || [ $((10#$(date -u +%H) % 2)) -eq 0 ]; then
+            echo "deploy=1" >> "$GITHUB_OUTPUT"; echo "この回はサイトを公開します"
+          else
+            echo "deploy=0" >> "$GITHUB_OUTPUT"; echo "この回はデータだけ保存します(公開は次の回)"
+          fi
 
       - name: 楽天トラベルから空室を取得
         env:
@@ -35,9 +45,9 @@ jobs:
           RAKUTEN_AFFILIATE_ID: ${{ secrets.RAKUTEN_AFFILIATE_ID }}
         run: |
           if [ "${{ inputs.reprobe }}" = "true" ]; then
-            python scripts/update.py --budget-minutes 50 --reprobe
+            python scripts/update.py --budget-minutes 45 --reprobe
           else
-            python scripts/update.py --budget-minutes 50
+            python scripts/update.py --budget-minutes 45
           fi
 
       - name: ページを作成
@@ -53,7 +63,11 @@ jobs:
           if git diff --cached --quiet; then
             echo "変更なし"
           else
-            git commit -m "空室データを更新"
+            if [ "${{ steps.plan.outputs.deploy }}" = "1" ]; then
+              git commit -m "空室データを更新"
+            else
+              git commit -m "空室データを更新(公開は次の回) [CF-Pages-Skip]"
+            fi
             # 実行中に誰かが(自分でファイルを更新したときなど)保存していた場合は、取り込んでからやり直す
             for i in 1 2 3; do
               git push && break
@@ -62,6 +76,7 @@ jobs:
           fi
 
       - name: 更新をBing等に通知(IndexNow)
+        if: steps.plan.outputs.deploy == '1'
         continue-on-error: true
         run: |
           sleep 180   # 公開サイトが更新されるのを待つ

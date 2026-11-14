@@ -1055,7 +1055,8 @@ def when_txt(x):
 
 def freq_text(cfg):
     r = cfg["refresh"]
-    return (f"{r['near_days']}日以内の日程は約{r['near_hours']}時間ごと、{r['mid_days']}日以内は約{r['mid_hours']}時間ごと、"
+    soon = f"今日・明日の日程は約{r['soon_hours']}時間ごと、" if r.get("soon_hours") else ""
+    return (f"{soon}{r['near_days']}日以内は約{r['near_hours']}時間ごと、{r['mid_days']}日以内は約{r['mid_hours']}時間ごと、"
             f"それ以降は約{r['far_hours']}時間ごと")
 
 

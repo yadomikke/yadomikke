@@ -302,6 +302,15 @@ order = up.pick_units(cfgz, stz, _t)
 check(order == [("old", _t), ("new", _t), ("new", _t + timedelta(days=1))],
       "更新の順番: 既存エリアの古くなった日付を先に、新しいエリアは残りの時間で近い日付から取る(まだ新しい日付は取らない)")
 
+# 更新の間隔: 今日・明日は短く(4時間)、年末年始など通常の範囲の外の日付は長く(72時間)
+cfgr = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
+check(up.target_hours(cfgr, 0) == 4 and up.target_hours(cfgr, 1) == 4 and up.target_hours(cfgr, 2) == 8
+      and up.target_hours(cfgr, 20) == 48 and up.target_hours(cfgr, 40, True) == 72,
+      "更新の間隔: 今日・明日は4時間、7日以内は8時間、15日以降は48時間、年末年始など先の日程は72時間")
+wf = (ROOT / ".github" / "workflows" / "update.yml").read_text(encoding="utf-8")
+check('cron: "17 * * * *"' in wf and "[CF-Pages-Skip]" in wf and "steps.plan.outputs.deploy == '1'" in wf and "--budget-minutes 45" in wf,
+      "自動更新は1時間おき(45分)。サイトの公開とIndexNowは2時間おき(Cloudflareの無料枠に収める)")
+
 # 新しく足したエリアは、宿一覧の定期更新を待たずに、すぐ宿を集める
 with tempfile.TemporaryDirectory() as tmp2:
     tmp2 = Path(tmp2)
