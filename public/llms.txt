@@ -2,7 +2,7 @@
 
 > 温泉地の宿の空室を、条件(客室露天風呂・ペット可・大浴場など)と日付ごとにまとめた日本語サイトです。楽天トラベルの空室検索APIから自動で取得し、今日・明日の日程は約4時間ごと、7日以内は約8時間ごと、14日以内は約16時間ごと、それ以降は約48時間ごとを目安に更新しています。料金は1泊・大人2名・1部屋の最安値です。リアルタイムの在庫ではないため、予約前に楽天トラベルでの確認が必要です。
 
-最終更新: 2026-11-14 21:40(日本時間)
+最終更新: 2026-11-14 22:45(日本時間)
 
 ## 空室ページ(エリア×条件)
 
@@ -195,16 +195,18 @@
 - [河口湖で今空いている岩盤浴のある宿](https://yadomikke.com/kawaguchiko-ganbanyoku/): 河口湖の岩盤浴のある宿 4軒の空室表(本日空き0軒)
 - [河口湖で今空いている送迎のある宿](https://yadomikke.com/kawaguchiko-sougei/): 河口湖の送迎のある宿 103軒の空室表(本日空き0軒)
 - [河口湖で今空いているバリアフリー対応の宿(車椅子可など)](https://yadomikke.com/kawaguchiko-barrierfree/): 河口湖のバリアフリー対応の宿(車椅子可など) 55軒の空室表(本日空き1軒)
-- [修善寺で今空いている大浴場のある宿](https://yadomikke.com/shuzenji-daiyoku/): 修善寺の大浴場のある宿 20軒の空室表(本日空き0軒)
-- [修善寺で今空いている貸切風呂・家族風呂のある宿](https://yadomikke.com/shuzenji-kashikiri/): 修善寺の貸切風呂・家族風呂のある宿 11軒の空室表(本日空き0軒)
-- [修善寺で今空いている夜遅くても泊まれる宿(最終チェックイン22時以降)](https://yadomikke.com/shuzenji-osoitsuki/): 修善寺の夜遅くても泊まれる宿(最終チェックイン22時以降) 7軒の空室表(本日空き0軒)
-- [修善寺で今空いている夕食の口コミ評価が高い宿](https://yadomikke.com/shuzenji-yushoku/): 修善寺の夕食の口コミ評価が高い宿 9軒の空室表(本日空き0軒)
-- [修善寺で今空いているお風呂の口コミ評価が高い宿](https://yadomikke.com/shuzenji-furohyoka/): 修善寺のお風呂の口コミ評価が高い宿 10軒の空室表(本日空き0軒)
-- [修善寺で今空いている清潔さの口コミ評価が高い宿](https://yadomikke.com/shuzenji-seiketsu/): 修善寺の清潔さの口コミ評価が高い宿 9軒の空室表(本日空き0軒)
-- [修善寺で今空いているサウナのある宿](https://yadomikke.com/shuzenji-sauna/): 修善寺のサウナのある宿 9軒の空室表(本日空き0軒)
-- [修善寺で今空いている岩盤浴のある宿](https://yadomikke.com/shuzenji-ganbanyoku/): 修善寺の岩盤浴のある宿 3軒の空室表(本日空き0軒)
-- [修善寺で今空いている送迎のある宿](https://yadomikke.com/shuzenji-sougei/): 修善寺の送迎のある宿 10軒の空室表(本日空き0軒)
-- [修善寺で今空いているバリアフリー対応の宿(車椅子可など)](https://yadomikke.com/shuzenji-barrierfree/): 修善寺のバリアフリー対応の宿(車椅子可など) 9軒の空室表(本日空き0軒)
+- [修善寺で今空いている大浴場のある宿](https://yadomikke.com/shuzenji-daiyoku/): 修善寺の大浴場のある宿 61軒の空室表(本日空き1軒)
+- [修善寺で今空いている貸切風呂・家族風呂のある宿](https://yadomikke.com/shuzenji-kashikiri/): 修善寺の貸切風呂・家族風呂のある宿 38軒の空室表(本日空き1軒)
+- [修善寺で今空いている小さな宿(客室10室以下)](https://yadomikke.com/shuzenji-chiisana/): 修善寺の小さな宿(客室10室以下) 21軒の空室表(本日空き1軒)
+- [修善寺で今空いている夜遅くても泊まれる宿(最終チェックイン22時以降)](https://yadomikke.com/shuzenji-osoitsuki/): 修善寺の夜遅くても泊まれる宿(最終チェックイン22時以降) 26軒の空室表(本日空き1軒)
+- [修善寺で今空いている夕食の口コミ評価が高い宿](https://yadomikke.com/shuzenji-yushoku/): 修善寺の夕食の口コミ評価が高い宿 30軒の空室表(本日空き0軒)
+- [修善寺で今空いているお風呂の口コミ評価が高い宿](https://yadomikke.com/shuzenji-furohyoka/): 修善寺のお風呂の口コミ評価が高い宿 22軒の空室表(本日空き0軒)
+- [修善寺で今空いている清潔さの口コミ評価が高い宿](https://yadomikke.com/shuzenji-seiketsu/): 修善寺の清潔さの口コミ評価が高い宿 25軒の空室表(本日空き0軒)
+- [修善寺で今空いている子連れ向けの宿](https://yadomikke.com/shuzenji-kids/): 修善寺の子連れ向けの宿 7軒の空室表(本日空き1軒)
+- [修善寺で今空いているサウナのある宿](https://yadomikke.com/shuzenji-sauna/): 修善寺のサウナのある宿 21軒の空室表(本日空き1軒)
+- [修善寺で今空いている岩盤浴のある宿](https://yadomikke.com/shuzenji-ganbanyoku/): 修善寺の岩盤浴のある宿 7軒の空室表(本日空き1軒)
+- [修善寺で今空いている送迎のある宿](https://yadomikke.com/shuzenji-sougei/): 修善寺の送迎のある宿 28軒の空室表(本日空き1軒)
+- [修善寺で今空いているバリアフリー対応の宿(車椅子可など)](https://yadomikke.com/shuzenji-barrierfree/): 修善寺のバリアフリー対応の宿(車椅子可など) 29軒の空室表(本日空き0軒)
 - [下呂で今空いている駅から徒歩5分以内の宿](https://yadomikke.com/gero-ekichika/): 下呂の駅から徒歩5分以内の宿 7軒の空室表(本日空き0軒)
 - [城崎で今空いている駅から徒歩5分以内の宿](https://yadomikke.com/kinosaki-ekichika/): 城崎の駅から徒歩5分以内の宿 15軒の空室表(本日空き0軒)
 - [白浜で今空いている駅から徒歩5分以内の宿](https://yadomikke.com/shirahama-ekichika/): 白浜の駅から徒歩5分以内の宿 12軒の空室表(本日空き1軒)
