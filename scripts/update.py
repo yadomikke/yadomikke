@@ -388,6 +388,7 @@ def record_stats(stats, cfg, day, today, old, new, known, gap_hours, obs_day, ar
 #   stats["hotel_moves"][施設] = [前回満室だった回数, そこから空きが出た回数, 前回空きだった回数, そこから満室になった回数]
 #   stats["fill_lead"][エリア][何日前] = [前回空きだった数, そこから満室になった数, 前回からの経過時間の合計]
 CHANGE_KEEP_HOURS = 72
+POPULAR_MIN_REVIEWS = 20   # build.py と同じ値(口コミがこの件数以上の宿は、宿ページ用に空き状況を取り続ける)
 
 
 def record_moves(state, stats, area, day, today, old, new, gap_hours, at):
@@ -496,9 +497,13 @@ def main():
             m = state["meta"].get(no, {})
             return bool(m.get("seen")) or m.get("checks", 0) < probe or no in {str(x) for x in cfg["force_include"]}
 
+        # 口コミの多い宿は、条件に当てはまらなくても空き状況を取る(宿ページを作るため。宿全体の空きと最安だけなので軽い)
+        popular = {h["no"] for lst in hotels["areas"].values() for h in lst
+                   if (h.get("reviews") or 0) >= POPULAR_MIN_REVIEWS}
+
         def is_active(no):
-            # 部屋名での判定が済んだ宿に加え、宿そのものの条件(大浴場など)に当てはまる宿も、空き状況を取る
-            return is_room_active(no) or (no in hotel_hit and no not in excluded)
+            # 部屋名での判定が済んだ宿に加え、宿そのものの条件(大浴場など)に当てはまる宿・口コミの多い宿も、空き状況を取る
+            return is_room_active(no) or ((no in hotel_hit or no in popular) and no not in excluded)
 
         units = pick_units(cfg, state, today)
         if not units:

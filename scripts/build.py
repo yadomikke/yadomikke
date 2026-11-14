@@ -39,6 +39,8 @@ LINK = None          # 日付つきプラン一覧リンクの材料 {"a": ア�
 # 日付別ページを作る日程(「来週末」「クリスマス」は、似たページが増えすぎるので作らない。データの取得は続ける)
 PAGE_SCENES = ("shumatsu", "renkyu", "nenmatsu")
 DROPPED_SCENES = ("raishu", "xmas")
+POPULAR_MIN_REVIEWS = 20   # 条件ページに載らない宿でも、口コミがこの件数以上なら宿ページを作る(update.py も空室を取り続ける)
+ZEN = "zentai"             # 上の宿の「宿全体の空き」を表す、画面に出ない条件
 TABLE_MAX = 25       # カレンダー表に最初から載せる宿の数(残りは「もっと見る」でブラウザ側が表示。ページを軽くするため)
 
 
@@ -154,23 +156,32 @@ var bs=box.querySelectorAll('.quick button');for(var i=0;i<bs.length;i++){(funct
 
 
 # 宿ページ: アドレスで指定された日付(?d=YYYY-MM-DD)の空きを、ページの上に表示し、カレンダーのその日に印を付ける
-DPICK_JS = r"""(function(){var q=null;try{q=new URLSearchParams(location.search).get('d');}catch(e){}
+DPICK_JS = r"""(function(){var box=document.getElementById('dpick');if(!box)return;
+var out=document.getElementById('dout'),inp=document.getElementById('hdinput'),fl=box.getAttribute('data-fl'),no=box.getAttribute('data-no'),
+mn=box.getAttribute('data-min'),mx=box.getAttribute('data-max'),WD='日月火水木金土';
+function lab(q){var p=q.split('-');return (+p[1])+'月'+(+p[2])+'日('+WD[new Date(Date.UTC(+p[0],+p[1]-1,+p[2])).getUTCDay()]+')';}
+function mk(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;}
+function show(q,push){out.textContent='';inp.value=q;
+ var old=document.querySelectorAll('.mini .sel');for(var i=0;i<old.length;i++)old[i].classList.remove('sel');
+ var bs=box.querySelectorAll('.quick button');for(var i=0;i<bs.length;i++)bs[i].classList.toggle('on',bs[i].getAttribute('data-d')===q);
+ if(push){try{var u=new URL(location.href);u.searchParams.set('d',q);u.hash='';history.replaceState(null,'',u.toString());}catch(e){}}
+ var L=lab(q),c=document.querySelector('.mini [data-d="'+q+'"]'),msg,link=window.ymSL?ymSL(no,q):null,ok=false;
+ if(!c){msg=L+'は、当サイトがまだ空室を確認していない日付です。楽天トラベルで直接ご確認ください。';}
+ else{c.classList.add('sel');var k=c.getAttribute('data-s'),pr=c.getAttribute('data-p');
+  if(k==='ok'){ok=true;msg=L+':'+fl+'の空きあり'+(pr?'(最安 ¥'+(+pr).toLocaleString('ja-JP')+'〜)':'');link=c.getAttribute('href')||link;}
+  else if(k==='part'){msg=L+':宿には空きがありますが、'+fl+'の空きは確認できませんでした。';}
+  else if(k==='full'){msg=L+':取得時点では満室です。キャンセルで空くこともあります。';}
+  else{msg=L+':まだ取得できていません。';}}
+ out.appendChild(mk('p','qh',msg));
+ if(link){var a=mk('a','cta'+(ok?'':' ghost'),L+'を楽天トラベルで'+(ok?'予約する ›':'確認する ›')+'【PR】');a.href=link;a.target='_blank';a.rel='sponsored nofollow noopener';var pp=mk('p');pp.appendChild(a);out.appendChild(pp);}
+ var mc=document.querySelector('#maincta a');if(mc&&link){mc.href=link;mc.textContent=L+'の空室・料金を楽天トラベルで確認 ›';}}
+var q=null;try{q=new URLSearchParams(location.search).get('d');}catch(e){}
 if(!q&&/^#\d{4}-\d{2}-\d{2}$/.test(location.hash))q=location.hash.slice(1);
-var box=document.getElementById('dpick');if(!box||!q||!/^\d{4}-\d{2}-\d{2}$/.test(q))return;
-var p=q.split('-'),wd='日月火水木金土'[new Date(Date.UTC(+p[0],+p[1]-1,+p[2])).getUTCDay()],lab=(+p[1])+'月'+(+p[2])+'日('+wd+')',
-fl=box.getAttribute('data-fl'),no=box.getAttribute('data-no'),c=document.querySelector('.mini [data-d="'+q+'"]'),msg,link=null;
-if(!c){msg=lab+'は、当サイトがまだ空室を確認していない日付です。楽天トラベルで直接ご確認ください。';link=window.ymSL?ymSL(no,q):null;}
-else{c.classList.add('sel');var k=c.getAttribute('data-s'),pr=c.getAttribute('data-p');
- if(k==='ok'){msg=lab+':'+fl+'の空きあり'+(pr?'(最安 ¥'+(+pr).toLocaleString('ja-JP')+'〜)':'');link=c.getAttribute('href');}
- else if(k==='part'){msg=lab+':宿には空きがありますが、'+fl+'の空きは確認できませんでした。';link=window.ymSL?ymSL(no,q):null;}
- else if(k==='full'){msg=lab+':取得時点では満室です。キャンセルで空くこともあります。';link=window.ymSL?ymSL(no,q):null;}
- else{msg=lab+':まだ取得できていません。';link=window.ymSL?ymSL(no,q):null;}}
-var h=document.createElement('h2');h.textContent='指定の日付の空き';var t=document.createElement('p');t.className='lead2';t.textContent=msg;
-box.appendChild(h);box.appendChild(t);
-if(link){var a=document.createElement('a');a.className='cta';a.href=link;a.target='_blank';a.rel='sponsored nofollow noopener';
- a.textContent=lab+'を楽天トラベルで予約する ›【PR】';var pp=document.createElement('p');pp.appendChild(a);box.appendChild(pp);}
-box.hidden=false;
-var mc=document.querySelector('#maincta a');if(mc&&link){mc.href=link;mc.textContent=lab+'の空室・料金を楽天トラベルで確認 ›';}})();"""
+var valid=q&&/^\d{4}-\d{2}-\d{2}$/.test(q);
+box.hidden=false;show(valid?q:box.getAttribute('data-def'),false);
+inp.addEventListener('change',function(){if(inp.value)show(inp.value,true);});
+var bs=box.querySelectorAll('.quick button');for(var i=0;i<bs.length;i++){(function(b){b.addEventListener('click',function(){show(b.getAttribute('data-d'),true);});})(bs[i]);}
+})();"""
 
 
 def esc(s):
@@ -739,7 +750,7 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .qbook .qcta{flex:none;padding:10px 14px;font-size:15px}
 .hc>.il{grid-column:1/-1;margin:6px 0 0}
 @media (min-width:720px){.hc>.il{grid-column:2;grid-row:2}}
-.mini .sel{outline:3px solid var(--cta);outline-offset:-2px;border-radius:6px}.dpick{border-left:6px solid var(--cta)}
+.mini .sel{outline:3px solid var(--cta);outline-offset:-2px;border-radius:6px}
 .stat{border-collapse:collapse;font-size:14px;margin:8px 0;width:100%}
 .stat th,.stat td{border:1px solid var(--line);padding:6px 8px;text-align:center;background:#fff}
 .stat thead th{background:#efefef;position:static;cursor:default;min-width:0;font-size:13px}
@@ -1686,6 +1697,20 @@ def geo_ok(h):
     return (la, ln) if 20 <= la <= 46 and 122 <= ln <= 154 else None
 
 
+def hotel_pick_html(h, fl_txt, dates, ok, holidays):
+    """宿ページの「日付を選んで予約する」。表示はブラウザ側(DPICK_JS)。最初は ?d= の日付、なければ直近の空きの日"""
+    today = dates[0]
+    sats = [d for d in dates if d.weekday() == 5]
+    quick = [("今夜", today), ("明日", today + timedelta(days=1))] + ([(f"次の土曜 {md(sats[0])}", sats[0])] if sats else [])
+    qb = "".join(f'<button type="button" data-d="{d.isoformat()}">{esc(t)}</button>' for t, d in quick)
+    dflt = (ok[0][0] if ok else today).isoformat()
+    return (f'<section class="bookpanel dpick" id="dpick" data-no="{esc(h["no"])}" data-fl="{esc(fl_txt)}" data-def="{dflt}" '
+            f'data-min="{dates[0].isoformat()}" data-max="{dates[-1].isoformat()}" hidden><h2>日付を選んで予約する</h2>'
+            f'<div class="quick" aria-label="日付をすばやく選ぶ">{qb}</div>'
+            f'<label class="dinput">ほかの日付: <input type="date" id="hdinput" min="{dates[0].isoformat()}" max="{dates[-1].isoformat()}"></label>'
+            '<div class="qbook" id="dout"></div></section>')
+
+
 def render_hotel(cfg, page, h, ctx, state, stats, demo):
     """宿ページ(1軒1ページ)。page は、その宿が載っている代表のページ(部屋の条件のページを優先)"""
     site, feat, flabel, alabel = cfg["site"], ctx["feat"], ctx["flabel"], ctx["alabel"]
@@ -1755,10 +1780,11 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
         cal += "".join(_cell(d) for d in ds_)
         cal += "</div></div>"
 
-    body = [f'<div class="hero"><div class="crumb"><a href="../../">{esc(site["name"])}</a> › <a href="../../{esc(page["area"])}/">{esc(cfg["areas"][page["area"]]["label"])}</a> › <a href="../../{esc(page["slug"])}/">{esc(page["title"])}</a> › {esc(h["name"])}</div>'
+    mid_crumb = "" if page.get("virtual") else f' › <a href="../../{esc(page["slug"])}/">{esc(page["title"])}</a>'
+    body = [f'<div class="hero"><div class="crumb"><a href="../../">{esc(site["name"])}</a> › <a href="../../{esc(page["area"])}/">{esc(cfg["areas"][page["area"]]["label"])}</a>{mid_crumb} › {esc(h["name"])}</div>'
             f"<h1>{esc(nm_f)} 空室状況</h1><p class=\"lead\">{esc(hotel_sub(h))}</p></div>",
             # アドレスで日付が指定されたとき(?d=)は、その日の空きと予約ボタンを、宿名のすぐ下に出す
-            f'<section class="card dpick" id="dpick" data-no="{esc(h["no"])}" data-fl="{esc(fl_txt)}" hidden></section>',
+            hotel_pick_html(h, fl_txt, dates, ok, holidays),
             answer_html(asof, lead, bullets, details, "この宿の空室まとめ", mood=("happy" if ok else "sleepy"))]
     cta_url = (ok[0][2] if ok else None) or h.get("plan_url") or h.get("url")
     # ボタンには、どの日付のページが開くかを書く(日付が指定されていれば、ブラウザ側でその日付に差し替える)
@@ -1782,7 +1808,10 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
                               for d, p, url, rn in ok) + "</ul></details></section>")
     body.append(f'<section class="sec"><h2>{len(dates)}日間のカレンダー</h2><p class="sub">◯=空きあり(数字は最安) ／ △=宿に空きはあるが該当の部屋は確認できない ／ 満=空室なし ／ —=未取得</p>'
                 f'{cal}</section>')
-    body.append(f'<p><a href="../../{esc(page["slug"])}/">{esc(alabel)}の{esc(flabel)} 全{len(ctx["rows"])}軒の空室表を見る</a></p>')
+    if page.get("virtual"):
+        body.append(f'<p><a href="../../{esc(page["area"])}/">{esc(alabel)}の宿の空室(今夜・明日・今週末・日付指定)を見る</a></p>')
+    else:
+        body.append(f'<p><a href="../../{esc(page["slug"])}/">{esc(alabel)}の{esc(flabel)} 全{len(ctx["rows"])}軒の空室表を見る</a></p>')
 
     faq = [
         (f"{nm_f}は今空いていますか?", s1 + s2),
@@ -1821,8 +1850,8 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
         hotel_ld["image"] = h["image"]
     if yes:
         hotel_ld["amenityFeature"] = [{"@type": "LocationFeatureSpecification", "name": y, "value": True} for y in yes]
-    ld = [breadcrumb_ld([(site["name"], ctx["base"] + "/"), (cfg["areas"][page["area"]]["label"], f"{ctx['base']}/{page['area']}/"),
-                         (page["title"], f"{ctx['base']}/{page['slug']}/"), (h["name"], canonical)]),
+    ld = [breadcrumb_ld([(site["name"], ctx["base"] + "/"), (cfg["areas"][page["area"]]["label"], f"{ctx['base']}/{page['area']}/")]
+                        + ([] if page.get("virtual") else [(page["title"], f"{ctx['base']}/{page['slug']}/")]) + [(h["name"], canonical)]),
           {"@context": "https://schema.org", "@type": "WebPage", "name": f"{nm_f} 空室状況", "url": canonical, "inLanguage": "ja",
            "dateModified": (newest or datetime.now(JST)).isoformat(timespec="seconds"), "about": hotel_ld,
            "isPartOf": {"@type": "WebSite", "name": site["name"], "url": ctx["base"] + "/"}},
@@ -2302,6 +2331,8 @@ def hotel_feature_rows(cfg, h, state, area):
     live = {p["feature"]: p["slug"] for p in LIVE if p["area"] == area}
     out = []
     for f, fd in cfg["features"].items():
+        if fd.get("hidden"):
+            continue
         if seen.get(f):
             mark = "◯ 当てはまる"
         elif not fd.get("hotel"):
@@ -3399,6 +3430,27 @@ def main():
         for h in prow:
             if re.fullmatch(r"[0-9A-Za-z_-]+", str(h["no"])) and h["no"] not in primary:
                 primary[h["no"]] = (page, h)
+    # 条件ページに載らない宿でも、口コミが多い宿には宿ページを作る(ChatGPTは宿ページを参考にすることが多いため)。
+    # 空室は「宿全体の空き」(条件を問わない)で見せる。代表ページは画面に出ない仮のページ(エリアページへつなぐ)
+    vpages = {}
+    today_iso = now.date().isoformat()
+    for area, lst in hotels.get("areas", {}).items():
+        if area not in cfg["areas"]:
+            continue
+        for h in lst:
+            no = h["no"]
+            if no in primary or not re.fullmatch(r"[0-9A-Za-z_-]+", str(no)) or (h.get("reviews") or 0) < POPULAR_MIN_REVIEWS:
+                continue
+            cells = state["cells"].get(no, {})
+            if sum(1 for d in cells if d >= today_iso) < 3:
+                continue
+            for c in cells.values():
+                if c.get("s") == "v" and c.get("any") and c["any"][0]:
+                    c.setdefault("f", {})[ZEN] = [c["any"][0], c["any"][1], "宿全体の最安プラン"]
+            state.setdefault("meta", {}).setdefault(no, {"checks": 0, "seen": {}}).setdefault("seen", {})[ZEN] = True
+            vp = vpages.setdefault(area, {"slug": area, "area": area, "feature": ZEN, "auto": True, "virtual": True,
+                                          "title": f"{cfg['areas'][area]['label']}の宿の空室", "lead": ""})
+            primary[no] = (vp, h)
     HOTEL_HREF.clear()
     HOTEL_HREF.update({no: f"/hotel/{no}/" for no in primary})
     hub_items = {}
@@ -3446,14 +3498,19 @@ def main():
 
     # 宿ページ(1軒1ページ)。古い宿ページはまとめて作り直す
     shutil.rmtree(out_dir / "hotel", ignore_errors=True)
+    cfg["features"][ZEN] = {"label": "宿全体の空き", "keywords": [], "hotel": True, "hidden": True, "short": "空きのある宿",
+                            "def": "楽天トラベルで、その日に1部屋でも空きがあること(条件は問わない)"}
+    for area, vp in vpages.items():
+        ctxs.setdefault(vp["slug"] + "#all", page_ctx(cfg, hotels, dict(state, fetched=state.get("fetched_by", {}).get(area, {})), vp, now))
     for no, (page, h) in primary.items():
         area = page["area"]
         pstate = dict(state, fetched=state.get("fetched_by", {}).get(area, {}))
         pre = f"{area}/"
         pstats = dict(stats, trans={f: stats.get("trans", {}).get(pre + f, {}) for f in cfg["features"]})
-        write_page(out_dir, f"hotel/{no}", render_hotel(cfg, page, h, ctxs[page["slug"]], pstate, pstats, args.demo))
+        hctx = ctxs[page["slug"] + "#all"] if page.get("virtual") else ctxs[page["slug"]]
+        write_page(out_dir, f"hotel/{no}", render_hotel(cfg, page, h, hctx, pstate, pstats, args.demo))
         paths.append(f"hotel/{no}/")
-    print(f"宿ページ: {len(primary)} 枚(1軒1ページ)")
+    print(f"宿ページ: {len(primary)} 枚(1軒1ページ。うち条件ページに載らない口コミの多い宿 {sum(1 for p_, _ in primary.values() if p_.get('virtual'))} 枚)")
     # 古い宿ページのURL(/エリア-条件/hotel/番号/)から、新しいURLへ自動で案内する(Cloudflare Pages の _redirects)
     # まとめたページ(テーマ別・来週末・クリスマス)の古いURLは、親のページへ自動で案内する
     gone = [th["slug"] for th in cfg.get("themes", [])] + list(DROPPED_SCENES)
@@ -3528,7 +3585,7 @@ def main():
             for h_ in lst:
                 hmap.setdefault(h_["no"], a_)
     alist = list(cfg["areas"])
-    goto = {"a": alist, "s": sorted(ctxs), "h": {no: alist.index(a_) for no, a_ in hmap.items()}}
+    goto = {"a": alist, "s": sorted(k for k in ctxs if "#" not in k), "h": {no: alist.index(a_) for no, a_ in hmap.items()}}
     inner404 += ('<p id="mv" hidden>このページは移動しました。エリアのページへご案内します…</p>'
                  "<script>(function(){var G=" + json.dumps(goto, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/") + ","
                  "p=location.pathname,s=p.split('/').filter(Boolean),t=null;"

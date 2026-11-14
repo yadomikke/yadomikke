@@ -137,7 +137,10 @@ with tempfile.TemporaryDirectory() as tmp:
     out = tmp / "out"
     for rel in ("about", "privacy", "hakone-roten/shumatsu", "hakone-roten/nenmatsu", "hotel/1", "hotel/11", "roten"):
         check((out / rel / "index.html").exists(), f"{rel}/ のページが作られる")
-    check(not (out / "hotel" / "2").exists(), "露天なしの宿のページは作られない")
+    hp2 = (out / "hotel" / "2" / "index.html").read_text(encoding="utf-8")
+    check('<a href="../../hakone/">箱根</a> › 宿2</div>' in hp2 and "箱根の宿の空室(今夜・明日・今週末・日付指定)を見る" in hp2
+          and "宿全体の空き" not in hp2.split('id="features"')[1][:3000],
+          "条件ページに載らない宿でも、口コミが多ければ宿ページを作る(宿全体の空きで見せ、エリアページへつなぐ)")
     check(not (out / "hakone-roten" / "hotel").exists(), "条件ごとの古い宿ページは作られない(1軒1ページにまとめた)")
     rd = (out / "_redirects").read_text(encoding="utf-8")
     check("/:slug/hotel/:no/ /hotel/:no/ 301" in rd, "古い宿ページのURLから、新しい宿ページへ自動で案内する")
@@ -238,6 +241,8 @@ with tempfile.TemporaryDirectory() as tmp:
     check("## 日付を指定してページを開く" in llms and "/hakone-roten/?d=" in llms and "/hotel/(施設番号)/?d=YYYY-MM-DD" in llms
           and dj["date_links"]["condition_page"].endswith("/?d=YYYY-MM-DD") and hk["condition_pages"][0]["url_with_date"].endswith("?d=YYYY-MM-DD"),
           "llms.txt と機械向けデータに、日付つきアドレスの作り方が載る")
+    check('id="hdinput"' in hp1 and 'data-def="' in hp1 and "show(valid?q:box.getAttribute('data-def'),false)" in hp1,
+          "宿ページは、日付なしで来ても、上の「日付を選んで予約する」で今夜・明日・土曜・好きな日付の空きと予約ボタンを出す")
     # ChatGPTから来た人が、日付を変えずにそのまま予約できるように
     check('id="qbook"' in page and "予約する ›" in page and "lk(hh,cur,cc)" in page,
           "条件ページは、日付の見出しのすぐ下に、その日の上位3軒の予約ボタンを出す")
