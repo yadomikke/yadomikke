@@ -256,6 +256,25 @@ with tempfile.TemporaryDirectory() as tmp:
     check(hp1.index('id="dpick"') < hp1.index('id="answer"') and 'id="maincta"' in hp1
           and "の空室・料金を楽天トラベルで確認 ›" in hp1 and "mc.href=link" in hp1,
           "宿ページは、指定の日付の空きを宿名のすぐ下に出し、大きな予約ボタンもその日付にする(開く日付をボタンに書く)")
+    # 競合の分析から: ChatGPTアプリの案内・満室の日の最新確認・代わりの宿・下の予約バー
+    check("ChatGPTアプリの中で開いています" in hp1 and "w.ymSrc!=='chatgpt'" in hp1 and "iPhone|iPad|iPod" in hp1 and "ChatGPTアプリの中で開いています" in page,
+          "iPhoneのChatGPTアプリから来た人にだけ、Safariで開き直す案内を出す(全ページ)")
+    _hps = [(f, f.read_text(encoding="utf-8")) for f in (out / "hotel").glob("*/index.html")]
+    _cal = [t for _, t in _hps if 'data-s="full"' in t or 'data-s="part"' in t]
+    check(_cal and all('<span class="full"' not in t and '<span class="part"' not in t for t in _cal)
+          and any('<button type="button" class="full"' in t or '<button type="button" class="part"' in t for t in _cal)
+          and "最新の空きを確認する ›" in hp1 and ".mini button[data-d]" in hp1,
+          "宿ページのカレンダーの満室・△の日も押せて、その日の楽天の最新確認リンクを上に出す")
+    _alts = [(f, t) for f, t in _hps if "window.__ALT=" in t]
+    _ok_alt = True
+    for f, t in _alts:
+        _a = json.loads(_re2.search(r"window.__ALT=(.*?);</script>", t).group(1))
+        _no = f.parent.name
+        _ok_alt &= all(x[0] != _no and (out / "hotel" / x[0] / "index.html").exists() and len(x[2]) == len(_a["d"]) for x in _a["h"])
+    check(_alts and _ok_alt and "function alts(q)" in hp1, "この宿が空いていない日は、同じ日に空いていた宿(宿ページがある宿)を代わりに出す")
+    check(all('id="sbar"' in t and "sponsored nofollow noopener" in t.split('id="sbar"')[1][:400] for _, t in _hps) and "sb.hidden=false" in hp1
+          and "@media (max-width:760px){.sbar{position:fixed" in hp1,
+          "宿ページは、スマホの画面の下に、選んだ日付の予約バーを出す")
     # 日付なしで来ても、最初の画面で日付を選んで予約できる。エリア・条件の切り替えはページの下へ
     check(page.index('id="bookpanel"') < page.index('id="answer"') and 'id="dinput"' in page
           and page.index('id="switch"') > page.index('id="calendar"') and 'href="#switch"' in page,

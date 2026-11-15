@@ -113,8 +113,17 @@ if(!s){var u='',h='';try{u=(new URLSearchParams(location.search).get('utm_source
 try{h=document.referrer?new URL(document.referrer).hostname:''}catch(e){}if(h===location.hostname)h='';var t=u+' '+h;
 s=/chatgpt|openai/.test(t)?'chatgpt':/perplexity/.test(t)?'perplexity':/claude\.ai|anthropic/.test(t)?'claude':/gemini/.test(t)?'gemini':/copilot/.test(t)?'copilot':/google\./.test(t)?'google':/bing\./.test(t)?'bing':/yahoo\./.test(t)?'yahoo':(u||h)?'other':'direct';
 try{ss&&ss.setItem(k,s)}catch(e){}dl.push({event:'ym_landing',ym_src:s});}
+w.ymSrc=s;
 w.ymAff=function(){dl.push({event:'aff_click',ym_src:s,ym_page:location.pathname})};
 document.addEventListener('click',function(e){var a=e.target.closest?e.target.closest('a[href*="hb.afl.rakuten.co.jp"],a[href*="travel.rakuten.co.jp"]'):null;if(a)w.ymAff()},true);}catch(e){}})();"""
+
+
+# iPhone の ChatGPT アプリの中で開いた人に、Safari で開き直す案内を出す(アプリ内のブラウザでは楽天のログインが引き継がれないため)
+IOS_JS = r"""(function(){try{var w=window,ss=null,k='ym_ios';if(w.ymSrc!=='chatgpt'||!/iPhone|iPad|iPod/.test(navigator.userAgent))return;
+try{ss=w.sessionStorage;if(ss.getItem(k))return;}catch(e){}var wr=document.querySelector('.wrap');if(!wr)return;
+var b=document.createElement('div');b.className='iosn';b.setAttribute('role','note');
+b.innerHTML='<p><b>ChatGPTアプリの中で開いています</b><br>このままだと楽天トラベルのログインが引き継がれないことがあります。画面右下の<b>🧭(Safariで開く)</b>から開くと、ログインしたまま予約できます。</p><button type="button" aria-label="閉じる">×</button>';
+b.querySelector('button').addEventListener('click',function(){b.remove();try{ss&&ss.setItem(k,'1')}catch(e){}});wr.insertBefore(b,wr.firstChild);}catch(e){}})();"""
 
 
 # 予約リンク(日付つきプラン一覧・アフィリエイト経由)を、宿番号と日付からブラウザ側で組み立てる。stay_link() と同じ形
@@ -159,7 +168,8 @@ var bs=box.querySelectorAll('.quick button');for(var i=0;i<bs.length;i++){(funct
 # 宿ページ: アドレスで指定された日付(?d=YYYY-MM-DD)の空きを、ページの上に表示し、カレンダーのその日に印を付ける
 DPICK_JS = r"""(function(){var box=document.getElementById('dpick');if(!box)return;
 var out=document.getElementById('dout'),inp=document.getElementById('hdinput'),fl=box.getAttribute('data-fl'),no=box.getAttribute('data-no'),
-mn=box.getAttribute('data-min'),mx=box.getAttribute('data-max'),WD='日月火水木金土';
+mn=box.getAttribute('data-min'),mx=box.getAttribute('data-max'),WD='日月火水木金土',
+sb=document.getElementById('sbar'),sl=sb&&sb.querySelector('b'),sa=sb&&sb.querySelector('a'),sm=sb&&sb.querySelector('small');
 function lab(q){var p=q.split('-');return (+p[1])+'月'+(+p[2])+'日('+WD[new Date(Date.UTC(+p[0],+p[1]-1,+p[2])).getUTCDay()]+')';}
 function mk(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;}
 function show(q,push){out.textContent='';inp.value=q;
@@ -174,14 +184,29 @@ function show(q,push){out.textContent='';inp.value=q;
   else if(k==='full'){msg=L+':取得時点では満室です。キャンセルで空くこともあります。';}
   else{msg=L+':まだ取得できていません。';}}
  out.appendChild(mk('p','qh',msg));
- if(link){var a=mk('a','cta'+(ok?'':' ghost'),L+'を楽天トラベルで'+(ok?'予約する ›':'確認する ›')+'【PR】');a.href=link;a.target='_blank';a.rel='sponsored nofollow noopener';var pp=mk('p');pp.appendChild(a);out.appendChild(pp);}
- var mc=document.querySelector('#maincta a');if(mc&&link){mc.href=link;mc.textContent=L+'の空室・料金を楽天トラベルで確認 ›';}}
+ if(link){var a=mk('a','cta'+(ok?'':' ghost'),L+'を楽天トラベルで'+(ok?'予約する ›':'最新の空きを確認する ›')+'【PR】');a.href=link;a.target='_blank';a.rel='sponsored nofollow noopener';var pp=mk('p');pp.appendChild(a);out.appendChild(pp);}
+ if(!ok)alts(q);
+ var mc=document.querySelector('#maincta a');if(mc&&link){mc.href=link;mc.textContent=L+'の空室・料金を楽天トラベルで確認 ›';}
+ if(sb&&link){sl.textContent=L+(ok&&pr?' ¥'+(+pr).toLocaleString('ja-JP')+'〜':(c&&c.getAttribute('data-s')==='full'?' 取得時点で満室':''));sm.textContent=(ok&&pr?'1泊・大人2名の最安(取得時点)【PR】':'楽天トラベルで最新の空きを確認【PR】');sa.href=link;sa.textContent=(ok?'予約する ›':'空きを確認 ›');sb.hidden=false;document.body.classList.add('hasbar');}}
+// この宿が空いていない日は、同じ条件で、その日に空いていた近くの宿を出す(取得時点の値)
+function alts(q){var A=window.__ALT;if(!A)return;var i=A.d.indexOf(q);if(i<0)return;
+ var r=A.h.filter(function(x){return x[2][i]>0;}).sort(function(a,b){return a[2][i]-b[2][i];}).slice(0,3);if(!r.length)return;
+ var w=mk('div','qalt');w.appendChild(mk('p','qm',fl==='宿'?'同じ日に空きがあった近くの宿(取得時点):':'同じ日に'+fl+'の空きがあった近くの宿(取得時点):'));
+ r.forEach(function(x){var row=mk('div','qr'),n=mk('div','qn'),na=mk('a',null,x[1]);na.href='../'+x[0]+'/?d='+q;n.appendChild(na);
+  n.appendChild(mk('small',null,'¥'+x[2][i].toLocaleString('ja-JP')+'〜'));row.appendChild(n);
+  if(window.ymSL){var b=mk('a','cta qcta','空室を見る ›');b.href=ymSL(x[0],q);b.target='_blank';b.rel='sponsored nofollow noopener';row.appendChild(b);}
+  w.appendChild(row);});out.appendChild(w);}
 var q=null;try{q=new URLSearchParams(location.search).get('d');}catch(e){}
 if(!q&&/^#\d{4}-\d{2}-\d{2}$/.test(location.hash))q=location.hash.slice(1);
 var valid=q&&/^\d{4}-\d{2}-\d{2}$/.test(q);
 box.hidden=false;show(valid?q:box.getAttribute('data-def'),false);
 inp.addEventListener('change',function(){if(inp.value)show(inp.value,true);});
 var bs=box.querySelectorAll('.quick button');for(var i=0;i<bs.length;i++){(function(b){b.addEventListener('click',function(){show(b.getAttribute('data-d'),true);});})(bs[i]);}
+// カレンダーの満室・△・未取得の日を押すと、上の「日付を選んで予約する」にその日を出す(楽天の最新確認・代わりの宿)
+var cb=document.querySelectorAll('.mini button[data-d]');for(var i=0;i<cb.length;i++){(function(b){b.addEventListener('click',function(){show(b.getAttribute('data-d'),true);try{box.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){box.scrollIntoView();}});})(cb[i]);}
+// 下の予約バーは、上の予約ボタンが画面に見えている間は隠す(同じボタンが2つ並ばないように)
+if(sb&&window.IntersectionObserver){var vis={},io=new IntersectionObserver(function(es){es.forEach(function(e){vis[e.target.id]=e.isIntersecting;});sb.classList.toggle('off',!!(vis.dpick||vis.maincta));});
+ io.observe(box);var m2=document.getElementById('maincta');if(m2)io.observe(m2);}
 })();"""
 
 
@@ -743,6 +768,11 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .mini b{font-size:13px;font-weight:700}.mini i{font-style:normal;font-size:16px;font-weight:800}
 .mini .ok{background:var(--okbg);color:var(--ok)}.mini .part{background:var(--partbg);color:var(--part)}.mini .full{background:#eceff2;color:#6b7280}
 .mini .pad{background:transparent}
+.mini button{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:56px;border-radius:8px;border:0;font:inherit;font-size:13px;line-height:1.25;background:#f4f4f4;color:#888;cursor:pointer;padding:0}
+.iosn{display:flex;gap:8px;align-items:flex-start;background:#fff8e1;border:1px solid #f0c36d;border-radius:10px;padding:10px 12px;margin:10px 0;font-size:14px;line-height:1.55}.iosn p{margin:0;flex:1}.iosn button{flex:none;border:0;background:transparent;font-size:20px;line-height:1;color:#8a6d3b;cursor:pointer;padding:0 4px}
+.qalt{margin:8px 0 0;padding-top:6px;border-top:1px solid var(--line)}.qalt .qm{margin:0 0 2px}
+.sbar{display:none}
+@media (max-width:760px){.sbar{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff;border-top:1px solid var(--line);box-shadow:0 -2px 10px rgba(0,0,0,.08);padding:8px 12px calc(8px + env(safe-area-inset-bottom))}.sbar[hidden],.sbar.off{display:none}.sbar .st{min-width:0;font-size:13px;line-height:1.35}.sbar .st b{display:block;font-size:15px;color:var(--navy)}.sbar .st small{color:var(--sub)}.sbar .cta{flex:none;padding:10px 14px;font-size:15px;margin:0}body.hasbar{padding-bottom:76px}}
 .hl{list-style:none;padding:0}
 .hl li{padding:10px 0;border-top:1px dashed var(--line);font-size:15px}
 .hl li:first-child{border-top:0}.hl a{font-weight:800}.hl small{display:block;color:var(--sub);font-size:13px}
@@ -1085,7 +1115,7 @@ def shell(cfg, demo, root, title, desc, canonical, inner, ld=None, noindex=False
         sl += f"<script>{AREA_JS}</script>"
     return (head(cfg, title, desc, canonical, demo, extra, noindex) + header_html(cfg, demo, root)
             + '<div class="wrap">' + inner + "</div>" + f"<footer>{footer_html(cfg, root)}</footer>"
-            + (f"<script>{JS}</script>" if js else "") + sl + "<script>" + REL_JS + TRACK_JS + "</script></body></html>")
+            + (f"<script>{JS}</script>" if js else "") + sl + "<script>" + REL_JS + TRACK_JS + IOS_JS + "</script></body></html>")
 
 
 def breadcrumb_ld(items):
@@ -1718,6 +1748,35 @@ def hotel_pick_html(h, fl_txt, dates, ok, holidays):
             '<div class="qbook" id="dout"></div></section>')
 
 
+ALT_MAX = 12   # 宿ページに載せる「代わりの宿」の候補の数(日付ごとに、安い順に3軒まで表示)
+
+
+def alt_data(h, ctx, feat, dates):
+    """この宿が空いていない日に出す「同じ日に空いていた宿」の候補。日付ごとの最安(空きなしは0)を、日付の並びにそろえて埋め込む"""
+    st = ctx["state"]["cells"]
+    mine = st.get(h["no"], {})
+    miss = [i for i, d in enumerate(dates) if status(mine.get(d.isoformat()), feat) != "ok"]
+    if not miss:
+        return ""
+    cand = []
+    for o in ctx["rows"]:
+        if o["no"] == h["no"]:
+            continue
+        cs = st.get(o["no"], {})
+        ps = []
+        for d in dates:
+            c = cs.get(d.isoformat())
+            ps.append(int(c["f"][feat][0]) if status(c, feat) == "ok" and c["f"][feat][0] else 0)
+        hit = sum(1 for i in miss if ps[i])
+        if hit:
+            cand.append((-hit, -(o.get("reviews") or 0), o["no"], o["name"], ps))
+    if not cand:
+        return ""
+    cand.sort()
+    data = {"d": [d.isoformat() for d in dates], "h": [[no, nm, ps] for _, _, no, nm, ps in cand[:ALT_MAX]]}
+    return "<script>window.__ALT=" + json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/") + ";</script>"
+
+
 def render_hotel(cfg, page, h, ctx, state, stats, demo):
     """宿ページ(1軒1ページ)。page は、その宿が載っている代表のページ(部屋の条件のページを優先)"""
     site, feat, flabel, alabel = cfg["site"], ctx["feat"], ctx["flabel"], ctx["alabel"]
@@ -1772,10 +1831,10 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
             return (f'<a class="ok" {dd} href="{esc(u)}" target="_blank" rel="sponsored nofollow noopener" aria-label="{d.month}月{d.day}日 空きあり">{inner_c}</a>'
                     if u != "#" else f'<span class="ok" {dd}>{inner_c}</span>')
         if s_ == "part":
-            return f'<span class="part" data-d="{d.isoformat()}" data-s="part">{lab}<i>△</i></span>'
+            return f'<button type="button" class="part" data-d="{d.isoformat()}" data-s="part" aria-label="{d.month}月{d.day}日 条件の空きなし">{lab}<i>△</i></button>'
         if s_ == "full":
-            return f'<span class="full" data-d="{d.isoformat()}" data-s="full">{lab}<i>満</i></span>'
-        return f'<span data-d="{d.isoformat()}" data-s="none">{lab}<i>—</i></span>'
+            return f'<button type="button" class="full" data-d="{d.isoformat()}" data-s="full" aria-label="{d.month}月{d.day}日 満室(最新を確認)">{lab}<i>満</i></button>'
+        return f'<button type="button" data-d="{d.isoformat()}" data-s="none" aria-label="{d.month}月{d.day}日 未取得">{lab}<i>—</i></button>'
 
     cal = ""
     months = []
@@ -1801,6 +1860,10 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
     cta_txt = (f"{day_label(ok[0][0], holidays)}の空室・料金を楽天トラベルで確認 ›" if ok else "楽天トラベルで空室・料金を確認 ›")
     body.append('<p style="margin:10px 0" id="maincta">' + btn(cta_url, "cta", cta_txt) + "</p>")
     body.append(share_html(canonical, f"{nm_f} 空室状況 | {site['name']}"))
+    # スマホで、どこまで読み進めても予約できるように、画面の下に予約バーを出す(中身はブラウザ側で選んだ日付に合わせる)
+    body.append('<div class="sbar" id="sbar" hidden><div class="st"><b></b><small>1泊・大人2名・1室の最安【PR】</small></div>'
+                '<a class="cta" target="_blank" rel="sponsored nofollow noopener">予約する ›</a></div>')
+    body.append(alt_data(h, ctx, feat, dates))
     frs = hotel_feature_rows(cfg, h, state, page["area"])
     yes = [lab for lab, mark, _ in frs if mark.startswith("◯")]
     body.append('<section class="card" id="features"><h2>この宿の条件(ヤドミッケの自動判定)</h2><div class="scroll"><table class="stat"><tbody>'
@@ -2641,7 +2704,7 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
     out.append('<div class="card"><h2>よくある質問</h2>'
                + "".join(f'<details class="q"><summary>{esc(q)}</summary><p>{esc(a)}</p></details>' for q, a in faq) + "</div>")
     out.append(f'<section class="card" id="switch"><h2>エリア・条件を変える</h2>{switcher_html(cfg, page, "../")}</section>')
-    out.append(f'</div><footer>{footer_html(cfg, "../")}</footer><script>{JS}</script><script>{REL_JS}{TRACK_JS}</script></body></html>')
+    out.append(f'</div><footer>{footer_html(cfg, "../")}</footer><script>{JS}</script><script>{REL_JS}{TRACK_JS}{IOS_JS}</script></body></html>')
     digest = (ans[1] + " " + " / ".join(ans[2][:3])) if rows else ""
     return "".join(out), len(rows), t0[0], digest
 
