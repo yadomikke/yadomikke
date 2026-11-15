@@ -2,7 +2,7 @@ name: 空室データの自動更新
 
 on:
   schedule:
-    - cron: "17 * * * *"     # 1時間おき(毎時17分)に空室を取得。サイトの公開は偶数時の回だけ(下の「公開するか決める」)。
+    - cron: "17 * * * *"     # 1時間おき(毎時17分)に空室を取得。サイトの公開は約2時間ごと(下の「公開するか決める」)。
                              # Cloudflare Pagesの無料枠(月500回の公開)に収まる回数(月約360回)
   workflow_dispatch:          # 手動で実行したいとき用(Actionsタブの「Run workflow」)
     inputs:
@@ -24,15 +24,22 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 50   # 前回の公開がいつだったかを、保存の履歴から調べるため
 
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: 公開するか決める(偶数時と手動実行の回だけサイトを公開。奇数時はデータだけ保存)
+      - name: 公開するか決める(前回の公開から約2時間ごと。手動実行の回は必ず公開)
         id: plan
         run: |
-          if [ "${{ github.event_name }}" != "schedule" ] || [ $((10#$(date -u +%H) % 2)) -eq 0 ]; then
+          # GitHubの自動実行は開始が遅れることがあるので、時刻ではなく「前回の公開からの経過時間」で決める。
+          # 1時間おきの回のうち1回おきに公開する形になる(開始時点で50分以上たっていれば公開。前の回の直後に始まった回は見送る)
+          LAST=$(git log -1 --format=%ct --fixed-strings --invert-grep --grep='[CF-Pages-Skip]' || true)
+          MIN=$(( ( $(date +%s) - ${LAST:-0} ) / 60 ))
+          echo "前回の公開から ${MIN} 分"
+          if [ "${{ github.event_name }}" != "schedule" ] || [ -z "$LAST" ] || [ "$MIN" -ge 50 ]; then
             echo "deploy=1" >> "$GITHUB_OUTPUT"; echo "この回はサイトを公開します"
           else
             echo "deploy=0" >> "$GITHUB_OUTPUT"; echo "この回はデータだけ保存します(公開は次の回)"

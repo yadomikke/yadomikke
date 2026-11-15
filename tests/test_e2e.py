@@ -308,8 +308,9 @@ check(up.target_hours(cfgr, 0) == 4 and up.target_hours(cfgr, 1) == 4 and up.tar
       and up.target_hours(cfgr, 20) == 48 and up.target_hours(cfgr, 40, True) == 72,
       "更新の間隔: 今日・明日は4時間、7日以内は8時間、15日以降は48時間、年末年始など先の日程は72時間")
 wf = (ROOT / ".github" / "workflows" / "update.yml").read_text(encoding="utf-8")
-check('cron: "17 * * * *"' in wf and "[CF-Pages-Skip]" in wf and "steps.plan.outputs.deploy == '1'" in wf and "--budget-minutes 45" in wf,
-      "自動更新は1時間おき(45分)。サイトの公開とIndexNowは2時間おき(Cloudflareの無料枠に収める)")
+check('cron: "17 * * * *"' in wf and "[CF-Pages-Skip]" in wf and "steps.plan.outputs.deploy == '1'" in wf and "--budget-minutes 45" in wf
+      and "--invert-grep" in wf and '"$MIN" -ge 50' in wf and "fetch-depth: 50" in wf,
+      "自動更新は1時間おき(45分)。サイトの公開とIndexNowは、前回の公開からの経過時間で約2時間ごと(Cloudflareの無料枠に収める)")
 
 # 新しく足したエリアは、宿一覧の定期更新を待たずに、すぐ宿を集める
 with tempfile.TemporaryDirectory() as tmp2:
