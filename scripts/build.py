@@ -15,6 +15,7 @@ import json
 import os
 import re
 import shutil
+import unicodedata
 import urllib.parse
 import statistics
 import sys
@@ -182,6 +183,11 @@ box.hidden=false;show(valid?q:box.getAttribute('data-def'),false);
 inp.addEventListener('change',function(){if(inp.value)show(inp.value,true);});
 var bs=box.querySelectorAll('.quick button');for(var i=0;i<bs.length;i++){(function(b){b.addEventListener('click',function(){show(b.getAttribute('data-d'),true);});})(bs[i]);}
 })();"""
+
+
+def norm_name(s):
+    """宿名を読みやすくする: 全角英数字・記号を半角に、半角カナを全角に(NFKC)、連続する空白を1つに"""
+    return re.sub(r"\s+", " ", unicodedata.normalize("NFKC", str(s))).strip()
 
 
 def esc(s):
@@ -1726,7 +1732,8 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
     where = h.get("station") or h.get("address") or alabel
     prices = [p for _, p, _, _ in ok]
     lead = (f"{h['name']}({where})" + (f"の{flabel}" if room else "") + "は、" + when_txt(newest)
-            + f"{day_label(dates[0], holidays)}〜{day_label(dates[-1], holidays)}のうち{len(ok)}日に空きがあります。")
+            + f"{day_label(dates[0], holidays)}〜{day_label(dates[-1], holidays)}のうち{len(ok)}日に空きがあります。"
+            + "このページで日付を選ぶと、その日の空室と、楽天トラベルの予約ページを確認できます。")
     bullets = []
     if ok:
         d0, p0, _, rn0 = ok[0]
@@ -1748,7 +1755,9 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
     s1, s2 = lead, " ".join(b + "。" for b in bullets[:4])
     scl = scene_lines(cfg, h, state, feat, ctx["today"], holidays)
     scene_txt = "。".join(f"{n}は{t}" for n, k, t in scl if k != "none") + ("。" if any(k != "none" for _, k, _ in scl) else "")
-    desc = (f"{nm_f}の空室状況。" + (f"{asof}時点で、" if asof else "") + scene_txt + (" " + s2 if s2 else ""))[:300]
+    # 検索結果で「このページで何ができるか」が先に伝わるように、説明文の最初に書く
+    desc = (f"{nm_f}の今夜・今週末の空室と最安値を毎日更新。日付を選ぶと、楽天トラベルのその日の予約ページへ進めます。"
+            + (f"{asof}時点で、" if asof else "") + scene_txt + (" " + s2 if s2 else ""))[:300]
 
     # 月ごとのカレンダー(月の見出しつき・曜日を揃える)
     def _cell(d):
@@ -1857,10 +1866,15 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
            "dateModified": (newest or datetime.now(JST)).isoformat(timespec="seconds"), "about": hotel_ld,
            "isPartOf": {"@type": "WebSite", "name": site["name"], "url": ctx["base"] + "/"}},
           faq_ld(faq)]
-    if ok:
-        title = f"{nm_f}:{md(ok[0][0])}から空きあり({yen_full(min(prices))}〜)【{md(ctx['today'])}時点】 | {site['name']}"
+    # 宿名で検索する人が多いので、宿名+「空室・予約」+いまの空き状況を見出しにする
+    nm_t = f"{h['name']}の空室・予約" + (f"({flabel})" if room else "")
+    upd = f"【{md(ctx['today'])}更新】"
+    if ok and ok[0][0] == ctx["today"]:
+        title = f"{nm_t}|今夜空きあり {yen_full(ok[0][1])}〜{upd} | {site['name']}"
+    elif ok:
+        title = f"{nm_t}|{md(ok[0][0])}から空きあり {yen_full(min(prices))}〜{upd} | {site['name']}"
     else:
-        title = f"{nm_f} 空室状況と料金【{md(ctx['today'])}時点】 | {site['name']}"
+        title = f"{nm_t}|空き状況と料金{upd} | {site['name']}"
     return shell(cfg, demo, "../../", title, desc, canonical, "".join(body), ld)
 
 
@@ -3380,6 +3394,11 @@ def main():
     cfg.setdefault("theme_min_hotels", 3)
     data_dir, out_dir = Path(args.data_dir), Path(args.out_dir)
     hotels = load_json(data_dir / "hotels.json", {"areas": {}})
+    # 宿名の全角英数字・全角スペースを読みやすい形にそろえる(例: 「ｈｏｔｅｌ」→「hotel」)。検索された言葉とも合いやすくなる
+    for _lst in hotels.get("areas", {}).values():
+        for _h in (_lst if isinstance(_lst, list) else []):
+            if _h.get("name"):
+                _h["name"] = norm_name(_h["name"])
     state = load_json(data_dir / "state.json", {"cells": {}, "fetched_by": {}, "meta": {}})
     state.setdefault("cells", {})
     # 宿がまだ1軒も見つかっていないエリア(追加したばかり、またはコード違い)は、ページを作らない

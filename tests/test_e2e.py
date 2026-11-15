@@ -243,6 +243,13 @@ with tempfile.TemporaryDirectory() as tmp:
           "llms.txt と機械向けデータに、日付つきアドレスの作り方が載る")
     check('id="hdinput"' in hp1 and 'data-def="' in hp1 and "show(valid?q:box.getAttribute('data-def'),false)" in hp1,
           "宿ページは、日付なしで来ても、上の「日付を選んで予約する」で今夜・明日・土曜・好きな日付の空きと予約ボタンを出す")
+    import re as _re2
+    t1 = _re2.search(r"<title>(.*?)</title>", hp1).group(1)
+    check("宿1の空室・予約(客室露天風呂)|" in t1 and "更新】" in t1
+          and "日付を選ぶと、楽天トラベルのその日の予約ページへ進めます" in hp1 and "このページで日付を選ぶと、その日の空室と" in hp1,
+          "宿ページの見出しは「宿名の空室・予約|いまの空き状況」。説明文と冒頭の一文に、このページで予約できることを書く")
+    import build as _b
+    check(_b.norm_name("ＨＯＴＥＬ　Ｒ９　Ｔｈｅ　Ｙａｒｄ（渋川）") == "HOTEL R9 The Yard(渋川)", "宿名の全角英数字・全角スペースを読みやすくそろえる")
     # ChatGPTから来た人が、日付を変えずにそのまま予約できるように
     check('id="qbook"' in page and "予約する ›" in page and "lk(hh,cur,cc)" in page,
           "条件ページは、日付の見出しのすぐ下に、その日の上位3軒の予約ボタンを出す")
