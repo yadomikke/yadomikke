@@ -115,7 +115,7 @@ s=/chatgpt|openai/.test(t)?'chatgpt':/perplexity/.test(t)?'perplexity':/claude\.
 try{ss&&ss.setItem(k,s)}catch(e){}dl.push({event:'ym_landing',ym_src:s});}
 w.ymSrc=s;
 w.ymAff=function(){dl.push({event:'aff_click',ym_src:s,ym_page:location.pathname})};
-document.addEventListener('click',function(e){var a=e.target.closest?e.target.closest('a[href*="hb.afl.rakuten.co.jp"],a[href*="travel.rakuten.co.jp"]'):null;if(a)w.ymAff()},true);}catch(e){}})();"""
+document.addEventListener('click',function(e){if(e.defaultPrevented)return;var a=e.target.closest?e.target.closest('a[href*="hb.afl.rakuten.co.jp"],a[href*="travel.rakuten.co.jp"]'):null;if(a)w.ymAff()},false);}catch(e){}})();"""
 
 
 # iPhone の ChatGPT アプリの中で開いた人に、Safari で開き直す案内を出す(アプリ内のブラウザでは楽天のログインが引き継がれないため)
@@ -179,11 +179,12 @@ function show(q,push){out.textContent='';inp.value=q;
  var L=lab(q),c=document.querySelector('.mini [data-d="'+q+'"]'),msg,link=window.ymSL?ymSL(no,q):null,ok=false;
  if(!c){msg=L+'は、当サイトがまだ空室を確認していない日付です。楽天トラベルで直接ご確認ください。';}
  else{c.classList.add('sel');var k=c.getAttribute('data-s'),pr=c.getAttribute('data-p');
-  if(k==='ok'){ok=true;msg=L+':'+fl+'の空きあり'+(pr?'(最安 ¥'+(+pr).toLocaleString('ja-JP')+'〜)':'');link=c.getAttribute('href')||link;}
+  if(k==='ok'){ok=true;msg=L+':◯ '+fl+'の空きあり'+(pr?' ¥'+(+pr).toLocaleString('ja-JP')+'〜':'');link=c.getAttribute('data-u')||c.getAttribute('href')||link;}
   else if(k==='part'){msg=L+':宿には空きがありますが、'+fl+'の空きは確認できませんでした。';}
   else if(k==='full'){msg=L+':取得時点では満室です。キャンセルで空くこともあります。';}
   else{msg=L+':まだ取得できていません。';}}
  out.appendChild(mk('p','qh',msg));
+ if(ok){var rn=c.getAttribute('data-r');out.appendChild(mk('p','qm','1泊・大人2名・1室の最安(取得時点)'+(rn?' / '+rn:'')));}
  if(link){var a=mk('a','cta'+(ok?'':' ghost'),L+'を楽天トラベルで'+(ok?'予約する ›':'最新の空きを確認する ›')+'【PR】');a.href=link;a.target='_blank';a.rel='sponsored nofollow noopener';var pp=mk('p');pp.appendChild(a);out.appendChild(pp);}
  if(!ok)alts(q);
  var mc=document.querySelector('#maincta a');if(mc&&link){mc.href=link;mc.textContent=L+'の空室・料金を楽天トラベルで確認 ›';}
@@ -203,7 +204,7 @@ box.hidden=false;show(valid?q:box.getAttribute('data-def'),false);
 inp.addEventListener('change',function(){if(inp.value)show(inp.value,true);});
 var bs=box.querySelectorAll('.quick button');for(var i=0;i<bs.length;i++){(function(b){b.addEventListener('click',function(){show(b.getAttribute('data-d'),true);});})(bs[i]);}
 // カレンダーの満室・△・未取得の日を押すと、上の「日付を選んで予約する」にその日を出す(楽天の最新確認・代わりの宿)
-var cb=document.querySelectorAll('.mini button[data-d]');for(var i=0;i<cb.length;i++){(function(b){b.addEventListener('click',function(){show(b.getAttribute('data-d'),true);try{box.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){box.scrollIntoView();}});})(cb[i]);}
+var cb=document.querySelectorAll('.mini button[data-d],.mini a[data-d]');for(var i=0;i<cb.length;i++){(function(b){b.addEventListener('click',function(e){e.preventDefault();show(b.getAttribute('data-d'),true);try{box.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){box.scrollIntoView();}});})(cb[i]);}
 // 下の予約バーは、上の予約ボタンが画面に見えている間は隠す(同じボタンが2つ並ばないように)
 if(sb&&window.IntersectionObserver){var vis={},io=new IntersectionObserver(function(es){es.forEach(function(e){vis[e.target.id]=e.isIntersecting;});sb.classList.toggle('off',!!(vis.dpick||vis.maincta));});
  io.observe(box);var m2=document.getElementById('maincta');if(m2)io.observe(m2);}
@@ -780,6 +781,15 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .mini b{font-size:13px;font-weight:700}.mini i{font-style:normal;font-size:16px;font-weight:800}
 .mini .ok{background:var(--okbg);color:var(--ok)}.mini .part{background:var(--partbg);color:var(--part)}.mini .full{background:#eceff2;color:#6b7280}
 .mini .pad{background:transparent}
+.hhero{padding-top:12px}.hhero .crumb{font-size:12px;margin-bottom:4px}.hhero h1{font-size:21px}.hhero .lead{font-size:13.5px;margin-top:2px}
+.hhead{display:flex;gap:10px;align-items:flex-start}.hthumb{flex:none;width:96px;height:72px;object-fit:cover;border-radius:8px;background:#eee;margin-top:4px}
+.hthumb,.hphoto{font-size:0;color:transparent}.hphoto{display:block;width:100%;max-height:210px;object-fit:cover;border-radius:12px;margin:4px 0 8px;background:#eee}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.dpick .qbook{margin-top:4px}.dchg{margin:8px 0 0}.dlab{display:block;font-size:13px;font-weight:700;color:var(--sub);margin:0 0 2px}.dchg .quick{margin:2px 0 6px}
+.dchg .quick button{min-height:40px;padding:6px 14px;font-size:14px}
+.hcal{margin-top:6px}.hcal .sub{font-size:12.5px}
+.fyes{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 8px}.fyes a,.fyes span{display:inline-flex;align-items:center;min-height:34px;padding:0 12px;border-radius:999px;background:var(--okbg);color:var(--ok);font-weight:700;font-size:13.5px;text-decoration:none}
+#features details summary{cursor:pointer;color:var(--sub);font-size:14px;margin:4px 0}
 .mini button{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:56px;border-radius:8px;border:0;font:inherit;font-size:13px;line-height:1.25;background:#f4f4f4;color:#888;cursor:pointer;padding:0}
 .iosn{display:flex;gap:8px;align-items:flex-start;background:#fff8e1;border:1px solid #f0c36d;border-radius:10px;padding:10px 12px;margin:10px 0;font-size:14px;line-height:1.55}.iosn p{margin:0;flex:1}.iosn button{flex:none;border:0;background:transparent;font-size:20px;line-height:1;color:#8a6d3b;cursor:pointer;padding:0 4px}
 .qalt{margin:8px 0 0;padding-top:6px;border-top:1px solid var(--line)}.qalt .qm{margin:0 0 2px}
@@ -1754,10 +1764,10 @@ def hotel_pick_html(h, fl_txt, dates, ok, holidays):
     qb = "".join(f'<button type="button" data-d="{d.isoformat()}">{esc(t)}</button>' for t, d in quick)
     dflt = (ok[0][0] if ok else today).isoformat()
     return (f'<section class="bookpanel dpick" id="dpick" data-no="{esc(h["no"])}" data-fl="{esc(fl_txt)}" data-def="{dflt}" '
-            f'data-min="{dates[0].isoformat()}" data-max="{dates[-1].isoformat()}" hidden><h2>日付を選んで予約する</h2>'
-            f'<div class="quick" aria-label="日付をすばやく選ぶ">{qb}</div>'
-            f'<label class="dinput">ほかの日付: <input type="date" id="hdinput" min="{dates[0].isoformat()}" max="{dates[-1].isoformat()}"></label>'
-            '<div class="qbook" id="dout"></div></section>')
+            f'data-min="{dates[0].isoformat()}" data-max="{dates[-1].isoformat()}" hidden><h2 class="vh">日付を選んで予約する</h2>'
+            '<div class="qbook" id="dout"></div>'
+            f'<div class="dchg"><span class="dlab">日付を変える</span><div class="quick" aria-label="日付をすばやく選ぶ">{qb}</div>'
+            f'<label class="dinput">ほかの日付: <input type="date" id="hdinput" min="{dates[0].isoformat()}" max="{dates[-1].isoformat()}"></label></div></section>')
 
 
 ALT_MAX = 12   # 宿ページに載せる「代わりの宿」の候補の数(日付ごとに、安い順に3軒まで表示)
@@ -1839,7 +1849,7 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
             p, url, _ = c["f"][feat]
             inner_c = f"{lab}<i>◯</i><b>{yen(p)}</b>"
             u = safe_url(url or h.get("url"))
-            dd = f'data-d="{d.isoformat()}" data-s="ok" data-p="{p}"'
+            dd = f'data-d="{d.isoformat()}" data-s="ok" data-p="{p}" data-r="{esc(c["f"][feat][2] or "")}"'
             return (f'<a class="ok" {dd} href="{esc(u)}" target="_blank" rel="sponsored nofollow noopener" aria-label="{d.month}月{d.day}日 空きあり">{inner_c}</a>'
                     if u != "#" else f'<span class="ok" {dd}>{inner_c}</span>')
         if s_ == "part":
@@ -1862,26 +1872,39 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
         cal += "</div></div>"
 
     mid_crumb = "" if page.get("virtual") else f' › <a href="../../{esc(page["slug"])}/">{esc(page["title"])}</a>'
-    body = [f'<div class="hero"><div class="crumb"><a href="../../">{esc(site["name"])}</a> › <a href="../../{esc(page["area"])}/">{esc(cfg["areas"][page["area"]]["label"])}</a>{mid_crumb} › {esc(h["name"])}</div>'
-            f"<h1>{esc(nm_f)} 空室状況</h1><p class=\"lead\">{esc(hotel_sub(h))}</p></div>",
-            # アドレスで日付が指定されたとき(?d=)は、その日の空きと予約ボタンを、宿名のすぐ下に出す
-            hotel_pick_html(h, fl_txt, dates, ok, holidays),
-            answer_html(asof, lead, bullets, details, "この宿の空室まとめ", mood=("happy" if ok else "sleepy"))]
+    # 写真: 大きい写真(image_l)があれば横長で、なければ小さな写真を宿名の横に出す(楽天トラベルの施設写真)
+    big = safe_url(h.get("image_l")) if str(h.get("image_l", "")).startswith("https://") else "#"
+    small = safe_url(h.get("image")) if str(h.get("image", "")).startswith("https://") else "#"
+    thumb = (f'<img class="hthumb" src="{esc(small)}" alt="{esc(h["name"])}の写真" width="96" height="72" decoding="async" onerror="this.remove()">'
+             if big == "#" and small != "#" else "")
+    hero = (f'<div class="hero hhero"><div class="crumb"><a href="../../">{esc(site["name"])}</a> › <a href="../../{esc(page["area"])}/">{esc(cfg["areas"][page["area"]]["label"])}</a>{mid_crumb} › {esc(h["name"])}</div>'
+            + (f'<img class="hphoto" src="{esc(big)}" alt="{esc(h["name"])}の写真" decoding="async" onerror="this.remove()">' if big != "#" else "")
+            + f'<div class="hhead">{thumb}<div><h1>{esc(nm_f)} 空室状況</h1><p class="lead">{esc(hotel_sub(h))}</p></div></div></div>')
     cta_url = (ok[0][2] if ok else None) or h.get("plan_url") or h.get("url")
     # ボタンには、どの日付のページが開くかを書く(日付が指定されていれば、ブラウザ側でその日付に差し替える)
     cta_txt = (f"{day_label(ok[0][0], holidays)}の空室・料金を楽天トラベルで確認 ›" if ok else "楽天トラベルで空室・料金を確認 ›")
-    body.append('<p style="margin:10px 0" id="maincta">' + btn(cta_url, "cta", cta_txt) + "</p>")
-    body.append(share_html(canonical, f"{nm_f} 空室状況 | {site['name']}"))
-    # スマホで、どこまで読み進めても予約できるように、画面の下に予約バーを出す(中身はブラウザ側で選んだ日付に合わせる)
+    frs = hotel_feature_rows(cfg, h, state, page["area"])
+    yes = [lab for lab, mark, _ in frs if mark.startswith("◯")]
+    yes_links = [(lab, sl) for lab, mark, sl in frs if mark.startswith("◯")]
+    # 並び: 宿名・写真 → その日の結果と予約ボタン → 日付を変える → カレンダー → 当てはまる条件 → 文章のまとめ・よくある質問
+    body = [hero,
+            # アドレスで日付が指定されたとき(?d=)は、その日の空きと予約ボタンを、宿名のすぐ下に出す
+            hotel_pick_html(h, fl_txt, dates, ok, holidays),
+            f'<section class="sec hcal" id="calendar"><h2>空室カレンダー({len(dates)}日間)</h2>'
+            '<p class="sub">◯=空きあり(数字は最安) ／ △=宿に空きはあるが該当の部屋は確認できない ／ 満=空室なし ／ —=未取得。日付を押すと、上にその日の料金と予約ボタンが出ます。</p>'
+            f'{cal}</section>',
+            '<p style="margin:10px 0" id="maincta">' + btn(cta_url, "cta", cta_txt) + "</p>"]
     body.append('<div class="sbar" id="sbar" hidden><div class="st"><b></b><small>1泊・大人2名・1室の最安【PR】</small></div>'
                 '<a class="cta" target="_blank" rel="sponsored nofollow noopener">予約する ›</a></div>')
     body.append(alt_data(h, ctx, feat, dates))
-    frs = hotel_feature_rows(cfg, h, state, page["area"])
-    yes = [lab for lab, mark, _ in frs if mark.startswith("◯")]
-    body.append('<section class="card" id="features"><h2>この宿の条件(ヤドミッケの自動判定)</h2><div class="scroll"><table class="stat"><tbody>'
+    body.append('<section class="card" id="features"><h2>この宿に当てはまる条件</h2>'
+                + ('<p class="fyes">' + "".join((f'<a href="../../{esc(sl)}/">{esc(lab)}</a>' if sl else f"<span>{esc(lab)}</span>") for lab, sl in yes_links) + "</p>"
+                   if yes_links else "<p class='sub'>自動判定で当てはまる条件は、まだ見つかっていません。</p>")
+                + f'<details><summary>すべての条件の判定を見る({len(frs)}項目)</summary><div class="scroll"><table class="stat"><tbody>'
                 + "".join(f"<tr><th>{esc(lab)}</th><td>" + (f'<a href="../../{esc(sl)}/">{esc(mark)}</a>' if sl else esc(mark)) + "</td></tr>" for lab, mark, sl in frs)
                 + "</tbody></table></div><p class='legend'>部屋の条件(客室露天風呂など)は部屋名、宿の条件(大浴場など)は楽天トラベルの施設情報から機械的に判定しています。"
-                "「記載なし」「確認できず」は、設備がないという意味ではありません。最終確認は宿のページでお願いします。</p></section>")
+                "「記載なし」「確認できず」は、設備がないという意味ではありません。最終確認は宿のページでお願いします。</p></details></section>")
+    body.append(answer_html(asof, lead, bullets, details, "この宿の空室まとめ", mood=("happy" if ok else "sleepy")))
     if scl:
         body.append('<section class="sec"><h2>日付別の空き状況</h2><ul class="bul">'
                     + "".join(f"<li><b>{esc(n)}</b>: {esc(t)}</li>" for n, k, t in scl) + "</ul>"
@@ -1891,8 +1914,6 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
                     + "".join(f'<li><div class="t"><span class="n">{esc(day_label(d, holidays))}</span><small>{esc(rn)}</small></div>'
                               f'<div class="pr">{yen_full(p)}<span>〜</span></div>' + btn(url or h.get("url"), "cta", "予約ページへ ›") + "</li>"
                               for d, p, url, rn in ok) + "</ul></details></section>")
-    body.append(f'<section class="sec"><h2>{len(dates)}日間のカレンダー</h2><p class="sub">◯=空きあり(数字は最安) ／ △=宿に空きはあるが該当の部屋は確認できない ／ 満=空室なし ／ —=未取得</p>'
-                f'{cal}</section>')
     if page.get("virtual"):
         body.append(f'<p><a href="../../{esc(page["area"])}/">{esc(alabel)}の宿の空室(今夜・明日・今週末・日付指定)を見る</a></p>')
     else:
@@ -1910,6 +1931,7 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
          (f"最新の取得は{newest:%Y-%m-%d %H:%M}(日本時間)です。" if newest else "取得前です。") + "リアルタイムではないため、予約前に楽天トラベルでご確認ください。"),
     ]
     body.append(faq_html(faq))
+    body.append(share_html(canonical, f"{nm_f} 空室状況 | {site['name']}"))
     hotel_ld = {"@type": "Hotel", "name": h["name"], "url": canonical}
     if h.get("address"):
         addr = {"@type": "PostalAddress", "addressCountry": "JP", "streetAddress": h["address"]}

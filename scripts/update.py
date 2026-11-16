@@ -79,6 +79,7 @@ def _search_area(client, large, middle, small, details):
                     "address": (str(b.get("address1", "")) + str(b.get("address2", ""))),
                     "station": b.get("nearestStation", ""),
                     "image": b.get("hotelThumbnailUrl", ""),
+                    "image_l": b.get("hotelImageUrl", ""),
                     "lat": b.get("latitude"),
                     "lng": b.get("longitude"),
                     "zip": b.get("postalCode", ""),

@@ -145,7 +145,7 @@ with tempfile.TemporaryDirectory() as tmp:
     rd = (out / "_redirects").read_text(encoding="utf-8")
     check("/:slug/hotel/:no/ /hotel/:no/ 301" in rd, "古い宿ページのURLから、新しい宿ページへ自動で案内する")
     hp1 = (out / "hotel" / "1" / "index.html").read_text(encoding="utf-8")
-    check("この宿の条件" in hp1 and "◯ 当てはまる" in hp1 and 'href="https://example.invalid/hotel/1/"' in hp1,
+    check("この宿に当てはまる条件" in hp1 and "すべての条件の判定を見る" in hp1 and "◯ 当てはまる" in hp1 and 'href="https://example.invalid/hotel/1/"' in hp1,
           "宿ページは /hotel/番号/ で、条件の判定一覧がある")
     check('href="/hotel/1/"' in page, "空室表から宿ページ(/hotel/番号/)へリンクする")
     # 選び方ガイドと、全エリアまとめ
@@ -261,6 +261,12 @@ with tempfile.TemporaryDirectory() as tmp:
           and 'href="hakone/"' in home and 'href="hakone-roten/"' in home and "エリアから探す(条件なし)" not in home and 'id="ftabs"' not in home
           and home.index('data-f="all"') < home.index('data-f="roten"'),
           "トップは「1 条件をえらぶ(なくてもOK)→ 2 エリアをえらぶ」の順で、エリアの一覧は1つ(条件なしはエリアのページへ)")
+    # 宿ページの並び: 宿名 → その日の結果と予約 → 日付を変える → カレンダー → 当てはまる条件 → 文章のまとめ → よくある質問 → 共有
+    check(hp1.index('id="dout"') < hp1.index('class="dchg"') < hp1.index('id="calendar"') < hp1.index('id="features"') < hp1.index('id="answer"')
+          < hp1.index("よくある質問") < hp1.index('class="share"') and 'data-r="' in hp1 and "1泊・大人2名・1室の最安(取得時点)" in hp1,
+          "宿ページは、宿名のすぐ下にその日の結果(料金・部屋名)と予約ボタン、その下に日付の変更とカレンダーを置く")
+    check(".mini button[data-d],.mini a[data-d]" in hp1 and "if(e.defaultPrevented)return;" in hp1,
+          "カレンダーの日付を押すと上の結果がその日に変わる(楽天へのクリックとしては数えない)")
     # 競合の分析から: ChatGPTアプリの案内・満室の日の最新確認・代わりの宿・下の予約バー
     check("ChatGPTアプリの中で開いています" in hp1 and "w.ymSrc!=='chatgpt'" in hp1 and "iPhone|iPad|iPod" in hp1 and "ChatGPTアプリの中で開いています" in page,
           "iPhoneのChatGPTアプリから来た人にだけ、Safariで開き直す案内を出す(全ページ)")
