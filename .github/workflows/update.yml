@@ -36,7 +36,8 @@ jobs:
         run: |
           # GitHubの自動実行は開始が遅れることがあるので、時刻ではなく「前回の公開からの経過時間」で決める。
           # 1時間おきの回のうち1回おきに公開する形になる(開始時点で50分以上たっていれば公開。前の回の直後に始まった回は見送る)
-          LAST=$(git log -1 --format=%ct --fixed-strings --invert-grep --grep='[CF-Pages-Skip]' || true)
+          # 数えるのは、この自動更新(github-actions)がページを作って公開した回だけ。プログラムの修正の保存は数えない
+          LAST=$(git log -1 --format=%ct --author=github-actions --fixed-strings --invert-grep --grep='[CF-Pages-Skip]' || true)
           MIN=$(( ( $(date +%s) - ${LAST:-0} ) / 60 ))
           echo "前回の公開から ${MIN} 分"
           if [ "${{ github.event_name }}" != "schedule" ] || [ -z "$LAST" ] || [ "$MIN" -ge 50 ]; then

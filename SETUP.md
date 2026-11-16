@@ -210,4 +210,5 @@ GitHubのリポジトリで「Settings」→「Secrets and variables」→「Act
 - 更新のたびに、新しいページと主要なページのURLを**IndexNow**でBingなどに自動通知します(ChatGPTの検索はBingの索引を使うと言われているため)。設定は不要で、鍵は `config.json` の `indexnow_key` に入っています(公開されても問題のない鍵です)。
 - 通知がうまくいかなくても、サイトの更新は止まりません。実行ログの「IndexNow:」の行で結果を見られます。
 - 通知の記録だけを保存する更新には、Cloudflareのデプロイが走らないよう印(`[CF-Pages-Skip]`)を付けています。
+- プログラム(scripts/ など)だけを直して保存するときも、この印を付けます。公開されるページ(public/)は自動更新が作り直すので、直したあとは Actions の「Run workflow」で自動更新を1回動かすと、約40分で本番に出ます。「前回の公開」の時計は、自動更新が公開した回だけで数えます。
 - それでも、**Bing Webmaster Tools** に自分で登録し、sitemap.xml を送っておくと確実です(公開後の作業の項を参照)。
