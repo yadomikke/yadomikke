@@ -1,7 +1,7 @@
 {
  "name": "ヤドミッケ 温泉地の空室・料金データ",
  "description": "楽天トラベルの空室検索APIから自動で取得し、ヤドミッケが集計した、温泉地の宿の空き数と料金の最新値です。",
- "generated_at": "2026-11-16T12:43:49+09:00",
+ "generated_at": "2026-11-16T13:47:20+09:00",
  "source": "楽天トラベル 空室検索API(楽天ウェブサービス)",
  "attribution": "ヤドミッケ(楽天トラベルの空室データをもとに集計)",
  "site_url": "https://yadomikke.com/",
@@ -25,8 +25,8 @@
    "checkin_dates": [
     "2026-11-16"
    ],
-   "hotels_checked": 3901,
-   "hotels_with_vacancy": 829,
+   "hotels_checked": 4738,
+   "hotels_with_vacancy": 1018,
    "min_price_jpy": 1044,
    "page_url": "https://yadomikke.com/konya/"
   },
@@ -35,8 +35,8 @@
    "checkin_dates": [
     "2026-11-17"
    ],
-   "hotels_checked": 3899,
-   "hotels_with_vacancy": 1345,
+   "hotels_checked": 4736,
+   "hotels_with_vacancy": 1689,
    "min_price_jpy": 1044,
    "page_url": "https://yadomikke.com/ashita/"
   },
@@ -46,8 +46,8 @@
     "2026-11-20",
     "2026-11-21"
    ],
-   "hotels_checked": 3894,
-   "hotels_with_vacancy": 1763,
+   "hotels_checked": 4254,
+   "hotels_with_vacancy": 1964,
    "min_price_jpy": 100,
    "page_url": "https://yadomikke.com/shumatsu/"
   },
@@ -58,8 +58,8 @@
     "2026-11-21",
     "2026-11-22"
    ],
-   "hotels_checked": 3894,
-   "hotels_with_vacancy": 1856,
+   "hotels_checked": 4254,
+   "hotels_with_vacancy": 2057,
    "min_price_jpy": 100,
    "page_url": "https://yadomikke.com/renkyu/"
   },
@@ -153,8 +153,8 @@
      "label": "平日(日〜木)",
      "median_jpy": 16000,
      "p25_jpy": 7700,
-     "p75_jpy": 41340,
-     "samples": 3845
+     "p75_jpy": 41700,
+     "samples": 3846
     },
     "fri": {
      "label": "金曜",
@@ -267,7 +267,7 @@
       "2026-11-16"
      ],
      "hotels_checked": 281,
-     "hotels_with_vacancy": 76,
+     "hotels_with_vacancy": 75,
      "min_price_jpy": 2400,
      "fetched_at": "2026-11-16T11:32+09:00"
     },
@@ -327,7 +327,7 @@
      "median_jpy": 13398,
      "p25_jpy": 8120,
      "p75_jpy": 32400,
-     "samples": 3374
+     "samples": 3373
     },
     "fri": {
      "label": "金曜",
@@ -949,9 +949,9 @@
       "2026-11-17"
      ],
      "hotels_checked": 281,
-     "hotels_with_vacancy": 92,
+     "hotels_with_vacancy": 87,
      "min_price_jpy": 2915,
-     "fetched_at": "2026-11-16T08:59+09:00"
+     "fetched_at": "2026-11-16T13:01+09:00"
     },
     "shumatsu": {
      "label": "今週末・来週末",
@@ -999,7 +999,7 @@
      "median_jpy": 9680,
      "p25_jpy": 6200,
      "p75_jpy": 18960,
-     "samples": 1919
+     "samples": 1914
     },
     "fri": {
      "label": "金曜",
@@ -1113,8 +1113,8 @@
      ],
      "hotels_checked": 191,
      "hotels_with_vacancy": 86,
-     "min_price_jpy": 2750,
-     "fetched_at": "2026-11-16T09:00+09:00"
+     "min_price_jpy": 2630,
+     "fetched_at": "2026-11-16T13:02+09:00"
     },
     "shumatsu": {
      "label": "今週末・来週末",
@@ -1161,7 +1161,7 @@
      "label": "平日(日〜木)",
      "median_jpy": 6200,
      "p25_jpy": 4185,
-     "p75_jpy": 15090,
+     "p75_jpy": 14557,
      "samples": 1686
     },
     "fri": {
@@ -3077,6 +3077,1254 @@
      "condition": "バリアフリー対応の宿(車椅子可など)",
      "url": "https://yadomikke.com/kurokawa-barrierfree/",
      "url_with_date": "https://yadomikke.com/kurokawa-barrierfree/?d=YYYY-MM-DD"
+    }
+   ]
+  },
+  {
+   "key": "isawa",
+   "label": "石和",
+   "page_url": "https://yadomikke.com/isawa/",
+   "page_url_with_date": "https://yadomikke.com/isawa/?d=YYYY-MM-DD",
+   "hotels_listed": 60,
+   "availability": {
+    "konya": {
+     "label": "今夜",
+     "checkin_dates": [
+      "2026-11-16"
+     ],
+     "hotels_checked": 60,
+     "hotels_with_vacancy": 30,
+     "min_price_jpy": 7000,
+     "fetched_at": "2026-11-16T13:05+09:00"
+    },
+    "ashita": {
+     "label": "明日",
+     "checkin_dates": [
+      "2026-11-17"
+     ],
+     "hotels_checked": 60,
+     "hotels_with_vacancy": 37,
+     "min_price_jpy": 8000,
+     "fetched_at": "2026-11-16T13:10+09:00"
+    },
+    "shumatsu": {
+     "label": "今週末・来週末",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21"
+     ],
+     "hotels_checked": 60,
+     "hotels_with_vacancy": 39,
+     "min_price_jpy": 10400,
+     "fetched_at": "2026-11-16T13:43+09:00"
+    },
+    "renkyu": {
+     "label": "次の連休",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21",
+      "2026-11-22"
+     ],
+     "hotels_checked": 60,
+     "hotels_with_vacancy": 39,
+     "min_price_jpy": 10400,
+     "fetched_at": "2026-11-16T13:43+09:00"
+    },
+    "nenmatsu": {
+     "label": "年末年始",
+     "checkin_dates": [
+      "2026-12-28",
+      "2026-12-29",
+      "2026-12-30",
+      "2026-12-31",
+      "2027-01-01",
+      "2027-01-02",
+      "2027-01-03"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    }
+   },
+   "price_next_30_days": {
+    "wd": {
+     "label": "平日(日〜木)",
+     "median_jpy": 20900,
+     "p25_jpy": 17450,
+     "p75_jpy": 29700,
+     "samples": 140
+    },
+    "fri": {
+     "label": "金曜",
+     "median_jpy": 24200,
+     "p25_jpy": 18000,
+     "p75_jpy": 30800,
+     "samples": 39
+    }
+   },
+   "condition_pages": [
+    {
+     "condition": "客室露天風呂",
+     "url": "https://yadomikke.com/isawa-roten/",
+     "url_with_date": "https://yadomikke.com/isawa-roten/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "ペット可の客室",
+     "url": "https://yadomikke.com/isawa-pet/",
+     "url_with_date": "https://yadomikke.com/isawa-pet/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "大浴場のある宿",
+     "url": "https://yadomikke.com/isawa-daiyoku/",
+     "url_with_date": "https://yadomikke.com/isawa-daiyoku/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "貸切風呂・家族風呂のある宿",
+     "url": "https://yadomikke.com/isawa-kashikiri/",
+     "url_with_date": "https://yadomikke.com/isawa-kashikiri/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "小さな宿(客室10室以下)",
+     "url": "https://yadomikke.com/isawa-chiisana/",
+     "url_with_date": "https://yadomikke.com/isawa-chiisana/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "夜遅くても泊まれる宿(最終チェックイン22時以降)",
+     "url": "https://yadomikke.com/isawa-osoitsuki/",
+     "url_with_date": "https://yadomikke.com/isawa-osoitsuki/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "夕食の口コミ評価が高い宿",
+     "url": "https://yadomikke.com/isawa-yushoku/",
+     "url_with_date": "https://yadomikke.com/isawa-yushoku/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "お風呂の口コミ評価が高い宿",
+     "url": "https://yadomikke.com/isawa-furohyoka/",
+     "url_with_date": "https://yadomikke.com/isawa-furohyoka/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "清潔さの口コミ評価が高い宿",
+     "url": "https://yadomikke.com/isawa-seiketsu/",
+     "url_with_date": "https://yadomikke.com/isawa-seiketsu/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "子連れ向けの宿",
+     "url": "https://yadomikke.com/isawa-kids/",
+     "url_with_date": "https://yadomikke.com/isawa-kids/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "サウナのある宿",
+     "url": "https://yadomikke.com/isawa-sauna/",
+     "url_with_date": "https://yadomikke.com/isawa-sauna/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "岩盤浴のある宿",
+     "url": "https://yadomikke.com/isawa-ganbanyoku/",
+     "url_with_date": "https://yadomikke.com/isawa-ganbanyoku/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "送迎のある宿",
+     "url": "https://yadomikke.com/isawa-sougei/",
+     "url_with_date": "https://yadomikke.com/isawa-sougei/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "バリアフリー対応の宿(車椅子可など)",
+     "url": "https://yadomikke.com/isawa-barrierfree/",
+     "url_with_date": "https://yadomikke.com/isawa-barrierfree/?d=YYYY-MM-DD"
+    }
+   ]
+  },
+  {
+   "key": "izukogen",
+   "label": "伊豆高原",
+   "page_url": "https://yadomikke.com/izukogen/",
+   "page_url_with_date": "https://yadomikke.com/izukogen/?d=YYYY-MM-DD",
+   "hotels_listed": 341,
+   "availability": {
+    "konya": {
+     "label": "今夜",
+     "checkin_dates": [
+      "2026-11-16"
+     ],
+     "hotels_checked": 341,
+     "hotels_with_vacancy": 33,
+     "min_price_jpy": 7800,
+     "fetched_at": "2026-11-16T13:06+09:00"
+    },
+    "ashita": {
+     "label": "明日",
+     "checkin_dates": [
+      "2026-11-17"
+     ],
+     "hotels_checked": 341,
+     "hotels_with_vacancy": 135,
+     "min_price_jpy": 5202,
+     "fetched_at": "2026-11-16T13:13+09:00"
+    },
+    "shumatsu": {
+     "label": "今週末・来週末",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21"
+     ],
+     "hotels_checked": 341,
+     "hotels_with_vacancy": 186,
+     "min_price_jpy": 5202,
+     "fetched_at": "2026-11-16T13:47+09:00"
+    },
+    "renkyu": {
+     "label": "次の連休",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21",
+      "2026-11-22"
+     ],
+     "hotels_checked": 341,
+     "hotels_with_vacancy": 190,
+     "min_price_jpy": 5058,
+     "fetched_at": "2026-11-16T13:47+09:00"
+    },
+    "nenmatsu": {
+     "label": "年末年始",
+     "checkin_dates": [
+      "2026-12-28",
+      "2026-12-29",
+      "2026-12-30",
+      "2026-12-31",
+      "2027-01-01",
+      "2027-01-02",
+      "2027-01-03"
+     ],
+     "hotels_checked": 41,
+     "hotels_with_vacancy": 32,
+     "min_price_jpy": 5058,
+     "fetched_at": null
+    }
+   },
+   "price_next_30_days": {
+    "wd": {
+     "label": "平日(日〜木)",
+     "median_jpy": 22900,
+     "p25_jpy": 13860,
+     "p75_jpy": 41760,
+     "samples": 767
+    },
+    "fri": {
+     "label": "金曜",
+     "median_jpy": 24150,
+     "p25_jpy": 15000,
+     "p75_jpy": 42000,
+     "samples": 232
+    },
+    "sat": {
+     "label": "土曜・祝前日",
+     "median_jpy": 24100,
+     "p25_jpy": 7888,
+     "p75_jpy": 60950,
+     "samples": 46
+    }
+   },
+   "condition_pages": [
+    {
+     "condition": "客室露天風呂",
+     "url": "https://yadomikke.com/izukogen-roten/",
+     "url_with_date": "https://yadomikke.com/izukogen-roten/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "ペット可の客室",
+     "url": "https://yadomikke.com/izukogen-pet/",
+     "url_with_date": "https://yadomikke.com/izukogen-pet/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "大浴場のある宿",
+     "url": "https://yadomikke.com/izukogen-daiyoku/",
+     "url_with_date": "https://yadomikke.com/izukogen-daiyoku/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "貸切風呂・家族風呂のある宿",
+     "url": "https://yadomikke.com/izukogen-kashikiri/",
+     "url_with_date": "https://yadomikke.com/izukogen-kashikiri/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "小さな宿(客室10室以下)",
+     "url": "https://yadomikke.com/izukogen-chiisana/",
+     "url_with_date": "https://yadomikke.com/izukogen-chiisana/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "夜遅くても泊まれる宿(最終チェックイン22時以降)",
+     "url": "https://yadomikke.com/izukogen-osoitsuki/",
+     "url_with_date": "https://yadomikke.com/izukogen-osoitsuki/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "駅から徒歩5分以内の宿",
+     "url": "https://yadomikke.com/izukogen-ekichika/",
+     "url_with_date": "https://yadomikke.com/izukogen-ekichika/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "夕食の口コミ評価が高い宿",
+     "url": "https://yadomikke.com/izukogen-yushoku/",
+     "url_with_date": "https://yadomikke.com/izukogen-yushoku/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "お風呂の口コミ評価が高い宿",
+     "url": "https://yadomikke.com/izukogen-furohyoka/",
+     "url_with_date": "https://yadomikke.com/izukogen-furohyoka/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "清潔さの口コミ評価が高い宿",
+     "url": "https://yadomikke.com/izukogen-seiketsu/",
+     "url_with_date": "https://yadomikke.com/izukogen-seiketsu/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "サウナのある宿",
+     "url": "https://yadomikke.com/izukogen-sauna/",
+     "url_with_date": "https://yadomikke.com/izukogen-sauna/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "送迎のある宿",
+     "url": "https://yadomikke.com/izukogen-sougei/",
+     "url_with_date": "https://yadomikke.com/izukogen-sougei/?d=YYYY-MM-DD"
+    }
+   ]
+  },
+  {
+   "key": "yugawara",
+   "label": "湯河原",
+   "page_url": "https://yadomikke.com/yugawara/",
+   "page_url_with_date": "https://yadomikke.com/yugawara/?d=YYYY-MM-DD",
+   "hotels_listed": 100,
+   "availability": {
+    "konya": {
+     "label": "今夜",
+     "checkin_dates": [
+      "2026-11-16"
+     ],
+     "hotels_checked": 100,
+     "hotels_with_vacancy": 24,
+     "min_price_jpy": 9960,
+     "fetched_at": "2026-11-16T13:06+09:00"
+    },
+    "ashita": {
+     "label": "明日",
+     "checkin_dates": [
+      "2026-11-17"
+     ],
+     "hotels_checked": 100,
+     "hotels_with_vacancy": 35,
+     "min_price_jpy": 6700,
+     "fetched_at": "2026-11-16T13:14+09:00"
+    },
+    "shumatsu": {
+     "label": "今週末・来週末",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21"
+     ],
+     "hotels_checked": 17,
+     "hotels_with_vacancy": 7,
+     "min_price_jpy": 6700,
+     "fetched_at": null
+    },
+    "renkyu": {
+     "label": "次の連休",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21",
+      "2026-11-22"
+     ],
+     "hotels_checked": 17,
+     "hotels_with_vacancy": 8,
+     "min_price_jpy": 5365,
+     "fetched_at": null
+    },
+    "nenmatsu": {
+     "label": "年末年始",
+     "checkin_dates": [
+      "2026-12-28",
+      "2026-12-29",
+      "2026-12-30",
+      "2026-12-31",
+      "2027-01-01",
+      "2027-01-02",
+      "2027-01-03"
+     ],
+     "hotels_checked": 17,
+     "hotels_with_vacancy": 10,
+     "min_price_jpy": 5365,
+     "fetched_at": null
+    }
+   },
+   "price_next_30_days": {
+    "wd": {
+     "label": "平日(日〜木)",
+     "median_jpy": 25300,
+     "p25_jpy": 15360,
+     "p75_jpy": 40675,
+     "samples": 296
+    },
+    "fri": {
+     "label": "金曜",
+     "median_jpy": 25300,
+     "p25_jpy": 10000,
+     "p75_jpy": 57475,
+     "samples": 37
+    },
+    "sat": {
+     "label": "土曜・祝前日",
+     "median_jpy": 39000,
+     "p25_jpy": 6700,
+     "p75_jpy": 70000,
+     "samples": 27
+    }
+   },
+   "condition_pages": [
+    {
+     "condition": "客室露天風呂",
+     "url": "https://yadomikke.com/yugawara-roten/",
+     "url_with_date": "https://yadomikke.com/yugawara-roten/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "大浴場のある宿",
+     "url": "https://yadomikke.com/yugawara-daiyoku/",
+     "url_with_date": "https://yadomikke.com/yugawara-daiyoku/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "小さな宿(客室10室以下)",
+     "url": "https://yadomikke.com/yugawara-chiisana/",
+     "url_with_date": "https://yadomikke.com/yugawara-chiisana/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "夜遅くても泊まれる宿(最終チェックイン22時以降)",
+     "url": "https://yadomikke.com/yugawara-osoitsuki/",
+     "url_with_date": "https://yadomikke.com/yugawara-osoitsuki/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "駅から徒歩5分以内の宿",
+     "url": "https://yadomikke.com/yugawara-ekichika/",
+     "url_with_date": "https://yadomikke.com/yugawara-ekichika/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "清潔さの口コミ評価が高い宿",
+     "url": "https://yadomikke.com/yugawara-seiketsu/",
+     "url_with_date": "https://yadomikke.com/yugawara-seiketsu/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "サウナのある宿",
+     "url": "https://yadomikke.com/yugawara-sauna/",
+     "url_with_date": "https://yadomikke.com/yugawara-sauna/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "送迎のある宿",
+     "url": "https://yadomikke.com/yugawara-sougei/",
+     "url_with_date": "https://yadomikke.com/yugawara-sougei/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "バリアフリー対応の宿(車椅子可など)",
+     "url": "https://yadomikke.com/yugawara-barrierfree/",
+     "url_with_date": "https://yadomikke.com/yugawara-barrierfree/?d=YYYY-MM-DD"
+    }
+   ]
+  },
+  {
+   "key": "toba",
+   "label": "鳥羽",
+   "page_url": "https://yadomikke.com/toba/",
+   "page_url_with_date": "https://yadomikke.com/toba/?d=YYYY-MM-DD",
+   "hotels_listed": 46,
+   "availability": {
+    "konya": {
+     "label": "今夜",
+     "checkin_dates": [
+      "2026-11-16"
+     ],
+     "hotels_checked": 46,
+     "hotels_with_vacancy": 18,
+     "min_price_jpy": 11400,
+     "fetched_at": "2026-11-16T13:07+09:00"
+    },
+    "ashita": {
+     "label": "明日",
+     "checkin_dates": [
+      "2026-11-17"
+     ],
+     "hotels_checked": 46,
+     "hotels_with_vacancy": 23,
+     "min_price_jpy": 11400,
+     "fetched_at": "2026-11-16T13:14+09:00"
+    },
+    "shumatsu": {
+     "label": "今週末・来週末",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    },
+    "renkyu": {
+     "label": "次の連休",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21",
+      "2026-11-22"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    },
+    "nenmatsu": {
+     "label": "年末年始",
+     "checkin_dates": [
+      "2026-12-28",
+      "2026-12-29",
+      "2026-12-30",
+      "2026-12-31",
+      "2027-01-01",
+      "2027-01-02",
+      "2027-01-03"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    }
+   },
+   "price_next_30_days": {
+    "wd": {
+     "label": "平日(日〜木)",
+     "median_jpy": 29580,
+     "p25_jpy": 17600,
+     "p75_jpy": 36650,
+     "samples": 94
+    }
+   },
+   "condition_pages": [
+    {
+     "condition": "客室露天風呂",
+     "url": "https://yadomikke.com/toba-roten/",
+     "url_with_date": "https://yadomikke.com/toba-roten/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "駅から徒歩5分以内の宿",
+     "url": "https://yadomikke.com/toba-ekichika/",
+     "url_with_date": "https://yadomikke.com/toba-ekichika/?d=YYYY-MM-DD"
+    }
+   ]
+  },
+  {
+   "key": "atagawa",
+   "label": "熱川・稲取",
+   "page_url": "https://yadomikke.com/atagawa/",
+   "page_url_with_date": "https://yadomikke.com/atagawa/?d=YYYY-MM-DD",
+   "hotels_listed": 73,
+   "availability": {
+    "konya": {
+     "label": "今夜",
+     "checkin_dates": [
+      "2026-11-16"
+     ],
+     "hotels_checked": 73,
+     "hotels_with_vacancy": 9,
+     "min_price_jpy": 9900,
+     "fetched_at": "2026-11-16T13:07+09:00"
+    },
+    "ashita": {
+     "label": "明日",
+     "checkin_dates": [
+      "2026-11-17"
+     ],
+     "hotels_checked": 73,
+     "hotels_with_vacancy": 29,
+     "min_price_jpy": 7600,
+     "fetched_at": "2026-11-16T13:15+09:00"
+    },
+    "shumatsu": {
+     "label": "今週末・来週末",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    },
+    "renkyu": {
+     "label": "次の連休",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21",
+      "2026-11-22"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    },
+    "nenmatsu": {
+     "label": "年末年始",
+     "checkin_dates": [
+      "2026-12-28",
+      "2026-12-29",
+      "2026-12-30",
+      "2026-12-31",
+      "2027-01-01",
+      "2027-01-02",
+      "2027-01-03"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    }
+   },
+   "price_next_30_days": {
+    "wd": {
+     "label": "平日(日〜木)",
+     "median_jpy": 27804,
+     "p25_jpy": 16140,
+     "p75_jpy": 60365,
+     "samples": 114
+    }
+   },
+   "condition_pages": [
+    {
+     "condition": "客室露天風呂",
+     "url": "https://yadomikke.com/atagawa-roten/",
+     "url_with_date": "https://yadomikke.com/atagawa-roten/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "ペット可の客室",
+     "url": "https://yadomikke.com/atagawa-pet/",
+     "url_with_date": "https://yadomikke.com/atagawa-pet/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "駅から徒歩5分以内の宿",
+     "url": "https://yadomikke.com/atagawa-ekichika/",
+     "url_with_date": "https://yadomikke.com/atagawa-ekichika/?d=YYYY-MM-DD"
+    }
+   ]
+  },
+  {
+   "key": "dogo",
+   "label": "道後",
+   "page_url": "https://yadomikke.com/dogo/",
+   "page_url_with_date": "https://yadomikke.com/dogo/?d=YYYY-MM-DD",
+   "hotels_listed": 79,
+   "availability": {
+    "konya": {
+     "label": "今夜",
+     "checkin_dates": [
+      "2026-11-16"
+     ],
+     "hotels_checked": 79,
+     "hotels_with_vacancy": 19,
+     "min_price_jpy": 7700,
+     "fetched_at": "2026-11-16T13:08+09:00"
+    },
+    "ashita": {
+     "label": "明日",
+     "checkin_dates": [
+      "2026-11-17"
+     ],
+     "hotels_checked": 79,
+     "hotels_with_vacancy": 18,
+     "min_price_jpy": 11800,
+     "fetched_at": "2026-11-16T13:16+09:00"
+    },
+    "shumatsu": {
+     "label": "今週末・来週末",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    },
+    "renkyu": {
+     "label": "次の連休",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21",
+      "2026-11-22"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    },
+    "nenmatsu": {
+     "label": "年末年始",
+     "checkin_dates": [
+      "2026-12-28",
+      "2026-12-29",
+      "2026-12-30",
+      "2026-12-31",
+      "2027-01-01",
+      "2027-01-02",
+      "2027-01-03"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    }
+   },
+   "price_next_30_days": {
+    "wd": {
+     "label": "平日(日〜木)",
+     "median_jpy": 24200,
+     "p25_jpy": 16700,
+     "p75_jpy": 39100,
+     "samples": 103
+    }
+   },
+   "condition_pages": [
+    {
+     "condition": "客室露天風呂",
+     "url": "https://yadomikke.com/dogo-roten/",
+     "url_with_date": "https://yadomikke.com/dogo-roten/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "ペット可の客室",
+     "url": "https://yadomikke.com/dogo-pet/",
+     "url_with_date": "https://yadomikke.com/dogo-pet/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "駅から徒歩5分以内の宿",
+     "url": "https://yadomikke.com/dogo-ekichika/",
+     "url_with_date": "https://yadomikke.com/dogo-ekichika/?d=YYYY-MM-DD"
+    }
+   ]
+  },
+  {
+   "key": "shiobara",
+   "label": "塩原",
+   "page_url": "https://yadomikke.com/shiobara/",
+   "page_url_with_date": "https://yadomikke.com/shiobara/?d=YYYY-MM-DD",
+   "hotels_listed": 44,
+   "availability": {
+    "konya": {
+     "label": "今夜",
+     "checkin_dates": [
+      "2026-11-16"
+     ],
+     "hotels_checked": 44,
+     "hotels_with_vacancy": 13,
+     "min_price_jpy": 10920,
+     "fetched_at": "2026-11-16T13:08+09:00"
+    },
+    "ashita": {
+     "label": "明日",
+     "checkin_dates": [
+      "2026-11-17"
+     ],
+     "hotels_checked": 44,
+     "hotels_with_vacancy": 27,
+     "min_price_jpy": 9280,
+     "fetched_at": "2026-11-16T13:17+09:00"
+    },
+    "shumatsu": {
+     "label": "今週末・来週末",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    },
+    "renkyu": {
+     "label": "次の連休",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21",
+      "2026-11-22"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    },
+    "nenmatsu": {
+     "label": "年末年始",
+     "checkin_dates": [
+      "2026-12-28",
+      "2026-12-29",
+      "2026-12-30",
+      "2026-12-31",
+      "2027-01-01",
+      "2027-01-02",
+      "2027-01-03"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    }
+   },
+   "price_next_30_days": {
+    "wd": {
+     "label": "平日(日〜木)",
+     "median_jpy": 27248,
+     "p25_jpy": 17600,
+     "p75_jpy": 41800,
+     "samples": 96
+    }
+   },
+   "condition_pages": [
+    {
+     "condition": "客室露天風呂",
+     "url": "https://yadomikke.com/shiobara-roten/",
+     "url_with_date": "https://yadomikke.com/shiobara-roten/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "ペット可の客室",
+     "url": "https://yadomikke.com/shiobara-pet/",
+     "url_with_date": "https://yadomikke.com/shiobara-pet/?d=YYYY-MM-DD"
+    }
+   ]
+  },
+  {
+   "key": "higashiyama",
+   "label": "会津東山",
+   "page_url": "https://yadomikke.com/higashiyama/",
+   "page_url_with_date": "https://yadomikke.com/higashiyama/?d=YYYY-MM-DD",
+   "hotels_listed": 16,
+   "availability": {
+    "konya": {
+     "label": "今夜",
+     "checkin_dates": [
+      "2026-11-16"
+     ],
+     "hotels_checked": 16,
+     "hotels_with_vacancy": 8,
+     "min_price_jpy": 11000,
+     "fetched_at": "2026-11-16T13:08+09:00"
+    },
+    "ashita": {
+     "label": "明日",
+     "checkin_dates": [
+      "2026-11-17"
+     ],
+     "hotels_checked": 16,
+     "hotels_with_vacancy": 9,
+     "min_price_jpy": 11000,
+     "fetched_at": "2026-11-16T13:17+09:00"
+    },
+    "shumatsu": {
+     "label": "今週末・来週末",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    },
+    "renkyu": {
+     "label": "次の連休",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21",
+      "2026-11-22"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    },
+    "nenmatsu": {
+     "label": "年末年始",
+     "checkin_dates": [
+      "2026-12-28",
+      "2026-12-29",
+      "2026-12-30",
+      "2026-12-31",
+      "2027-01-01",
+      "2027-01-02",
+      "2027-01-03"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    }
+   },
+   "price_next_30_days": {
+    "wd": {
+     "label": "平日(日〜木)",
+     "median_jpy": 26400,
+     "p25_jpy": 22550,
+     "p75_jpy": 31600,
+     "samples": 37
+    }
+   },
+   "condition_pages": [
+    {
+     "condition": "客室露天風呂",
+     "url": "https://yadomikke.com/higashiyama-roten/",
+     "url_with_date": "https://yadomikke.com/higashiyama-roten/?d=YYYY-MM-DD"
+    }
+   ]
+  },
+  {
+   "key": "sumoto",
+   "label": "洲本(淡路島)",
+   "page_url": "https://yadomikke.com/sumoto/",
+   "page_url_with_date": "https://yadomikke.com/sumoto/?d=YYYY-MM-DD",
+   "hotels_listed": 44,
+   "availability": {
+    "konya": {
+     "label": "今夜",
+     "checkin_dates": [
+      "2026-11-16"
+     ],
+     "hotels_checked": 44,
+     "hotels_with_vacancy": 11,
+     "min_price_jpy": 13200,
+     "fetched_at": "2026-11-16T13:08+09:00"
+    },
+    "ashita": {
+     "label": "明日",
+     "checkin_dates": [
+      "2026-11-17"
+     ],
+     "hotels_checked": 44,
+     "hotels_with_vacancy": 17,
+     "min_price_jpy": 13200,
+     "fetched_at": "2026-11-16T13:17+09:00"
+    },
+    "shumatsu": {
+     "label": "今週末・来週末",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    },
+    "renkyu": {
+     "label": "次の連休",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21",
+      "2026-11-22"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    },
+    "nenmatsu": {
+     "label": "年末年始",
+     "checkin_dates": [
+      "2026-12-28",
+      "2026-12-29",
+      "2026-12-30",
+      "2026-12-31",
+      "2027-01-01",
+      "2027-01-02",
+      "2027-01-03"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    }
+   },
+   "price_next_30_days": {
+    "wd": {
+     "label": "平日(日〜木)",
+     "median_jpy": 26800,
+     "p25_jpy": 15665,
+     "p75_jpy": 46300,
+     "samples": 81
+    }
+   },
+   "condition_pages": [
+    {
+     "condition": "客室露天風呂",
+     "url": "https://yadomikke.com/sumoto-roten/",
+     "url_with_date": "https://yadomikke.com/sumoto-roten/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "ペット可の客室",
+     "url": "https://yadomikke.com/sumoto-pet/",
+     "url_with_date": "https://yadomikke.com/sumoto-pet/?d=YYYY-MM-DD"
+    }
+   ]
+  },
+  {
+   "key": "awara",
+   "label": "あわら",
+   "page_url": "https://yadomikke.com/awara/",
+   "page_url_with_date": "https://yadomikke.com/awara/?d=YYYY-MM-DD",
+   "hotels_listed": 25,
+   "availability": {
+    "konya": {
+     "label": "今夜",
+     "checkin_dates": [
+      "2026-11-16"
+     ],
+     "hotels_checked": 25,
+     "hotels_with_vacancy": 12,
+     "min_price_jpy": 15360,
+     "fetched_at": "2026-11-16T13:09+09:00"
+    },
+    "ashita": {
+     "label": "明日",
+     "checkin_dates": [
+      "2026-11-17"
+     ],
+     "hotels_checked": 25,
+     "hotels_with_vacancy": 16,
+     "min_price_jpy": 12000,
+     "fetched_at": "2026-11-16T13:18+09:00"
+    },
+    "shumatsu": {
+     "label": "今週末・来週末",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    },
+    "renkyu": {
+     "label": "次の連休",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21",
+      "2026-11-22"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    },
+    "nenmatsu": {
+     "label": "年末年始",
+     "checkin_dates": [
+      "2026-12-28",
+      "2026-12-29",
+      "2026-12-30",
+      "2026-12-31",
+      "2027-01-01",
+      "2027-01-02",
+      "2027-01-03"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    }
+   },
+   "price_next_30_days": {
+    "wd": {
+     "label": "平日(日〜木)",
+     "median_jpy": 24200,
+     "p25_jpy": 18600,
+     "p75_jpy": 32800,
+     "samples": 65
+    }
+   },
+   "condition_pages": [
+    {
+     "condition": "客室露天風呂",
+     "url": "https://yadomikke.com/awara-roten/",
+     "url_with_date": "https://yadomikke.com/awara-roten/?d=YYYY-MM-DD"
+    }
+   ]
+  },
+  {
+   "key": "minakami",
+   "label": "水上",
+   "page_url": "https://yadomikke.com/minakami/",
+   "page_url_with_date": "https://yadomikke.com/minakami/?d=YYYY-MM-DD",
+   "hotels_listed": 45,
+   "availability": {
+    "konya": {
+     "label": "今夜",
+     "checkin_dates": [
+      "2026-11-16"
+     ],
+     "hotels_checked": 45,
+     "hotels_with_vacancy": 7,
+     "min_price_jpy": 11000,
+     "fetched_at": "2026-11-16T13:09+09:00"
+    },
+    "ashita": {
+     "label": "明日",
+     "checkin_dates": [
+      "2026-11-17"
+     ],
+     "hotels_checked": 45,
+     "hotels_with_vacancy": 17,
+     "min_price_jpy": 11000,
+     "fetched_at": "2026-11-16T13:18+09:00"
+    },
+    "shumatsu": {
+     "label": "今週末・来週末",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    },
+    "renkyu": {
+     "label": "次の連休",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21",
+      "2026-11-22"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    },
+    "nenmatsu": {
+     "label": "年末年始",
+     "checkin_dates": [
+      "2026-12-28",
+      "2026-12-29",
+      "2026-12-30",
+      "2026-12-31",
+      "2027-01-01",
+      "2027-01-02",
+      "2027-01-03"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    }
+   },
+   "price_next_30_days": {
+    "wd": {
+     "label": "平日(日〜木)",
+     "median_jpy": 26000,
+     "p25_jpy": 17000,
+     "p75_jpy": 51850,
+     "samples": 65
+    }
+   },
+   "condition_pages": [
+    {
+     "condition": "客室露天風呂",
+     "url": "https://yadomikke.com/minakami-roten/",
+     "url_with_date": "https://yadomikke.com/minakami-roten/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "ペット可の客室",
+     "url": "https://yadomikke.com/minakami-pet/",
+     "url_with_date": "https://yadomikke.com/minakami-pet/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "駅から徒歩5分以内の宿",
+     "url": "https://yadomikke.com/minakami-ekichika/",
+     "url_with_date": "https://yadomikke.com/minakami-ekichika/?d=YYYY-MM-DD"
+    }
+   ]
+  },
+  {
+   "key": "kaike",
+   "label": "皆生",
+   "page_url": "https://yadomikke.com/kaike/",
+   "page_url_with_date": "https://yadomikke.com/kaike/?d=YYYY-MM-DD",
+   "hotels_listed": 22,
+   "availability": {
+    "konya": {
+     "label": "今夜",
+     "checkin_dates": [
+      "2026-11-16"
+     ],
+     "hotels_checked": 22,
+     "hotels_with_vacancy": 10,
+     "min_price_jpy": 12300,
+     "fetched_at": "2026-11-16T13:09+09:00"
+    },
+    "ashita": {
+     "label": "明日",
+     "checkin_dates": [
+      "2026-11-17"
+     ],
+     "hotels_checked": 22,
+     "hotels_with_vacancy": 8,
+     "min_price_jpy": 26180,
+     "fetched_at": "2026-11-16T13:18+09:00"
+    },
+    "shumatsu": {
+     "label": "今週末・来週末",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    },
+    "renkyu": {
+     "label": "次の連休",
+     "checkin_dates": [
+      "2026-11-20",
+      "2026-11-21",
+      "2026-11-22"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    },
+    "nenmatsu": {
+     "label": "年末年始",
+     "checkin_dates": [
+      "2026-12-28",
+      "2026-12-29",
+      "2026-12-30",
+      "2026-12-31",
+      "2027-01-01",
+      "2027-01-02",
+      "2027-01-03"
+     ],
+     "hotels_checked": 0,
+     "hotels_with_vacancy": 0,
+     "min_price_jpy": null,
+     "fetched_at": null
+    }
+   },
+   "price_next_30_days": {
+    "wd": {
+     "label": "平日(日〜木)",
+     "median_jpy": 33000,
+     "p25_jpy": 26400,
+     "p75_jpy": 48400,
+     "samples": 46
+    }
+   },
+   "condition_pages": [
+    {
+     "condition": "客室露天風呂",
+     "url": "https://yadomikke.com/kaike-roten/",
+     "url_with_date": "https://yadomikke.com/kaike-roten/?d=YYYY-MM-DD"
     }
    ]
   }
