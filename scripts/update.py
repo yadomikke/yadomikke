@@ -12,6 +12,7 @@
 """
 import argparse
 import json
+import math
 import os
 import sys
 import time
@@ -150,6 +151,40 @@ def discover_hotels(client, cfg, previous=None):
     return result
 
 
+def _km(a, b, c, d):
+    p1, p2 = math.radians(a), math.radians(c)
+    h = math.sin((p2 - p1) / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(math.radians(d - b) / 2) ** 2
+    return 2 * 6371.0 * math.asin(math.sqrt(h))
+
+
+def tidy_radius_areas(cfg, areas):
+    """位置+半径のエリアを整える(楽天APIは使わない)。
+    ・宿の位置が中心から半径より遠い宿を外す(半径を小さくしたときも、宿一覧の取り直しを待たずに効く)
+    ・地区コードのエリア(伊東・熱海など)に入っている宿は外す(同じ宿を2つのエリアで数えない)
+    変わったら True を返す"""
+    coded = {h["no"] for k, lst in areas.items() if k in cfg["areas"] and "lat" not in cfg["areas"][k] for h in lst}
+    changed = False
+    for k, a in cfg["areas"].items():
+        if "lat" not in a or k not in areas:
+            continue
+        r = float(a.get("radius", 3.0))
+        keep = []
+        for h in areas[k]:
+            if h["no"] in coded:
+                continue
+            try:
+                if _km(float(a["lat"]), float(a["lng"]), float(h.get("lat")), float(h.get("lng"))) > r:
+                    continue
+            except (TypeError, ValueError):
+                pass
+            keep.append(h)
+        if len(keep) != len(areas[k]):
+            log(f"{a['label']}: 宿 {len(areas[k])} → {len(keep)} 軒(半径{r}kmの外・ほかのエリアと重なる宿を除く)")
+            areas[k] = keep
+            changed = True
+    return changed
+
+
 def ensure_hotels(client, cfg, data_dir, force=False):
     path = data_dir / "hotels.json"
     cur = load_json(path, {})
@@ -158,11 +193,14 @@ def ensure_hotels(client, cfg, data_dir, force=False):
         if age < timedelta(days=cfg["refresh"]["hotels_days"]) and cur.get("areas"):
             missing = [k for k in cfg["areas"] if k not in cur["areas"]]
             if not missing:
+                if tidy_radius_areas(cfg, cur["areas"]):
+                    save_json(path, cur)
                 return cur
             # config.json に新しく足したエリアだけ、すぐに宿を集める(ほかのエリアは、いつもの周期で更新)
             log(f"新しいエリアの宿を集めます: {', '.join(cfg['areas'][k]['label'] for k in missing)}")
             sub = dict(cfg, areas={k: cfg["areas"][k] for k in missing})
             cur["areas"].update(discover_hotels(client, sub))
+            tidy_radius_areas(cfg, cur["areas"])
             save_json(path, cur)
             return cur
     found = discover_hotels(client, cfg, cur.get("areas"))
@@ -172,6 +210,7 @@ def ensure_hotels(client, cfg, data_dir, force=False):
             return cur
         raise SystemExit("宿の一覧が取得できませんでした。エリアコードとAPIの設定を確認してください。")
     cur = {"updated": now().isoformat(timespec="seconds"), "areas": found}
+    tidy_radius_areas(cfg, cur["areas"])
     save_json(path, cur)
     return cur
 

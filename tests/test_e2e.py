@@ -381,6 +381,11 @@ with tempfile.TemporaryDirectory() as tmp2:
     hs = up.ensure_hotels(FakeClient(), cfgy, tmp2)
     check([h["no"] for h in hs["areas"]["isawa"]] == ["41", "42"] and hs["areas"]["hakone"] == marker,
           "位置+半径のエリア(温泉街の中心から半径3km)も、楽天の施設検索で宿一覧を取得できる")
+    _ar = {"ito": [{"no": "1"}], "izukogen": [{"no": "1", "lat": 34.904, "lng": 139.12}, {"no": "2", "lat": 34.904, "lng": 139.12},
+                                                 {"no": "3", "lat": 34.95, "lng": 139.12}]}
+    _cf = {"areas": {"ito": {"label": "伊東", "small": "ito"}, "izukogen": {"label": "伊豆高原", "lat": 34.904, "lng": 139.12, "radius": 3.0}}}
+    check(up.tidy_radius_areas(_cf, _ar) and [h["no"] for h in _ar["izukogen"]] == ["2"],
+          "位置+半径のエリアは、ほかのエリアと重なる宿と、半径より遠い宿を外す(同じ宿を2回数えない)")
     cfgr = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
     rad = [a for a in cfgr["areas"].values() if "lat" in a]
     check(len(cfgr["areas"]) == 30 and len(rad) == 12 and all(0 < a["radius"] <= 3.0 for a in rad)
