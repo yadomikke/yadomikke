@@ -272,6 +272,10 @@ with tempfile.TemporaryDirectory() as tmp:
     check("に空いている宿の例: " in page and "取得)" in page.split("に空いている宿の例: ")[1][:400] and '<small class="ft">' in page
           and "日付の下の時刻は、その日の空室を取得した時刻です" in page,
           "条件ページのまとめに「その日に空いている宿(部屋名・料金・取得時刻)」の1文があり、空室表の日付ごとに取得時刻が出る")
+    _ans = page.split('id="answer"')[1].split("</section>")[0]
+    check('<details class="amore"><summary>くわしい数字を見る(' in _ans and "に空いている宿の例: " in _ans.split('class="amore"')[1]
+          and _ans.split('class="amore"')[0].count("<li>") == 2 and 'class="amore"' in home,
+          "まとめの欄は最初の2行だけ見せ、残りは「くわしい数字を見る」に折りたたむ(文章はページの中に残る)")
     # 宿ページの並び: 宿名 → その日の結果と予約 → 日付を変える → カレンダー → 当てはまる条件 → 文章のまとめ → よくある質問 → 共有
     check(hp1.index('id="dout"') < hp1.index('class="dchg"') < hp1.index('id="calendar"') < hp1.index('id="features"') < hp1.index('id="answer"')
           < hp1.index("よくある質問") < hp1.index('class="share"') and 'data-r="' in hp1 and "1泊・大人2名・1室の最安(取得時点)" in hp1,

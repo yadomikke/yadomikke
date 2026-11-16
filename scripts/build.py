@@ -715,6 +715,7 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .answer h2{font-size:18px;color:var(--navy);margin-bottom:6px}.answer h2 small{font-size:13px;font-weight:400;color:var(--sub);margin-left:6px}
 .answer p{font-size:16px;margin:0 0 8px;color:#222}.answer p.lead2{font-size:17px;font-weight:700;line-height:1.7}
 .answer ul.ab{padding-left:20px;margin:0 0 8px;font-size:16px}.answer ul.ab li{margin:2px 0}
+.amore{margin:0 0 6px}.amore summary{cursor:pointer;font-size:15px;font-weight:700;color:var(--link);min-height:40px;padding:8px 0}.amore ul.ab{margin-top:2px}
 .adet{margin:4px 0 8px}.adet summary{cursor:pointer;font-size:14px;color:var(--link);min-height:36px;padding:6px 0}.adet p{font-size:14px;color:var(--sub);margin:4px 0}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px;align-items:center}
 .chips b{font-size:14px;color:var(--sub);font-weight:600}
@@ -1323,9 +1324,17 @@ def answer_parts(cfg, page, rows, state, today, dates, info, scene_list, newest,
     return asof, lead, bullets, details
 
 
-def answer_html(asof, lead, bullets, details, title="いまの空室まとめ", more="数字の意味と注意点", mood="happy"):
+def answer_html(asof, lead, bullets, details, title="いまの空室まとめ", more="数字の意味と注意点", mood="happy", keep=None):
+    """まとめの欄。箇条書きは最初の keep 個だけ見せ、残りは「くわしい数字を見る」に折りたたむ
+    (折りたたんだ部分もページの中に残るので、AIや検索エンジンには今まで通り読まれる)"""
     small = f"<small>{esc(asof)} 時点</small>" if asof else ""
-    ul = ("<ul class='ab'>" + "".join(f"<li>{esc(b)}</li>" for b in bullets) + "</ul>") if bullets else ""
+    if keep is None:
+        keep = 3 if len(bullets) > 4 else len(bullets)
+    shown, rest = bullets[:keep], bullets[keep:]
+    ul = ("<ul class='ab'>" + "".join(f"<li>{esc(b)}</li>" for b in shown) + "</ul>") if shown else ""
+    if rest:
+        ul += (f'<details class="amore"><summary>くわしい数字を見る({len(rest)}項目)</summary><ul class="ab">'
+               + "".join(f"<li>{esc(b)}</li>" for b in rest) + "</ul></details>")
     det = (f'<details class="adet"><summary>{esc(more)}</summary>' + "".join(f"<p>{esc(d)}</p>" for d in details) + "</details>") if details else ""
     return (f'<section class="answer" id="answer">{owl_html(mood)}<h2>{esc(title)}{small}</h2><p class="lead2">{esc(lead)}</p>{ul}{det}</section>')
 
@@ -1485,12 +1494,17 @@ def render_scene(cfg, page, sc, scene_list, ctx, state, stats, demo):
             lead = f"{when_txt(newest)}{alabel}の{flabel}は、{sc['name']}の取得済みの日程では空きが見つかっていません。"
         else:
             lead = f"{sc['name']}の日程は、まだ楽天トラベルから取得できていません。自動更新で順次取得します。"
+        extra = []
         pk = picks_txt(top_picks(rows, state, feat, sc["dates"]))
         if pk:
-            bullets.append(pk)
+            extra.append(pk)
         for d, fetched, n, low in st["per"]:
+            bullets.append(f"{day_label(d, holidays)}: " + (f"{n}軒{price_txt(low)}" if fetched else "取得待ち"))
             ex = day_examples(rows, state, feat, d) if fetched and n else ""
-            bullets.append(f"{day_label(d, holidays)}: " + (f"{n}軒{price_txt(low)}" if fetched else "取得待ち") + (f" — 例: {ex}" if ex else ""))
+            if ex:
+                extra.append(f"{day_label(d, holidays)}に空いている宿の例: {ex}")
+        n_vis = len(bullets)
+        bullets += extra
         if st["got"] < st["n"]:
             details.append("「取得待ち」の日は、まだ楽天トラベルから取得できていない日です(満室という意味ではありません)。")
     details += [f"{sc['note']}「{flabel}」は、{fdesc(cfg, feat)}のことです。料金は{cond_text(cfg)}の最安値です。",
@@ -1500,7 +1514,8 @@ def render_scene(cfg, page, sc, scene_list, ctx, state, stats, demo):
     title_for_share = f"{name}" + (f"【{sc['span']}】" if sc["span"] else "") + f" | {site['name']}"
     body = [f'<div class="hero"><div class="crumb"><a href="../../">{esc(site["name"])}</a> › <a href="../../{esc(page["area"])}/">{esc(cfg["areas"][page["area"]]["label"])}</a> › <a href="../">{esc(page["title"])}</a> › {esc(sc["name"])}</div>'
             f"<h1>{esc(name)}" + (f"<br><small style='font-size:.6em;color:var(--sub)'>{esc(sc['span'])}</small>" if sc["span"] else "") + "</h1></div>",
-            answer_html(asof, lead, bullets, details, f"{scn}の空室まとめ", mood=("happy" if st["hotels"] else "sleepy")), chips_html(scene_list, "../", sc["slug"]), share_html(canonical, title_for_share)]
+            answer_html(asof, lead, bullets, details, f"{scn}の空室まとめ", mood=("happy" if st["hotels"] else "sleepy"),
+                        keep=(n_vis if sc["dates"] else None)), chips_html(scene_list, "../", sc["slug"]), share_html(canonical, title_for_share)]
     for d, fetched, n, low in st["per"]:
         k = d.isoformat()
         sec = f'<section class="dsec" id="d-{k}"><h2>{esc(day_label(d, holidays))}に泊まれる宿 '
@@ -1932,7 +1947,7 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
                 + "".join(f"<tr><th>{esc(lab)}</th><td>" + (f'<a href="../../{esc(sl)}/">{esc(mark)}</a>' if sl else esc(mark)) + "</td></tr>" for lab, mark, sl in frs)
                 + "</tbody></table></div><p class='legend'>部屋の条件(客室露天風呂など)は部屋名、宿の条件(大浴場など)は楽天トラベルの施設情報から機械的に判定しています。"
                 "「記載なし」「確認できず」は、設備がないという意味ではありません。最終確認は宿のページでお願いします。</p></details></section>")
-    body.append(answer_html(asof, lead, bullets, details, "この宿の空室まとめ", mood=("happy" if ok else "sleepy")))
+    body.append(answer_html(asof, lead, bullets, details, "この宿の空室まとめ", mood=("happy" if ok else "sleepy"), keep=2))
     if scl:
         body.append('<section class="sec"><h2>日付別の空き状況</h2><ul class="bul">'
                     + "".join(f"<li><b>{esc(n)}</b>: {esc(t)}</li>" for n, k, t in scl) + "</ul>"
@@ -2737,7 +2752,7 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
                    f'<div class="quick" aria-label="日付をすばやく選ぶ">{qb}</div>'
                    f'<label class="dinput">ほかの日付: <input type="date" id="dinput" min="{dates[0].isoformat()}" max="{dates[-1].isoformat()}" value="{default.isoformat()}"></label>'
                    '<div class="qbook" id="qbook"><p class="qh">読み込み中…</p></div></section>')
-        out.append(answer_html(*ans, mood=("happy" if any(info[d.isoformat()][0] for d in dates) else "sleepy")))
+        out.append(answer_html(*ans, mood=("happy" if any(info[d.isoformat()][0] for d in dates) else "sleepy"), keep=2))
         if not page.get("auto"):
             out.append(chips_html(scene_list, "./"))
         out.append(share_html(canonical, title))
@@ -3292,8 +3307,11 @@ def home_answer(cfg, sums, wl, holidays):
     lead = (f"{when_txt(newest)}温泉地{len(cfg['areas'])}エリアで空きがある宿は、" + "、".join(parts)
             + f"です({cond_text(cfg)}、条件を問わない数)。")
     html = (f'<section class="answer" id="answer">{owl_html("happy")}<h2>いま空いている宿の数<small>{esc(fmt_dt(newest))} 時点</small></h2>'
-            f'<p class="lead2">{esc(lead)}</p><ul class="ab">{"".join(items)}<li><a href="ugoki/">きのうから空きが出た宿</a></li>'
-            '<li><a href="souba/">エリア・曜日別の料金相場</a></li><li><a href="report/">月別の空室レポート</a></li></ul></section>')
+            f'<p class="lead2">{esc(lead)}</p><ul class="ab">{"".join(items[:3])}</ul>'
+            # 今夜・明日・今週末だけを見せ、残り(連休・年末年始・各ページへのリンク)は折りたたむ
+            f'<details class="amore"><summary>連休・年末年始と、ほかのデータを見る</summary><ul class="ab">{"".join(items[3:])}'
+            '<li><a href="ugoki/">きのうから空きが出た宿</a></li>'
+            '<li><a href="souba/">エリア・曜日別の料金相場</a></li><li><a href="report/">月別の空室レポート</a></li></ul></details></section>')
     return html, lead
 
 
