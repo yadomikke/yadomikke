@@ -53,43 +53,53 @@ def log(msg):
 
 # ---- 宿の一覧(週1回だけ更新) ---------------------------------------
 
+def _hotel_entry(no, b):
+    return {
+        "no": no,
+        "name": b.get("hotelName", ""),
+        "url": b.get("hotelInformationUrl", ""),
+        "plan_url": b.get("planListUrl", ""),
+        "review": b.get("reviewAverage"),
+        "reviews": rk.to_int(b.get("reviewCount")),
+        "address": (str(b.get("address1", "")) + str(b.get("address2", ""))),
+        "station": b.get("nearestStation", ""),
+        "image": b.get("hotelThumbnailUrl", ""),
+        "image_l": b.get("hotelImageUrl", ""),
+        "lat": b.get("latitude"),
+        "lng": b.get("longitude"),
+        "zip": b.get("postalCode", ""),
+        "access": b.get("access", ""),
+        "parking": b.get("parkingInformation", ""),
+    }
+
+
+def _search_pages(client, **params):
+    """施設検索APIを最後のページまで呼んで、{施設番号: 宿} を返す"""
+    hotels = {}
+    page = 1
+    while True:
+        try:
+            data = client.call("SimpleHotelSearch", hits=30, page=page, responseType="small", datumType=1, **params)
+        except rk.NotFound:
+            break
+        for no, e in rk.split_hotels(data).items():
+            hotels[no] = _hotel_entry(no, e["basic"])
+        if page >= rk.page_count(data):
+            break
+        page += 1
+    return hotels
+
+
 def _search_area(client, large, middle, small, details):
     hotels = {}
     for dc in details:
-        page = 1
-        while True:
-            try:
-                data = client.call(
-                    "SimpleHotelSearch",
-                    largeClassCode=large, middleClassCode=middle,
-                    smallClassCode=small, detailClassCode=dc,
-                    hits=30, page=page, responseType="small", datumType=1,
-                )
-            except rk.NotFound:
-                break
-            for no, e in rk.split_hotels(data).items():
-                b = e["basic"]
-                hotels[no] = {
-                    "no": no,
-                    "name": b.get("hotelName", ""),
-                    "url": b.get("hotelInformationUrl", ""),
-                    "plan_url": b.get("planListUrl", ""),
-                    "review": b.get("reviewAverage"),
-                    "reviews": rk.to_int(b.get("reviewCount")),
-                    "address": (str(b.get("address1", "")) + str(b.get("address2", ""))),
-                    "station": b.get("nearestStation", ""),
-                    "image": b.get("hotelThumbnailUrl", ""),
-                    "image_l": b.get("hotelImageUrl", ""),
-                    "lat": b.get("latitude"),
-                    "lng": b.get("longitude"),
-                    "zip": b.get("postalCode", ""),
-                    "access": b.get("access", ""),
-                    "parking": b.get("parkingInformation", ""),
-                }
-            if page >= rk.page_count(data):
-                break
-            page += 1
+        hotels.update(_search_pages(client, largeClassCode=large, middleClassCode=middle, smallClassCode=small, detailClassCode=dc))
     return hotels
+
+
+def _search_radius(client, lat, lng, radius):
+    """温泉街の中心(緯度・経度)から半径 radius km 以内の宿(楽天の地区が広すぎるエリア用)"""
+    return _search_pages(client, latitude=lat, longitude=lng, searchRadius=min(float(radius), 3.0))
 
 
 def discover_hotels(client, cfg, previous=None):
@@ -97,6 +107,15 @@ def discover_hotels(client, cfg, previous=None):
     result = {}
     tree = None
     for key, area in cfg["areas"].items():
+        if "lat" in area:
+            # 位置+半径で決めるエリア(温泉街だけを対象にし、市街地のビジネスホテルを混ぜない)
+            hotels = _search_radius(client, area["lat"], area["lng"], area.get("radius", 3.0))
+            log(f"{area['label']}: 宿 {len(hotels)} 軒を取得(中心から半径{area.get('radius', 3.0)}km)")
+            if not hotels and previous and previous.get(key):
+                log(f"{area['label']}: 取得が空だったため、前回の一覧を使います")
+                hotels = {h["no"]: h for h in previous[key]}
+            result[key] = list(hotels.values())
+            continue
         large, middle, small = area["large"], area["middle"], area["small"]
         for attempt in (1, 2):
             details = area.get("detail", "auto")

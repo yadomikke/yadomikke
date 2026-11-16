@@ -158,6 +158,7 @@ GitHubのリポジトリで「Settings」→「Secrets and variables」→「Act
 `config.json` に追加するだけで増やせます。まず箱根で動作を確認してから進めるのがおすすめです。
 
 - `areas`: 地区コードを追加します(`large` / `middle` / `small`)。コードは楽天の地区コードAPIで調べられます。
+- 楽天の地区が広すぎて市街地のホテルが混ざる温泉地は、地区コードの代わりに「温泉街の中心の位置+半径」で決められます(`lat` / `lng` / `radius`。半径は3kmまで)。例: `"isawa": {"label": "石和", "lat": 35.6571, "lng": 138.6461, "radius": 3.0, "days_ahead": 21}`。候補の選び方は `scripts/area_survey.py`(Actionsの「増やすエリアの調査」)で点数化できます。
 - `features`: 条件(例: 部屋名に含まれる言葉)を追加します。
 - `pages`: 「どのエリア × どの条件」のページを追加します。
 

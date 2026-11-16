@@ -203,6 +203,90 @@
       "small": "kurokawa",
       "detail": "auto",
       "days_ahead": 21
+    },
+    "isawa": {
+      "label": "石和",
+      "lat": 35.6571,
+      "lng": 138.6461,
+      "radius": 3.0,
+      "days_ahead": 21
+    },
+    "izukogen": {
+      "label": "伊豆高原",
+      "lat": 34.904,
+      "lng": 139.12,
+      "radius": 3.0,
+      "days_ahead": 21
+    },
+    "yugawara": {
+      "label": "湯河原",
+      "lat": 35.14,
+      "lng": 139.083,
+      "radius": 3.0,
+      "days_ahead": 21
+    },
+    "toba": {
+      "label": "鳥羽",
+      "lat": 34.481,
+      "lng": 136.843,
+      "radius": 3.0,
+      "days_ahead": 21
+    },
+    "atagawa": {
+      "label": "熱川・稲取",
+      "lat": 34.817,
+      "lng": 139.0699,
+      "radius": 3.0,
+      "days_ahead": 21
+    },
+    "dogo": {
+      "label": "道後",
+      "lat": 33.852,
+      "lng": 132.786,
+      "radius": 1.5,
+      "days_ahead": 21
+    },
+    "shiobara": {
+      "label": "塩原",
+      "lat": 36.973,
+      "lng": 139.817,
+      "radius": 3.0,
+      "days_ahead": 21
+    },
+    "higashiyama": {
+      "label": "会津東山",
+      "lat": 37.475,
+      "lng": 139.957,
+      "radius": 1.5,
+      "days_ahead": 21
+    },
+    "sumoto": {
+      "label": "洲本(淡路島)",
+      "lat": 34.34,
+      "lng": 134.903,
+      "radius": 3.0,
+      "days_ahead": 21
+    },
+    "awara": {
+      "label": "あわら",
+      "lat": 36.222,
+      "lng": 136.193,
+      "radius": 3.0,
+      "days_ahead": 21
+    },
+    "minakami": {
+      "label": "水上",
+      "lat": 36.7879,
+      "lng": 138.981,
+      "radius": 3.0,
+      "days_ahead": 21
+    },
+    "kaike": {
+      "label": "皆生",
+      "lat": 35.4576,
+      "lng": 133.3616,
+      "radius": 2.0,
+      "days_ahead": 21
     }
   },
   "pages": [
@@ -436,6 +520,174 @@
       "feature": "pet",
       "title": "黒川で今空いているペット可の客室の宿",
       "lead": "黒川で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "isawa-roten",
+      "area": "isawa",
+      "feature": "roten",
+      "title": "石和で今空いている客室露天風呂の宿",
+      "lead": "石和で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "isawa-pet",
+      "area": "isawa",
+      "feature": "pet",
+      "title": "石和で今空いているペット可の客室の宿",
+      "lead": "石和で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "izukogen-roten",
+      "area": "izukogen",
+      "feature": "roten",
+      "title": "伊豆高原で今空いている客室露天風呂の宿",
+      "lead": "伊豆高原で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "izukogen-pet",
+      "area": "izukogen",
+      "feature": "pet",
+      "title": "伊豆高原で今空いているペット可の客室の宿",
+      "lead": "伊豆高原で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "yugawara-roten",
+      "area": "yugawara",
+      "feature": "roten",
+      "title": "湯河原で今空いている客室露天風呂の宿",
+      "lead": "湯河原で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "yugawara-pet",
+      "area": "yugawara",
+      "feature": "pet",
+      "title": "湯河原で今空いているペット可の客室の宿",
+      "lead": "湯河原で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "toba-roten",
+      "area": "toba",
+      "feature": "roten",
+      "title": "鳥羽で今空いている客室露天風呂の宿",
+      "lead": "鳥羽で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "toba-pet",
+      "area": "toba",
+      "feature": "pet",
+      "title": "鳥羽で今空いているペット可の客室の宿",
+      "lead": "鳥羽で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "atagawa-roten",
+      "area": "atagawa",
+      "feature": "roten",
+      "title": "熱川・稲取で今空いている客室露天風呂の宿",
+      "lead": "熱川・稲取で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "atagawa-pet",
+      "area": "atagawa",
+      "feature": "pet",
+      "title": "熱川・稲取で今空いているペット可の客室の宿",
+      "lead": "熱川・稲取で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "dogo-roten",
+      "area": "dogo",
+      "feature": "roten",
+      "title": "道後で今空いている客室露天風呂の宿",
+      "lead": "道後で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "dogo-pet",
+      "area": "dogo",
+      "feature": "pet",
+      "title": "道後で今空いているペット可の客室の宿",
+      "lead": "道後で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "shiobara-roten",
+      "area": "shiobara",
+      "feature": "roten",
+      "title": "塩原で今空いている客室露天風呂の宿",
+      "lead": "塩原で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "shiobara-pet",
+      "area": "shiobara",
+      "feature": "pet",
+      "title": "塩原で今空いているペット可の客室の宿",
+      "lead": "塩原で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "higashiyama-roten",
+      "area": "higashiyama",
+      "feature": "roten",
+      "title": "会津東山で今空いている客室露天風呂の宿",
+      "lead": "会津東山で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "higashiyama-pet",
+      "area": "higashiyama",
+      "feature": "pet",
+      "title": "会津東山で今空いているペット可の客室の宿",
+      "lead": "会津東山で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "sumoto-roten",
+      "area": "sumoto",
+      "feature": "roten",
+      "title": "洲本(淡路島)で今空いている客室露天風呂の宿",
+      "lead": "洲本(淡路島)で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "sumoto-pet",
+      "area": "sumoto",
+      "feature": "pet",
+      "title": "洲本(淡路島)で今空いているペット可の客室の宿",
+      "lead": "洲本(淡路島)で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "awara-roten",
+      "area": "awara",
+      "feature": "roten",
+      "title": "あわらで今空いている客室露天風呂の宿",
+      "lead": "あわらで、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "awara-pet",
+      "area": "awara",
+      "feature": "pet",
+      "title": "あわらで今空いているペット可の客室の宿",
+      "lead": "あわらで、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "minakami-roten",
+      "area": "minakami",
+      "feature": "roten",
+      "title": "水上で今空いている客室露天風呂の宿",
+      "lead": "水上で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "minakami-pet",
+      "area": "minakami",
+      "feature": "pet",
+      "title": "水上で今空いているペット可の客室の宿",
+      "lead": "水上で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "kaike-roten",
+      "area": "kaike",
+      "feature": "roten",
+      "title": "皆生で今空いている客室露天風呂の宿",
+      "lead": "皆生で、部屋名に「露天」を含む客室の空きを、日付ごとにまとめています。"
+    },
+    {
+      "slug": "kaike-pet",
+      "area": "kaike",
+      "feature": "pet",
+      "title": "皆生で今空いているペット可の客室の宿",
+      "lead": "皆生で、部屋名に「ペット」「愛犬」を含む客室の空きを、日付ごとにまとめています。"
     }
   ],
   "force_include": [],

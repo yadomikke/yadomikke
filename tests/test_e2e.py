@@ -31,6 +31,11 @@ class FakeClient:
                     {"smallClass": [{"smallClassCode": "hakone", "smallClassName": "箱根"}, {"detailClasses": [{"detailClass": {"detailClassCode": "A"}}]}]}]}]},
                 {"middleClass": [{"middleClassCode": "shizuoka"}, {"smallClasses": [
                     {"smallClass": [{"smallClassCode": "atami2", "smallClassName": "熱海"}, {"detailClasses": [{"detailClass": {"detailClassCode": "B"}}]}]}]}]}]}]}]}
+        if api == "SimpleHotelSearch" and "latitude" in p:
+            # 位置+半径で探すエリア(温泉街の中心から半径以内)
+            assert p["datumType"] == 1 and p["searchRadius"] <= 3.0
+            hs = [[{"hotelBasicInfo": {"hotelNo": n, "hotelName": f"宿{n}", "reviewAverage": 4.0, "reviewCount": 10}}] for n in (41, 42)]
+            return {"pagingInfo": {"pageCount": 1}, "hotels": hs}
         if api == "SimpleHotelSearch":
             if p["smallClassCode"] not in ("hakone", "atami2"):
                 raise rk.NotFound(404, "not_found", "not found")
@@ -365,6 +370,15 @@ with tempfile.TemporaryDirectory() as tmp2:
         "atami": {"label": "熱海", "large": "japan", "middle": "shizuoka", "small": "atami2", "detail": "auto"}}}
     hs = up.ensure_hotels(FakeClient(), cfgy, tmp2)
     check(hs["areas"]["hakone"] == marker and len(hs["areas"]["atami"]) == 3, "新しいエリアだけ、すぐに宿一覧を取得する(既存エリアはそのまま)")
+    cfgy["areas"]["isawa"] = {"label": "石和", "lat": 35.6571, "lng": 138.6461, "radius": 3.0}
+    hs = up.ensure_hotels(FakeClient(), cfgy, tmp2)
+    check([h["no"] for h in hs["areas"]["isawa"]] == ["41", "42"] and hs["areas"]["hakone"] == marker,
+          "位置+半径のエリア(温泉街の中心から半径3km)も、楽天の施設検索で宿一覧を取得できる")
+    cfgr = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
+    rad = [a for a in cfgr["areas"].values() if "lat" in a]
+    check(len(cfgr["areas"]) == 30 and len(rad) == 12 and all(0 < a["radius"] <= 3.0 for a in rad)
+          and all(any(pg["area"] == k for pg in cfgr["pages"]) for k in cfgr["areas"]),
+          "エリアは30(うち位置+半径で決める温泉地12)。どのエリアにも条件ページがある")
 
 # 宿の条件の判定(サウナ・バリアフリーなど)
 import hotelfeat as hf
