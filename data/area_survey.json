@@ -1,6 +1,6 @@
 {
- "generated_at": "2026-11-16T11:18:17+09:00",
- "api_requests": 172,
+ "generated_at": "2026-11-16T12:15:11+09:00",
+ "api_requests": 254,
  "weights": {
   "popular": 0.4,
   "access": 0.3,
@@ -20,28 +20,30 @@
    "label": "石和",
    "pref": "山梨",
    "center": [
-    35.651,
-    138.633
+    35.6571,
+    138.6461
    ],
-   "stations": "石和温泉(59)・酒折(2)・春日居町(1)",
-   "hotels": 62,
-   "reviews_total": 42406,
-   "reviews_per_hotel": 684.0,
+   "center_source": "「石和温泉」の宿の中心(1.4km補正)",
+   "radius_km": 3.0,
+   "stations": "石和温泉(59)・春日居町(1)",
+   "hotels": 60,
+   "reviews_total": 42234,
+   "reviews_per_hotel": 703.9,
    "rating": 4.21,
-   "lat": 35.657045679999996,
-   "lng": 138.6439969,
-   "access": 2438.8,
+   "lat": 35.65711477000001,
+   "lng": 138.64444938345446,
+   "access": 2439.1,
    "nearest_metro": "首都圏 約101km",
    "overlap": 0.0,
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 95.1,
-    "access": 95.1,
-    "hotels": 86.9,
-    "efficiency": 83.6
+    "popular": 95.7,
+    "access": 95.7,
+    "hotels": 85.5,
+    "efficiency": 82.6
    },
-   "score": 92.3,
+   "score": 92.4,
    "rank": 1
   },
   {
@@ -52,6 +54,8 @@
     34.904,
     139.12
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "伊豆高原(173)・城ヶ崎海岸(70)・富戸(65)",
    "hotels": 341,
    "reviews_total": 43217,
@@ -65,42 +69,13 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 96.7,
-    "access": 93.4,
+    "popular": 97.1,
+    "access": 94.2,
     "hotels": 100.0,
-    "efficiency": 4.9
+    "efficiency": 8.7
    },
-   "score": 87.2,
+   "score": 88.0,
    "rank": 2
-  },
-  {
-   "key": "toba",
-   "label": "鳥羽",
-   "pref": "三重",
-   "center": [
-    34.481,
-    136.843
-   ],
-   "stations": "鳥羽(41)・中之郷(3)・船津（三重）(1)",
-   "hotels": 46,
-   "reviews_total": 31053,
-   "reviews_per_hotel": 675.1,
-   "rating": 4.3,
-   "lat": 34.479402135,
-   "lng": 136.84429445,
-   "access": 1855.5,
-   "nearest_metro": "中京 約77km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": true,
-   "points": {
-    "popular": 88.5,
-    "access": 83.6,
-    "hotels": 75.4,
-    "efficiency": 82.0
-   },
-   "score": 83.8,
-   "rank": 3
   },
   {
    "key": "yugawara",
@@ -110,6 +85,8 @@
     35.14,
     139.083
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "湯河原(90)・熱海(10)",
    "hotels": 100,
    "reviews_total": 25528,
@@ -123,42 +100,137 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 85.2,
-    "access": 96.7,
-    "hotels": 90.2,
-    "efficiency": 23.0
+    "popular": 87.0,
+    "access": 97.1,
+    "hotels": 94.2,
+    "efficiency": 26.1
    },
-   "score": 83.4,
+   "score": 85.4,
+   "rank": 3
+  },
+  {
+   "key": "toba",
+   "label": "鳥羽",
+   "pref": "三重",
+   "center": [
+    34.481,
+    136.843
+   ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
+   "stations": "鳥羽(41)・中之郷(3)・船津（三重）(1)",
+   "hotels": 46,
+   "reviews_total": 31053,
+   "reviews_per_hotel": 675.1,
+   "rating": 4.3,
+   "lat": 34.479402135,
+   "lng": 136.84429445,
+   "access": 1855.5,
+   "nearest_metro": "中京 約77km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 89.9,
+    "access": 79.7,
+    "hotels": 76.8,
+    "efficiency": 76.8
+   },
+   "score": 82.9,
    "rank": 4
+  },
+  {
+   "key": "atagawa",
+   "label": "熱川・稲取",
+   "pref": "静岡",
+   "center": [
+    34.817,
+    139.0699
+   ],
+   "center_source": "「熱川温泉」の宿の中心(2.1km補正)",
+   "radius_km": 3.0,
+   "stations": "伊豆熱川(36)・伊豆北川(17)・伊豆大川(9)",
+   "hotels": 73,
+   "reviews_total": 22244,
+   "reviews_per_hotel": 304.7,
+   "rating": 4.22,
+   "lat": 34.82527437,
+   "lng": 139.0680173,
+   "access": 2183.9,
+   "nearest_metro": "首都圏 約114km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 84.1,
+    "access": 92.8,
+    "hotels": 88.4,
+    "efficiency": 30.4
+   },
+   "score": 82.2,
+   "rank": 5
+  },
+  {
+   "key": "dogo",
+   "label": "道後",
+   "pref": "愛媛",
+   "center": [
+    33.852,
+    132.786
+   ],
+   "center_source": "手入力",
+   "radius_km": 1.5,
+   "stations": "道後温泉(41)・松山（愛媛）(22)・松山空港(3)",
+   "hotels": 79,
+   "reviews_total": 63246,
+   "reviews_per_hotel": 800.6,
+   "rating": 4.29,
+   "lat": 33.8511434,
+   "lng": 132.78491510000003,
+   "access": 663.7,
+   "nearest_metro": "広島 約67km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 100.0,
+    "access": 29.0,
+    "hotels": 92.8,
+    "efficiency": 87.0
+   },
+   "score": 76.0,
+   "rank": 6
   },
   {
    "key": "shimoda",
    "label": "下田",
    "pref": "静岡",
    "center": [
-    34.677,
-    138.945
+    34.6759,
+    138.9659
    ],
-   "stations": "伊豆急下田(140)・蓮台寺(2)",
-   "hotels": 142,
-   "reviews_total": 21229,
-   "reviews_per_hotel": 149.5,
-   "rating": 4.24,
-   "lat": 34.678214115,
-   "lng": 138.9668898,
-   "access": 2000.7,
+   "center_source": "「下田温泉」の宿の中心(1.9km補正)",
+   "radius_km": 3.0,
+   "stations": "伊豆急下田(113)・蓮台寺(2)",
+   "hotels": 115,
+   "reviews_total": 20076,
+   "reviews_per_hotel": 174.6,
+   "rating": 4.23,
+   "lat": 34.68097491,
+   "lng": 138.96980715899966,
+   "access": 2004.1,
    "nearest_metro": "首都圏 約133km",
    "overlap": 0.0,
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 80.3,
-    "access": 85.2,
-    "hotels": 95.1,
-    "efficiency": 11.5
+    "popular": 73.9,
+    "access": 85.5,
+    "hotels": 95.7,
+    "efficiency": 11.6
    },
-   "score": 77.8,
-   "rank": 5
+   "score": 75.5,
+   "rank": 7
   },
   {
    "key": "shiobara",
@@ -168,6 +240,8 @@
     36.973,
     139.817
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "那須塩原(34)・上三依塩原(6)・西那須野(4)",
    "hotels": 44,
    "reviews_total": 22138,
@@ -181,100 +255,13 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 83.6,
-    "access": 72.1,
-    "hotels": 70.5,
-    "efficiency": 63.9
+    "popular": 82.6,
+    "access": 71.0,
+    "hotels": 71.7,
+    "efficiency": 58.0
    },
-   "score": 75.6,
-   "rank": 6
-  },
-  {
-   "key": "dogo",
-   "label": "道後",
-   "pref": "愛媛",
-   "center": [
-    33.852,
-    132.786
-   ],
-   "stations": "道後温泉(41)・松山（愛媛）(38)・松山市(15)",
-   "hotels": 115,
-   "reviews_total": 110868,
-   "reviews_per_hotel": 964.1,
-   "rating": 4.19,
-   "lat": 33.84818062,
-   "lng": 132.7812913,
-   "access": 662.7,
-   "nearest_metro": "広島 約67km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": true,
-   "points": {
-    "popular": 100.0,
-    "access": 26.2,
-    "hotels": 91.8,
-    "efficiency": 90.2
-   },
-   "score": 75.2,
-   "rank": 7
-  },
-  {
-   "key": "kaike",
-   "label": "皆生",
-   "pref": "鳥取",
-   "center": [
-    35.447,
-    133.36
-   ],
-   "stations": "米子(45)・富士見町（鳥取）(2)・冨士見町（鳥取）(1)",
-   "hotels": 49,
-   "reviews_total": 60482,
-   "reviews_per_hotel": 1234.3,
-   "rating": 4.2,
-   "lat": 35.43925919923005,
-   "lng": 133.34023511376952,
-   "access": 755.7,
-   "nearest_metro": "広島 約140km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": true,
-   "points": {
-    "popular": 98.4,
-    "access": 31.1,
-    "hotels": 77.9,
-    "efficiency": 95.1
-   },
-   "score": 73.8,
+   "score": 74.5,
    "rank": 8
-  },
-  {
-   "key": "sumoto",
-   "label": "洲本",
-   "pref": "兵庫",
-   "center": [
-    34.34,
-    134.903
-   ],
-   "stations": "舞子(12)・鳴門(12)・洲本(5)",
-   "hotels": 44,
-   "reviews_total": 20935,
-   "reviews_per_hotel": 475.8,
-   "rating": 4.38,
-   "lat": 34.3410552,
-   "lng": 134.8988688,
-   "access": 1622.0,
-   "nearest_metro": "関西 約68km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": true,
-   "points": {
-    "popular": 78.7,
-    "access": 68.9,
-    "hotels": 70.5,
-    "efficiency": 62.3
-   },
-   "score": 72.5,
-   "rank": 9
   },
   {
    "key": "toi",
@@ -284,6 +271,8 @@
     34.906,
     138.784
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "修善寺(38)・大仁(3)・三島(1)",
    "hotels": 45,
    "reviews_total": 17188,
@@ -297,13 +286,13 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 65.6,
-    "access": 90.2,
-    "hotels": 73.8,
-    "efficiency": 39.3
+    "popular": 65.2,
+    "access": 91.3,
+    "hotels": 74.6,
+    "efficiency": 39.1
    },
-   "score": 72.0,
-   "rank": 10
+   "score": 72.3,
+   "rank": 9
   },
   {
    "key": "higashiyama",
@@ -313,6 +302,8 @@
     37.475,
     139.957
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "会津若松(26)・七日町(1)",
    "hotels": 27,
    "reviews_total": 37367,
@@ -326,12 +317,43 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 93.4,
-    "access": 50.8,
-    "hotels": 36.9,
-    "efficiency": 98.4
+    "popular": 94.2,
+    "access": 50.7,
+    "hotels": 47.1,
+    "efficiency": 97.1
    },
-   "score": 69.8,
+   "score": 72.0,
+   "rank": 10
+  },
+  {
+   "key": "sumoto",
+   "label": "洲本",
+   "pref": "兵庫",
+   "center": [
+    34.34,
+    134.903
+   ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
+   "stations": "舞子(12)・鳴門(12)・洲本(5)",
+   "hotels": 44,
+   "reviews_total": 20935,
+   "reviews_per_hotel": 475.8,
+   "rating": 4.38,
+   "lat": 34.3410552,
+   "lng": 134.8988688,
+   "access": 1622.0,
+   "nearest_metro": "関西 約68km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 79.7,
+    "access": 66.7,
+    "hotels": 71.7,
+    "efficiency": 56.5
+   },
+   "score": 71.9,
    "rank": 11
   },
   {
@@ -342,6 +364,8 @@
     36.222,
     136.193
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "芦原温泉(22)・芦原湯町(2)",
    "hotels": 25,
    "reviews_total": 27982,
@@ -355,13 +379,75 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 86.9,
-    "access": 57.4,
-    "hotels": 32.0,
-    "efficiency": 93.4
+    "popular": 88.4,
+    "access": 56.5,
+    "hotels": 42.8,
+    "efficiency": 92.8
    },
-   "score": 67.7,
+   "score": 70.2,
    "rank": 12
+  },
+  {
+   "key": "minakami",
+   "label": "水上",
+   "pref": "群馬",
+   "center": [
+    36.7879,
+    138.981
+   ],
+   "center_source": "「水上温泉」の宿の中心(1.7km補正)",
+   "radius_km": 3.0,
+   "stations": "水上(37)・湯檜曽(6)・上毛高原(1)",
+   "hotels": 45,
+   "reviews_total": 17386,
+   "reviews_per_hotel": 386.4,
+   "rating": 4.33,
+   "lat": 36.7899439,
+   "lng": 138.9712368,
+   "access": 1778.0,
+   "nearest_metro": "首都圏 約142km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 66.7,
+    "access": 73.9,
+    "hotels": 74.6,
+    "efficiency": 42.0
+   },
+   "score": 68.0,
+   "rank": 13
+  },
+  {
+   "key": "kaike",
+   "label": "皆生",
+   "pref": "鳥取",
+   "center": [
+    35.4576,
+    133.3616
+   ],
+   "center_source": "「皆生温泉」の宿の中心(1.2km補正)",
+   "radius_km": 3.0,
+   "stations": "米子(27)・富士見町（鳥取）(1)・三本松口(1)",
+   "hotels": 30,
+   "reviews_total": 34575,
+   "reviews_per_hotel": 1152.5,
+   "rating": 4.31,
+   "lat": 35.45737911417338,
+   "lng": 133.36042824999998,
+   "access": 758.2,
+   "nearest_metro": "広島 約143km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 92.8,
+    "access": 33.3,
+    "hotels": 51.4,
+    "efficiency": 94.2
+   },
+   "score": 66.8,
+   "rank": 14
   },
   {
    "key": "echigoyuzawa",
@@ -371,6 +457,8 @@
     36.935,
     138.808
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "越後湯沢(54)・ガーラ湯沢(4)・岩原スキー場前(1)",
    "hotels": 59,
    "reviews_total": 17176,
@@ -384,70 +472,12 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 63.9,
-    "access": 67.2,
-    "hotels": 85.2,
-    "efficiency": 27.9
+    "popular": 63.8,
+    "access": 65.2,
+    "hotels": 84.1,
+    "efficiency": 27.5
    },
-   "score": 65.6,
-   "rank": 13
-  },
-  {
-   "key": "yudanaka",
-   "label": "湯田中・渋",
-   "pref": "長野",
-   "center": [
-    36.736,
-    138.424
-   ],
-   "stations": "湯田中(73)・上条（長野）(1)・信濃竹原(1)",
-   "hotels": 78,
-   "reviews_total": 16907,
-   "reviews_per_hotel": 216.8,
-   "rating": 4.45,
-   "lat": 36.734717325000005,
-   "lng": 138.42868025,
-   "access": 1634.4,
-   "nearest_metro": "首都圏 約168km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": true,
-   "points": {
-    "popular": 59.0,
-    "access": 70.5,
-    "hotels": 88.5,
-    "efficiency": 18.0
-   },
-   "score": 64.2,
-   "rank": 14
-  },
-  {
-   "key": "atagawa",
-   "label": "熱川・稲取",
-   "pref": "静岡",
-   "center": [
-    34.8,
-    139.06
-   ],
-   "stations": "伊豆熱川(28)・伊豆稲取(9)・片瀬白田(8)",
-   "hotels": 49,
-   "reviews_total": 13015,
-   "reviews_per_hotel": 265.6,
-   "rating": 4.12,
-   "lat": 34.81435411,
-   "lng": 139.0669337,
-   "access": 2171.5,
-   "nearest_metro": "首都圏 約115km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": true,
-   "points": {
-    "popular": 44.3,
-    "access": 91.8,
-    "hotels": 77.9,
-    "efficiency": 24.6
-   },
-   "score": 63.3,
+   "score": 64.7,
    "rank": 15
   },
   {
@@ -455,9 +485,11 @@
    "label": "四万",
    "pref": "群馬",
    "center": [
-    36.684,
-    138.792
+    36.6863,
+    138.7753
    ],
+   "center_source": "「四万温泉」の宿の中心(1.5km補正)",
+   "radius_km": 3.0,
    "stations": "中之条(32)",
    "hotels": 32,
    "reviews_total": 16872,
@@ -471,100 +503,13 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 57.4,
-    "access": 82.0,
-    "hotels": 44.3,
-    "efficiency": 67.2
+    "popular": 58.0,
+    "access": 78.3,
+    "hotels": 57.2,
+    "efficiency": 62.3
    },
-   "score": 63.1,
+   "score": 64.4,
    "rank": 16
-  },
-  {
-   "key": "akiu",
-   "label": "秋保",
-   "pref": "宮城",
-   "center": [
-    38.226,
-    140.715
-   ],
-   "stations": "仙台(19)・愛子(2)・陸前白沢(1)",
-   "hotels": 22,
-   "reviews_total": 32817,
-   "reviews_per_hotel": 1491.7,
-   "rating": 4.3,
-   "lat": 38.22664554,
-   "lng": 140.72230515,
-   "access": 800.1,
-   "nearest_metro": "仙台 約14km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": true,
-   "points": {
-    "popular": 91.8,
-    "access": 32.8,
-    "hotels": 27.9,
-    "efficiency": 100.0
-   },
-   "score": 62.1,
-   "rank": 17
-  },
-  {
-   "key": "kamogawa",
-   "label": "鴨川",
-   "pref": "千葉",
-   "center": [
-    35.113,
-    140.099
-   ],
-   "stations": "安房鴨川(27)・太海(5)・鴨川(1)",
-   "hotels": 33,
-   "reviews_total": 13166,
-   "reviews_per_hotel": 399.0,
-   "rating": 4.32,
-   "lat": 35.1010592,
-   "lng": 140.1041327,
-   "access": 2559.4,
-   "nearest_metro": "首都圏 約71km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": true,
-   "points": {
-    "popular": 45.9,
-    "access": 98.4,
-    "hotels": 48.4,
-    "efficiency": 42.6
-   },
-   "score": 61.8,
-   "rank": 18
-  },
-  {
-   "key": "asama",
-   "label": "浅間温泉",
-   "pref": "長野",
-   "center": [
-    36.264,
-    137.991
-   ],
-   "stations": "松本(36)・北松本(4)・島内(1)",
-   "hotels": 41,
-   "reviews_total": 16295,
-   "reviews_per_hotel": 397.4,
-   "rating": 4.37,
-   "lat": 36.2548753,
-   "lng": 137.9905008,
-   "access": 1795.5,
-   "nearest_metro": "中京 約157km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": true,
-   "points": {
-    "popular": 52.5,
-    "access": 78.7,
-    "hotels": 65.6,
-    "efficiency": 41.0
-   },
-   "score": 61.8,
-   "rank": 19
   },
   {
    "key": "katsuura",
@@ -574,6 +519,8 @@
     33.629,
     135.941
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "紀伊勝浦(29)・那智(2)・湯川(1)",
    "hotels": 32,
    "reviews_total": 20473,
@@ -587,100 +534,75 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 73.8,
-    "access": 52.5,
-    "hotels": 44.3,
-    "efficiency": 77.0
+    "popular": 75.4,
+    "access": 52.2,
+    "hotels": 57.2,
+    "efficiency": 71.0
    },
-   "score": 61.8,
-   "rank": 20
+   "score": 64.4,
+   "rank": 17
   },
   {
-   "key": "yamashiro",
-   "label": "山代",
-   "pref": "石川",
+   "key": "yudanaka",
+   "label": "湯田中・渋",
+   "pref": "長野",
    "center": [
-    36.293,
-    136.355
+    36.736,
+    138.424
    ],
-   "stations": "加賀温泉(23)",
-   "hotels": 23,
-   "reviews_total": 18565,
-   "reviews_per_hotel": 807.2,
-   "rating": 4.24,
-   "lat": 36.2884283,
-   "lng": 136.36109320000003,
-   "access": 1358.6,
-   "nearest_metro": "中京 約133km",
+   "center_source": "手入力",
+   "radius_km": 3.0,
+   "stations": "湯田中(73)・上条（長野）(1)・信濃竹原(1)",
+   "hotels": 78,
+   "reviews_total": 16907,
+   "reviews_per_hotel": 216.8,
+   "rating": 4.45,
+   "lat": 36.734717325000005,
+   "lng": 138.42868025,
+   "access": 1634.4,
+   "nearest_metro": "首都圏 約168km",
    "overlap": 0.0,
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 72.1,
-    "access": 55.7,
-    "hotels": 29.5,
-    "efficiency": 86.9
+    "popular": 59.4,
+    "access": 68.1,
+    "hotels": 91.3,
+    "efficiency": 18.8
    },
-   "score": 60.1,
-   "rank": 21
+   "score": 64.3,
+   "rank": 18
   },
   {
-   "key": "minakami",
-   "label": "水上",
-   "pref": "群馬",
+   "key": "akiu",
+   "label": "秋保",
+   "pref": "宮城",
    "center": [
-    36.778,
-    138.967
+    38.226,
+    140.715
    ],
-   "stations": "水上(31)・湯檜曽(2)",
-   "hotels": 34,
-   "reviews_total": 15231,
-   "reviews_per_hotel": 448.0,
-   "rating": 4.34,
-   "lat": 36.785568885,
-   "lng": 138.96981870000002,
-   "access": 1782.1,
-   "nearest_metro": "首都圏 約142km",
+   "center_source": "手入力",
+   "radius_km": 3.0,
+   "stations": "仙台(19)・愛子(2)・陸前白沢(1)",
+   "hotels": 22,
+   "reviews_total": 32817,
+   "reviews_per_hotel": 1491.7,
+   "rating": 4.3,
+   "lat": 38.22664554,
+   "lng": 140.72230515,
+   "access": 800.1,
+   "nearest_metro": "仙台 約14km",
    "overlap": 0.0,
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 50.8,
-    "access": 77.0,
-    "hotels": 51.6,
-    "efficiency": 55.7
+    "popular": 91.3,
+    "access": 34.8,
+    "hotels": 34.1,
+    "efficiency": 100.0
    },
-   "score": 59.3,
-   "rank": 22
-  },
-  {
-   "key": "yunokawa",
-   "label": "湯の川",
-   "pref": "北海道",
-   "center": [
-    41.778,
-    140.789
-   ],
-   "stations": "函館(28)・函館空港(9)・五稜郭(2)",
-   "hotels": 43,
-   "reviews_total": 32124,
-   "reviews_per_hotel": 747.1,
-   "rating": 4.26,
-   "lat": 41.7778838,
-   "lng": 140.7856742,
-   "access": 159.4,
-   "nearest_metro": "札幌 約151km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": true,
-   "points": {
-    "popular": 90.2,
-    "access": 1.6,
-    "hotels": 67.2,
-    "efficiency": 85.2
-   },
-   "score": 58.5,
-   "rank": 23
+   "score": 63.8,
+   "rank": 19
   },
   {
    "key": "chichibu",
@@ -690,6 +612,8 @@
     35.992,
     139.085
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "西武秩父(13)・秩父(13)・大野原(5)",
    "hotels": 36,
    "reviews_total": 11016,
@@ -703,71 +627,106 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 34.4,
+    "popular": 39.1,
     "access": 100.0,
-    "hotels": 57.4,
-    "efficiency": 29.5
+    "hotels": 65.2,
+    "efficiency": 31.9
    },
-   "score": 58.2,
-   "rank": 24
+   "score": 61.9,
+   "rank": 20
   },
   {
    "key": "tateshina",
    "label": "蓼科",
    "pref": "長野",
    "center": [
-    36.06,
-    138.26
+    36.0492,
+    138.2646
    ],
-   "stations": "茅野(44)",
-   "hotels": 44,
-   "reviews_total": 11902,
-   "reviews_per_hotel": 270.5,
-   "rating": 4.23,
-   "lat": 36.052878410000005,
-   "lng": 138.26491744999998,
-   "access": 2041.6,
-   "nearest_metro": "首都圏 約142km",
+   "center_source": "「蓼科温泉」の宿の中心(1.3km補正)",
+   "radius_km": 3.0,
+   "stations": "茅野(49)",
+   "hotels": 49,
+   "reviews_total": 12034,
+   "reviews_per_hotel": 245.6,
+   "rating": 4.22,
+   "lat": 36.05326851,
+   "lng": 138.26738542090152,
+   "access": 2042.7,
+   "nearest_metro": "首都圏 約141km",
    "overlap": 0.0,
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 36.1,
-    "access": 86.9,
-    "hotels": 70.5,
-    "efficiency": 26.2
+    "popular": 43.5,
+    "access": 88.4,
+    "hotels": 78.3,
+    "efficiency": 23.2
    },
-   "score": 57.2,
-   "rank": 25
+   "score": 61.9,
+   "rank": 21
   },
   {
-   "key": "zao",
-   "label": "蔵王温泉",
-   "pref": "山形",
+   "key": "yamashiro",
+   "label": "山代",
+   "pref": "石川",
    "center": [
-    38.168,
-    140.4
+    36.293,
+    136.355
    ],
-   "stations": "山形(50)・茂吉記念館前(2)",
-   "hotels": 55,
-   "reviews_total": 17410,
-   "reviews_per_hotel": 316.5,
-   "rating": 4.44,
-   "lat": 38.16645141,
-   "lng": 140.3958543,
-   "access": 824.0,
-   "nearest_metro": "仙台 約44km",
+   "center_source": "手入力",
+   "radius_km": 3.0,
+   "stations": "加賀温泉(23)",
+   "hotels": 23,
+   "reviews_total": 18565,
+   "reviews_per_hotel": 807.2,
+   "rating": 4.24,
+   "lat": 36.2884283,
+   "lng": 136.36109320000003,
+   "access": 1358.6,
+   "nearest_metro": "中京 約133km",
    "overlap": 0.0,
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 67.2,
-    "access": 34.4,
-    "hotels": 82.0,
-    "efficiency": 32.8
+    "popular": 72.5,
+    "access": 55.1,
+    "hotels": 37.0,
+    "efficiency": 88.4
    },
-   "score": 56.9,
-   "rank": 26
+   "score": 61.8,
+   "rank": 22
+  },
+  {
+   "key": "asamushi",
+   "label": "浅虫",
+   "pref": "青森",
+   "center": [
+    40.8288,
+    140.7702
+   ],
+   "center_source": "「浅虫温泉」の宿の中心(10.9km補正)",
+   "radius_km": 3.0,
+   "stations": "青森(29)・東青森(2)・筒井(1)",
+   "hotels": 32,
+   "reviews_total": 45752,
+   "reviews_per_hotel": 1429.8,
+   "rating": 4.1,
+   "lat": 40.826766449999994,
+   "lng": 140.74284534999998,
+   "access": 175.8,
+   "nearest_metro": "札幌 約254km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 98.6,
+    "access": 2.9,
+    "hotels": 57.2,
+    "efficiency": 98.6
+   },
+   "score": 61.6,
+   "rank": 23
   },
   {
    "key": "hakuba",
@@ -777,6 +736,8 @@
     36.698,
     137.846
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "白馬(303)・飯森(19)・信濃森上(10)",
    "hotels": 335,
    "reviews_total": 12757,
@@ -790,12 +751,105 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 42.6,
-    "access": 60.7,
-    "hotels": 98.4,
-    "efficiency": 1.6
+    "popular": 50.7,
+    "access": 59.4,
+    "hotels": 98.6,
+    "efficiency": 0.0
    },
-   "score": 55.1,
+   "score": 57.8,
+   "rank": 24
+  },
+  {
+   "key": "zao",
+   "label": "蔵王温泉",
+   "pref": "山形",
+   "center": [
+    38.168,
+    140.4
+   ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
+   "stations": "山形(50)・茂吉記念館前(2)",
+   "hotels": 55,
+   "reviews_total": 17410,
+   "reviews_per_hotel": 316.5,
+   "rating": 4.44,
+   "lat": 38.16645141,
+   "lng": 140.3958543,
+   "access": 824.0,
+   "nearest_metro": "仙台 約44km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 68.1,
+    "access": 36.2,
+    "hotels": 81.2,
+    "efficiency": 33.3
+   },
+   "score": 57.7,
+   "rank": 25
+  },
+  {
+   "key": "hirugami",
+   "label": "昼神",
+   "pref": "長野",
+   "center": [
+    35.4562,
+    137.7134
+   ],
+   "center_source": "「昼神温泉」の宿の中心(4.3km補正)",
+   "radius_km": 3.0,
+   "stations": "飯田（長野）(15)・天竜峡(2)・唐笠(1)",
+   "hotels": 19,
+   "reviews_total": 12593,
+   "reviews_per_hotel": 662.8,
+   "rating": 4.32,
+   "lat": 35.4560114398851,
+   "lng": 137.7132922,
+   "access": 2028.5,
+   "nearest_metro": "中京 約82km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 46.4,
+    "access": 87.0,
+    "hotels": 21.0,
+    "efficiency": 73.9
+   },
+   "score": 56.2,
+   "rank": 26
+  },
+  {
+   "key": "yunokawa",
+   "label": "湯の川",
+   "pref": "北海道",
+   "center": [
+    41.778,
+    140.789
+   ],
+   "center_source": "手入力",
+   "radius_km": 1.5,
+   "stations": "函館(24)・函館空港(8)",
+   "hotels": 34,
+   "reviews_total": 24858,
+   "reviews_per_hotel": 731.1,
+   "rating": 4.24,
+   "lat": 41.77698039054211,
+   "lng": 140.7863908,
+   "access": 159.3,
+   "nearest_metro": "札幌 約151km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 85.5,
+    "access": 1.4,
+    "hotels": 60.9,
+    "efficiency": 85.5
+   },
+   "score": 55.4,
    "rank": 27
   },
   {
@@ -806,6 +860,8 @@
     33.101,
     129.989
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "武雄温泉(32)・彼杵(1)・永尾(1)",
    "hotels": 35,
    "reviews_total": 20924,
@@ -819,42 +875,13 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 77.0,
-    "access": 14.8,
-    "hotels": 54.1,
-    "efficiency": 72.1
+    "popular": 78.3,
+    "access": 15.9,
+    "hotels": 62.3,
+    "efficiency": 65.2
    },
-   "score": 53.3,
+   "score": 55.1,
    "rank": 28
-  },
-  {
-   "key": "yuda",
-   "label": "湯田",
-   "pref": "山口",
-   "center": [
-    34.164,
-    131.459
-   ],
-   "stations": "湯田温泉(18)・山口（山口）(2)",
-   "hotels": 20,
-   "reviews_total": 21897,
-   "reviews_per_hotel": 1094.8,
-   "rating": 4.25,
-   "lat": 34.165357385,
-   "lng": 131.4568207,
-   "access": 559.4,
-   "nearest_metro": "広島 約97km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": true,
-   "points": {
-    "popular": 82.0,
-    "access": 19.7,
-    "hotels": 21.3,
-    "efficiency": 91.8
-   },
-   "score": 52.2,
-   "rank": 29
   },
   {
    "key": "kotohira",
@@ -864,6 +891,8 @@
     34.184,
     133.817
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "琴平(28)・琴電琴平(4)",
    "hotels": 32,
    "reviews_total": 17085,
@@ -877,12 +906,43 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 60.7,
-    "access": 39.3,
-    "hotels": 44.3,
-    "efficiency": 68.9
+    "popular": 60.9,
+    "access": 42.0,
+    "hotels": 57.2,
+    "efficiency": 63.8
    },
-   "score": 51.8,
+   "score": 54.8,
+   "rank": 29
+  },
+  {
+   "key": "yuda",
+   "label": "湯田",
+   "pref": "山口",
+   "center": [
+    34.164,
+    131.459
+   ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
+   "stations": "湯田温泉(18)・山口（山口）(2)",
+   "hotels": 20,
+   "reviews_total": 21897,
+   "reviews_per_hotel": 1094.8,
+   "rating": 4.25,
+   "lat": 34.165357385,
+   "lng": 131.4568207,
+   "access": 559.4,
+   "nearest_metro": "広島 約97km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 81.2,
+    "access": 21.7,
+    "hotels": 26.1,
+    "efficiency": 91.3
+   },
+   "score": 53.3,
    "rank": 30
   },
   {
@@ -893,6 +953,8 @@
     38.36,
     140.375
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "天童(20)・山形空港(1)",
    "hotels": 21,
    "reviews_total": 17613,
@@ -906,13 +968,44 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 68.9,
-    "access": 29.5,
-    "hotels": 24.6,
-    "efficiency": 88.5
+    "popular": 69.6,
+    "access": 31.9,
+    "hotels": 30.4,
+    "efficiency": 89.9
    },
-   "score": 50.2,
+   "score": 52.5,
    "rank": 31
+  },
+  {
+   "key": "kanzanji",
+   "label": "舘山寺",
+   "pref": "静岡",
+   "center": [
+    34.7627,
+    137.6175
+   ],
+   "center_source": "「舘山寺温泉」の宿の中心(4.4km補正)",
+   "radius_km": 3.0,
+   "stations": "浜松(14)・舞阪(1)・弁天島(1)",
+   "hotels": 16,
+   "reviews_total": 11451,
+   "reviews_per_hotel": 715.7,
+   "rating": 4.29,
+   "lat": 34.7643351,
+   "lng": 137.61495515000001,
+   "access": 1895.4,
+   "nearest_metro": "中京 約81km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 40.6,
+    "access": 82.6,
+    "hotels": 8.0,
+    "efficiency": 84.1
+   },
+   "score": 51.0,
+   "rank": 32
   },
   {
    "key": "jozankei",
@@ -922,6 +1015,8 @@
     42.966,
     141.161
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "札幌(27)・新千歳空港(8)・真駒内(3)",
    "hotels": 39,
    "reviews_total": 18225,
@@ -935,13 +1030,75 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 70.5,
-    "access": 8.2,
-    "hotels": 62.3,
-    "efficiency": 59.0
+    "popular": 71.0,
+    "access": 8.7,
+    "hotels": 68.8,
+    "efficiency": 53.6
    },
-   "score": 49.0,
-   "rank": 32
+   "score": 50.1,
+   "rank": 33
+  },
+  {
+   "key": "iizaka",
+   "label": "飯坂",
+   "pref": "福島",
+   "center": [
+    37.8341,
+    140.452
+   ],
+   "center_source": "「飯坂温泉」の宿の中心(1.2km補正)",
+   "radius_km": 3.0,
+   "stations": "飯坂温泉(24)・福島（福島）(7)",
+   "hotels": 31,
+   "reviews_total": 14394,
+   "reviews_per_hotel": 464.3,
+   "rating": 4.23,
+   "lat": 37.83502992964932,
+   "lng": 140.4512314,
+   "access": 963.8,
+   "nearest_metro": "仙台 約60km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 52.2,
+    "access": 43.5,
+    "hotels": 53.6,
+    "efficiency": 52.2
+   },
+   "score": 49.9,
+   "rank": 34
+  },
+  {
+   "key": "yamanaka",
+   "label": "山中",
+   "pref": "石川",
+   "center": [
+    36.248,
+    136.371
+   ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
+   "stations": "加賀温泉(20)・牛ノ谷(1)",
+   "hotels": 21,
+   "reviews_total": 12709,
+   "reviews_per_hotel": 605.2,
+   "rating": 4.38,
+   "lat": 36.24222665,
+   "lng": 136.3714799,
+   "access": 1391.7,
+   "nearest_metro": "中京 約128km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 49.3,
+    "access": 58.0,
+    "hotels": 30.4,
+    "efficiency": 66.7
+   },
+   "score": 49.9,
+   "rank": 35
   },
   {
    "key": "tamatsukuri",
@@ -951,6 +1108,8 @@
     35.42,
     133.012
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "玉造温泉(15)",
    "hotels": 15,
    "reviews_total": 20487,
@@ -964,13 +1123,44 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 75.4,
-    "access": 27.9,
-    "hotels": 0.8,
-    "efficiency": 96.7
+    "popular": 76.8,
+    "access": 30.4,
+    "hotels": 2.2,
+    "efficiency": 95.7
    },
-   "score": 48.4,
-   "rank": 33
+   "score": 49.9,
+   "rank": 36
+  },
+  {
+   "key": "amanohashidate",
+   "label": "天橋立",
+   "pref": "京都",
+   "center": [
+    35.5577,
+    135.1838
+   ],
+   "center_source": "「天橋立温泉」の宿の中心(1.2km補正)",
+   "radius_km": 3.0,
+   "stations": "天橋立(32)・宮津（京都）(18)・岩滝口(1)",
+   "hotels": 52,
+   "reviews_total": 9265,
+   "reviews_per_hotel": 178.2,
+   "rating": 4.31,
+   "lat": 35.55710329,
+   "lng": 135.19195045,
+   "access": 1533.6,
+   "nearest_metro": "関西 約99km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 33.3,
+    "access": 63.8,
+    "hotels": 79.7,
+    "efficiency": 13.0
+   },
+   "score": 49.7,
+   "rank": 37
   },
   {
    "key": "naruko",
@@ -980,6 +1170,8 @@
     38.744,
     140.719
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "鳴子温泉(17)・鳴子御殿湯(8)・川渡温泉(1)",
    "hotels": 27,
    "reviews_total": 17156,
@@ -994,99 +1186,74 @@
    "eligible": true,
    "points": {
     "popular": 62.3,
-    "access": 23.0,
-    "hotels": 36.9,
-    "efficiency": 75.4
+    "access": 24.6,
+    "hotels": 47.1,
+    "efficiency": 69.6
    },
-   "score": 46.7,
-   "rank": 34
+   "score": 48.7,
+   "rank": 38
   },
   {
-   "key": "yamanaka",
-   "label": "山中",
-   "pref": "石川",
+   "key": "gamagori",
+   "label": "蒲郡",
+   "pref": "愛知",
    "center": [
-    36.248,
-    136.371
+    34.8191,
+    137.2322
    ],
-   "stations": "加賀温泉(20)・牛ノ谷(1)",
-   "hotels": 21,
-   "reviews_total": 12709,
-   "reviews_per_hotel": 605.2,
-   "rating": 4.38,
-   "lat": 36.24222665,
-   "lng": 136.3714799,
-   "access": 1391.7,
-   "nearest_metro": "中京 約128km",
+   "center_source": "「蒲郡温泉」の宿の中心(1.5km補正)",
+   "radius_km": 3.0,
+   "stations": "三河三谷(8)・蒲郡(7)",
+   "hotels": 15,
+   "reviews_total": 10313,
+   "reviews_per_hotel": 687.5,
+   "rating": 4.16,
+   "lat": 34.81588558,
+   "lng": 137.2487363,
+   "access": 1989.2,
+   "nearest_metro": "中京 約52km",
    "overlap": 0.0,
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 41.0,
-    "access": 59.0,
-    "hotels": 24.6,
-    "efficiency": 73.8
+    "popular": 37.7,
+    "access": 84.1,
+    "hotels": 2.2,
+    "efficiency": 79.7
    },
-   "score": 46.4,
-   "rank": 35
+   "score": 48.7,
+   "rank": 39
   },
   {
-   "key": "shirahone",
-   "label": "白骨・乗鞍",
-   "pref": "長野",
+   "key": "okuhida",
+   "label": "奥飛騨",
+   "pref": "岐阜",
    "center": [
-    36.12,
-    137.62
+    36.2397,
+    137.5321
    ],
-   "stations": "新島々(41)・松本(8)・高山(1)",
-   "hotels": 51,
-   "reviews_total": 7010,
-   "reviews_per_hotel": 137.5,
-   "rating": 4.5,
-   "lat": 36.1237712,
-   "lng": 137.62720179469397,
-   "access": 1744.3,
-   "nearest_metro": "中京 約126km",
+   "center_source": "「奥飛騨温泉」の宿の中心(3.7km補正)",
+   "radius_km": 3.0,
+   "stations": "高山(38)",
+   "hotels": 39,
+   "reviews_total": 8368,
+   "reviews_per_hotel": 214.6,
+   "rating": 4.37,
+   "lat": 36.23903646,
+   "lng": 137.5301008,
+   "access": 1649.5,
+   "nearest_metro": "中京 約133km",
    "overlap": 0.0,
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 16.4,
-    "access": 75.4,
-    "hotels": 80.3,
-    "efficiency": 9.8
+    "popular": 29.0,
+    "access": 69.6,
+    "hotels": 68.8,
+    "efficiency": 15.9
    },
-   "score": 46.2,
-   "rank": 36
-  },
-  {
-   "key": "iizaka",
-   "label": "飯坂",
-   "pref": "福島",
-   "center": [
-    37.825,
-    140.444
-   ],
-   "stations": "飯坂温泉(24)・福島（福島）(7)",
-   "hotels": 33,
-   "reviews_total": 14394,
-   "reviews_per_hotel": 436.2,
-   "rating": 4.23,
-   "lat": 37.83442736,
-   "lng": 140.4513675,
-   "access": 964.1,
-   "nearest_metro": "仙台 約61km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": true,
-   "points": {
-    "popular": 47.5,
-    "access": 41.0,
-    "hotels": 48.4,
-    "efficiency": 50.8
-   },
-   "score": 46.1,
-   "rank": 37
+   "score": 47.8,
+   "rank": 40
   },
   {
    "key": "nozawa",
@@ -1096,6 +1263,8 @@
     36.923,
     138.447
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "戸狩野沢温泉(103)・飯山(20)・上境(3)",
    "hotels": 131,
    "reviews_total": 7389,
@@ -1109,99 +1278,12 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 19.7,
-    "access": 63.9,
-    "hotels": 93.4,
-    "efficiency": 3.3
+    "popular": 18.8,
+    "access": 62.3,
+    "hotels": 97.1,
+    "efficiency": 2.9
    },
-   "score": 46.1,
-   "rank": 38
-  },
-  {
-   "key": "okuhida",
-   "label": "奥飛騨",
-   "pref": "岐阜",
-   "center": [
-    36.21,
-    137.55
-   ],
-   "stations": "高山(31)・松本(1)",
-   "hotels": 34,
-   "reviews_total": 7862,
-   "reviews_per_hotel": 231.2,
-   "rating": 4.26,
-   "lat": 36.1933618,
-   "lng": 137.55090035,
-   "access": 1682.5,
-   "nearest_metro": "中京 約129km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": true,
-   "points": {
-    "popular": 27.9,
-    "access": 73.8,
-    "hotels": 51.6,
-    "efficiency": 21.3
-   },
-   "score": 45.8,
-   "rank": 39
-  },
-  {
-   "key": "yunoyama",
-   "label": "湯の山",
-   "pref": "三重",
-   "center": [
-    35.017,
-    136.452
-   ],
-   "stations": "湯の山温泉(17)",
-   "hotels": 18,
-   "reviews_total": 7801,
-   "reviews_per_hotel": 433.4,
-   "rating": 4.32,
-   "lat": 35.01542435,
-   "lng": 136.4492333,
-   "access": 2144.6,
-   "nearest_metro": "中京 約43km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": true,
-   "points": {
-    "popular": 26.2,
-    "access": 88.5,
-    "hotels": 14.8,
-    "efficiency": 49.2
-   },
-   "score": 44.9,
-   "rank": 40
-  },
-  {
-   "key": "kirishima",
-   "label": "霧島温泉郷",
-   "pref": "鹿児島",
-   "center": [
-    31.87,
-    130.85
-   ],
-   "stations": "霧島神宮(31)・鹿児島空港(5)",
-   "hotels": 36,
-   "reviews_total": 16416,
-   "reviews_per_hotel": 456.0,
-   "rating": 4.4,
-   "lat": 31.872855754837587,
-   "lng": 130.84617624999998,
-   "access": 243.0,
-   "nearest_metro": "福岡・北九州 約195km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": true,
-   "points": {
-    "popular": 54.1,
-    "access": 6.6,
-    "hotels": 57.4,
-    "efficiency": 57.4
-   },
-   "score": 40.8,
+   "score": 45.9,
    "rank": 41
   },
   {
@@ -1212,6 +1294,8 @@
     37.09,
     136.92
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "和倉温泉(28)・田鶴浜(1)",
    "hotels": 29,
    "reviews_total": 12284,
@@ -1225,70 +1309,74 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 37.7,
-    "access": 42.6,
-    "hotels": 39.3,
-    "efficiency": 47.5
+    "popular": 44.9,
+    "access": 44.9,
+    "hotels": 49.3,
+    "efficiency": 46.4
    },
-   "score": 40.5,
+   "score": 45.9,
    "rank": 42
   },
   {
-   "key": "urabandai",
-   "label": "裏磐梯",
-   "pref": "福島",
+   "key": "kamogawa",
+   "label": "鴨川",
+   "pref": "千葉",
    "center": [
-    37.664,
-    140.057
+    35.0781,
+    140.099
    ],
-   "stations": "猪苗代(54)・翁島(3)",
-   "hotels": 57,
-   "reviews_total": 7453,
-   "reviews_per_hotel": 130.8,
-   "rating": 4.37,
-   "lat": 37.66521673,
-   "lng": 140.076891,
-   "access": 1084.3,
-   "nearest_metro": "仙台 約97km",
+   "center_source": "「鴨川温泉」の宿の中心(3.9km補正)",
+   "radius_km": 3.0,
+   "stations": "安房鴨川(20)・太海(12)・江見(2)",
+   "hotels": 36,
+   "reviews_total": 4534,
+   "reviews_per_hotel": 125.9,
+   "rating": 4.28,
+   "lat": 35.09092794170809,
+   "lng": 140.0973141,
+   "access": 2548.6,
+   "nearest_metro": "首都圏 約72km",
    "overlap": 0.0,
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 23.0,
-    "access": 44.3,
-    "hotels": 83.6,
-    "efficiency": 6.6
+    "popular": 5.8,
+    "access": 98.6,
+    "hotels": 65.2,
+    "efficiency": 7.2
    },
-   "score": 39.9,
+   "score": 45.7,
    "rank": 43
   },
   {
-   "key": "amanohashidate",
-   "label": "天橋立",
-   "pref": "京都",
+   "key": "yunoyama",
+   "label": "湯の山",
+   "pref": "三重",
    "center": [
-    35.566,
-    135.192
+    35.017,
+    136.452
    ],
-   "stations": "天橋立(33)・宮津（京都）(6)・岩滝口(1)",
-   "hotels": 40,
-   "reviews_total": 6703,
-   "reviews_per_hotel": 167.6,
-   "rating": 4.3,
-   "lat": 35.55934042,
-   "lng": 135.1888419,
-   "access": 1530.6,
-   "nearest_metro": "関西 約99km",
+   "center_source": "手入力",
+   "radius_km": 3.0,
+   "stations": "湯の山温泉(17)",
+   "hotels": 18,
+   "reviews_total": 7801,
+   "reviews_per_hotel": 433.4,
+   "rating": 4.32,
+   "lat": 35.01542435,
+   "lng": 136.4492333,
+   "access": 2144.6,
+   "nearest_metro": "中京 約43km",
    "overlap": 0.0,
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 14.8,
-    "access": 65.6,
-    "hotels": 63.9,
-    "efficiency": 13.1
+    "popular": 26.1,
+    "access": 89.9,
+    "hotels": 16.7,
+    "efficiency": 47.8
    },
-   "score": 39.7,
+   "score": 45.5,
    "rank": 44
   },
   {
@@ -1296,9 +1384,11 @@
    "label": "三朝",
    "pref": "鳥取",
    "center": [
-    35.41,
-    133.869
+    35.4126,
+    133.8895
    ],
+   "center_source": "「三朝温泉」の宿の中心(1.9km補正)",
+   "radius_km": 3.0,
    "stations": "倉吉(18)・鳥取空港(1)",
    "hotels": 19,
    "reviews_total": 12629,
@@ -1312,13 +1402,75 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 39.3,
-    "access": 37.7,
-    "hotels": 18.9,
-    "efficiency": 80.3
+    "popular": 47.8,
+    "access": 40.6,
+    "hotels": 21.0,
+    "efficiency": 75.4
    },
-   "score": 38.8,
+   "score": 43.0,
    "rank": 45
+  },
+  {
+   "key": "asama",
+   "label": "浅間温泉",
+   "pref": "長野",
+   "center": [
+    36.264,
+    137.991
+   ],
+   "center_source": "手入力",
+   "radius_km": 1.5,
+   "stations": "松本(22)",
+   "hotels": 22,
+   "reviews_total": 7694,
+   "reviews_per_hotel": 349.7,
+   "rating": 4.3,
+   "lat": 36.262648725000005,
+   "lng": 137.99049385,
+   "access": 1790.8,
+   "nearest_metro": "中京 約157km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 24.6,
+    "access": 75.4,
+    "hotels": 34.1,
+    "efficiency": 34.8
+   },
+   "score": 42.8,
+   "rank": 46
+  },
+  {
+   "key": "manza",
+   "label": "万座",
+   "pref": "群馬",
+   "center": [
+    36.4978,
+    138.5212
+   ],
+   "center_source": "「万座温泉」の宿の中心(15.4km補正)",
+   "radius_km": 3.0,
+   "stations": "大前(34)・軽井沢(21)・万座・鹿沢口(13)",
+   "hotels": 68,
+   "reviews_total": 3156,
+   "reviews_per_hotel": 46.4,
+   "rating": 4.17,
+   "lat": 36.484559855,
+   "lng": 138.5350427445955,
+   "access": 1886.9,
+   "nearest_metro": "首都圏 約142km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 1.4,
+    "access": 81.2,
+    "hotels": 87.0,
+    "efficiency": 1.4
+   },
+   "score": 42.5,
+   "rank": 47
   },
   {
    "key": "toya",
@@ -1328,6 +1480,8 @@
     42.565,
     140.818
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "洞爺(25)・新千歳空港(1)",
    "hotels": 26,
    "reviews_total": 16644,
@@ -1341,22 +1495,148 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 55.7,
-    "access": 3.3,
-    "hotels": 34.4,
-    "efficiency": 78.7
+    "popular": 56.5,
+    "access": 4.3,
+    "hotels": 44.9,
+    "efficiency": 72.5
    },
-   "score": 38.0,
-   "rank": 46
+   "score": 40.1,
+   "rank": 48
+  },
+  {
+   "key": "urabandai",
+   "label": "裏磐梯",
+   "pref": "福島",
+   "center": [
+    37.664,
+    140.057
+   ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
+   "stations": "猪苗代(54)・翁島(3)",
+   "hotels": 57,
+   "reviews_total": 7453,
+   "reviews_per_hotel": 130.8,
+   "rating": 4.37,
+   "lat": 37.66521673,
+   "lng": 140.076891,
+   "access": 1084.3,
+   "nearest_metro": "仙台 約97km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 21.7,
+    "access": 46.4,
+    "hotels": 82.6,
+    "efficiency": 10.1
+   },
+   "score": 40.1,
+   "rank": 49
+  },
+  {
+   "key": "yunogo",
+   "label": "湯郷",
+   "pref": "岡山",
+   "center": [
+    34.9925,
+    134.1333
+   ],
+   "center_source": "「湯郷温泉」の宿の中心(2.9km補正)",
+   "radius_km": 3.0,
+   "stations": "林野(19)・岡山(1)",
+   "hotels": 20,
+   "reviews_total": 10235,
+   "reviews_per_hotel": 511.8,
+   "rating": 4.22,
+   "lat": 34.992794384999996,
+   "lng": 134.13356375,
+   "access": 1165.5,
+   "nearest_metro": "関西 約128km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 36.2,
+    "access": 47.8,
+    "hotels": 26.1,
+    "efficiency": 59.4
+   },
+   "score": 40.0,
+   "rank": 50
+  },
+  {
+   "key": "kirishima",
+   "label": "霧島温泉郷",
+   "pref": "鹿児島",
+   "center": [
+    31.8823,
+    130.8152
+   ],
+   "center_source": "「霧島温泉郷」の宿の中心(3.6km補正)",
+   "radius_km": 3.0,
+   "stations": "霧島神宮(21)・鹿児島空港(3)",
+   "hotels": 24,
+   "reviews_total": 16233,
+   "reviews_per_hotel": 676.4,
+   "rating": 4.44,
+   "lat": 31.88852439999999,
+   "lng": 130.82493371719664,
+   "access": 244.9,
+   "nearest_metro": "福岡・北九州 約193km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 55.1,
+    "access": 7.2,
+    "hotels": 39.9,
+    "efficiency": 78.3
+   },
+   "score": 40.0,
+   "rank": 51
+  },
+  {
+   "key": "tsukioka",
+   "label": "月岡",
+   "pref": "新潟",
+   "center": [
+    37.8809,
+    139.3107
+   ],
+   "center_source": "「月岡温泉」の宿の中心(3.6km補正)",
+   "radius_km": 3.0,
+   "stations": "豊栄(8)・月岡（新潟）(7)・新発田(1)",
+   "hotels": 17,
+   "reviews_total": 11905,
+   "reviews_per_hotel": 700.3,
+   "rating": 4.5,
+   "lat": 37.88079809,
+   "lng": 139.3112843,
+   "access": 947.5,
+   "nearest_metro": "仙台 約144km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 42.0,
+    "access": 39.1,
+    "hotels": 13.0,
+    "efficiency": 81.2
+   },
+   "score": 39.2,
+   "rank": 52
   },
   {
    "key": "bandaiatami",
    "label": "磐梯熱海",
    "pref": "福島",
    "center": [
-    37.469,
-    140.258
+    37.4889,
+    140.261
    ],
+   "center_source": "「磐梯熱海温泉」の宿の中心(2.2km補正)",
+   "radius_km": 3.0,
    "stations": "磐梯熱海(19)",
    "hotels": 19,
    "reviews_total": 10012,
@@ -1370,42 +1650,13 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 31.1,
-    "access": 49.2,
-    "hotels": 18.9,
-    "efficiency": 65.6
+    "popular": 34.8,
+    "access": 49.3,
+    "hotels": 21.0,
+    "efficiency": 60.9
    },
-   "score": 37.5,
-   "rank": 47
-  },
-  {
-   "key": "yunogo",
-   "label": "湯郷",
-   "pref": "岡山",
-   "center": [
-    35.017,
-    134.143
-   ],
-   "stations": "林野(15)・勝間田(2)・岡山(1)",
-   "hotels": 18,
-   "reviews_total": 10411,
-   "reviews_per_hotel": 578.4,
-   "rating": 4.22,
-   "lat": 34.99445268112446,
-   "lng": 134.13421250826644,
-   "access": 1165.6,
-   "nearest_metro": "関西 約128km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": true,
-   "points": {
-    "popular": 32.8,
-    "access": 47.5,
-    "hotels": 14.8,
-    "efficiency": 70.5
-   },
-   "score": 37.4,
-   "rank": 48
+   "score": 39.0,
+   "rank": 53
   },
   {
    "key": "ibusuki",
@@ -1415,6 +1666,8 @@
     31.236,
     130.645
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "指宿(36)",
    "hotels": 36,
    "reviews_total": 14871,
@@ -1428,42 +1681,75 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 49.2,
+    "popular": 53.6,
     "access": 0.0,
-    "hotels": 57.4,
-    "efficiency": 44.3
+    "hotels": 65.2,
+    "efficiency": 43.5
    },
-   "score": 35.6,
-   "rank": 49
+   "score": 38.8,
+   "rank": 54
   },
   {
-   "key": "bessho",
-   "label": "別所",
+   "key": "shirahone",
+   "label": "白骨・乗鞍",
    "pref": "長野",
    "center": [
-    36.358,
-    138.152
+    36.1529,
+    137.627
    ],
-   "stations": "別所温泉(13)・上田（長野）(2)",
-   "hotels": 15,
-   "reviews_total": 5367,
-   "reviews_per_hotel": 357.8,
-   "rating": 4.51,
-   "lat": 36.3498763,
-   "lng": 138.1575439,
-   "access": 1807.2,
-   "nearest_metro": "首都圏 約163km",
+   "center_source": "「白骨温泉」の宿の中心(3.7km補正)",
+   "radius_km": 3.0,
+   "stations": "新島々(16)・松本(6)",
+   "hotels": 23,
+   "reviews_total": 6990,
+   "reviews_per_hotel": 303.9,
+   "rating": 4.49,
+   "lat": 36.14634143,
+   "lng": 137.6492082,
+   "access": 1737.9,
+   "nearest_metro": "中京 約129km",
    "overlap": 0.0,
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 6.6,
-    "access": 80.3,
-    "hotels": 0.8,
-    "efficiency": 37.7
+    "popular": 15.9,
+    "access": 72.5,
+    "hotels": 37.0,
+    "efficiency": 29.0
    },
-   "score": 30.7,
-   "rank": 50
+   "score": 38.4,
+   "rank": 55
+  },
+  {
+   "key": "katayamazu",
+   "label": "片山津",
+   "pref": "石川",
+   "center": [
+    36.3451,
+    136.3649
+   ],
+   "center_source": "「片山津温泉」の宿の中心(2.4km補正)",
+   "radius_km": 3.0,
+   "stations": "加賀温泉(13)・動橋(2)",
+   "hotels": 15,
+   "reviews_total": 9144,
+   "reviews_per_hotel": 609.6,
+   "rating": 4.15,
+   "lat": 36.34598403,
+   "lng": 136.3672402,
+   "access": 1322.1,
+   "nearest_metro": "中京 約139km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 30.4,
+    "access": 53.6,
+    "hotels": 2.2,
+    "efficiency": 68.1
+   },
+   "score": 35.5,
+   "rank": 56
   },
   {
    "key": "hongu",
@@ -1473,6 +1759,8 @@
     33.829,
     135.759
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "新宮(13)・紀伊田辺(11)・鵜殿(1)",
    "hotels": 25,
    "reviews_total": 5401,
@@ -1486,22 +1774,86 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 8.2,
-    "access": 62.3,
-    "hotels": 32.0,
-    "efficiency": 16.4
+    "popular": 11.6,
+    "access": 60.9,
+    "hotels": 42.8,
+    "efficiency": 17.4
    },
-   "score": 30.0,
-   "rank": 51
+   "score": 33.2,
+   "rank": 57
+  },
+  {
+   "key": "harazuru",
+   "label": "原鶴",
+   "pref": "福岡",
+   "center": [
+    33.3523,
+    130.7787
+   ],
+   "center_source": "「原鶴温泉」の宿の中心(4.0km補正)",
+   "radius_km": 3.0,
+   "stations": "筑後吉井(13)・うきは(5)・筑後大石(3)",
+   "hotels": 24,
+   "reviews_total": 9251,
+   "reviews_per_hotel": 385.5,
+   "rating": 4.2,
+   "lat": 33.351836039999995,
+   "lng": 130.78105575,
+   "access": 581.3,
+   "nearest_metro": "福岡・北九州 約43km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 31.9,
+    "access": 26.1,
+    "hotels": 39.9,
+    "efficiency": 40.6
+   },
+   "score": 32.6,
+   "rank": 58
+  },
+  {
+   "key": "bessho",
+   "label": "別所",
+   "pref": "長野",
+   "center": [
+    36.3505,
+    138.1598
+   ],
+   "center_source": "「別所温泉」の宿の中心(1.1km補正)",
+   "radius_km": 3.0,
+   "stations": "別所温泉(13)・上田（長野）(2)",
+   "hotels": 15,
+   "reviews_total": 5367,
+   "reviews_per_hotel": 357.8,
+   "rating": 4.51,
+   "lat": 36.3498763,
+   "lng": 138.1575439,
+   "access": 1807.2,
+   "nearest_metro": "首都圏 約163km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 8.7,
+    "access": 76.8,
+    "hotels": 2.2,
+    "efficiency": 37.7
+   },
+   "score": 30.7,
+   "rank": 59
   },
   {
    "key": "yubara",
    "label": "湯原",
    "pref": "岡山",
    "center": [
-    35.198,
-    133.712
+    35.2006,
+    133.7318
    ],
+   "center_source": "「湯原温泉」の宿の中心(1.8km補正)",
+   "radius_km": 3.0,
    "stations": "中国勝山(12)・勝山(2)",
    "hotels": 16,
    "reviews_total": 7147,
@@ -1515,42 +1867,44 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 18.0,
-    "access": 36.1,
-    "hotels": 4.9,
-    "efficiency": 54.1
+    "popular": 17.4,
+    "access": 37.7,
+    "hotels": 8.0,
+    "efficiency": 50.7
    },
-   "score": 24.4,
-   "rank": 52
+   "score": 24.9,
+   "rank": 60
   },
   {
-   "key": "unzen",
-   "label": "雲仙",
-   "pref": "長崎",
+   "key": "niseko",
+   "label": "ニセコ",
+   "pref": "北海道",
    "center": [
-    32.744,
-    130.262
+    42.8502,
+    140.6415
    ],
-   "stations": "諫早(15)・島原外港(1)",
-   "hotels": 17,
-   "reviews_total": 8030,
-   "reviews_per_hotel": 472.4,
-   "rating": 4.34,
-   "lat": 32.73961267,
-   "lng": 130.26005962698366,
-   "access": 392.6,
-   "nearest_metro": "福岡・北九州 約96km",
+   "center_source": "「ニセコ温泉」の宿の中心(5.3km補正)",
+   "radius_km": 3.0,
+   "stations": "ニセコ(57)・倶知安(10)・新千歳空港(4)",
+   "hotels": 75,
+   "reviews_total": 5381,
+   "reviews_per_hotel": 71.7,
+   "rating": 4.32,
+   "lat": 42.8407867,
+   "lng": 140.6439366,
+   "access": 201.0,
+   "nearest_metro": "札幌 約63km",
    "overlap": 0.0,
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 29.5,
-    "access": 13.1,
-    "hotels": 9.8,
-    "efficiency": 60.7
+    "popular": 10.1,
+    "access": 5.8,
+    "hotels": 89.9,
+    "efficiency": 4.3
    },
-   "score": 23.8,
-   "rank": 53
+   "score": 24.2,
+   "rank": 61
   },
   {
    "key": "yunohama",
@@ -1560,6 +1914,8 @@
     38.774,
     139.751
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "鶴岡(14)・庄内空港(3)",
    "hotels": 17,
    "reviews_total": 7563,
@@ -1573,71 +1929,44 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 24.6,
-    "access": 21.3,
-    "hotels": 9.8,
-    "efficiency": 52.5
+    "popular": 23.2,
+    "access": 23.2,
+    "hotels": 13.0,
+    "efficiency": 49.3
    },
-   "score": 23.4,
-   "rank": 54
+   "score": 23.8,
+   "rank": 62
   },
   {
-   "key": "katayamazu",
-   "label": "片山津",
-   "pref": "石川",
+   "key": "unzen",
+   "label": "雲仙",
+   "pref": "長崎",
    "center": [
-    36.346,
-    136.338
+    32.744,
+    130.262
    ],
-   "stations": "加賀温泉(15)・動橋(2)",
+   "center_source": "手入力",
+   "radius_km": 3.0,
+   "stations": "諫早(15)・島原外港(1)",
    "hotels": 17,
-   "reviews_total": 5329,
-   "reviews_per_hotel": 313.5,
-   "rating": 4.32,
-   "lat": 36.3462787,
-   "lng": 136.3606992,
-   "access": 1320.5,
-   "nearest_metro": "中京 約139km",
+   "reviews_total": 8030,
+   "reviews_per_hotel": 472.4,
+   "rating": 4.34,
+   "lat": 32.73961267,
+   "lng": 130.26005962698366,
+   "access": 392.6,
+   "nearest_metro": "福岡・北九州 約96km",
    "overlap": 0.0,
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 4.9,
-    "access": 54.1,
-    "hotels": 9.8,
-    "efficiency": 31.1
+    "popular": 27.5,
+    "access": 14.5,
+    "hotels": 13.0,
+    "efficiency": 55.1
    },
-   "score": 23.3,
-   "rank": 55
-  },
-  {
-   "key": "dake",
-   "label": "岳",
-   "pref": "福島",
-   "center": [
-    37.624,
-    140.351
-   ],
-   "stations": "二本松(15)・郡山（福島）(1)",
-   "hotels": 16,
-   "reviews_total": 5664,
-   "reviews_per_hotel": 354.0,
-   "rating": 4.31,
-   "lat": 37.606567894144376,
-   "lng": 140.3558797,
-   "access": 1092.4,
-   "nearest_metro": "仙台 約86km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": true,
-   "points": {
-    "popular": 11.5,
-    "access": 45.9,
-    "hotels": 4.9,
-    "efficiency": 36.1
-   },
-   "score": 23.0,
-   "rank": 56
+   "score": 23.5,
+   "rank": 63
   },
   {
    "key": "aso",
@@ -1647,6 +1976,8 @@
     32.981,
     131.037
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "阿蘇(12)・内牧(9)",
    "hotels": 21,
    "reviews_total": 7395,
@@ -1660,71 +1991,13 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 21.3,
-    "access": 16.4,
-    "hotels": 24.6,
-    "efficiency": 34.4
+    "popular": 20.3,
+    "access": 17.4,
+    "hotels": 30.4,
+    "efficiency": 36.2
    },
-   "score": 21.8,
-   "rank": 57
-  },
-  {
-   "key": "futsukaichi",
-   "label": "二日市",
-   "pref": "福岡",
-   "center": [
-    33.506,
-    130.528
-   ],
-   "stations": "太宰府(17)・西鉄二日市(8)・二日市(8)",
-   "hotels": 38,
-   "reviews_total": 5121,
-   "reviews_per_hotel": 134.8,
-   "rating": 3.98,
-   "lat": 33.514116900000005,
-   "lng": 130.527057,
-   "access": 656.7,
-   "nearest_metro": "福岡・北九州 約13km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": true,
-   "points": {
-    "popular": 3.3,
-    "access": 24.6,
-    "hotels": 60.7,
-    "efficiency": 8.2
-   },
-   "score": 21.7,
-   "rank": 58
-  },
-  {
-   "key": "niseko",
-   "label": "ニセコ",
-   "pref": "北海道",
-   "center": [
-    42.86,
-    140.705
-   ],
-   "stations": "倶知安(174)・比羅夫(31)・新千歳空港(23)",
-   "hotels": 242,
-   "reviews_total": 3482,
-   "reviews_per_hotel": 14.4,
-   "rating": 4.24,
-   "lat": 42.857720119999996,
-   "lng": 140.7075594976847,
-   "access": 206.9,
-   "nearest_metro": "札幌 約57km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": true,
-   "points": {
-    "popular": 0.0,
-    "access": 4.9,
-    "hotels": 96.7,
-    "efficiency": 0.0
-   },
-   "score": 20.8,
-   "rank": 59
+   "score": 23.0,
+   "rank": 64
   },
   {
    "key": "hitoyoshi",
@@ -1734,6 +2007,8 @@
     32.211,
     130.762
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "人吉(28)・鹿児島空港(1)",
    "hotels": 30,
    "reviews_total": 5497,
@@ -1747,22 +2022,24 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 9.8,
-    "access": 9.8,
-    "hotels": 41.0,
-    "efficiency": 14.8
+    "popular": 13.0,
+    "access": 11.6,
+    "hotels": 51.4,
+    "efficiency": 14.5
    },
-   "score": 16.5,
-   "rank": 60
+   "score": 20.4,
+   "rank": 65
   },
   {
    "key": "takeo",
    "label": "武雄",
    "pref": "佐賀",
    "center": [
-    33.195,
-    130.016
+    33.185,
+    130.0149
    ],
+   "center_source": "「武雄温泉」の宿の中心(1.1km補正)",
+   "radius_km": 3.0,
    "stations": "武雄温泉(15)・佐賀空港(1)",
    "hotels": 16,
    "reviews_total": 6617,
@@ -1776,13 +2053,75 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 13.1,
-    "access": 18.0,
-    "hotels": 4.9,
-    "efficiency": 45.9
+    "popular": 14.5,
+    "access": 18.8,
+    "hotels": 8.0,
+    "efficiency": 44.9
    },
-   "score": 16.2,
-   "rank": 61
+   "score": 17.5,
+   "rank": 66
+  },
+  {
+   "key": "nyuto",
+   "label": "乳頭",
+   "pref": "秋田",
+   "center": [
+    39.779,
+    140.7619
+   ],
+   "center_source": "「乳頭温泉」の宿の中心(3.4km補正)",
+   "radius_km": 3.0,
+   "stations": "田沢湖(20)",
+   "hotels": 20,
+   "reviews_total": 4960,
+   "reviews_per_hotel": 248.0,
+   "rating": 4.2,
+   "lat": 39.77728241,
+   "lng": 140.76156730000002,
+   "access": 293.9,
+   "nearest_metro": "仙台 約169km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 7.2,
+    "access": 10.1,
+    "hotels": 26.1,
+    "efficiency": 24.6
+   },
+   "score": 13.6,
+   "rank": 67
+  },
+  {
+   "key": "futsukaichi",
+   "label": "二日市",
+   "pref": "福岡",
+   "center": [
+    33.4913,
+    130.5153
+   ],
+   "center_source": "「二日市温泉」の宿の中心(2.0km補正)",
+   "radius_km": 1.5,
+   "stations": "二日市(8)・西鉄二日市(7)",
+   "hotels": 16,
+   "reviews_total": 3842,
+   "reviews_per_hotel": 240.1,
+   "rating": 4.01,
+   "lat": 33.49781326494999,
+   "lng": 130.5151163,
+   "access": 653.3,
+   "nearest_metro": "福岡・北九州 約14km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 2.9,
+    "access": 27.5,
+    "hotels": 8.0,
+    "efficiency": 21.7
+   },
+   "score": 13.2,
+   "rank": 68
   },
   {
    "key": "obama",
@@ -1792,6 +2131,8 @@
     32.727,
     130.208
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "諫早(15)・愛野(2)・長崎空港(1)",
    "hotels": 18,
    "reviews_total": 4077,
@@ -1805,13 +2146,44 @@
    "big": false,
    "eligible": true,
    "points": {
-    "popular": 1.6,
-    "access": 11.5,
-    "hotels": 14.8,
-    "efficiency": 19.7
+    "popular": 4.3,
+    "access": 13.0,
+    "hotels": 16.7,
+    "efficiency": 20.3
    },
-   "score": 9.0,
-   "rank": 62
+   "score": 11.0,
+   "rank": 69
+  },
+  {
+   "key": "amagase",
+   "label": "天ヶ瀬",
+   "pref": "大分",
+   "center": [
+    33.2542,
+    131.0369
+   ],
+   "center_source": "「天ヶ瀬温泉」の宿の中心(5.7km補正)",
+   "radius_km": 3.0,
+   "stations": "天ヶ瀬(17)・日田(1)・杉河内(1)",
+   "hotels": 19,
+   "reviews_total": 2163,
+   "reviews_per_hotel": 113.8,
+   "rating": 4.48,
+   "lat": 33.2551863,
+   "lng": 131.031747,
+   "access": 535.5,
+   "nearest_metro": "福岡・北九州 約68km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": true,
+   "points": {
+    "popular": 0.0,
+    "access": 20.3,
+    "hotels": 21.0,
+    "efficiency": 5.8
+   },
+   "score": 10.9,
+   "rank": 70
   }
  ],
  "excluded": [
@@ -1823,6 +2195,8 @@
     42.497,
     141.146
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "登別(14)",
    "hotels": 14,
    "reviews_total": 20556,
@@ -1835,7 +2209,7 @@
    "overlap": 0.0,
    "big": false,
    "eligible": false,
-   "reason": "宿が15軒未満"
+   "reason": "宿が15軒未満(10〜14軒)"
   },
   {
    "key": "akan",
@@ -1845,6 +2219,8 @@
     43.434,
     144.095
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "釧路(5)",
    "hotels": 5,
    "reviews_total": 6166,
@@ -1857,7 +2233,7 @@
    "overlap": 0.0,
    "big": false,
    "eligible": false,
-   "reason": "宿が15軒未満"
+   "reason": "宿が10軒未満"
   },
   {
    "key": "sounkyo",
@@ -1867,6 +2243,8 @@
     43.724,
     142.946
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "上川(12)",
    "hotels": 12,
    "reviews_total": 10164,
@@ -1879,51 +2257,31 @@
    "overlap": 0.0,
    "big": false,
    "eligible": false,
-   "reason": "宿が15軒未満"
+   "reason": "宿が15軒未満(10〜14軒)"
   },
   {
    "key": "tokachigawa",
    "label": "十勝川",
    "pref": "北海道",
    "center": [
-    42.937,
-    143.284
+    42.9324,
+    143.2994
    ],
-   "stations": "帯広(10)",
-   "hotels": 10,
-   "reviews_total": 7385,
-   "reviews_per_hotel": 738.5,
+   "center_source": "「十勝川温泉」の宿の中心(1.4km補正)",
+   "radius_km": 3.0,
+   "stations": "帯広(9)",
+   "hotels": 9,
+   "reviews_total": 7376,
+   "reviews_per_hotel": 819.6,
    "rating": 4.38,
-   "lat": 42.932757445,
-   "lng": 143.29959,
+   "lat": 42.93238948,
+   "lng": 143.2998552,
    "access": 109.3,
    "nearest_metro": "札幌 約159km",
    "overlap": 0.0,
    "big": false,
    "eligible": false,
-   "reason": "宿が15軒未満"
-  },
-  {
-   "key": "asamushi",
-   "label": "浅虫",
-   "pref": "青森",
-   "center": [
-    40.896,
-    140.865
-   ],
-   "stations": "浅虫温泉(10)・西平内(1)",
-   "hotels": 11,
-   "reviews_total": 5692,
-   "reviews_per_hotel": 517.5,
-   "rating": 4.33,
-   "lat": 40.88988385588932,
-   "lng": 140.861531,
-   "access": 171.7,
-   "nearest_metro": "札幌 約246km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": false,
-   "reason": "宿が15軒未満"
+   "reason": "宿が10軒未満"
   },
   {
    "key": "sukayu",
@@ -1933,6 +2291,8 @@
     40.649,
     140.851
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "青森(3)",
    "hotels": 3,
    "reviews_total": 2485,
@@ -1945,16 +2305,18 @@
    "overlap": 0.0,
    "big": false,
    "eligible": false,
-   "reason": "宿が15軒未満"
+   "reason": "宿が10軒未満"
   },
   {
    "key": "hanamaki",
    "label": "花巻温泉",
    "pref": "岩手",
    "center": [
-    39.437,
-    141.082
+    39.453,
+    141.0552
    ],
+   "center_source": "「花巻温泉」の宿の中心(2.9km補正)",
+   "radius_km": 3.0,
    "stations": "新花巻(8)・花巻(6)",
    "hotels": 14,
    "reviews_total": 11480,
@@ -1967,7 +2329,7 @@
    "overlap": 0.0,
    "big": false,
    "eligible": false,
-   "reason": "宿が15軒未満"
+   "reason": "宿が15軒未満(10〜14軒)"
   },
   {
    "key": "tsunagi",
@@ -1977,6 +2339,8 @@
     39.698,
     141.007
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "盛岡(9)・小岩井(3)・雫石(1)",
    "hotels": 13,
    "reviews_total": 6229,
@@ -1989,16 +2353,18 @@
    "overlap": 0.0,
    "big": false,
    "eligible": false,
-   "reason": "宿が15軒未満"
+   "reason": "宿が15軒未満(10〜14軒)"
   },
   {
    "key": "sakunami",
    "label": "作並",
    "pref": "宮城",
    "center": [
-    38.317,
-    140.63
+    38.3289,
+    140.6165
    ],
+   "center_source": "「作並温泉」の宿の中心(1.8km補正)",
+   "radius_km": 3.0,
    "stations": "作並(4)",
    "hotels": 4,
    "reviews_total": 5899,
@@ -2011,60 +2377,42 @@
    "overlap": 0.0,
    "big": false,
    "eligible": false,
-   "reason": "宿が15軒未満"
-  },
-  {
-   "key": "nyuto",
-   "label": "乳頭",
-   "pref": "秋田",
-   "center": [
-    39.802,
-    140.788
-   ],
-   "stations": "田沢湖(11)",
-   "hotels": 11,
-   "reviews_total": 3846,
-   "reviews_per_hotel": 349.6,
-   "rating": 4.18,
-   "lat": 39.7820624217696,
-   "lng": 140.7624966,
-   "access": 293.0,
-   "nearest_metro": "仙台 約170km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": false,
-   "reason": "宿が15軒未満"
+   "reason": "宿が10軒未満"
   },
   {
    "key": "ginzan",
    "label": "銀山",
    "pref": "山形",
    "center": [
-    38.57,
-    140.53
+    38.5337,
+    140.3918
    ],
-   "stations": "大石田(11)",
-   "hotels": 11,
-   "reviews_total": 1866,
-   "reviews_per_hotel": 169.6,
-   "rating": 4.41,
-   "lat": 38.56957526,
-   "lng": 140.53133679999996,
-   "access": 655.1,
-   "nearest_metro": "仙台 約46km",
+   "center_source": "「銀山温泉」の宿の中心(12.7km補正)",
+   "radius_km": 3.0,
+   "stations": "村山(1)",
+   "hotels": 1,
+   "reviews_total": 0,
+   "reviews_per_hotel": 0.0,
+   "rating": null,
+   "lat": 38.52640354,
+   "lng": 140.3767669,
+   "access": 673.1,
+   "nearest_metro": "仙台 約53km",
    "overlap": 0.0,
    "big": false,
    "eligible": false,
-   "reason": "宿が15軒未満"
+   "reason": "宿が10軒未満"
   },
   {
    "key": "atsumi",
    "label": "あつみ",
    "pref": "山形",
    "center": [
-    38.624,
-    139.6
+    38.6161,
+    139.6093
    ],
+   "center_source": "「あつみ温泉」の宿の中心(1.2km補正)",
+   "radius_km": 3.0,
    "stations": "あつみ温泉(6)",
    "hotels": 6,
    "reviews_total": 5655,
@@ -2077,249 +2425,175 @@
    "overlap": 0.0,
    "big": false,
    "eligible": false,
-   "reason": "宿が15軒未満"
+   "reason": "宿が10軒未満"
+  },
+  {
+   "key": "dake",
+   "label": "岳",
+   "pref": "福島",
+   "center": [
+    37.6062,
+    140.3562
+   ],
+   "center_source": "「岳温泉」の宿の中心(2.0km補正)",
+   "radius_km": 3.0,
+   "stations": "二本松(13)・郡山（福島）(1)",
+   "hotels": 14,
+   "reviews_total": 5664,
+   "reviews_per_hotel": 404.6,
+   "rating": 4.31,
+   "lat": 37.606213665,
+   "lng": 140.35606294599802,
+   "access": 1092.6,
+   "nearest_metro": "仙台 約86km",
+   "overlap": 0.0,
+   "big": false,
+   "eligible": false,
+   "reason": "宿が15軒未満(10〜14軒)"
   },
   {
    "key": "kawaji",
    "label": "川治",
    "pref": "栃木",
    "center": [
-    36.876,
-    139.701
+    36.8952,
+    139.7073
    ],
-   "stations": "川治湯元(5)・川治温泉(4)・新藤原(1)",
-   "hotels": 10,
+   "center_source": "「川治温泉」の宿の中心(2.2km補正)",
+   "radius_km": 3.0,
+   "stations": "川治湯元(5)・川治温泉(4)",
+   "hotels": 9,
    "reviews_total": 6223,
-   "reviews_per_hotel": 622.3,
+   "reviews_per_hotel": 691.4,
    "rating": 4.01,
-   "lat": 36.894536355,
-   "lng": 139.70760385,
-   "access": 1773.5,
+   "lat": 36.89522793,
+   "lng": 139.7073039,
+   "access": 1772.7,
    "nearest_metro": "首都圏 約135km",
    "overlap": 1.0,
    "big": false,
    "eligible": false,
-   "reason": "宿が15軒未満"
-  },
-  {
-   "key": "manza",
-   "label": "万座",
-   "pref": "群馬",
-   "center": [
-    36.636,
-    138.513
-   ],
-   "stations": "万座・鹿沢口(5)・長野原草津口(1)",
-   "hotels": 6,
-   "reviews_total": 11269,
-   "reviews_per_hotel": 1878.2,
-   "rating": 4.16,
-   "lat": 36.638612295,
-   "lng": 138.50910585,
-   "access": 1745.4,
-   "nearest_metro": "首都圏 約155km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": false,
-   "reason": "宿が15軒未満"
+   "reason": "宿が10軒未満"
   },
   {
    "key": "oigami",
    "label": "老神",
    "pref": "群馬",
    "center": [
-    36.735,
-    139.237
+    36.6713,
+    139.2102
    ],
-   "stations": "沼田(5)",
-   "hotels": 5,
-   "reviews_total": 92,
-   "reviews_per_hotel": 18.4,
-   "rating": 4.45,
-   "lat": 36.7542081,
-   "lng": 139.206067,
-   "access": 1884.5,
-   "nearest_metro": "首都圏 約130km",
+   "center_source": "「老神温泉」の宿の中心(7.5km補正)",
+   "radius_km": 3.0,
+   "stations": "沼田(11)・上毛高原(3)",
+   "hotels": 14,
+   "reviews_total": 6346,
+   "reviews_per_hotel": 453.3,
+   "rating": 4.18,
+   "lat": 36.67132197537255,
+   "lng": 139.21016848258787,
+   "access": 1983.2,
+   "nearest_metro": "首都圏 約121km",
    "overlap": 0.0,
    "big": false,
    "eligible": false,
-   "reason": "宿が15軒未満"
+   "reason": "宿が15軒未満(10〜14軒)"
   },
   {
    "key": "izunagaoka",
    "label": "伊豆長岡",
    "pref": "静岡",
    "center": [
-    35.039,
-    138.944
+    35.0334,
+    138.9322
    ],
-   "stations": "伊豆長岡(38)・田京(4)",
-   "hotels": 42,
-   "reviews_total": 26390,
-   "reviews_per_hotel": 628.3,
+   "center_source": "「伊豆長岡温泉」の宿の中心(1.2km補正)",
+   "radius_km": 3.0,
+   "stations": "伊豆長岡(37)・田京(4)",
+   "hotels": 41,
+   "reviews_total": 26363,
+   "reviews_per_hotel": 643.0,
    "rating": 4.3,
-   "lat": 35.033412205000005,
-   "lng": 138.93362411504708,
-   "access": 2345.5,
+   "lat": 35.03339278,
+   "lng": 138.9328869,
+   "access": 2345.1,
    "nearest_metro": "首都圏 約104km",
-   "overlap": 0.95,
+   "overlap": 0.93,
    "big": false,
    "eligible": false,
    "reason": "今のエリアと3割以上重なる"
-  },
-  {
-   "key": "kanzanji",
-   "label": "舘山寺",
-   "pref": "静岡",
-   "center": [
-    34.756,
-    137.665
-   ],
-   "stations": "浜松(3)",
-   "hotels": 3,
-   "reviews_total": 907,
-   "reviews_per_hotel": 302.3,
-   "rating": 4.11,
-   "lat": 34.76200986,
-   "lng": 137.6364328,
-   "access": 1891.8,
-   "nearest_metro": "中京 約82km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": false,
-   "reason": "宿が15軒未満"
-  },
-  {
-   "key": "hirugami",
-   "label": "昼神",
-   "pref": "長野",
-   "center": [
-    35.474,
-    137.756
-   ],
-   "stations": "切石(1)",
-   "hotels": 1,
-   "reviews_total": 0,
-   "reviews_per_hotel": 0.0,
-   "rating": null,
-   "lat": 35.4997735,
-   "lng": 137.7582274,
-   "access": 2027.6,
-   "nearest_metro": "中京 約88km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": false,
-   "reason": "宿が15軒未満"
-  },
-  {
-   "key": "tsukioka",
-   "label": "月岡",
-   "pref": "新潟",
-   "center": [
-    37.88,
-    139.27
-   ],
-   "stations": "",
-   "hotels": 0,
-   "reviews_total": 0,
-   "reviews_per_hotel": 0,
-   "rating": null,
-   "lat": 37.88,
-   "lng": 139.27,
-   "access": 945.3,
-   "nearest_metro": "仙台 約147km",
-   "overlap": 0,
-   "big": false,
-   "eligible": false,
-   "reason": "宿が15軒未満"
   },
   {
    "key": "unazuki",
    "label": "宇奈月",
    "pref": "富山",
    "center": [
-    36.814,
-    137.582
+    36.8207,
+    137.499
    ],
-   "stations": "宇奈月温泉(9)",
-   "hotels": 9,
-   "reviews_total": 13011,
-   "reviews_per_hotel": 1445.7,
-   "rating": 4.36,
-   "lat": 36.8172899,
-   "lng": 137.5817478,
-   "access": 1307.2,
-   "nearest_metro": "中京 約194km",
-   "overlap": 0.0,
+   "center_source": "「宇奈月温泉」の宿の中心(7.4km補正)",
+   "radius_km": 3.0,
+   "stations": "",
+   "hotels": 0,
+   "reviews_total": 0,
+   "reviews_per_hotel": 0,
+   "rating": null,
+   "lat": 36.8207,
+   "lng": 137.499,
+   "access": 1283.8,
+   "nearest_metro": "中京 約192km",
+   "overlap": 0,
    "big": false,
    "eligible": false,
-   "reason": "宿が15軒未満"
+   "reason": "宿が10軒未満"
   },
   {
    "key": "awazu",
    "label": "粟津",
    "pref": "石川",
    "center": [
-    36.343,
-    136.418
+    36.3315,
+    136.4466
    ],
-   "stations": "加賀温泉(7)・粟津（石川）(4)",
-   "hotels": 11,
-   "reviews_total": 11451,
-   "reviews_per_hotel": 1041.0,
+   "center_source": "「粟津温泉」の宿の中心(2.9km補正)",
+   "radius_km": 3.0,
+   "stations": "加賀温泉(6)・粟津（石川）(4)",
+   "hotels": 10,
+   "reviews_total": 11391,
+   "reviews_per_hotel": 1139.1,
    "rating": 4.17,
-   "lat": 36.33205707,
-   "lng": 136.4460866,
-   "access": 1348.2,
+   "lat": 36.331469485,
+   "lng": 136.44659074999998,
+   "access": 1348.7,
    "nearest_metro": "中京 約135km",
    "overlap": 0.0,
    "big": false,
    "eligible": false,
-   "reason": "宿が15軒未満"
+   "reason": "宿が15軒未満(10〜14軒)"
   },
   {
    "key": "nagashima",
    "label": "長島",
    "pref": "三重",
    "center": [
-    35.032,
-    136.712
+    35.0614,
+    136.649
    ],
-   "stations": "桑名(4)・長島(2)・西桑名(2)",
-   "hotels": 12,
-   "reviews_total": 3168,
-   "reviews_per_hotel": 264.0,
-   "rating": 4.43,
-   "lat": 35.042448445000005,
-   "lng": 136.72043394999997,
-   "access": 2190.5,
-   "nearest_metro": "中京 約20km",
+   "center_source": "「長島温泉」の宿の中心(6.6km補正)",
+   "radius_km": 3.0,
+   "stations": "桑名(3)・星川(1)・伊勢朝日(1)",
+   "hotels": 5,
+   "reviews_total": 1137,
+   "reviews_per_hotel": 227.4,
+   "rating": 3.83,
+   "lat": 35.05929362,
+   "lng": 136.6724618,
+   "access": 2185.2,
+   "nearest_metro": "中京 約23km",
    "overlap": 0.0,
    "big": false,
    "eligible": false,
-   "reason": "宿が15軒未満"
-  },
-  {
-   "key": "gamagori",
-   "label": "蒲郡",
-   "pref": "愛知",
-   "center": [
-    34.81,
-    137.22
-   ],
-   "stations": "蒲郡(7)・三河三谷(1)",
-   "hotels": 8,
-   "reviews_total": 3707,
-   "reviews_per_hotel": 463.4,
-   "rating": 4.07,
-   "lat": 34.82018377,
-   "lng": 137.2265302771027,
-   "access": 1996.8,
-   "nearest_metro": "中京 約50km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": false,
-   "reason": "宿が15軒未満"
+   "reason": "宿が10軒未満"
   },
   {
    "key": "ogoto",
@@ -2329,6 +2603,8 @@
     35.098,
     135.882
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "雄琴(8)",
    "hotels": 10,
    "reviews_total": 11218,
@@ -2341,7 +2617,7 @@
    "overlap": 0.0,
    "big": false,
    "eligible": false,
-   "reason": "宿が15軒未満"
+   "reason": "宿が15軒未満(10〜14軒)"
   },
   {
    "key": "yumura",
@@ -2351,6 +2627,8 @@
     35.554,
     134.488
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "浜坂(12)",
    "hotels": 12,
    "reviews_total": 7497,
@@ -2363,61 +2641,67 @@
    "overlap": 0.0,
    "big": false,
    "eligible": false,
-   "reason": "宿が15軒未満"
+   "reason": "宿が15軒未満(10〜14軒)"
   },
   {
    "key": "totsukawa",
    "label": "十津川",
    "pref": "奈良",
    "center": [
-    33.904,
-    135.8
+    33.9387,
+    135.7627
    ],
-   "stations": "",
-   "hotels": 0,
-   "reviews_total": 0,
-   "reviews_per_hotel": 0,
-   "rating": null,
-   "lat": 33.904,
-   "lng": 135.8,
-   "access": 1538.1,
-   "nearest_metro": "関西 約93km",
-   "overlap": 0,
+   "center_source": "「十津川温泉」の宿の中心(5.2km補正)",
+   "radius_km": 3.0,
+   "stations": "五条（奈良）(4)・八木(2)",
+   "hotels": 7,
+   "reviews_total": 1489,
+   "reviews_per_hotel": 212.7,
+   "rating": 4.37,
+   "lat": 33.93864570000005,
+   "lng": 135.76270804704666,
+   "access": 1570.4,
+   "nearest_metro": "関西 約88km",
+   "overlap": 0.0,
    "big": false,
    "eligible": false,
-   "reason": "宿が15軒未満"
+   "reason": "宿が10軒未満"
   },
   {
    "key": "yunohana",
    "label": "湯の花",
    "pref": "京都",
    "center": [
-    35.033,
-    135.538
+    35.0209,
+    135.5098
    ],
-   "stations": "亀岡(5)・並河(2)・千代川(1)",
-   "hotels": 8,
-   "reviews_total": 4755,
-   "reviews_per_hotel": 594.4,
+   "center_source": "「湯の花温泉」の宿の中心(2.9km補正)",
+   "radius_km": 3.0,
+   "stations": "亀岡(7)・並河(1)・千代川(1)",
+   "hotels": 9,
+   "reviews_total": 6270,
+   "reviews_per_hotel": 696.7,
    "rating": 4.42,
-   "lat": 35.019981875,
-   "lng": 135.52054972498212,
-   "access": 2138.3,
-   "nearest_metro": "関西 約35km",
+   "lat": 35.0216733,
+   "lng": 135.506081,
+   "access": 2131.8,
+   "nearest_metro": "関西 約36km",
    "overlap": 0.0,
    "big": false,
    "eligible": false,
-   "reason": "宿が15軒未満"
+   "reason": "宿が10軒未満"
   },
   {
    "key": "nagatoyumoto",
    "label": "長門湯本",
    "pref": "山口",
    "center": [
-    34.317,
-    131.183
+    34.3298,
+    131.1729
    ],
-   "stations": "長門湯本(10)・湯本(1)・山口宇部空港(1)",
+   "center_source": "「長門湯本温泉」の宿の中心(1.7km補正)",
+   "radius_km": 3.0,
+   "stations": "長門湯本(10)・山口宇部空港(1)・湯本(1)",
    "hotels": 12,
    "reviews_total": 5563,
    "reviews_per_hotel": 463.6,
@@ -2429,7 +2713,7 @@
    "overlap": 0.0,
    "big": false,
    "eligible": false,
-   "reason": "宿が15軒未満"
+   "reason": "宿が15軒未満(10〜14軒)"
   },
   {
    "key": "iya",
@@ -2439,6 +2723,8 @@
     33.86,
     133.77
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "大歩危(5)・土佐岩原(1)",
    "hotels": 6,
    "reviews_total": 2138,
@@ -2451,7 +2737,7 @@
    "overlap": 0.0,
    "big": false,
    "eligible": false,
-   "reason": "宿が15軒未満"
+   "reason": "宿が10軒未満"
   },
   {
    "key": "yamaga",
@@ -2461,6 +2747,8 @@
     33.017,
     130.692
    ],
+   "center_source": "手入力",
+   "radius_km": 3.0,
    "stations": "玉名(5)・熊本(3)・木葉(2)",
    "hotels": 14,
    "reviews_total": 4154,
@@ -2473,51 +2761,7 @@
    "overlap": 0.0,
    "big": false,
    "eligible": false,
-   "reason": "宿が15軒未満"
-  },
-  {
-   "key": "amagase",
-   "label": "天ヶ瀬",
-   "pref": "大分",
-   "center": [
-    33.287,
-    131.084
-   ],
-   "stations": "北山田(1)・杉河内(1)・天ヶ瀬(1)",
-   "hotels": 3,
-   "reviews_total": 106,
-   "reviews_per_hotel": 35.3,
-   "rating": 4.62,
-   "lat": 33.2648856,
-   "lng": 131.0653443,
-   "access": 534.8,
-   "nearest_metro": "福岡・北九州 約70km",
-   "overlap": 0.0,
-   "big": false,
-   "eligible": false,
-   "reason": "宿が15軒未満"
-  },
-  {
-   "key": "harazuru",
-   "label": "原鶴",
-   "pref": "福岡",
-   "center": [
-    33.387,
-    130.766
-   ],
-   "stations": "",
-   "hotels": 0,
-   "reviews_total": 0,
-   "reviews_per_hotel": 0,
-   "rating": null,
-   "lat": 33.387,
-   "lng": 130.766,
-   "access": 591.4,
-   "nearest_metro": "福岡・北九州 約39km",
-   "overlap": 0,
-   "big": false,
-   "eligible": false,
-   "reason": "宿が15軒未満"
+   "reason": "宿が15軒未満(10〜14軒)"
   }
  ]
 }
