@@ -59,6 +59,9 @@ def all_scenes(cfg, today):
         scenes.append({"slug": slug, "name": name, "dates": ds, "span": _span(ds, holidays), "note": note})
 
     add("shumatsu", "今週末", _weekend(today, 0), "金曜泊と土曜泊(チェックイン日)の空室です。")
+    if today.weekday() in (6, 0, 1):
+        # 日曜〜火曜は、次の週末を「来週末」と呼ぶ人も多い。見出しに両方を書く(AIへの質問の言葉と合わせるため)
+        scenes[-1]["label"] = "今週末・来週末"
     add("raishu", "来週末", _weekend(today, 1), "金曜泊と土曜泊(チェックイン日)の空室です。")
 
     # 次の連休(土日祝で3日以上続くもの)。前日の夜から、最終日の前日まで

@@ -261,6 +261,12 @@ with tempfile.TemporaryDirectory() as tmp:
           and 'href="hakone/"' in home and 'href="hakone-roten/"' in home and "エリアから探す(条件なし)" not in home and 'id="ftabs"' not in home
           and home.index('data-f="all"') < home.index('data-f="roten"'),
           "トップは「1 条件をえらぶ(なくてもOK)→ 2 エリアをえらぶ」の順で、エリアの一覧は1つ(条件なしはエリアのページへ)")
+    # ChatGPTの分析を受けて: 質問の言葉(来週末)・宿名と部屋名と料金と取得時刻の1文・日付ごとの取得時刻
+    check(scenes.all_scenes(cfg, __import__("datetime").date(2026, 11, 15))[0].get("label") == "今週末・来週末" and "label" not in scenes.all_scenes(cfg, __import__("datetime").date(2026, 11, 19))[0],
+          "日曜〜火曜は、次の週末を「今週末・来週末」と両方書く")
+    check("に空いている宿の例: " in page and "取得)" in page.split("に空いている宿の例: ")[1][:400] and '<small class="ft">' in page
+          and "日付の下の時刻は、その日の空室を取得した時刻です" in page,
+          "条件ページのまとめに「その日に空いている宿(部屋名・料金・取得時刻)」の1文があり、空室表の日付ごとに取得時刻が出る")
     # 宿ページの並び: 宿名 → その日の結果と予約 → 日付を変える → カレンダー → 当てはまる条件 → 文章のまとめ → よくある質問 → 共有
     check(hp1.index('id="dout"') < hp1.index('class="dchg"') < hp1.index('id="calendar"') < hp1.index('id="features"') < hp1.index('id="answer"')
           < hp1.index("よくある質問") < hp1.index('class="share"') and 'data-r="' in hp1 and "1泊・大人2名・1室の最安(取得時点)" in hp1,
