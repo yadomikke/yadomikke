@@ -28,6 +28,7 @@ JST = timezone(timedelta(hours=9))
 
 WEIGHTS = {"popular": 0.40, "access": 0.30, "hotels": 0.20, "efficiency": 0.10}
 MIN_HOTELS, BIG_HOTELS, MAX_OVERLAP = 15, 500, 0.30
+NEAR_MIN = 10            # 10〜14軒は「宿が少なめ」として、対象外の一覧に分けて出す
 DECAY_KM = 150
 
 # 大都市圏(中心の緯度・経度、人口の目安・万人)
@@ -39,11 +40,12 @@ METROS = [
 
 # 候補: (キー, 表示名, 都道府県, 温泉街の中心の緯度, 経度)。中心から半径 RADIUS_KM 以内の宿だけを数える
 # (楽天の地区名で探すと、市全体のビジネスホテルが混ざるため。位置は目安で、結果の「近くの駅」で確かめる)
-RADIUS_KM = 3.0
+RADIUS_KM = 3.0          # 市街地に近い温泉(道後・浅間など)は、候補ごとに 1.5km にしている(市内のビジネスホテルを混ぜないため)
+KEYWORD_API, KEYWORD_VER = "KeywordHotelSearch", "20170426"
 CANDIDATES = [
     ("noboribetsu", "登別", "北海道", 42.497, 141.146), ("jozankei", "定山渓", "北海道", 42.966, 141.161),
     ("toya", "洞爺湖", "北海道", 42.565, 140.818), ("akan", "阿寒湖", "北海道", 43.434, 144.095),
-    ("yunokawa", "湯の川", "北海道", 41.778, 140.789), ("sounkyo", "層雲峡", "北海道", 43.724, 142.946),
+    ("yunokawa", "湯の川", "北海道", 41.778, 140.789, 1.5), ("sounkyo", "層雲峡", "北海道", 43.724, 142.946),
     ("tokachigawa", "十勝川", "北海道", 42.937, 143.284), ("niseko", "ニセコ", "北海道", 42.860, 140.705),
     ("asamushi", "浅虫", "青森", 40.896, 140.865), ("sukayu", "酸ヶ湯・八甲田", "青森", 40.649, 140.851),
     ("hanamaki", "花巻温泉", "岩手", 39.437, 141.082), ("tsunagi", "繋", "岩手", 39.698, 141.007),
@@ -65,7 +67,7 @@ CANDIDATES = [
     ("shirahone", "白骨・乗鞍", "長野", 36.120, 137.620), ("nozawa", "野沢", "長野", 36.923, 138.447),
     ("yudanaka", "湯田中・渋", "長野", 36.736, 138.424), ("bessho", "別所", "長野", 36.358, 138.152),
     ("hakuba", "白馬", "長野", 36.698, 137.846), ("hirugami", "昼神", "長野", 35.474, 137.756),
-    ("asama", "浅間温泉", "長野", 36.264, 137.991), ("tateshina", "蓼科", "長野", 36.060, 138.260),
+    ("asama", "浅間温泉", "長野", 36.264, 137.991, 1.5), ("tateshina", "蓼科", "長野", 36.060, 138.260),
     ("echigoyuzawa", "越後湯沢", "新潟", 36.935, 138.808), ("tsukioka", "月岡", "新潟", 37.880, 139.270),
     ("unazuki", "宇奈月", "富山", 36.814, 137.582), ("wakura", "和倉", "石川", 37.090, 136.920),
     ("yamashiro", "山代", "石川", 36.293, 136.355), ("yamanaka", "山中", "石川", 36.248, 136.371),
@@ -80,12 +82,12 @@ CANDIDATES = [
     ("tamatsukuri", "玉造", "島根", 35.420, 133.012), ("kaike", "皆生", "鳥取", 35.447, 133.360), ("misasa", "三朝", "鳥取", 35.410, 133.869),
     ("yubara", "湯原", "岡山", 35.198, 133.712), ("yunogo", "湯郷", "岡山", 35.017, 134.143),
     ("yuda", "湯田", "山口", 34.164, 131.459), ("nagatoyumoto", "長門湯本", "山口", 34.317, 131.183),
-    ("dogo", "道後", "愛媛", 33.852, 132.786), ("iya", "大歩危・祖谷", "徳島", 33.860, 133.770), ("kotohira", "琴平", "香川", 34.184, 133.817),
+    ("dogo", "道後", "愛媛", 33.852, 132.786, 1.5), ("iya", "大歩危・祖谷", "徳島", 33.860, 133.770), ("kotohira", "琴平", "香川", 34.184, 133.817),
     ("ureshino", "嬉野", "佐賀", 33.101, 129.989), ("takeo", "武雄", "佐賀", 33.195, 130.016),
     ("unzen", "雲仙", "長崎", 32.744, 130.262), ("obama", "小浜", "長崎", 32.727, 130.208),
     ("ibusuki", "指宿", "鹿児島", 31.236, 130.645), ("kirishima", "霧島温泉郷", "鹿児島", 31.870, 130.850),
     ("aso", "阿蘇内牧", "熊本", 32.981, 131.037), ("yamaga", "山鹿", "熊本", 33.017, 130.692), ("hitoyoshi", "人吉", "熊本", 32.211, 130.762),
-    ("amagase", "天ヶ瀬", "大分", 33.287, 131.084), ("harazuru", "原鶴", "福岡", 33.387, 130.766), ("futsukaichi", "二日市", "福岡", 33.506, 130.528),
+    ("amagase", "天ヶ瀬", "大分", 33.287, 131.084), ("harazuru", "原鶴", "福岡", 33.387, 130.766), ("futsukaichi", "二日市", "福岡", 33.506, 130.528, 1.5),
 ]
 
 
@@ -97,13 +99,38 @@ def km(a, b, c, d):
     return 2 * r * math.asin(math.sqrt(h))
 
 
-def search(client, lat, lng):
+def keyword_center(client, label, pref):
+    """「○○温泉」で宿を探し、その県の宿の位置の真ん中を温泉街の中心とする(3軒未満なら None)。
+    手で入れた位置がずれていても、楽天のデータから中心を決め直せるようにするため"""
+    base = label.split("・")[0].split("(")[0]
+    kw = base if base.endswith("温泉") or base.endswith("温泉郷") else base + "温泉"
+    try:
+        data = client.call(KEYWORD_API, keyword=kw, hits=30, responseType="small", datumType=1)
+    except (rk.NotFound, rk.ApiError, rk.AuthError):
+        return None, kw
+    pts = []
+    for e in rk.split_hotels(data).values():
+        b = e["basic"]
+        if pref not in str(b.get("address1", "")):
+            continue
+        try:
+            la, ln = float(b.get("latitude")), float(b.get("longitude"))
+        except (TypeError, ValueError):
+            continue
+        if 20 <= la <= 46 and 122 <= ln <= 154:
+            pts.append((la, ln))
+    if len(pts) < 3:
+        return None, kw
+    return (statistics.median(p[0] for p in pts), statistics.median(p[1] for p in pts)), kw
+
+
+def search(client, lat, lng, radius=RADIUS_KM):
     """中心から半径 RADIUS_KM 以内の宿(楽天の施設検索の「位置と半径」で探す)"""
     out = {}
     page = 1
     while True:
         try:
-            data = client.call("SimpleHotelSearch", latitude=lat, longitude=lng, searchRadius=RADIUS_KM,
+            data = client.call("SimpleHotelSearch", latitude=lat, longitude=lng, searchRadius=radius,
                                hits=30, page=page, responseType="small", datumType=1)
         except rk.NotFound:
             break
@@ -151,14 +178,23 @@ def main():
     app, key, aff = (os.environ.get(k, "").strip() for k in ("RAKUTEN_APP_ID", "RAKUTEN_ACCESS_KEY", "RAKUTEN_AFFILIATE_ID"))
     if not app or not key:
         raise SystemExit("RAKUTEN_APP_ID と RAKUTEN_ACCESS_KEY が必要です")
-    client = rk.Client(app, key, aff, referer=cfg["site"]["url"], base=cfg["api"]["base"], versions=cfg["api"]["versions"])
+    client = rk.Client(app, key, aff, referer=cfg["site"]["url"], base=cfg["api"]["base"],
+                       versions=dict(cfg["api"]["versions"], **{KEYWORD_API: KEYWORD_VER}))
     existing = json.loads((data_dir / "hotels.json").read_text(encoding="utf-8")).get("areas", {})
     have = {h["no"] for lst in existing.values() for h in lst}
 
     rows = []
-    for ck, label, pref, clat, clng in CANDIDATES:
-        r = {"key": ck, "label": label, "pref": pref, "center": [clat, clng]}
-        hs = search(client, clat, clng)
+    for cand in CANDIDATES:
+        ck, label, pref, clat, clng = cand[:5]
+        radius = cand[5] if len(cand) > 5 else RADIUS_KM
+        kc, kw = keyword_center(client, label, pref)
+        moved = round(km(clat, clng, *kc), 1) if kc else None
+        src = "手入力"
+        if kc and moved > 1.0:
+            # 手入力の位置と1km以上ずれていたら、楽天の「○○温泉」の宿の真ん中を使う
+            clat, clng, src = round(kc[0], 4), round(kc[1], 4), f"「{kw}」の宿の中心({moved}km補正)"
+        r = {"key": ck, "label": label, "pref": pref, "center": [clat, clng], "center_source": src, "radius_km": radius}
+        hs = search(client, clat, clng, radius)
         st = collections.Counter(h["station"] for h in hs.values() if h["station"]).most_common(3)
         r["stations"] = "・".join(f"{k}({v})" for k, v in st)
         n = len(hs)
@@ -181,12 +217,12 @@ def main():
                  rating=round(avg, 2) if avg else None, lat=lat, lng=lng, access=round(acc, 1),
                  nearest_metro=(f"{min(near)[1]} 約{round(min(near)[0])}km" if near else ""),
                  overlap=round(overlap, 2), big=n > BIG_HOTELS)
-        reason = ("宿が15軒未満" if n < MIN_HOTELS else "今のエリアと3割以上重なる" if overlap >= MAX_OVERLAP else "")
+        reason = (("宿が15軒未満(10〜14軒)" if n >= NEAR_MIN else "宿が10軒未満") if n < MIN_HOTELS else "今のエリアと3割以上重なる" if overlap >= MAX_OVERLAP else "")
         r["eligible"] = not reason
         if reason:
             r["reason"] = reason
         rows.append(r)
-        print(f"{label}: 駅 {r['stations']} 宿{n} 口コミ{tot} 近さ{r['access']} 重なり{overlap:.0%} {reason}", flush=True)
+        print(f"{label}: 中心={src} 半径{radius}km 駅 {r['stations']} 宿{n} 口コミ{tot} 近さ{r['access']} 重なり{overlap:.0%} {reason}", flush=True)
 
     ranked = score(rows)
     out = {"generated_at": datetime.now(JST).isoformat(timespec="seconds"), "api_requests": client.requests,
