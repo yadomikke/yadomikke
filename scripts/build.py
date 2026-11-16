@@ -560,6 +560,26 @@ def owl_inner(mood="normal"):
     return OWL_SVG[:_EYE_FROM] + mid + OWL_SVG[_EYE_TO:]
 
 
+def hero_banner(thin=False):
+    """ページ上部のイラスト(山と湯けむり・フクロウ)。写真ではなく図形なので軽い(約2KB)。thin=細い帯(エリア・条件ページ)"""
+    st = ('<g fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".85">'
+          '<path d="M{x} {y}c-6-8 6-12 0-20s6-12 0-20"/><path d="M{x2} {y}c-6-8 6-12 0-20s6-12 0-20"/><path d="M{x3} {y}c-6-8 6-12 0-20"/></g>')
+    # 横長(960×150)で描き、右寄せで切り取る。スマホは右側の390だけ(山・太陽・フクロウ)、パソコンは全体が見える
+    steam = (st.format(x=640, y=128, x2=654, x3=668) + st.format(x=820, y=130, x2=834, x3=848)
+             + st.format(x=300, y=126, x2=314, x3=328))
+    svg = ('<svg viewBox="0 0 960 150" preserveAspectRatio="xMaxYMax slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'
+           '<defs><linearGradient id="hbsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe6f5"/><stop offset="1" stop-color="#f4f9fc"/></linearGradient></defs>'
+           '<rect width="960" height="150" fill="url(#hbsky)"/><circle cx="890" cy="38" r="16" fill="#ffe08a"/>'
+           '<path d="M0 120L70 70l60 34 90-52 80 50 60-26 90 46 70-30 50 26v32H0z" fill="#9cc3dd"/>'
+           '<path d="M570 118l60-56 40 30 50-52 60 56 40-28 70 56 70-40v66H570z" fill="#9cc3dd"/>'
+           '<path d="M220 52l14 13-8-2-6 7-6-7-8 2z" fill="#fff"/><path d="M720 40l18 17-10-3-8 9-8-9-10 3z" fill="#fff"/>'
+           '<path d="M0 128l100-28 90 26 110-30 120 34 150 2v18H0z" fill="#6f9fc4"/>'
+           '<path d="M570 132l80-36 60 22 70-32 90 40 90-26v50H570z" fill="#6f9fc4"/>'
+           '<path d="M0 150v-12c120-14 240-14 360-6s240 8 330 0 180-10 270-6v24z" fill="#1d3557"/>'
+           + steam + f'<g transform="translate(900 96) scale(1.4)">{owl_inner("happy")}</g></svg>')
+    return f'<div class="hbanner{" thin" if thin else ""}">{svg}</div>'
+
+
 def owl_html(mood, cls="mood"):
     return f'<svg class="{cls}" viewBox="0 0 32 32" aria-hidden="true">{owl_inner(mood)}</svg>'
 
@@ -622,6 +642,10 @@ a{color:var(--link)}
 .demo{background:#b42318;color:#fff;text-align:center;padding:10px 12px;font-size:14px;font-weight:700}
 .wrap{max-width:960px;margin:0 auto;padding:0 12px}
 .hero{padding:18px 4px 6px}
+.hbanner{margin:0 -12px;height:150px;overflow:hidden;border-radius:0 0 18px 18px;background:#e6f1f8}.hbanner svg{display:block;width:100%;height:100%}
+.hbanner.thin{height:84px}
+@media (min-width:984px){.hbanner{margin:12px 0 0;border-radius:18px;height:160px}.hbanner.thin{height:110px}}
+.trust{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 2px}.trust span{font-size:12.5px;font-weight:700;color:var(--navy);background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 10px}
 .crumb{font-size:13px;color:var(--sub);margin-bottom:6px}.crumb a{color:var(--sub)}
 h1{font-size:24px;line-height:1.4;font-weight:800;color:var(--navy);text-wrap:balance}
 .lead{font-size:15px;color:#3b4148;margin-top:6px}
@@ -2742,7 +2766,7 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
     ld_html = '<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False).replace("</", "<\\/") + "</script>"
 
     out = [head(cfg, title, desc, canonical, demo, ld_html), header_html(cfg, demo), '<div class="wrap">']
-    out.append(f'<div class="hero"><div class="crumb"><a href="../">{esc(site["name"])}</a> › <a href="../{esc(page["area"])}/">{esc(alabel)}</a> › {esc(flabel)}</div>'
+    out.append(hero_banner(thin=True) + f'<div class="hero"><div class="crumb"><a href="../">{esc(site["name"])}</a> › <a href="../{esc(page["area"])}/">{esc(alabel)}</a> › {esc(flabel)}</div>'
                f'<h1>{esc(page["title"])}</h1><p class="lead">{esc(page.get("lead", ""))} <a href="#switch">エリア・条件を変える ↓</a></p></div>')
 
     if rows:
@@ -3048,7 +3072,7 @@ def render_area(cfg, hotels, state, area, wl, sums, now, demo):
                       + f"です(今後{areastat.PRICE_DAYS}日の宿泊日・{cond_text(cfg)})。")
         bullets.append(souba_lead)
     feats = [p for p in LIVE if p["area"] == area]
-    inner = [f'<div class="hero"><div class="crumb"><a href="../">{esc(site["name"])}</a> › {esc(alabel)}</div>'
+    inner = [hero_banner(thin=True) + f'<div class="hero"><div class="crumb"><a href="../">{esc(site["name"])}</a> › {esc(alabel)}</div>'
              f"<h1>{esc(alabel)}の宿の空室【今夜・明日・今週末】</h1>"
              f'<p class="lead">{esc(alabel)}の宿の空きを、日程ごとに自動で数えています。条件(客室露天風呂など)で絞り込むこともできます。</p></div>',
              answer_html(fmt_dt(newest) if newest else "", lead, bullets,
@@ -3464,13 +3488,18 @@ def btn_plain(url, text, cls=""):
 FCHIP_SHORT = {"pet": "ペット可"}   # トップの条件ボタンに出す短い名前(ないものは short か label)
 
 
-def render_home(cfg, digests, now, demo, scene_list=(), answer=("", ""), area_today=None):
+def render_home(cfg, digests, now, demo, scene_list=(), answer=("", ""), area_today=None, n_hotels=0):
     site = cfg["site"]
     base = site["url"].rstrip("/")
     canonical = base + "/"
     area_today = area_today or {}
-    inner = ['<div class="hero"><h1>宿の空室を、日付からさがす</h1>'
-             '<p class="lead">条件(なくてもOK)とエリアを選ぶと、その空室表へ進めます。</p></div>', answer[0]]
+    # 誰が・どうやって集めた数字かを、最初の画面に小さく出す(安心して楽天へ進んでもらうため)
+    soon_h = cfg.get("refresh", {}).get("soon_hours", 4)
+    trust = ('<div class="trust"><span>楽天トラベルの空室データ</span>'
+             f'<span>今日・明日は約{soon_h}時間ごとに更新</span>'
+             f'<span>{len(cfg["areas"])}温泉地' + (f'・約{n_hotels:,}軒' if n_hotels else "") + '</span></div>')
+    inner = [hero_banner(), '<div class="hero"><h1>宿の空室を、日付からさがす</h1>'
+             '<p class="lead">条件(なくてもOK)とエリアを選ぶと、その空室表へ進めます。</p>' + trust + '</div>', answer[0]]
     feats = [(k, f) for k, f in cfg["features"].items() if any(d[0]["feature"] == k for d in digests)]
     # ①条件 → ②エリア の一方向。エリアの一覧は1つだけで、選んだ条件に合わせて中身(リンク先・空き数)を切り替える
     # (ブラウザの機能が使えないときは、条件ごとの一覧が順に並ぶ)
@@ -3789,7 +3818,8 @@ def main():
         shell(cfg, args.demo, "/", f"ページが見つかりません | {site0['name']}", "お探しのページは見つかりませんでした。",
               site0["url"].rstrip("/") + "/", inner404, None, noindex=True), encoding="utf-8")
     (out_dir / "index.html").write_text(render_home(cfg, digests, now, args.demo, page_scenes(cfg, now.date()), home_answer(cfg, when_sums, wl, set(cfg.get("holidays", []))),
-                                                           {a: len(area_vacancy(hotels, state, a, [now.date()])["vacant"]) for a in cfg["areas"]}), encoding="utf-8")
+                                                           {a: len(area_vacancy(hotels, state, a, [now.date()])["vacant"]) for a in cfg["areas"]},
+                                                           round(len({h["no"] for a in cfg["areas"] for h in hotels.get("areas", {}).get(a, [])}), -2)), encoding="utf-8")
 
     og = ROOT / "assets" / "ogp.png"
     if og.exists():

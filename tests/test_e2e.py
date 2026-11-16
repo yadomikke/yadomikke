@@ -276,6 +276,9 @@ with tempfile.TemporaryDirectory() as tmp:
     check('<details class="amore"><summary>くわしい数字を見る(' in _ans and "に空いている宿の例: " in _ans.split('class="amore"')[1]
           and _ans.split('class="amore"')[0].count("<li>") == 2 and 'class="amore"' in home,
           "まとめの欄は最初の2行だけ見せ、残りは「くわしい数字を見る」に折りたたむ(文章はページの中に残る)")
+    check('class="hbanner"' in home and 'class="trust"' in home and "楽天トラベルの空室データ" in home and 'class="hbanner thin"' in page
+          and home.index('class="hbanner"') < home.index("<h1>"),
+          "トップの上部に山と湯けむりのイラストと、データの出どころ(楽天・更新間隔・温泉地数)を出す。条件ページは細い帯")
     # 宿ページの並び: 宿名 → その日の結果と予約 → 日付を変える → カレンダー → 当てはまる条件 → 文章のまとめ → よくある質問 → 共有
     check(hp1.index('id="dout"') < hp1.index('class="dchg"') < hp1.index('id="calendar"') < hp1.index('id="features"') < hp1.index('id="answer"')
           < hp1.index("よくある質問") < hp1.index('class="share"') and 'data-r="' in hp1 and "1泊・大人2名・1室の最安(取得時点)" in hp1,
