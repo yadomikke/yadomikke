@@ -188,6 +188,11 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .mini b{font-size:13px;font-weight:700}.mini i{font-style:normal;font-size:16px;font-weight:800}
 .mini .ok{background:var(--okbg);color:var(--ok)}.mini .part{background:var(--partbg);color:var(--part)}.mini .full{background:#eceff2;color:#6b7280}
 .mini .pad{background:transparent}
+.mini button{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:56px;border-radius:8px;border:0;font:inherit;font-size:13px;line-height:1.25;background:#f4f4f4;color:#888;cursor:pointer;padding:0}
+.iosn{display:flex;gap:8px;align-items:flex-start;background:#fff8e1;border:1px solid #f0c36d;border-radius:10px;padding:10px 12px;margin:10px 0;font-size:14px;line-height:1.55}.iosn p{margin:0;flex:1}.iosn button{flex:none;border:0;background:transparent;font-size:20px;line-height:1;color:#8a6d3b;cursor:pointer;padding:0 4px}
+.qalt{margin:8px 0 0;padding-top:6px;border-top:1px solid var(--line)}.qalt .qm{margin:0 0 2px}
+.sbar{display:none}
+@media (max-width:760px){.sbar{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff;border-top:1px solid var(--line);box-shadow:0 -2px 10px rgba(0,0,0,.08);padding:8px 12px calc(8px + env(safe-area-inset-bottom))}.sbar[hidden],.sbar.off{display:none}.sbar .st{min-width:0;font-size:13px;line-height:1.35}.sbar .st b{display:block;font-size:15px;color:var(--navy)}.sbar .st small{color:var(--sub)}.sbar .cta{flex:none;padding:10px 14px;font-size:15px;margin:0}body.hasbar{padding-bottom:76px}}
 .hl{list-style:none;padding:0}
 .hl li{padding:10px 0;border-top:1px dashed var(--line);font-size:15px}
 .hl li:first-child{border-top:0}.hl a{font-weight:800}.hl small{display:block;color:var(--sub);font-size:13px}
@@ -227,5 +232,10 @@ if(!s){var u='',h='';try{u=(new URLSearchParams(location.search).get('utm_source
 try{h=document.referrer?new URL(document.referrer).hostname:''}catch(e){}if(h===location.hostname)h='';var t=u+' '+h;
 s=/chatgpt|openai/.test(t)?'chatgpt':/perplexity/.test(t)?'perplexity':/claude\.ai|anthropic/.test(t)?'claude':/gemini/.test(t)?'gemini':/copilot/.test(t)?'copilot':/google\./.test(t)?'google':/bing\./.test(t)?'bing':/yahoo\./.test(t)?'yahoo':(u||h)?'other':'direct';
 try{ss&&ss.setItem(k,s)}catch(e){}dl.push({event:'ym_landing',ym_src:s});}
+w.ymSrc=s;
 w.ymAff=function(){dl.push({event:'aff_click',ym_src:s,ym_page:location.pathname})};
-document.addEventListener('click',function(e){var a=e.target.closest?e.target.closest('a[href*="hb.afl.rakuten.co.jp"],a[href*="travel.rakuten.co.jp"]'):null;if(a)w.ymAff()},true);}catch(e){}})();</script></body></html>
+document.addEventListener('click',function(e){var a=e.target.closest?e.target.closest('a[href*="hb.afl.rakuten.co.jp"],a[href*="travel.rakuten.co.jp"]'):null;if(a)w.ymAff()},true);}catch(e){}})();(function(){try{var w=window,ss=null,k='ym_ios';if(w.ymSrc!=='chatgpt'||!/iPhone|iPad|iPod/.test(navigator.userAgent))return;
+try{ss=w.sessionStorage;if(ss.getItem(k))return;}catch(e){}var wr=document.querySelector('.wrap');if(!wr)return;
+var b=document.createElement('div');b.className='iosn';b.setAttribute('role','note');
+b.innerHTML='<p><b>ChatGPTアプリの中で開いています</b><br>このままだと楽天トラベルのログインが引き継がれないことがあります。画面右下の<b>🧭(Safariで開く)</b>から開くと、ログインしたまま予約できます。</p><button type="button" aria-label="閉じる">×</button>';
+b.querySelector('button').addEventListener('click',function(){b.remove();try{ss&&ss.setItem(k,'1')}catch(e){}});wr.insertBefore(b,wr.firstChild);}catch(e){}})();</script></body></html>
