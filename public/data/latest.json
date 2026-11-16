@@ -1,7 +1,7 @@
 {
  "name": "ヤドミッケ 温泉地の空室・料金データ",
  "description": "楽天トラベルの空室検索APIから自動で取得し、ヤドミッケが集計した、温泉地の宿の空き数と料金の最新値です。",
- "generated_at": "2026-11-16T09:42:11+09:00",
+ "generated_at": "2026-11-16T10:01:13+09:00",
  "source": "楽天トラベル 空室検索API(楽天ウェブサービス)",
  "attribution": "ヤドミッケ(楽天トラベルの空室データをもとに集計)",
  "site_url": "https://yadomikke.com/",
@@ -1162,7 +1162,7 @@
      "median_jpy": 6200,
      "p25_jpy": 4185,
      "p75_jpy": 15090,
-     "samples": 1693
+     "samples": 1695
     },
     "fri": {
      "label": "金曜",
@@ -1325,7 +1325,7 @@
      "median_jpy": 13200,
      "p25_jpy": 8600,
      "p75_jpy": 34000,
-     "samples": 1512
+     "samples": 1511
     },
     "fri": {
      "label": "金曜",
@@ -1987,7 +1987,7 @@
      "median_jpy": 9500,
      "p25_jpy": 6800,
      "p75_jpy": 16240,
-     "samples": 2424
+     "samples": 2422
     },
     "fri": {
      "label": "金曜",
@@ -2155,7 +2155,7 @@
      "median_jpy": 12100,
      "p25_jpy": 7623,
      "p75_jpy": 29260,
-     "samples": 993
+     "samples": 995
     },
     "fri": {
      "label": "金曜",
@@ -2479,9 +2479,9 @@
     "wd": {
      "label": "平日(日〜木)",
      "median_jpy": 11400,
-     "p25_jpy": 6975,
+     "p25_jpy": 7000,
      "p75_jpy": 20240,
-     "samples": 758
+     "samples": 760
     },
     "fri": {
      "label": "金曜",
@@ -2821,8 +2821,8 @@
      "label": "平日(日〜木)",
      "median_jpy": 6750,
      "p25_jpy": 3870,
-     "p75_jpy": 14800,
-     "samples": 1964
+     "p75_jpy": 14850,
+     "samples": 1966
     },
     "fri": {
      "label": "金曜",
