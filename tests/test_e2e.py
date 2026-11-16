@@ -256,6 +256,11 @@ with tempfile.TemporaryDirectory() as tmp:
     check(hp1.index('id="dpick"') < hp1.index('id="answer"') and 'id="maincta"' in hp1
           and "の空室・料金を楽天トラベルで確認 ›" in hp1 and "mc.href=link" in hp1,
           "宿ページは、指定の日付の空きを宿名のすぐ下に出し、大きな予約ボタンもその日付にする(開く日付をボタンに書く)")
+    # トップ: ①条件 → ②エリア の一方向。エリアの一覧は1つだけ(選んだ条件で中身が切り替わる)
+    check('id="finder"' in home and home.count('<div class="agrid">') == home.count('class="fgrp"') and 'data-f="all"' in home
+          and 'href="hakone/"' in home and 'href="hakone-roten/"' in home and "エリアから探す(条件なし)" not in home and 'id="ftabs"' not in home
+          and home.index('data-f="all"') < home.index('data-f="roten"'),
+          "トップは「1 条件をえらぶ(なくてもOK)→ 2 エリアをえらぶ」の順で、エリアの一覧は1つ(条件なしはエリアのページへ)")
     # 競合の分析から: ChatGPTアプリの案内・満室の日の最新確認・代わりの宿・下の予約バー
     check("ChatGPTアプリの中で開いています" in hp1 and "w.ymSrc!=='chatgpt'" in hp1 and "iPhone|iPad|iPod" in hp1 and "ChatGPTアプリの中で開いています" in page,
           "iPhoneのChatGPTアプリから来た人にだけ、Safariで開き直す案内を出す(全ページ)")

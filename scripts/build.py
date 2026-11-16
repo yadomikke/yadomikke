@@ -723,6 +723,18 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .ftabs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
 .ftabs button{min-height:46px;padding:10px 18px;border:2px solid var(--navy);border-radius:999px;background:#fff;color:var(--navy);font:inherit;font-weight:700;font-size:16px;cursor:pointer}
 .ftabs button[aria-pressed=true]{background:var(--navy);color:#fff}
+.finder h2{margin-bottom:4px}.fstep{margin:12px 0 6px;font-weight:700;color:var(--navy);font-size:15px}
+.fstep b{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--navy);color:#fff;font-size:13px;margin-right:6px}
+.fstep small{font-weight:400;color:var(--sub);font-size:12px;margin-left:4px}
+.fchips{display:flex;flex-wrap:wrap;gap:6px}
+.fchips a{display:inline-flex;align-items:center;min-height:38px;padding:0 12px;border:1px solid #bbb;border-radius:999px;background:#fff;color:var(--navy);font-weight:700;font-size:13.5px;text-decoration:none;white-space:nowrap}
+.fchips a.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.fgrp{margin:6px 0 10px}.fgrp h3{font-size:13px;color:var(--sub);margin:4px 0 6px;font-weight:400}.fgrp h3 b{color:var(--navy);font-weight:700}
+.agrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}@media (min-width:720px){.agrid{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.agrid a,.agrid span{display:flex;flex-direction:column;justify-content:center;min-height:52px;padding:6px 8px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--navy);text-decoration:none;line-height:1.3}
+.agrid a:hover{background:#eef3fa}.agrid b{font-size:15px}.agrid small{font-size:11px;color:var(--sub);font-weight:400}
+.agrid .na{background:#f4f4f4;color:#aaa}.agrid .na small{color:#aaa}
+.fmore{margin:8px 0 0;font-size:14px}
 .achips a{display:inline-flex;flex-direction:column;gap:2px;padding:10px 18px;line-height:1.3}
 .achips a small{font-weight:400;font-size:12px;color:var(--sub)}
 .il{margin-top:4px;font-size:14px}
@@ -3219,9 +3231,7 @@ def home_answer(cfg, sums, wl, holidays):
             + f"です({cond_text(cfg)}、条件を問わない数)。")
     html = (f'<section class="answer" id="answer">{owl_html("happy")}<h2>いま空いている宿の数<small>{esc(fmt_dt(newest))} 時点</small></h2>'
             f'<p class="lead2">{esc(lead)}</p><ul class="ab">{"".join(items)}<li><a href="ugoki/">きのうから空きが出た宿</a></li>'
-            '<li><a href="souba/">エリア・曜日別の料金相場</a></li><li><a href="report/">月別の空室レポート</a></li></ul></section>'
-            '<nav class="chips" aria-label="エリアから探す"><b>エリアから探す(条件なし)</b>'
-            + "".join(f'<a href="{esc(a)}/">{esc(v["label"])}</a>' for a, v in cfg["areas"].items()) + "</nav>")
+            '<li><a href="souba/">エリア・曜日別の料金相場</a></li><li><a href="report/">月別の空室レポート</a></li></ul></section>')
     return html, lead
 
 
@@ -3371,38 +3381,57 @@ def btn_plain(url, text, cls=""):
     return f'<a{c} href="{esc(u)}" target="_blank" rel="sponsored nofollow noopener">{text}</a>'
 
 
-def render_home(cfg, digests, now, demo, scene_list=(), answer=("", "")):
+FCHIP_SHORT = {"pet": "ペット可"}   # トップの条件ボタンに出す短い名前(ないものは short か label)
+
+
+def render_home(cfg, digests, now, demo, scene_list=(), answer=("", ""), area_today=None):
     site = cfg["site"]
     base = site["url"].rstrip("/")
     canonical = base + "/"
+    area_today = area_today or {}
     inner = ['<div class="hero"><h1>宿の空室を、日付からさがす</h1>'
-             '<p class="lead">条件(客室露天風呂など)とエリアを選んでください。</p></div>', answer[0]]
+             '<p class="lead">条件(なくてもOK)とエリアを選ぶと、その空室表へ進めます。</p></div>', answer[0]]
     feats = [(k, f) for k, f in cfg["features"].items() if any(d[0]["feature"] == k for d in digests)]
-    if len(feats) > 1:
-        inner.append('<div class="ftabs" id="ftabs" role="group" aria-label="条件を選ぶ" hidden>'
-                     + "".join(f'<button type="button" data-f="{esc(k)}" aria-pressed="{"true" if i == 0 else "false"}">{esc(f["label"])}</button>' for i, (k, f) in enumerate(feats))
-                     + "</div>")
+    # ①条件 → ②エリア の一方向。エリアの一覧は1つだけで、選んだ条件に合わせて中身(リンク先・空き数)を切り替える
+    # (ブラウザの機能が使えないときは、条件ごとの一覧が順に並ぶ)
+    def chip(k, label, href, on):
+        return (f'<a href="{esc(href)}" data-f="{esc(k)}" role="button" aria-pressed="{"true" if on else "false"}"'
+                + (' class="on"' if on else "") + f">{esc(label)}</a>")
+    room = [(k, f) for k, f in feats if not is_hotel_feat(cfg, k)]
+    hotelf = [(k, f) for k, f in feats if is_hotel_feat(cfg, k)]
+    short = lambda k, f: FCHIP_SHORT.get(k) or f.get("short") or f["label"]
+    rows = [chip("all", "指定なし", "#finder", True)] + [chip(k, short(k, f), hub_slug(cfg, k) + "/", False) for k, f in room + hotelf]
+    grps = []
+    cells = []
+    for a, v in cfg["areas"].items():
+        n = area_today.get(a)
+        cells.append(f'<a href="{esc(a)}/"><b>{esc(v["label"])}</b><small>' + (f"今日の空き {n}軒" if n is not None else "空室を見る") + "</small></a>")
+    grps.append('<div class="fgrp" data-f="all"><h3>選択中: <b>条件なし</b>(エリアのページへ)</h3><div class="agrid">' + "".join(cells) + "</div></div>")
     for fkey, f in feats:
-        items = [d for d in digests if d[0]["feature"] == fkey]
-        lis = []
-        for p, n, today_n, digest in items:
-            alabel = cfg["areas"][p["area"]]["label"]
-            sub = (f"今日の空き {today_n}軒 / 掲載 {n}軒" if n else "データを準備中")
-            lis.append(f'<a href="{esc(p["slug"])}/">{esc(alabel)}<small>{esc(sub)}</small></a>')
-        lis.append(f'<a href="{esc(hub_slug(cfg, fkey))}/">全エリアまとめ<small>おすすめ・エリア比較</small></a>')
-        inner.append(f'<section class="card fsec" data-f="{esc(fkey)}"><h2>{esc(f["label"])}の宿を、エリアからさがす</h2>'
-                     f'<nav class="chips achips" aria-label="エリアを選ぶ">{"".join(lis)}</nav>'
-                     + ("" if is_hotel_feat(cfg, fkey) else
-                        f'<nav class="chips" aria-label="日程から全エリアを探す"><b>日程から全エリアを探す</b>'
-                        + "".join(f'<a href="{esc(hub_slug(cfg, fkey))}/{esc(sc["slug"])}/">{esc(sc["name"])}</a>' for sc in scene_list)
-                        + '</nav>')
-                     + '</section>')
-    if len(feats) > 1:
-        inner.append("<script>(function(){var t=document.getElementById('ftabs');if(!t)return;t.hidden=false;"
-                     "var b=t.querySelectorAll('button'),s=document.querySelectorAll('.fsec');"
-                     "function show(f){b.forEach(function(x){x.setAttribute('aria-pressed',x.dataset.f===f?'true':'false')});"
-                     "s.forEach(function(x){x.hidden=x.dataset.f!==f})}"
-                     "b.forEach(function(x){x.addEventListener('click',function(){show(x.dataset.f)})});show(b[0].dataset.f)})();</script>")
+        bya = {d[0]["area"]: d for d in digests if d[0]["feature"] == fkey}
+        cells = []
+        for a, v in cfg["areas"].items():
+            d = bya.get(a)
+            if d:
+                p, n, today_n, _ = d
+                cells.append(f'<a href="{esc(p["slug"])}/"><b>{esc(v["label"])}</b><small>'
+                             + (f"今日の空き {today_n}軒" if n else "準備中") + "</small></a>")
+            else:
+                cells.append(f'<span class="na"><b>{esc(v["label"])}</b><small>対象の宿なし</small></span>')
+        hub = hub_slug(cfg, fkey)
+        more = [f'<a href="{esc(hub)}/">{esc(short(fkey, f))}の全エリアまとめ ›</a>']
+        if not is_hotel_feat(cfg, fkey):
+            more += [f'<a href="{esc(hub)}/{esc(sc["slug"])}/">{esc(sc["name"])}</a>' for sc in scene_list]
+        grps.append(f'<div class="fgrp" data-f="{esc(fkey)}"><h3>選択中: <b>{esc(f["label"])}</b></h3><div class="agrid">' + "".join(cells) + "</div>"
+                    + '<p class="fmore">' + " ・ ".join(more) + "</p></div>")
+    inner.append('<section class="card finder" id="finder"><h2>エリアと条件でさがす</h2>'
+                 '<p class="fstep"><b>1</b>条件をえらぶ(なくてもOK)</p><nav class="fchips" id="fchips" aria-label="条件を選ぶ">' + "".join(rows) + "</nav>"
+                 '<p class="fstep"><b>2</b>エリアをえらぶ <small>数字は今日の空き軒数</small></p>' + "".join(grps) + "</section>")
+    inner.append("<script>(function(){var c=document.getElementById('fchips');if(!c)return;var b=c.querySelectorAll('a[data-f]'),g=document.querySelectorAll('.fgrp');"
+                 "function show(f){for(var i=0;i<b.length;i++){var on=b[i].getAttribute('data-f')===f;b[i].classList.toggle('on',on);b[i].setAttribute('aria-pressed',on?'true':'false');}"
+                 "for(var j=0;j<g.length;j++)g[j].hidden=g[j].getAttribute('data-f')!==f;}"
+                 "for(var i=0;i<b.length;i++){b[i].addEventListener('click',function(e){e.preventDefault();show(this.getAttribute('data-f'));});}"
+                 "document.getElementById('finder').classList.add('js');show('all');})();</script>")
     ans = [d for d in digests if d[3]]
     if ans:
         p, n, today_n, digest = ans[0]
@@ -3679,7 +3708,8 @@ def main():
     (out_dir / "404.html").write_text(
         shell(cfg, args.demo, "/", f"ページが見つかりません | {site0['name']}", "お探しのページは見つかりませんでした。",
               site0["url"].rstrip("/") + "/", inner404, None, noindex=True), encoding="utf-8")
-    (out_dir / "index.html").write_text(render_home(cfg, digests, now, args.demo, page_scenes(cfg, now.date()), home_answer(cfg, when_sums, wl, set(cfg.get("holidays", [])))), encoding="utf-8")
+    (out_dir / "index.html").write_text(render_home(cfg, digests, now, args.demo, page_scenes(cfg, now.date()), home_answer(cfg, when_sums, wl, set(cfg.get("holidays", []))),
+                                                           {a: len(area_vacancy(hotels, state, a, [now.date()])["vacant"]) for a in cfg["areas"]}), encoding="utf-8")
 
     og = ROOT / "assets" / "ogp.png"
     if og.exists():
