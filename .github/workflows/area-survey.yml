@@ -1,0 +1,46 @@
+name: 増やすエリアの調査(手動で実行)
+
+# 温泉地の候補を、楽天のデータ(宿数・口コミ件数・場所)で点数化して順位を付けます(scripts/area_survey.py)。
+# 手動でしか動きません。サイトのページや空室データは変えず、結果を data/area_survey.json に保存するだけです。
+# 楽天APIは1秒1回の上限があるため、毎時の空室更新と同じ順番待ちのグループで動かします(同時には動きません)。
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-vacancy
+  cancel-in-progress: false
+
+jobs:
+  survey:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 候補の温泉地を調べて点数を付ける
+        env:
+          RAKUTEN_APP_ID: ${{ secrets.RAKUTEN_APP_ID }}
+          RAKUTEN_ACCESS_KEY: ${{ secrets.RAKUTEN_ACCESS_KEY }}
+          RAKUTEN_AFFILIATE_ID: ${{ secrets.RAKUTEN_AFFILIATE_ID }}
+        run: python scripts/area_survey.py
+
+      - name: 結果を保存(サイトの公開はしません)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/area_survey.json
+          if ! git diff --cached --quiet; then
+            git commit -m "増やすエリアの調査結果 [CF-Pages-Skip]"
+            for i in 1 2 3; do
+              git push && break
+              git pull --rebase -X theirs origin main
+            done
+          fi
