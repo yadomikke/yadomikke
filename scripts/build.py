@@ -124,9 +124,15 @@ var q=new URLSearchParams(location.search),test=q.get('iabtest')==='1';
 // Safari に移ったあと(ボタンで開いたページには ym_ext=1 が付く)は何も出さない
 if(q.get('ym_ext')==='1'){try{ss&&ss.setItem('ym_ext','1')}catch(e){}dl.push({event:'iab_ext_open',ym_src:w.ymSrc});return;}
 try{if(ss&&ss.getItem('ym_ext'))return;}catch(e){}
+// 🧭で Safari に移った場合: アドレスには目印(ym_v=c)があるのに、このブラウザでは案内を出した記録がない → もう Safari にいる
+var seen=null;try{seen=ss&&ss.getItem('ym_iab')}catch(e){}
+if(!test&&q.get('ym_v')==='c'&&!seen){try{ss&&ss.setItem('ym_ext','1')}catch(e){}dl.push({event:'iab_ext_open',ym_src:w.ymSrc,ym_via:'compass'});return;}
 if(!test&&(w.ymSrc!=='chatgpt'||!/iPhone|iPad|iPod/.test(navigator.userAgent)))return;
+// アプリ内のブラウザにいる: 記録を残し、アドレスに目印を付ける(🧭で開いた先の Safari で見分けるため)
+try{ss&&ss.setItem('ym_iab','1')}catch(e){}
+try{if(q.get('ym_v')!=='c'){var u0=new URL(location.href);u0.searchParams.set('ym_v','c');history.replaceState(history.state,'',u0.toString());}}catch(e){}
 var BTN=test||w.YM_IAB_BTN===true;   // 「Safariで開く」ボタン(お試し中は ?iabtest=1 のときだけ)
-function extUrl(){var u=new URL(location.href);u.searchParams.delete('iabtest');u.searchParams.set('ym_ext','1');return 'x-safari-'+u.toString();}
+function extUrl(){var u=new URL(location.href);u.searchParams.delete('iabtest');u.searchParams.delete('ym_v');u.searchParams.set('ym_ext','1');return 'x-safari-'+u.toString();}
 function guide(box){box.innerHTML='<p class="ifb">うまく開かない場合は、画面右下の<b>🧭</b>を押すと Safari で開けます。</p><button type="button" class="icopy">リンクをコピー</button>';
  box.querySelector('.icopy').addEventListener('click',function(){var u=new URL(location.href);u.searchParams.delete('iabtest');try{navigator.clipboard.writeText(u.toString());this.textContent='コピーしました(Safariに貼り付け)';}catch(e){}dl.push({event:'iab_copy'});});}
 function btn(where){var box=d.createElement('div');box.className='iabb';var a=d.createElement('a');a.className='cta iabtn';a.href=extUrl();a.textContent='🧭 Safariで開く';

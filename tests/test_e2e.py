@@ -280,7 +280,7 @@ with tempfile.TemporaryDirectory() as tmp:
           and home.index('class="hbanner"') < home.index("<h1>"),
           "トップの上部に山と湯けむりのイラストと、データの出どころ(楽天・更新間隔・温泉地数)を出す。条件ページは細い帯")
     check("'x-safari-'+u.toString()" in hp1 and "q.get('iabtest')==='1'" in hp1 and "w.YM_IAB_BTN===true" in hp1 and "q.get('ym_ext')==='1'" in hp1
-          and "iab_btn_fail" in hp1 and "予約ボタンを押す前に" in hp1 and "getElementById('dpick')||d.getElementById('bookpanel')" in hp1,
+          and "iab_btn_fail" in hp1 and "q.get('ym_v')==='c'&&!seen" in hp1 and "ym_via:'compass'" in hp1 and "予約ボタンを押す前に" in hp1 and "getElementById('dpick')||d.getElementById('bookpanel')" in hp1,
           "ChatGPTアプリ(iPhone)の案内: 予約ボタンの前にSafariへ。「Safariで開く」ボタンはお試し(?iabtest=1)のときだけ。開けないときは🧭の案内とリンクのコピー")
     # 宿ページの並び: 宿名 → その日の結果と予約 → 日付を変える → カレンダー → 当てはまる条件 → 文章のまとめ → よくある質問 → 共有
     check(hp1.index('id="dout"') < hp1.index('class="dchg"') < hp1.index('id="calendar"') < hp1.index('id="features"') < hp1.index('id="answer"')
