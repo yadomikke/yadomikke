@@ -319,13 +319,20 @@ var q=new URLSearchParams(location.search),test=q.get('iabtest')==='1';
 // Safari に移ったあと(ボタンで開いたページには ym_ext=1 が付く)は何も出さない
 if(q.get('ym_ext')==='1'){try{ss&&ss.setItem('ym_ext','1')}catch(e){}dl.push({event:'iab_ext_open',ym_src:w.ymSrc});return;}
 try{if(ss&&ss.getItem('ym_ext'))return;}catch(e){}
+// 🧭で Safari に移った場合: アドレスには目印(ym_v=c)があるのに、このブラウザでは案内を出した記録がない → もう Safari にいる
+var seen=null;try{seen=ss&&ss.getItem('ym_iab')}catch(e){}
+if(!test&&q.get('ym_v')==='c'&&!seen){try{ss&&ss.setItem('ym_ext','1')}catch(e){}dl.push({event:'iab_ext_open',ym_src:w.ymSrc,ym_via:'compass'});return;}
 if(!test&&(w.ymSrc!=='chatgpt'||!/iPhone|iPad|iPod/.test(navigator.userAgent)))return;
-var BTN=test||w.YM_IAB_BTN===true;   // 「Safariで開く」ボタン(お試し中は ?iabtest=1 のときだけ)
-function extUrl(){var u=new URL(location.href);u.searchParams.delete('iabtest');u.searchParams.set('ym_ext','1');return 'x-safari-'+u.toString();}
-function guide(box){box.innerHTML='<p class="ifb">うまく開かない場合は、画面右下の<b>🧭</b>を押すと Safari で開けます。</p><button type="button" class="icopy">リンクをコピー</button>';
- box.querySelector('.icopy').addEventListener('click',function(){var u=new URL(location.href);u.searchParams.delete('iabtest');try{navigator.clipboard.writeText(u.toString());this.textContent='コピーしました(Safariに貼り付け)';}catch(e){}dl.push({event:'iab_copy'});});}
+// アプリ内のブラウザにいる: 記録を残し、アドレスに目印を付ける(🧭で開いた先の Safari で見分けるため)
+try{ss&&ss.setItem('ym_iab','1')}catch(e){}
+try{if(q.get('ym_v')!=='c'){var u0=new URL(location.href);u0.searchParams.set('ym_v','c');history.replaceState(history.state,'',u0.toString());}}catch(e){}
+var BTN=true;   // 「Safariで開く」ボタン(iPhoneのChatGPTアプリで動作を確認済み。押すと「Safariで開きますか?」の確認が出る)
+function extUrl(){var u=new URL(location.href);u.searchParams.delete('iabtest');u.searchParams.delete('ym_v');u.searchParams.set('ym_ext','1');return 'x-safari-'+u.toString();}
+function guide(box){if(box.querySelector('.ifb'))return;var g=d.createElement('div');g.innerHTML='<p class="ifb">「開く」を押しても切り替わらない場合は、画面右下の<b>🧭</b>を押すと Safari で開けます。</p><button type="button" class="icopy">リンクをコピー</button>';box.appendChild(g);
+ g.querySelector('.icopy').addEventListener('click',function(){var u=new URL(location.href);u.searchParams.delete('iabtest');try{navigator.clipboard.writeText(u.toString());this.textContent='コピーしました(Safariに貼り付け)';}catch(e){}dl.push({event:'iab_copy'});});}
 function btn(where){var box=d.createElement('div');box.className='iabb';var a=d.createElement('a');a.className='cta iabtn';a.href=extUrl();a.textContent='🧭 Safariで開く';
- a.addEventListener('click',function(){dl.push({event:'iab_btn_click',ym_place:where});var t0=Date.now();setTimeout(function(){if(d.visibilityState==='visible'&&Date.now()-t0<4000){dl.push({event:'iab_btn_fail',ym_place:where});guide(box);}},1500);});
+ // 押すと「Safariで開きますか?」の確認が出るので、すぐには「開けなかった」と判断しない。8秒たってもこの画面のままなら、ボタンは残したまま🧭の案内を足す
+ a.addEventListener('click',function(){dl.push({event:'iab_btn_click',ym_place:where});var t0=Date.now();setTimeout(function(){if(d.visibilityState==='visible'&&Date.now()-t0<12000){dl.push({event:'iab_btn_fail',ym_place:where});guide(box);}},8000);});
  box.appendChild(a);return box;}
 var wr=d.querySelector('.wrap');if(!wr)return;
 var closed=false;try{closed=!!(ss&&ss.getItem(k))}catch(e){}
