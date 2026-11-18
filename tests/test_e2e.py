@@ -289,8 +289,14 @@ with tempfile.TemporaryDirectory() as tmp:
     import re as _re3
     _t = _re3.search(r"<title>(.*?)</title>", page).group(1)
     _dsc = _re3.search(r'<meta name="description" content="([^"]*)', page).group(1)
-    check("軒に空き" in _t and "更新】" in _t and _dsc.startswith("箱根の客室露天風呂の宿、") and "軒に空き" in _dsc[:80],
+    check(("軒に空き" in _t or "の空き " in _t) and "更新】" in _t and _dsc.startswith("箱根の客室露天風呂の宿、") and "に空き" in _dsc[:80],
           "条件ページのタイトルと説明文は、地域・条件・空き数・最安値から始める(日時は後ろ)")
+    import build as _bq
+    _D = __import__("datetime").date
+    _per = [(_D(2026, 11, 20), True, 9, 30000), (_D(2026, 11, 21), True, 1, 90000)]
+    check(_bq.per_day_txt(_per, "paren") == "金曜9軒(¥30,000〜)・土曜1軒(¥90,000〜)" and _bq.per_day_txt(_per[:1]) == ""
+          and 'id="qans"' in page and "1泊大人2名1室" in page and 'class="amore rtab"' in page and "を表で見る" in page,
+          "今週末の数は金曜・土曜に分けて出す(合計を土曜の数と読み違えないように)。H1の下に即答の1文、まとめの下に今週末の部屋の表")
     import build as _bb
     _hz = {d: 0.01 for d in range(0, 40)}
     check(_bb.keep_pct(_hz, 7) == round(100 * __import__("math").exp(-(6 * 0.01 + 7 * 24 * 0.01))) and _bb.keep_pct({0: 0.01}, 3) is None
