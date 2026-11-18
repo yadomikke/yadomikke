@@ -283,6 +283,9 @@ with tempfile.TemporaryDirectory() as tmp:
     check("'x-safari-'+u.toString()" in hp1 and "q.get('iabtest')==='1'" in hp1 and "var BTN=true;" in hp1 and "q.get('ym_ext')==='1'" in hp1
           and "iab_btn_fail" in hp1 and "q.get('ym_v')==='c'&&!seen" in hp1 and "ym_via:'compass'" in hp1 and "予約ボタンを押す前に" in hp1 and "getElementById('dpick')||d.getElementById('bookpanel')" in hp1,
           "ChatGPTアプリ(iPhone)の案内: 予約ボタンの前にSafariへ。「Safariで開く」ボタンも出す。開けないときは🧭の案内とリンクのコピー")
+    _ar = (out / "hakone" / "index.html").read_text(encoding="utf-8")
+    check(_ar.index('id="apick"') < _ar.index('id="answer"') and '"H":' in _ar and "qimg" in _ar,
+          "エリアページは、日付を選ぶ欄と写真つきの宿の一覧が先で、全体のまとめはその後")
     # 宿ページの並び: 宿名 → その日の結果と予約 → 日付を変える → カレンダー → 当てはまる条件 → 文章のまとめ → よくある質問 → 共有
     check(hp1.index('id="dout"') < hp1.index('class="dchg"') < hp1.index('id="calendar"') < hp1.index('id="features"') < hp1.index('id="answer"')
           < hp1.index("よくある質問") < hp1.index('class="share"') and 'data-r="' in hp1 and "1泊・大人2名・1室の最安(取得時点)" in hp1,
