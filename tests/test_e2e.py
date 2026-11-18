@@ -291,6 +291,11 @@ with tempfile.TemporaryDirectory() as tmp:
     _dsc = _re3.search(r'<meta name="description" content="([^"]*)', page).group(1)
     check("軒に空き" in _t and "更新】" in _t and _dsc.startswith("箱根の客室露天風呂の宿、") and "軒に空き" in _dsc[:80],
           "条件ページのタイトルと説明文は、地域・条件・空き数・最安値から始める(日時は後ろ)")
+    import build as _bb
+    _hz = {d: 0.01 for d in range(0, 40)}
+    check(_bb.keep_pct(_hz, 7) == round(100 * __import__("math").exp(-(6 * 0.01 + 7 * 24 * 0.01))) and _bb.keep_pct({0: 0.01}, 3) is None
+          and 'id="rkeep"' in page and "D.kp" in page,
+          "空きが宿泊日まで残る見込み(当サイトの観測から計算)を、条件ページの一覧の見出しの下に出す。観測が足りない日数は出さない")
     # 宿ページの並び: 宿名 → その日の結果と予約 → 日付を変える → カレンダー → 当てはまる条件 → 文章のまとめ → よくある質問 → 共有
     check(hp1.index('id="dout"') < hp1.index('class="dchg"') < hp1.index('id="calendar"') < hp1.index('id="features"') < hp1.index('id="answer"')
           < hp1.index("よくある質問") < hp1.index('class="share"') and 'data-r="' in hp1 and "1泊・大人2名・1室の最安(取得時点)" in hp1,

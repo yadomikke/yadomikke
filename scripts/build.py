@@ -12,6 +12,7 @@
 import argparse
 import html
 import json
+import math
 import os
 import re
 import shutil
@@ -208,10 +209,13 @@ function show(q,push){out.textContent='';inp.value=q;
  else{c.classList.add('sel');var k=c.getAttribute('data-s'),pr=c.getAttribute('data-p');
   if(k==='ok'){ok=true;msg=L+':◯ '+fl+'の空きあり'+(pr?' ¥'+(+pr).toLocaleString('ja-JP')+'〜':'');link=c.getAttribute('data-u')||c.getAttribute('href')||link;}
   else if(k==='part'){msg=L+':宿には空きがありますが、'+fl+'の空きは確認できませんでした。';}
-  else if(k==='full'){msg=L+':取得時点では満室です。キャンセルで空くこともあります。';}
+  else if(k==='full'){msg=L+':取得時点では満室です。キャンセルで空くこともあります。';
+   var bk=(box.getAttribute('data-back')||'').split('|');if(bk.length===4){msg+='この宿の満室からの戻りやすさは「'+bk[1]+'」です(当サイトの観測で、満室だった'+bk[2]+'回のうち'+bk[3]+'回、次の確認で空きが出ました)。';}}
   else{msg=L+':まだ取得できていません。';}}
  out.appendChild(mk('p','qh',msg));
- if(ok){var rn=c.getAttribute('data-r');out.appendChild(mk('p','qm','1泊・大人2名・1室の最安(取得時点)'+(rn?' / '+rn:'')));}
+ if(ok){var rn=c.getAttribute('data-r');out.appendChild(mk('p','qm','1泊・大人2名・1室の最安(取得時点)'+(rn?' / '+rn:'')));
+  try{var kp=JSON.parse(box.getAttribute('data-kp')||'null'),ld=Math.round((Date.UTC(+q.slice(0,4),+q.slice(5,7)-1,+q.slice(8,10))-Date.UTC(+mn.slice(0,4),+mn.slice(5,7)-1,+mn.slice(8,10)))/864e5);
+   if(kp&&ld>0&&kp[ld]){out.appendChild(mk('p','qkeep','📊 このエリアで今空いている宿が、この日まで空いたまま残る見込み: 約'+kp[ld]+'%(当サイトの観測)。'+(kp[ld]<40?'早めの予約がおすすめです':(kp[ld]>=70?'まだ少し余裕がありそうです':'数日のうちに埋まる宿も出てきそうです'))));}}catch(e){}}
  if(link){var a=mk('a','cta'+(ok?'':' ghost'),L+'を楽天トラベルで'+(ok?'予約する ›':'最新の空きを確認する ›')+'【PR】');a.href=link;a.target='_blank';a.rel='sponsored nofollow noopener';var pp=mk('p');pp.appendChild(a);out.appendChild(pp);}
  if(!ok)alts(q);
  var mc=document.querySelector('#maincta a');if(mc&&link){mc.href=link;mc.textContent=L+'の空室・料金を楽天トラベルで確認 ›';}
@@ -799,6 +803,8 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .favtog.on{background:#ffeef4}
 .bdnote{width:100%;font-size:12px;color:var(--sub);margin:0 0 2px}
 .rctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.qbook .qkeep{margin:6px 0 0;font-size:13.5px;font-weight:700;color:var(--navy)}
+.rkeep{margin:2px 0 8px;font-size:14px;font-weight:700;color:var(--navy);background:#eef3fa;border-radius:10px;padding:8px 10px}
 .rctl .favtog{min-height:38px;padding:4px 12px;font-size:13px}.rctl .sort{font-size:13px}.rctl .sort select{min-height:38px;font-size:14px;padding:4px 6px;max-width:10em}
 .flags{margin-top:4px;display:flex;flex-wrap:wrap;gap:6px;font-size:13px}
 .fg-only{background:#fff7dd;color:#7a4e00;border:1px solid #efd88a;border-radius:4px;padding:1px 8px;font-weight:700}
@@ -1015,6 +1021,9 @@ function render(){
   if(mode==='p'){oks.sort(function(a,b){return a[1][1]-b[1][1];});}
   else{oks.sort(function(a,b){return (b[0].rv||0)-(a[0].rv||0);});}
   var di=dinfo(cur);
+  var rk=document.getElementById('rkeep');
+  if(rk){var ix=-1;for(var j=0;j<D.dates.length;j++){if(D.dates[j].d===cur){ix=j;break;}}var kv=(D.kp&&ix>0)?D.kp[ix]:null;
+    if(kv&&oks.length){rk.textContent='📊 今空いている宿のうち、'+di.l.replace(/\(.*$/,'')+'まで空いたまま残るのは約'+kv+'%の見込み(当サイトの観測)。'+(kv<40?'早めの予約がおすすめです':(kv>=70?'まだ少し余裕がありそうです':'数日のうちに埋まる宿も出てきそうです'));rk.hidden=false;}else{rk.hidden=true;}}
   rt.textContent='';rt.appendChild(document.createTextNode(di.l+'に泊まれる宿 '));
   rt.appendChild(el('b',null,oks.length+'軒'));
   if(favOnly){rt.appendChild(document.createTextNode(' (お気に入りのみ)'));}
@@ -1872,14 +1881,15 @@ def geo_ok(h):
     return (la, ln) if 20 <= la <= 46 and 122 <= ln <= 154 else None
 
 
-def hotel_pick_html(h, fl_txt, dates, ok, holidays):
+def hotel_pick_html(h, fl_txt, dates, ok, holidays, back=None, kps=None):
     """宿ページの「日付を選んで予約する」。表示はブラウザ側(DPICK_JS)。最初は ?d= の日付、なければ直近の空きの日"""
     today = dates[0]
     sats = [d for d in dates if d.weekday() == 5]
     quick = [("今夜", today), ("明日", today + timedelta(days=1))] + ([(f"次の土曜 {md(sats[0])}", sats[0])] if sats else [])
     qb = "".join(f'<button type="button" data-d="{d.isoformat()}">{esc(t)}</button>' for t, d in quick)
     dflt = (ok[0][0] if ok else today).isoformat()
-    return (f'<section class="bookpanel dpick" id="dpick" data-no="{esc(h["no"])}" data-fl="{esc(fl_txt)}" data-def="{dflt}" '
+    extra = (f' data-back="{back[2]}|{esc(back[3])}|{back[0]}|{back[1]}"' if back else "") + (f' data-kp="{esc(json.dumps(kps, separators=(",", ":")))}"' if kps else "")
+    return (f'<section class="bookpanel dpick" id="dpick"{extra} data-no="{esc(h["no"])}" data-fl="{esc(fl_txt)}" data-def="{dflt}" '
             f'data-min="{dates[0].isoformat()}" data-max="{dates[-1].isoformat()}" hidden><h2 class="vh">日付を選んで予約する</h2>'
             '<div class="qbook" id="dout"></div>'
             f'<div class="dchg"><span class="dlab">日付を変える</span><div class="quick" aria-label="日付をすばやく選ぶ">{qb}</div>'
@@ -1943,6 +1953,11 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
     else:
         bullets.append(f"取得済みの日程では、{fl_txt}の空きは見つかっていません")
     bullets.append(f"宿全体で満室の日: {hf['full']}日 / 未取得の日: {hf['none']}日")
+    # 独自の観測データ: 満室から空きに戻りやすいか(キャンセル待ちの目安)
+    back_inf = back_info(stats, h["no"])
+    hz_area = fill_hazard(stats, page["area"])
+    if back_inf:
+        bullets.append(f"満室からの戻りやすさ: {back_inf[3]}(当サイトの観測で、満室だった{back_inf[0]}回のうち{back_inf[1]}回、次の確認で空きが出ました・{back_inf[2]}%)")
     hist = stats.get("price", {}).get(h["no"], {}).get(feat)
     details = ["未取得の日は、まだ取得できていない日で、満室という意味ではありません。"]
     if hist and "min" in hist:
@@ -2005,7 +2020,7 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
     # 並び: 宿名・写真 → その日の結果と予約ボタン → 日付を変える → カレンダー → 当てはまる条件 → 文章のまとめ・よくある質問
     body = [hero,
             # アドレスで日付が指定されたとき(?d=)は、その日の空きと予約ボタンを、宿名のすぐ下に出す
-            hotel_pick_html(h, fl_txt, dates, ok, holidays),
+            hotel_pick_html(h, fl_txt, dates, ok, holidays, back_inf, [keep_pct(hz_area, i) for i in range(len(dates))]),
             f'<section class="sec hcal" id="calendar"><h2>空室カレンダー({len(dates)}日間)</h2>'
             '<p class="sub">◯=空きあり(数字は最安) ／ △=宿に空きはあるが該当の部屋は確認できない ／ 満=空室なし ／ —=未取得。日付を押すと、上にその日の料金と予約ボタンが出ます。</p>'
             f'{cal}</section>',
@@ -2732,6 +2747,13 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
         if since and tot:
             ans[2].insert(len(ans[2]) - 1, f"満室から空きに戻った回数: 当サイトの観測({since[5:].replace('-', '/')}〜)で計{tot:,}回、直近3日で{recent:,}回"
                           "(この一覧の宿・宿全体の空き。キャンセルなどで空きが出ることがあります)")
+    # 独自の観測データ: 今空いている宿が、宿泊日まで空いたまま残る見込み(何日前に埋まるか)
+    hz = fill_hazard(stats, page["area"])
+    kps = [(lab, keep_pct(hz, ld)) for lab, ld in (("1週間前", 7), ("3日前", 3), ("前日", 1))]
+    kps = [(lab, k) for lab, k in kps if k is not None]
+    if rows and kps:
+        ans[2].insert(len(ans[2]) - 1, f"空きが埋まる早さ({alabel}・当サイトの観測): 宿泊日の" + "、".join(f"{lab}に空いていた宿が当日まで残るのは約{k}%" for lab, k in kps)
+                      + "(宿全体の空きで集計。予約の目安です)")
     # 検索結果に表示される最初の部分に「地域・条件・空き数・最安値」が来るように(日時は後ろへ)
     noun = flabel if is_hotel_feat(cfg, feat) else f"{flabel}の宿"
     wk = next((x for x in scene_list if x["slug"] == "shumatsu" and x["dates"]), None)
@@ -2848,8 +2870,10 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
     else:
         out.append('<div class="finder" id="finder"><div class="dstrip" id="dstrip" hidden><div class="dscroll" id="dscroll"></div></div>')
         res, n_def = results_html(cfg, rows, state, feat, flabel, default, dates, info, holidays, now)
+        _k0 = keep_pct(hz, (default - today).days)
         out.append(f'<div class="rhead" id="rhead"><h2 id="rt">{esc(day_label(default, holidays))}に泊まれる宿 <b>{n_def}軒</b></h2>'
-                   '<div class="rctl"><button type="button" id="favtog" class="favtog" hidden aria-pressed="false">♡ お気に入りだけ</button><label class="sort">絞り込み <select id="fltsel"><option value="">すべて</option>' + "".join(f'<option value="{esc(b["id"])}">{esc(b["label"])}</option>' for b in cfg.get("badges", [])) + '</select></label><label class="sort">並び替え <select id="sortsel"><option value="p">料金が安い順</option>'
+                   + (f'<p class="rkeep" id="rkeep">📊 今空いている宿のうち、{esc(md(default))}まで空いたまま残るのは約{_k0}%の見込み(当サイトの観測)。{keep_advice(_k0)}</p>' if _k0 and n_def and default > today else '<p class="rkeep" id="rkeep" hidden></p>')
+                   + '<div class="rctl"><button type="button" id="favtog" class="favtog" hidden aria-pressed="false">♡ お気に入りだけ</button><label class="sort">絞り込み <select id="fltsel"><option value="">すべて</option>' + "".join(f'<option value="{esc(b["id"])}">{esc(b["label"])}</option>' for b in cfg.get("badges", [])) + '</select></label><label class="sort">並び替え <select id="sortsel"><option value="p">料金が安い順</option>'
                    '<option value="r">口コミ評価が高い順</option></select></label></div></div>'
                    '<p class="rsub">1泊・大人2名・1部屋の料金です(取得時点の掲載額)。ボタンを押すと楽天トラベルの予約ページが開きます。バッジは当サイト独自の基準で付けています(<a href="../about/#badges">基準を見る</a>)。</p>')
         out.append(f'<div id="cards">{res}</div></div>')
@@ -2878,6 +2902,8 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
                       f"<small>{esc(hotel_sub(h))}<br>{len(dates)}日中 {len(hf['ok'])}日に空き{esc(nxt)}</small></li>")
         out.append(f'<section class="card" id="hotels"><h2>{esc(alabel)}の{esc(flabel)}の宿 一覧({len(rows)}軒)</h2><ul class="hl">{"".join(hl)}</ul></section>')
         data = embed_data(cfg, rows, dates, info, state, feat, holidays, default, now)
+        data["kp"] = [keep_pct(hz, (d - today).days) for d in dates]
+        data["al"] = alabel
         data["feat"], data["flabel"] = feat, flabel
         out.append("<script>window.__V=" + json.dumps(data, ensure_ascii=False).replace("</", "<\\/") + "</script>")
 
@@ -3425,6 +3451,43 @@ def moves_ready(stats, today):
         return since and (today - date.fromisoformat(since)).days >= MOVE_READY_DAYS
     except ValueError:
         return False
+
+
+def fill_hazard(stats, area):
+    """エリアごと・宿泊日までの日数ごとに、空いていた宿が1時間あたりに埋まる割合(当サイトの観測)。観測が少ない区分は入れない"""
+    fl = stats.get("fill_lead", {}).get(area, {})
+    hz = {}
+    for lo, hi, _ in FILL_BUCKETS:
+        n = f = g = 0
+        for lead_s, v in fl.items():
+            if lo <= int(lead_s) <= hi:
+                n, f, g = n + v[0], f + v[1], g + (v[2] if len(v) > 2 else 0)
+        if n >= FILL_MIN and g > 0:
+            for d in range(lo, min(hi, 60) + 1):
+                hz[d] = f / g
+    return hz
+
+
+def keep_pct(hz, lead, today_hours=6):
+    """いま空いている宿が、宿泊日(lead日後)まで空いたまま残る見込み(%)。観測が足りない日数を含むときは None"""
+    if lead < 0 or any(d not in hz for d in range(0, lead + 1)):
+        return None
+    tot = today_hours * hz[0] + sum(24 * hz[d] for d in range(1, lead + 1))
+    return max(1, min(99, round(100 * math.exp(-tot))))
+
+
+def keep_advice(k):
+    return "早めの予約がおすすめです" if k < 40 else ("まだ少し余裕がありそうです" if k >= 70 else "数日のうちに埋まる宿も出てきそうです")
+
+
+def back_info(stats, no):
+    """宿ごとの「満室から空きに戻った」実績。(満室だった回数, 空きが出た回数, 割合%, 目安) か None"""
+    m = stats.get("hotel_moves", {}).get(no)
+    if not m or m[0] < MOVE_MIN_FULL:
+        return None
+    r = m[1] / m[0] * 100
+    lvl = "高め" if r >= 10 else ("ふつう" if r >= 3 else "低め")
+    return m[0], m[1], round(r), lvl
 
 
 UGOKI_MAX = 10      # 「空きが出た宿」に載せる、1エリアあたりの件数(今も空いている宿を優先)
