@@ -171,6 +171,7 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .favtog.on{background:#ffeef4}
 .bdnote{width:100%;font-size:12px;color:var(--sub);margin:0 0 2px}
 .rctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.rctl .favtog{min-height:38px;padding:4px 12px;font-size:13px}.rctl .sort{font-size:13px}.rctl .sort select{min-height:38px;font-size:14px;padding:4px 6px;max-width:10em}
 .flags{margin-top:4px;display:flex;flex-wrap:wrap;gap:6px;font-size:13px}
 .fg-only{background:#fff7dd;color:#7a4e00;border:1px solid #efd88a;border-radius:4px;padding:1px 8px;font-weight:700}
 .dchip .mk{position:absolute;top:-9px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:11px;font-weight:800;background:#d9261c;color:#fff;border-radius:999px;padding:2px 8px;line-height:1.4}
@@ -228,7 +229,9 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .picks b.ok{color:var(--ok)}
 .qbook{background:#fff;border:2px solid var(--cta);border-radius:12px;padding:10px 12px;margin:8px 0 4px}
 .bookpanel{margin:8px 0 12px}.bookpanel h2{font-size:18px;color:var(--navy);margin:0 0 6px}.bookpanel .quick{margin:4px 0 8px}
-.dinput{display:inline-block;font-size:15px;margin:0 0 8px}.dinput input{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;min-height:40px}
+.dinput{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;max-width:440px;margin:2px 0 8px;padding:6px 8px 6px 14px;min-height:52px;background:#fff;border:2px solid var(--navy);border-radius:999px;cursor:pointer;box-sizing:border-box}
+.dinput .dlab2{flex:none;font-size:15px;font-weight:800;color:var(--navy)}
+.dinput input{flex:1;min-width:0;font:inherit;font-size:16px;font-weight:700;color:var(--navy);padding:6px 10px;border:0;border-radius:999px;background:#eef3fa;min-height:38px;text-align:center}
 .qbook .qh{font-weight:700;color:var(--navy);margin:0 0 6px;font-size:15px}.qbook .qm{margin:6px 0 0;font-size:13px;color:var(--sub)}
 .qbook .qr{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px dashed var(--line)}
 .qbook .qn{min-width:0;font-weight:700}.qbook .qn a{color:var(--ink)}.qbook .qn small{display:block;font-weight:400;color:var(--price)}
@@ -265,7 +268,7 @@ q=encodeURIComponent(t);a.href=L.a?'https://hb.afl.rakuten.co.jp/hgc/'+L.a+'/?pc
 window.ymSL=function(no,iso){var p=iso.split('-'),d=new Date(Date.UTC(+p[0],+p[1]-1,+p[2])),c=new Date(d.getTime()+L.n*864e5),
 t='https://hotel.travel.rakuten.co.jp/hotelinfo/plan/'+no+'?f_teikei=&f_nen1='+d.getUTCFullYear()+'&f_tuki1='+(d.getUTCMonth()+1)+'&f_hi1='+d.getUTCDate()
 +'&f_nen2='+c.getUTCFullYear()+'&f_tuki2='+(c.getUTCMonth()+1)+'&f_hi2='+c.getUTCDate()+'&f_heya_su=1&f_otona_su='+L.ad+'&f_s1=0&f_s2=0&f_y1=0&f_y2=0&f_y3=0&f_y4=0',
-q=encodeURIComponent(t);return L.a?'https://hb.afl.rakuten.co.jp/hgc/'+L.a+'/?pc='+q+'&m='+q:t;};})();</script><script>window.relt=function(){var ts=document.querySelectorAll('time.rel');for(var i=0;i<ts.length;i++){var t=ts[i],d=new Date(t.getAttribute('datetime')),m=Math.round((Date.now()-d.getTime())/60000);if(isNaN(m)||m<0)continue;if(!t.getAttribute('data-a')){t.setAttribute('data-a',t.textContent);}var r=m<60?'約'+Math.max(m,1)+'分前':(m<1440?'約'+Math.round(m/60)+'時間前':'約'+Math.round(m/1440)+'日前');t.textContent=r+'('+t.getAttribute('data-a')+')';}};relt();(function(){try{var w=window,dl=w.dataLayer=w.dataLayer||[],k='ym_src',s=null,ss=null;try{ss=w.sessionStorage;s=ss.getItem(k)}catch(e){}
+q=encodeURIComponent(t);return L.a?'https://hb.afl.rakuten.co.jp/hgc/'+L.a+'/?pc='+q+'&m='+q:t;};})();</script><script>(function(){var ls=document.querySelectorAll('label.dinput');for(var i=0;i<ls.length;i++){(function(l){l.addEventListener('click',function(e){var x=l.querySelector('input');if(!x||e.target===x)return;e.preventDefault();try{x.showPicker()}catch(_){x.focus()}});})(ls[i]);}})();window.relt=function(){var ts=document.querySelectorAll('time.rel');for(var i=0;i<ts.length;i++){var t=ts[i],d=new Date(t.getAttribute('datetime')),m=Math.round((Date.now()-d.getTime())/60000);if(isNaN(m)||m<0)continue;if(!t.getAttribute('data-a')){t.setAttribute('data-a',t.textContent);}var r=m<60?'約'+Math.max(m,1)+'分前':(m<1440?'約'+Math.round(m/60)+'時間前':'約'+Math.round(m/1440)+'日前');t.textContent=r+'('+t.getAttribute('data-a')+')';}};relt();(function(){try{var w=window,dl=w.dataLayer=w.dataLayer||[],k='ym_src',s=null,ss=null;try{ss=w.sessionStorage;s=ss.getItem(k)}catch(e){}
 if(!s){var u='',h='';try{u=(new URLSearchParams(location.search).get('utm_source')||'').toLowerCase()}catch(e){}
 try{h=document.referrer?new URL(document.referrer).hostname:''}catch(e){}if(h===location.hostname)h='';var t=u+' '+h;
 s=/chatgpt|openai/.test(t)?'chatgpt':/perplexity/.test(t)?'perplexity':/claude\.ai|anthropic/.test(t)?'claude':/gemini/.test(t)?'gemini':/copilot/.test(t)?'copilot':/google\./.test(t)?'google':/bing\./.test(t)?'bing':/yahoo\./.test(t)?'yahoo':(u||h)?'other':'direct';
