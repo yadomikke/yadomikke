@@ -286,6 +286,11 @@ with tempfile.TemporaryDirectory() as tmp:
     _ar = (out / "hakone" / "index.html").read_text(encoding="utf-8")
     check(_ar.index('id="apick"') < _ar.index('id="answer"') and '"H":' in _ar and "qimg" in _ar,
           "エリアページは、日付を選ぶ欄と写真つきの宿の一覧が先で、全体のまとめはその後")
+    import re as _re3
+    _t = _re3.search(r"<title>(.*?)</title>", page).group(1)
+    _dsc = _re3.search(r'<meta name="description" content="([^"]*)', page).group(1)
+    check("軒に空き" in _t and "更新】" in _t and _dsc.startswith("箱根の客室露天風呂の宿、") and "軒に空き" in _dsc[:80],
+          "条件ページのタイトルと説明文は、地域・条件・空き数・最安値から始める(日時は後ろ)")
     # 宿ページの並び: 宿名 → その日の結果と予約 → 日付を変える → カレンダー → 当てはまる条件 → 文章のまとめ → よくある質問 → 共有
     check(hp1.index('id="dout"') < hp1.index('class="dchg"') < hp1.index('id="calendar"') < hp1.index('id="features"') < hp1.index('id="answer"')
           < hp1.index("よくある質問") < hp1.index('class="share"') and 'data-r="' in hp1 and "1泊・大人2名・1室の最安(取得時点)" in hp1,

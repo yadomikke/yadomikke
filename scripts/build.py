@@ -2732,13 +2732,30 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
         if since and tot:
             ans[2].insert(len(ans[2]) - 1, f"満室から空きに戻った回数: 当サイトの観測({since[5:].replace('-', '/')}〜)で計{tot:,}回、直近3日で{recent:,}回"
                           "(この一覧の宿・宿全体の空き。キャンセルなどで空きが出ることがあります)")
-    desc = ((ans[1] + f"{n_days}日先までの空室表と料金を、楽天トラベルの空室データから自動更新しています(リアルタイムではありません)。") if rows else
+    # 検索結果に表示される最初の部分に「地域・条件・空き数・最安値」が来るように(日時は後ろへ)
+    noun = flabel if is_hotel_feat(cfg, feat) else f"{flabel}の宿"
+    wk = next((x for x in scene_list if x["slug"] == "shumatsu" and x["dates"]), None)
+    wst = scene_stats(rows, state, feat, wk["dates"]) if (rows and wk) else None
+    head_bits = []
+    if wst and wst["got"]:
+        head_bits.append(f"{wk.get('label', wk['name'])}({wk['span']})は{wst['hotels']}軒に空き" + (f"・最安{yen_full(wst['low'])}〜" if wst["low"] else ""))
+    if rows:
+        head_bits.append(f"今日({md(today)})は{t0[0]}軒" + (f"・最安{yen_full(t0[1])}〜" if t0[0] and t0[1] else ""))
+    desc_head = (f"{alabel}の{noun}、" + "、".join(head_bits) + "(1泊・大人2名)。") if head_bits else ""
+    desc = ((desc_head + f"{n_days}日先までの空室表と料金を、楽天トラベルの空室データから自動更新({fmt_dt(newest) if newest else ''}時点・リアルタイムではありません)。") if rows else
             f"{alabel}の{flabel}の空室を{n_days}日先まで確認できます。"
             f"{md(today)}({WD[today.weekday()]})は{t0[0]}軒に空き"
             + (f"(取得: {newest:%m/%d %H:%M})" if newest else "")
             + "。" + (picks_txt(top_picks(rows, state, feat, dates)) + "。" if top_picks(rows, state, feat, dates) else "")
             + "1泊2名・楽天トラベルの空室データを自動更新しています(リアルタイムではありません)。")
-    title = f"{page['title']}【おすすめ・{md(today)}〜{md(dates[-1])}の空室表】{site['name']}"
+    # タイトルにも、いまの空き数と最安値を入れる(検索結果で一目で分かるように)
+    if wst and wst["got"] and wst["hotels"]:
+        tnum = f"{wk['name']}{wst['hotels']}軒に空き" + (f"・最安{yen_full(wst['low'])}〜" if wst["low"] else "")
+    elif rows and t0[0]:
+        tnum = f"今日{t0[0]}軒に空き" + (f"・最安{yen_full(t0[1])}〜" if t0[1] else "")
+    else:
+        tnum = f"{md(today)}〜{md(dates[-1])}の空室表"
+    title = f"{page['title']}|{tnum}【{md(today)}更新】 | {site['name']}"
 
     faq = [
         (f"{alabel}で今日空いている{flabel}の宿はどこですか?",
