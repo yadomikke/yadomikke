@@ -790,7 +790,7 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .fchips a.on{background:var(--navy);border-color:var(--navy);color:#fff}
 .fgrp{margin:6px 0 10px}.fgrp h3{font-size:13px;color:var(--sub);margin:4px 0 6px;font-weight:400}.fgrp h3 b{color:var(--navy);font-weight:700}
 .agrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}@media (min-width:720px){.agrid{grid-template-columns:repeat(6,minmax(0,1fr))}}
-.agrid a,.agrid span{display:flex;flex-direction:column;justify-content:center;min-height:52px;padding:6px 8px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--navy);text-decoration:none;line-height:1.3}
+.agrid a,.agrid span{display:flex;flex-direction:column;justify-content:flex-start;min-height:52px;overflow:hidden;padding:6px 8px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--navy);text-decoration:none;line-height:1.3}
 .agrid a:hover{background:#eef3fa}.agrid b{font-size:15px}.agrid small{font-size:11px;color:var(--sub);font-weight:400}
 .agrid .na{background:#f4f4f4;color:#aaa}.agrid .na small{color:#aaa}
 .fmore{margin:8px 0 0;font-size:14px}
@@ -804,6 +804,21 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .favtog.on{background:#ffeef4}
 .bdnote{width:100%;font-size:12px;color:var(--sub);margin:0 0 2px}
 .rctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.snum{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 4px;margin:12px 0}
+.snum h2{font-size:17px;color:var(--navy);margin-bottom:8px}.snum h2 small{display:block;font-size:12px;font-weight:400;color:var(--sub);margin-top:2px}
+.stiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:8px}@media (min-width:720px){.stiles{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.stile{display:flex;flex-direction:column;align-items:flex-start;padding:10px 12px;border-radius:10px;background:#f6f9fd;border:1px solid #dbe5f1;color:var(--navy);text-decoration:none}
+.stile:hover{background:#eaf1fa}.stile .sl{font-size:13px;font-weight:700}.stile .sd{font-size:13px;color:#3b4148;line-height:1.25}.stile .sd b{font-size:26px;color:var(--cta);margin:0 2px;font-weight:800}
+.stile .sp{font-size:11px;color:var(--sub);margin-top:2px}.snum .amore summary{font-size:13px}
+.agrid img{display:block;width:calc(100% + 16px);height:44px;object-fit:cover;margin:-6px -8px 5px;border-radius:9px 9px 0 0;background:#e9edf2}
+@media (min-width:720px){.agrid img{height:60px}}.agrid .na img{filter:grayscale(1);opacity:.5}
+.picks{margin:16px 0}.picks .sub{font-size:12px;color:var(--sub);margin-top:8px}.picks h2{font-size:18px;color:var(--navy);margin-bottom:8px}
+.pgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}@media (min-width:720px){.pgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.pcard{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;color:var(--ink);text-decoration:none}
+.pcard:hover{box-shadow:0 2px 10px rgba(0,0,0,.08)}.pcard img{width:100%;aspect-ratio:4/3;object-fit:cover;background:#e9edf2}
+.pcard .pb{display:flex;flex-direction:column;gap:2px;padding:8px 10px 10px}.pcard .pa{font-size:11px;color:#fff;background:var(--navy);border-radius:4px;padding:1px 6px;align-self:flex-start}
+.pcard b{font-size:14px;line-height:1.35;color:var(--navy)}.pcard .pv{font-size:12.5px;color:#333}.pcard .pv small{color:var(--sub);margin-left:2px}
+.pcard .pp{font-size:12px;color:#3b4148}.pcard .pp em{font-style:normal;font-weight:800;color:var(--price);font-size:15px}.pcard .pp small{color:var(--sub)}
 .hero .qans{font-size:13px;line-height:1.6;color:#2a3138;background:#fff;border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:8px;padding:8px 10px;margin-top:8px}
 .rtab{margin:0 0 12px}.rtbl{border-collapse:collapse;font-size:13px;width:100%}.rtbl caption{text-align:left;font-size:12px;color:var(--sub);padding:4px 0}
 .rtbl th,.rtbl td{border-bottom:1px solid var(--line);padding:6px 6px;text-align:left;vertical-align:top}.rtbl td.pr{white-space:nowrap;font-weight:700;color:var(--price)}.rtbl td:first-child,.rtbl td:last-child{white-space:nowrap}
@@ -3529,27 +3544,37 @@ def data_json(cfg, hotels, state, wl, sums, now):
     }
 
 
-def home_answer(cfg, sums, wl, holidays):
-    """トップページの最初に出す、答えの文(全エリアの今夜・明日・今週末…)"""
-    parts, items = [], []
+def home_answer(cfg, sums, wl, holidays, wkd=None):
+    """トップページの最初に出す「いま空いている宿の数」。大きな数字のタイル(今夜・明日・今週末・年末年始など)と、
+    折りたたんだ文章(検索・AI向けに、HTMLには常に入れておく)。wkd は今週末の [(日付, 空きのある宿の数)]"""
+    parts, items, tiles = [], [], []
     newest = max([s["newest"] for s in sums.values() if s["newest"]], default=None)
+    wk_txt = ""
+    if wkd and 2 <= len(wkd) <= 3:
+        wk_txt = "・".join(f"{WD[d.weekday()]}曜{n:,}軒" for d, n in wkd)
     for slug, name, ds, note in wl:
         sm = sums.get(slug)
         if not ds or not sm or not sm["checked"]:
             continue
         sp = span_txt(ds, holidays)
         lbl = name if slug in ("konya", "ashita") else f"{name}({sp})"
-        parts.append(f"{lbl}は{sm['vacant']}軒")
-        items.append(f'<li><a href="{esc(slug)}/">{esc(lbl)}</a>: {sm["vacant"]}軒 / 確認{sm["checked"]}軒'
-                     + (f"(最安{esc(yen_full(sm['low']))}〜)" if sm["low"] else "") + "</li>")
+        num = wk_txt if (slug == "shumatsu" and wk_txt) else f"{sm['vacant']:,}軒"
+        parts.append(f"{lbl}は{num}")
+        items.append(f'<li><a href="{esc(slug)}/">{esc(lbl)}</a>: {esc(num)}(確認{sm["checked"]:,}軒)</li>')
+        if len(tiles) < 4 and (slug != "renkyu" or not any(x[0] == "nenmatsu" for x in wl)):
+            if slug == "shumatsu" and wk_txt:
+                big = "".join(f'<span class="sd">{WD[d.weekday()]}<b>{n:,}</b>軒</span>' for d, n in wkd)
+            else:
+                big = f'<span class="sd"><b>{sm["vacant"]:,}</b>軒</span>'
+            tiles.append(f'<a class="stile" href="{esc(slug)}/"><span class="sl">{esc(name)}</span>{big}<span class="sp">{esc(sp)}</span></a>')
     if not parts:
         return "", ""
     lead = (f"{when_txt(newest)}温泉地{len(cfg['areas'])}エリアで空きがある宿は、" + "、".join(parts)
             + f"です({cond_text(cfg)}、条件を問わない数)。")
-    html = (f'<section class="answer" id="answer">{owl_html("happy")}<h2>いま空いている宿の数<small>{esc(fmt_dt(newest))} 時点</small></h2>'
-            f'<p class="lead2">{esc(lead)}</p><ul class="ab">{"".join(items[:3])}</ul>'
-            # 今夜・明日・今週末だけを見せ、残り(連休・年末年始・各ページへのリンク)は折りたたむ
-            f'<details class="amore"><summary>連休・年末年始と、ほかのデータを見る</summary><ul class="ab">{"".join(items[3:])}'
+    html = (f'<section class="snum" id="answer"><h2>いま空いている宿の数<small>{esc(fmt_dt(newest))}時点・{len(cfg["areas"])}温泉地・1泊大人2名</small></h2>'
+            f'<div class="stiles">{"".join(tiles)}</div>'
+            # 文章と、ほかの日程・データへのリンクは折りたたむ(HTMLには入っているので、検索・AIには読まれる)
+            f'<details class="amore"><summary>文章で読む・ほかのデータを見る</summary><p class="lead2">{esc(lead)}</p><ul class="ab">{"".join(items)}'
             '<li><a href="ugoki/">きのうから空きが出た宿</a></li>'
             '<li><a href="souba/">エリア・曜日別の料金相場</a></li><li><a href="report/">月別の空室レポート</a></li></ul></details></section>')
     return html, lead
@@ -3741,11 +3766,70 @@ def btn_plain(url, text, cls=""):
 FCHIP_SHORT = {"pet": "ペット可"}   # トップの条件ボタンに出す短い名前(ないものは short か label)
 
 
-def render_home(cfg, digests, now, demo, scene_list=(), answer=("", ""), area_today=None, n_hotels=0):
+def in_area(h, label, loose=False):
+    """トップで「そのエリアの宿」として見せてよいか(楽天のエリア区分が広く、街のホテルが入ることがあるため)。
+    宿名か住所にエリア名があれば可。loose なら「温泉」を含む宿も可"""
+    t = f"{h.get('name', '')} {h.get('address', '')}"
+    return any(x in t for x in label.replace("・", " ").replace("(", " ").replace(")", " ").split()) or (loose and "温泉" in t)
+
+
+def home_area_images(cfg, hotels):
+    """エリアごとの写真(そのエリアで口コミの多い、評価の高い宿の写真)"""
+    out = {}
+    for a in cfg["areas"]:
+        lab = cfg["areas"][a]["label"]
+        withimg = [h for h in hotels.get("areas", {}).get(a, []) if str(h.get("image", "")).startswith("https://")]
+        cands = [h for h in withimg if in_area(h, lab)] or [h for h in withimg if in_area(h, lab, True)]
+        cands.sort(key=lambda h: (-(1 if _rv(h) >= 4.3 else 0), -(h.get("reviews") or 0)))
+        if cands:
+            out[a] = safe_url(cands[0]["image"])
+    return out
+
+
+def home_picks(cfg, hotels, state, d, n=6):
+    """その日に空きがある、口コミ評価の高い宿(1エリア1軒まで)。[(宿, エリア名, 最安, 日付)]"""
+    cands = []
+    for a, v in cfg["areas"].items():
+        best = None
+        for h, p, dd in area_vacancy(hotels, state, a, [d])["vacant"]:
+            if not p or (h.get("reviews") or 0) < PICK_MIN_REVIEWS or not hotel_href(h) or not in_area(h, v["label"]):
+                continue
+            if not str(h.get("image_l") or h.get("image") or "").startswith("https://"):
+                continue
+            r = h.get("reviews") or 0
+            # 口コミが少ない宿の満点に引っぱられないよう、件数で重みをつけた評価(100件分の4.3を足して平均)
+            k = (round((_rv(h) * r + 4.3 * 100) / (r + 100), 3), r)
+            if best is None or k > best[0]:
+                best = (k, h, p)
+        if best:
+            cands.append((best[0], best[1], v["label"], best[2]))
+    cands.sort(key=lambda x: (-x[0][0], -x[0][1]))
+    return [(h, al, p, d) for _, h, al, p in cands[:n]]
+
+
+def picks_html(picks, holidays, title):
+    if not picks:
+        return ""
+    cards = []
+    for h, al, p, d in picks:
+        img = h.get("image_l") if str(h.get("image_l", "")).startswith("https://") else h.get("image")
+        rv = (f'<span class="pv">★{esc(h["review"])}' + (f'<small>({h["reviews"]:,}件)</small>' if h.get("reviews") else "") + "</span>") if h.get("review") else ""
+        cards.append(f'<a class="pcard" href="{esc(hotel_href(h))}?d={d.isoformat()}"><img src="{esc(safe_url(img))}" alt="" loading="lazy">'
+                     f'<span class="pb"><span class="pa">{esc(al)}</span><b>{esc(h["name"])}</b>{rv}'
+                     f'<span class="pp">{esc(day_label(d, holidays))} <em>{yen_full(p)}〜</em><small>(2名1室)</small></span></span></a>')
+    return (f'<section class="picks" id="picks"><h2>{esc(title)}</h2><div class="pgrid">{"".join(cards)}</div>'
+            '<p class="sub">口コミの多い宿のうち、評価(口コミ件数も加味)の高い順に各エリア1軒まで。料金は取得時点の楽天トラベルの掲載額(1泊・大人2名・1室の最安)です。押すと、その日を選んだ宿のページが開きます。</p></section>')
+
+
+def render_home(cfg, digests, now, demo, scene_list=(), answer=("", ""), area_today=None, n_hotels=0, aimg=None, picks=""):
     site = cfg["site"]
     base = site["url"].rstrip("/")
     canonical = base + "/"
     area_today = area_today or {}
+    aimg = aimg or {}
+
+    def ai(a):
+        return f'<img src="{esc(aimg[a])}" alt="" loading="lazy">' if a in aimg else ""
     # 誰が・どうやって集めた数字かを、最初の画面に小さく出す(安心して楽天へ進んでもらうため)
     soon_h = cfg.get("refresh", {}).get("soon_hours", 4)
     trust = ('<div class="trust"><span>楽天トラベルの空室データ</span>'
@@ -3767,7 +3851,7 @@ def render_home(cfg, digests, now, demo, scene_list=(), answer=("", ""), area_to
     cells = []
     for a, v in cfg["areas"].items():
         n = area_today.get(a)
-        cells.append(f'<a href="{esc(a)}/"><b>{esc(v["label"])}</b><small>' + (f"今日の空き {n}軒" if n is not None else "空室を見る") + "</small></a>")
+        cells.append(f'<a href="{esc(a)}/">{ai(a)}<b>{esc(v["label"])}</b><small>' + (f"今日の空き {n}軒" if n is not None else "空室を見る") + "</small></a>")
     grps.append('<div class="fgrp" data-f="all"><h3>選択中: <b>条件なし</b>(エリアのページへ)</h3><div class="agrid">' + "".join(cells) + "</div></div>")
     for fkey, f in feats:
         bya = {d[0]["area"]: d for d in digests if d[0]["feature"] == fkey}
@@ -3776,10 +3860,10 @@ def render_home(cfg, digests, now, demo, scene_list=(), answer=("", ""), area_to
             d = bya.get(a)
             if d:
                 p, n, today_n, _ = d
-                cells.append(f'<a href="{esc(p["slug"])}/"><b>{esc(v["label"])}</b><small>'
+                cells.append(f'<a href="{esc(p["slug"])}/">{ai(a)}<b>{esc(v["label"])}</b><small>'
                              + (f"今日の空き {today_n}軒" if n else "準備中") + "</small></a>")
             else:
-                cells.append(f'<span class="na"><b>{esc(v["label"])}</b><small>対象の宿なし</small></span>')
+                cells.append(f'<span class="na">{ai(a)}<b>{esc(v["label"])}</b><small>対象の宿なし</small></span>')
         hub = hub_slug(cfg, fkey)
         more = [f'<a href="{esc(hub)}/">{esc(short(fkey, f))}の全エリアまとめ ›</a>']
         if not is_hotel_feat(cfg, fkey):
@@ -3794,11 +3878,7 @@ def render_home(cfg, digests, now, demo, scene_list=(), answer=("", ""), area_to
                  "for(var j=0;j<g.length;j++)g[j].hidden=g[j].getAttribute('data-f')!==f;}"
                  "for(var i=0;i<b.length;i++){b[i].addEventListener('click',function(e){e.preventDefault();show(this.getAttribute('data-f'));});}"
                  "document.getElementById('finder').classList.add('js');show('all');})();</script>")
-    ans = [d for d in digests if d[3]]
-    if ans:
-        p, n, today_n, digest = ans[0]
-        inner.append(f'<section class="answer"><h2><a href="{esc(p["slug"])}/">{esc(p["title"])}</a></h2><p>{esc(digest)}</p>'
-                     f'<p><a href="{esc(p["slug"])}/">空室表を見る ›</a></p></section>')
+    inner.append(picks)
     same = [u for u in site.get("same_as", []) if str(u).startswith("https://")]
     org = {"@type": "Organization", "name": site["name"], "url": canonical}
     if same:
@@ -4070,9 +4150,16 @@ def main():
     (out_dir / "404.html").write_text(
         shell(cfg, args.demo, "/", f"ページが見つかりません | {site0['name']}", "お探しのページは見つかりませんでした。",
               site0["url"].rstrip("/") + "/", inner404, None, noindex=True), encoding="utf-8")
-    (out_dir / "index.html").write_text(render_home(cfg, digests, now, args.demo, page_scenes(cfg, now.date()), home_answer(cfg, when_sums, wl, set(cfg.get("holidays", []))),
+    _hol = set(cfg.get("holidays", []))
+    _wk = next((ds for slug, _, ds, _ in wl if slug == "shumatsu"), [])
+    _wkd = [(d, sum(len(area_vacancy(hotels, state, a, [d])["vacant"]) for a in cfg["areas"])) for d in _wk]
+    _pd = next((d for d in _wk if d.weekday() == 5), _wk[-1] if _wk else now.date())
+    _pk = home_picks(cfg, hotels, state, _pd)
+    home_pick_html = picks_html(_pk, _hol, f"{day_label(_pd, _hol)}に空いている、評価の高い宿")
+    (out_dir / "index.html").write_text(render_home(cfg, digests, now, args.demo, page_scenes(cfg, now.date()), home_answer(cfg, when_sums, wl, _hol, _wkd),
                                                            {a: len(area_vacancy(hotels, state, a, [now.date()])["vacant"]) for a in cfg["areas"]},
-                                                           round(len({h["no"] for a in cfg["areas"] for h in hotels.get("areas", {}).get(a, [])}), -2)), encoding="utf-8")
+                                                           round(len({h["no"] for a in cfg["areas"] for h in hotels.get("areas", {}).get(a, [])}), -2),
+                                                           home_area_images(cfg, hotels), home_pick_html), encoding="utf-8")
 
     og = ROOT / "assets" / "ogp.png"
     if og.exists():

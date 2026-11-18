@@ -304,6 +304,12 @@ with tempfile.TemporaryDirectory() as tmp:
           "空きが宿泊日まで残る見込み(当サイトの観測から計算)を、条件ページの一覧の見出しの下に出す。観測が足りない日数は出さない")
     check("data-nosnippet" in page and "別の部屋なら空きあり" in page and "以外も含む最安(参考)" in page and "宿全体の最安目安" not in page,
           "「参考」欄(条件の部屋は未確認の宿)は、条件の料金と読み違えられないよう言い方を明確にし、検索・AIの引用対象から外す(data-nosnippet)")
+    import build as _bh
+    check('class="stiles"' in home and 'class="stile"' in home and "文章で読む・ほかのデータを見る" in home and 'class="lead2"' in home
+          and "最安¥" not in home.split('id="answer"')[1].split("</section>")[0]
+          and _bh.in_area({"name": "有馬温泉 月光園", "address": "神戸市北区有馬町"}, "有馬") and not _bh.in_area({"name": "神戸みなと温泉 蓮", "address": "神戸市中央区"}, "有馬")
+          and _bh.in_area({"name": "x", "address": "洲本市"}, "洲本(淡路島)"),
+          "トップの空き数は大きな数字のタイル(文章はHTMLに残して折りたたむ・条件を問わない最安は出さない)。写真や人気の宿は、エリア名が宿名・住所にある宿から選ぶ")
     # 宿ページの並び: 宿名 → その日の結果と予約 → 日付を変える → カレンダー → 当てはまる条件 → 文章のまとめ → よくある質問 → 共有
     check(hp1.index('id="dout"') < hp1.index('class="dchg"') < hp1.index('id="calendar"') < hp1.index('id="features"') < hp1.index('id="answer"')
           < hp1.index("よくある質問") < hp1.index('class="share"') and 'data-r="' in hp1 and "1泊・大人2名・1室の最安(取得時点)" in hp1,
