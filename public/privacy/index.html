@@ -216,7 +216,9 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .fyes{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 8px}.fyes a,.fyes span{display:inline-flex;align-items:center;min-height:34px;padding:0 12px;border-radius:999px;background:var(--okbg);color:var(--ok);font-weight:700;font-size:13.5px;text-decoration:none}
 #features details summary{cursor:pointer;color:var(--sub);font-size:14px;margin:4px 0}
 .mini button{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:56px;border-radius:8px;border:0;font:inherit;font-size:13px;line-height:1.25;background:#f4f4f4;color:#888;cursor:pointer;padding:0}
-.iosn{display:flex;gap:8px;align-items:flex-start;background:#fff8e1;border:1px solid #f0c36d;border-radius:10px;padding:10px 12px;margin:10px 0;font-size:14px;line-height:1.55}.iosn p{margin:0;flex:1}.iosn button{flex:none;border:0;background:transparent;font-size:20px;line-height:1;color:#8a6d3b;cursor:pointer;padding:0 4px}
+.iosn{display:flex;gap:8px;align-items:flex-start;background:#fff8e1;border:1px solid #f0c36d;border-radius:10px;padding:10px 12px;margin:10px 0;font-size:14px;line-height:1.55}.iosb{flex:1}.iosn p{margin:0}.iosn .iclose{flex:none;border:0;background:transparent;font-size:20px;line-height:1;color:#8a6d3b;cursor:pointer;padding:0 4px}
+.iabb{margin:8px 0 0}.iabtn{width:100%;min-height:46px;font-size:16px;background:#0a58a8;box-shadow:0 2px 0 #08467f}.ifb{margin:0 0 6px;font-size:13.5px}.icopy{font:inherit;font-size:14px;font-weight:700;border:2px solid #0a58a8;color:#0a58a8;background:#fff;border-radius:10px;min-height:42px;padding:6px 12px;cursor:pointer;width:100%}
+.iosn2{background:#fff8e1;border:1px solid #f0c36d;border-radius:10px;padding:8px 10px;margin:0 0 8px;font-size:13.5px;line-height:1.55}.iosn2 p{margin:0}
 .qalt{margin:8px 0 0;padding-top:6px;border-top:1px solid var(--line)}.qalt .qm{margin:0 0 2px}
 .sbar{display:none}
 @media (max-width:760px){.sbar{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff;border-top:1px solid var(--line);box-shadow:0 -2px 10px rgba(0,0,0,.08);padding:8px 12px calc(8px + env(safe-area-inset-bottom))}.sbar[hidden],.sbar.off{display:none}.sbar .st{min-width:0;font-size:13px;line-height:1.35}.sbar .st b{display:block;font-size:15px;color:var(--navy)}.sbar .st small{color:var(--sub)}.sbar .cta{flex:none;padding:10px 14px;font-size:15px;margin:0}body.hasbar{padding-bottom:76px}}
@@ -261,8 +263,27 @@ s=/chatgpt|openai/.test(t)?'chatgpt':/perplexity/.test(t)?'perplexity':/claude\.
 try{ss&&ss.setItem(k,s)}catch(e){}dl.push({event:'ym_landing',ym_src:s});}
 w.ymSrc=s;
 w.ymAff=function(){dl.push({event:'aff_click',ym_src:s,ym_page:location.pathname})};
-document.addEventListener('click',function(e){if(e.defaultPrevented)return;var a=e.target.closest?e.target.closest('a[href*="hb.afl.rakuten.co.jp"],a[href*="travel.rakuten.co.jp"]'):null;if(a)w.ymAff()},false);}catch(e){}})();(function(){try{var w=window,ss=null,k='ym_ios';if(w.ymSrc!=='chatgpt'||!/iPhone|iPad|iPod/.test(navigator.userAgent))return;
-try{ss=w.sessionStorage;if(ss.getItem(k))return;}catch(e){}var wr=document.querySelector('.wrap');if(!wr)return;
-var b=document.createElement('div');b.className='iosn';b.setAttribute('role','note');
-b.innerHTML='<p><b>ChatGPTアプリの中で開いています</b><br>このままだと楽天トラベルのログインが引き継がれないことがあります。画面右下の<b>🧭(Safariで開く)</b>から開くと、ログインしたまま予約できます。</p><button type="button" aria-label="閉じる">×</button>';
-b.querySelector('button').addEventListener('click',function(){b.remove();try{ss&&ss.setItem(k,'1')}catch(e){}});wr.insertBefore(b,wr.firstChild);}catch(e){}})();</script></body></html>
+document.addEventListener('click',function(e){if(e.defaultPrevented)return;var a=e.target.closest?e.target.closest('a[href*="hb.afl.rakuten.co.jp"],a[href*="travel.rakuten.co.jp"]'):null;if(a)w.ymAff()},false);}catch(e){}})();(function(){try{var w=window,d=document,dl=w.dataLayer=w.dataLayer||[],ss=null,k='ym_ios';try{ss=w.sessionStorage}catch(e){}
+var q=new URLSearchParams(location.search),test=q.get('iabtest')==='1';
+// Safari に移ったあと(ボタンで開いたページには ym_ext=1 が付く)は何も出さない
+if(q.get('ym_ext')==='1'){try{ss&&ss.setItem('ym_ext','1')}catch(e){}dl.push({event:'iab_ext_open',ym_src:w.ymSrc});return;}
+try{if(ss&&ss.getItem('ym_ext'))return;}catch(e){}
+if(!test&&(w.ymSrc!=='chatgpt'||!/iPhone|iPad|iPod/.test(navigator.userAgent)))return;
+var BTN=test||w.YM_IAB_BTN===true;   // 「Safariで開く」ボタン(お試し中は ?iabtest=1 のときだけ)
+function extUrl(){var u=new URL(location.href);u.searchParams.delete('iabtest');u.searchParams.set('ym_ext','1');return 'x-safari-'+u.toString();}
+function guide(box){box.innerHTML='<p class="ifb">うまく開かない場合は、画面右下の<b>🧭</b>を押すと Safari で開けます。</p><button type="button" class="icopy">リンクをコピー</button>';
+ box.querySelector('.icopy').addEventListener('click',function(){var u=new URL(location.href);u.searchParams.delete('iabtest');try{navigator.clipboard.writeText(u.toString());this.textContent='コピーしました(Safariに貼り付け)';}catch(e){}dl.push({event:'iab_copy'});});}
+function btn(where){var box=d.createElement('div');box.className='iabb';var a=d.createElement('a');a.className='cta iabtn';a.href=extUrl();a.textContent='🧭 Safariで開く';
+ a.addEventListener('click',function(){dl.push({event:'iab_btn_click',ym_place:where});var t0=Date.now();setTimeout(function(){if(d.visibilityState==='visible'&&Date.now()-t0<4000){dl.push({event:'iab_btn_fail',ym_place:where});guide(box);}},1500);});
+ box.appendChild(a);return box;}
+var wr=d.querySelector('.wrap');if(!wr)return;
+var closed=false;try{closed=!!(ss&&ss.getItem(k))}catch(e){}
+if(!closed){var b=d.createElement('div');b.className='iosn';b.setAttribute('role','note');
+ b.innerHTML='<div class="iosb"><p><b>ChatGPTアプリの中で開いています</b><br>楽天にログインしたまま予約して、ポイントも使えるように、<b>予約ボタンを押す前に</b>Safariで開いてください。'+(BTN?'':'画面右下の<b>🧭</b>を押すと Safari で開けます。')+'</p></div><button type="button" class="iclose" aria-label="閉じる">×</button>';
+ if(BTN)b.querySelector('.iosb').appendChild(btn('top'));
+ b.querySelector('.iclose').addEventListener('click',function(){b.remove();try{ss&&ss.setItem(k,'1')}catch(e){}});wr.insertBefore(b,wr.firstChild);}
+// 予約ボタンのすぐ上にも、短い一言(とボタン)を出す
+var spot=d.getElementById('dpick')||d.getElementById('bookpanel');
+if(spot){var n=d.createElement('div');n.className='iosn2';n.innerHTML='<p>楽天にログインしたまま予約するなら、<b>予約ボタンを押す前に</b>Safariで開いてください'+(BTN?'':'(画面右下の🧭)')+'。</p>';
+ if(BTN)n.appendChild(btn('book'));spot.insertBefore(n,spot.firstChild);}
+dl.push({event:'iab_show',ym_btn:BTN?1:0});}catch(e){}})();</script></body></html>
