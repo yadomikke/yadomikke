@@ -527,7 +527,7 @@ def card_html(h, cell, feat, flabel, kind, bd="", flags="", got=None):
     else:
         a = cell.get("any") or [0, ""]
         tag = f'<p class="tags"><span class="tag gray">{esc(flabel)}の空きは未確認</span></p>'
-        price = ('<p class="pl">宿全体の最安目安</p>' + (f'<p class="pv sm">{yen_full(a[0])}<span>〜</span></p>' if a[0] else "")
+        price = (f'<p class="pl">{esc(flabel)}以外も含む最安(参考)</p>' + (f'<p class="pv sm">{yen_full(a[0])}<span>〜</span></p>' if a[0] else "")
                  + btn(a[1] or h.get("plan_url") or h.get("url"), "cta ghost", "プラン一覧を見る ›"))
         cls = "hc part"
     return (f'<article class="{cls}">{imgtag}<div class="hb"><h3>{btn(h.get("url"), "hn", esc(h["name"]))}</h3>'
@@ -560,7 +560,8 @@ def results_html(cfg, rows, state, feat, flabel, day, dates, info, holidays, now
         out += (f'<div class="none">{owl_html("sleepy")}<div class="nt"><b>この日は「{esc(flabel)}」の空きが見つかりませんでした。</b>'
                 f"<p>前後の日付や、空きのある日を選んでみてください。</p>{hint}</div></div>")
     if parts:
-        out += (f'<details class="more"><summary>参考: 宿に空きはあるが、{esc(flabel)}の部屋は確認できない宿({len(parts)}軒)</summary>'
+        out += (f'<details class="more" data-nosnippet><summary>参考: {esc(flabel)}の空きは確認できない宿({len(parts)}軒・別の部屋なら空きあり)</summary>'
+                f'<p class="pnote">※この欄の料金は「{esc(flabel)}」ではない部屋も含む、宿全体の最安の目安です。</p>'
                 + "".join(card_html(h, c, feat, flabel, "part") for h, c in parts) + "</details>")
     if fulls:
         out += (f'<details class="more"><summary>満室の宿({len(fulls)}軒)</summary><ul class="fl">'
@@ -803,6 +804,7 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .favtog.on{background:#ffeef4}
 .bdnote{width:100%;font-size:12px;color:var(--sub);margin:0 0 2px}
 .rctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.more .pnote{margin:6px 2px 8px;font-size:12.5px;color:var(--sub,#666)}
 .qbook .qkeep{margin:6px 0 0;font-size:13.5px;font-weight:700;color:var(--navy)}
 .rkeep{margin:2px 0 8px;font-size:14px;font-weight:700;color:var(--navy);background:#eef3fa;border-radius:10px;padding:8px 10px}
 .rctl .favtog{min-height:38px;padding:4px 12px;font-size:13px}.rctl .sort{font-size:13px}.rctl .sort select{min-height:38px;font-size:14px;padding:4px 6px;max-width:10em}
@@ -1003,7 +1005,7 @@ function card(h,c,kind){
   if(kind==='o'){hp.appendChild(el('p','pl','1泊2名・1部屋'));
     var pv=el('p','pv',yen(c[1]));pv.appendChild(el('span',null,'〜'));hp.appendChild(pv);
     hp.appendChild(btn(lk(h,cur,c),'cta','空室・プランを見る ›'));}
-  else{hp.appendChild(el('p','pl','宿全体の最安目安'));
+  else{hp.appendChild(el('p','pl',FL+'以外も含む最安(参考)'));
     if(c[1]){var pv2=el('p','pv sm',yen(c[1]));pv2.appendChild(el('span',null,'〜'));hp.appendChild(pv2);}
     hp.appendChild(btn(lk(h,cur,c),'cta ghost','プラン一覧を見る ›'));}
   art.appendChild(hp);
@@ -1053,7 +1055,8 @@ function render(){
     near.slice(0,3).forEach(function(x){var s=el('button','nb',x.l+'に空きあり');s.type='button';s.style.border='0';s.style.cursor='pointer';
       s.addEventListener('click',function(){pick(x.d,true);});nt.appendChild(s);});
     cards.appendChild(n);}
-  if(parts.length){var dp=el('details','more');dp.appendChild(el('summary',null,'参考: 宿に空きはあるが、'+FL+'の部屋は確認できない宿('+parts.length+'軒)'));
+  if(parts.length){var dp=el('details','more');dp.setAttribute('data-nosnippet','');dp.appendChild(el('summary',null,'参考: '+FL+'の空きは確認できない宿('+parts.length+'軒・別の部屋なら空きあり)'));
+    dp.appendChild(el('p','pnote','※この欄の料金は「'+FL+'」ではない部屋も含む、宿全体の最安の目安です。'));
     for(i=0;i<parts.length;i++)dp.appendChild(card(parts[i][0],parts[i][1],'p'));cards.appendChild(dp);}
   if(fulls.length){var df=el('details','more');df.appendChild(el('summary',null,'満室の宿('+fulls.length+'軒)'));
     var ul=el('ul','fl');fulls.forEach(function(x){ul.appendChild(el('li',null,x.n));});df.appendChild(ul);cards.appendChild(df);}
