@@ -171,6 +171,12 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .favtog.on{background:#ffeef4}
 .bdnote{width:100%;font-size:12px;color:var(--sub);margin:0 0 2px}
 .rctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.hero .qans{font-size:13px;line-height:1.6;color:#2a3138;background:#fff;border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:8px;padding:8px 10px;margin-top:8px}
+.rtab{margin:0 0 12px}.rtbl{border-collapse:collapse;font-size:13px;width:100%}.rtbl caption{text-align:left;font-size:12px;color:var(--sub);padding:4px 0}
+.rtbl th,.rtbl td{border-bottom:1px solid var(--line);padding:6px 6px;text-align:left;vertical-align:top}.rtbl td.pr{white-space:nowrap;font-weight:700;color:var(--price)}.rtbl td:first-child,.rtbl td:last-child{white-space:nowrap}
+.rtbl caption{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (max-width:640px){.rtbl thead{display:none}.rtbl,.rtbl tbody{display:block}.rtbl tr{display:grid;grid-template-columns:auto 1fr auto;column-gap:8px;border-bottom:1px solid var(--line);padding:7px 2px}
+.rtbl td{border:0;padding:0}.rtbl td:nth-child(3){grid-column:1/-1;font-size:12.5px;color:#3b4148;margin-top:2px}.rtbl td:nth-child(4){grid-column:3;grid-row:1}.rtbl td:nth-child(5){grid-column:1/-1;font-size:11.5px;color:var(--sub)}.rtbl td:nth-child(5)::before{content:"取得 "}}
 .more .pnote{margin:6px 2px 8px;font-size:12.5px;color:var(--sub,#666)}
 .qbook .qkeep{margin:6px 0 0;font-size:13.5px;font-weight:700;color:var(--navy)}
 .rkeep{margin:2px 0 8px;font-size:14px;font-weight:700;color:var(--navy);background:#eef3fa;border-radius:10px;padding:8px 10px}
