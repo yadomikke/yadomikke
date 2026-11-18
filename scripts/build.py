@@ -103,7 +103,7 @@ DEFAULT_THEMES = [
     {"slug": "many-reviews", "name": "口コミ500件以上の人気宿", "kind": "reviews", "min": 500},
 ]
 
-REL_JS = r"""window.relt=function(){var ts=document.querySelectorAll('time.rel');for(var i=0;i<ts.length;i++){var t=ts[i],d=new Date(t.getAttribute('datetime')),m=Math.round((Date.now()-d.getTime())/60000);if(isNaN(m)||m<0)continue;if(!t.getAttribute('data-a')){t.setAttribute('data-a',t.textContent);}var r=m<60?'約'+Math.max(m,1)+'分前':(m<1440?'約'+Math.round(m/60)+'時間前':'約'+Math.round(m/1440)+'日前');t.textContent=r+'('+t.getAttribute('data-a')+')';}};relt();"""
+REL_JS = r"""(function(){var ls=document.querySelectorAll('label.dinput');for(var i=0;i<ls.length;i++){(function(l){l.addEventListener('click',function(e){var x=l.querySelector('input');if(!x||e.target===x)return;e.preventDefault();try{x.showPicker()}catch(_){x.focus()}});})(ls[i]);}})();window.relt=function(){var ts=document.querySelectorAll('time.rel');for(var i=0;i<ts.length;i++){var t=ts[i],d=new Date(t.getAttribute('datetime')),m=Math.round((Date.now()-d.getTime())/60000);if(isNaN(m)||m<0)continue;if(!t.getAttribute('data-a')){t.setAttribute('data-a',t.textContent);}var r=m<60?'約'+Math.max(m,1)+'分前':(m<1440?'約'+Math.round(m/60)+'時間前':'約'+Math.round(m/1440)+'日前');t.textContent=r+'('+t.getAttribute('data-a')+')';}};relt();"""
 
 
 # 流入元(ChatGPTなど)と、楽天へのリンクのクリックを、Googleタグマネージャー(dataLayer)に知らせる。
@@ -798,6 +798,7 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .favtog.on{background:#ffeef4}
 .bdnote{width:100%;font-size:12px;color:var(--sub);margin:0 0 2px}
 .rctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.rctl .favtog{min-height:38px;padding:4px 12px;font-size:13px}.rctl .sort{font-size:13px}.rctl .sort select{min-height:38px;font-size:14px;padding:4px 6px;max-width:10em}
 .flags{margin-top:4px;display:flex;flex-wrap:wrap;gap:6px;font-size:13px}
 .fg-only{background:#fff7dd;color:#7a4e00;border:1px solid #efd88a;border-radius:4px;padding:1px 8px;font-weight:700}
 .dchip .mk{position:absolute;top:-9px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:11px;font-weight:800;background:#d9261c;color:#fff;border-radius:999px;padding:2px 8px;line-height:1.4}
@@ -855,7 +856,9 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .picks b.ok{color:var(--ok)}
 .qbook{background:#fff;border:2px solid var(--cta);border-radius:12px;padding:10px 12px;margin:8px 0 4px}
 .bookpanel{margin:8px 0 12px}.bookpanel h2{font-size:18px;color:var(--navy);margin:0 0 6px}.bookpanel .quick{margin:4px 0 8px}
-.dinput{display:inline-block;font-size:15px;margin:0 0 8px}.dinput input{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;min-height:40px}
+.dinput{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;max-width:440px;margin:2px 0 8px;padding:6px 8px 6px 14px;min-height:52px;background:#fff;border:2px solid var(--navy);border-radius:999px;cursor:pointer;box-sizing:border-box}
+.dinput .dlab2{flex:none;font-size:15px;font-weight:800;color:var(--navy)}
+.dinput input{flex:1;min-width:0;font:inherit;font-size:16px;font-weight:700;color:var(--navy);padding:6px 10px;border:0;border-radius:999px;background:#eef3fa;min-height:38px;text-align:center}
 .qbook .qh{font-weight:700;color:var(--navy);margin:0 0 6px;font-size:15px}.qbook .qm{margin:6px 0 0;font-size:13px;color:var(--sub)}
 .qbook .qr{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px dashed var(--line)}
 .qbook .qn{min-width:0;font-weight:700}.qbook .qn a{color:var(--ink)}.qbook .qn small{display:block;font-weight:400;color:var(--price)}
@@ -1061,7 +1064,9 @@ areaCal=mcal(D.dates.map(function(x){return x.d;}),function(iso){var x=dinfo(iso
 strip.appendChild(areaCal);
 strip.appendChild(el('p','mc-note','数字は、その日に空きのある宿の軒数と最安値です。👑=空きがいちばん多い日 ／ —=まだ取得できていない日(満室ではありません)。日付を押すと、下に宿の一覧が出ます。'));
 areaCal.goto(cur);
-document.getElementById('dstrip').hidden=false;
+// 空き軒数の月カレンダーは、ボタンで開く(最初から開くと、宿の一覧が画面の下に押し出されるため)
+var dsb=document.getElementById('dcalbtn'),dst=document.getElementById('dstrip');
+if(dsb&&dst){dsb.hidden=false;dsb.addEventListener('click',function(){var op=dst.hidden;dst.hidden=!op;dsb.setAttribute('aria-expanded',op?'true':'false');dsb.textContent=op?'🗓 カレンダーを閉じる':'🗓 空き軒数のカレンダーから選ぶ';if(op){areaCal.goto(cur);}});}else if(dst){dst.hidden=false;}
 sortSel.addEventListener('change',function(){mode=sortSel.value;render();});
 var fs=document.getElementById('fltsel');if(fs){fs.addEventListener('change',function(){filterId=fs.value;render();});}
 var ft=document.getElementById('favtog');
@@ -1566,8 +1571,12 @@ def render_scene(cfg, page, sc, scene_list, ctx, state, stats, demo):
     title_for_share = f"{name}" + (f"【{sc['span']}】" if sc["span"] else "") + f" | {site['name']}"
     body = [f'<div class="hero"><div class="crumb"><a href="../../">{esc(site["name"])}</a> › <a href="../../{esc(page["area"])}/">{esc(cfg["areas"][page["area"]]["label"])}</a> › <a href="../">{esc(page["title"])}</a> › {esc(sc["name"])}</div>'
             f"<h1>{esc(name)}" + (f"<br><small style='font-size:.6em;color:var(--sub)'>{esc(sc['span'])}</small>" if sc["span"] else "") + "</h1></div>",
-            answer_html(asof, lead, bullets, details, f"{scn}の空室まとめ", mood=("happy" if st["hotels"] else "sleepy"),
-                        keep=(n_vis if sc["dates"] else None)), chips_html(scene_list, "../", sc["slug"]), share_html(canonical, title_for_share)]
+            ]
+    summary = [answer_html(asof, lead, bullets, details, f"{scn}の空室まとめ", mood=("happy" if st["hotels"] else "sleepy"),
+                           keep=(n_vis if sc["dates"] else None)), chips_html(scene_list, "../", sc["slug"]), share_html(canonical, title_for_share)]
+    if not sc["dates"]:
+        body += summary
+        summary = []
     for d, fetched, n, low in st["per"]:
         k = d.isoformat()
         sec = f'<section class="dsec" id="d-{k}"><h2>{esc(day_label(d, holidays))}に泊まれる宿 '
@@ -1595,6 +1604,7 @@ def render_scene(cfg, page, sc, scene_list, ctx, state, stats, demo):
         else:
             body.append(sec + f"<b>0軒</b></h2>{meta}<p>この日は「{esc(flabel)}」の空きが見つかっていません。</p></section>")
     body.append(f'<p><a href="../#calendar">31日分のカレンダーで比べる</a></p>')
+    body += summary
 
     faq = [
         (f"{sc['name']}に空いている{alabel}の{flabel}はありますか?",
@@ -1862,7 +1872,7 @@ def hotel_pick_html(h, fl_txt, dates, ok, holidays):
             f'data-min="{dates[0].isoformat()}" data-max="{dates[-1].isoformat()}" hidden><h2 class="vh">日付を選んで予約する</h2>'
             '<div class="qbook" id="dout"></div>'
             f'<div class="dchg"><span class="dlab">日付を変える</span><div class="quick" aria-label="日付をすばやく選ぶ">{qb}</div>'
-            f'<label class="dinput">ほかの日付: <input type="date" id="hdinput" min="{dates[0].isoformat()}" max="{dates[-1].isoformat()}"></label></div></section>')
+            f'<label class="dinput"><span class="dlab2">📅 ほかの日付を選ぶ</span><input type="date" id="hdinput" min="{dates[0].isoformat()}" max="{dates[-1].isoformat()}"></label></div></section>')
 
 
 ALT_MAX = 12   # 宿ページに載せる「代わりの宿」の候補の数(日付ごとに、安い順に3軒まで表示)
@@ -2802,12 +2812,8 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
         qb = "".join(f'<button type="button" data-d="{d.isoformat()}">{esc(t)}</button>' for t, d in quick)
         out.append('<section class="bookpanel" id="bookpanel"><h2>日付を選んで予約する</h2>'
                    f'<div class="quick" aria-label="日付をすばやく選ぶ">{qb}</div>'
-                   f'<label class="dinput">ほかの日付: <input type="date" id="dinput" min="{dates[0].isoformat()}" max="{dates[-1].isoformat()}" value="{default.isoformat()}"></label>'
-                   '<div class="qbook" id="qbook"><p class="qh">読み込み中…</p></div></section>')
-        out.append(answer_html(*ans, mood=("happy" if any(info[d.isoformat()][0] for d in dates) else "sleepy"), keep=2))
-        if not page.get("auto"):
-            out.append(chips_html(scene_list, "./"))
-        out.append(share_html(canonical, title))
+                   f'<label class="dinput"><span class="dlab2">📅 ほかの日付を選ぶ</span><input type="date" id="dinput" min="{dates[0].isoformat()}" max="{dates[-1].isoformat()}" value="{default.isoformat()}"></label>'
+                   '<button type="button" class="calbtn" id="dcalbtn" aria-expanded="false" hidden>🗓 空き軒数のカレンダーから選ぶ</button></section>')
     if not rows:
         out.append('<div class="empty"><b>データを準備中です。</b><br>初回の自動更新が終わると、ここに空室が表示されます。'
                    '(初回は宿の判定のため、数回の更新が必要です)</div>')
@@ -2828,6 +2834,11 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
                    "<b>満</b>=空室なし ／ <b>—</b>=未取得(満室ではありません)。日付の下の時刻は、その日の空室を取得した時刻です(今日以外に取得した日は日付)"
                    + (f"<br>取得: 最新 {newest:%m/%d %H:%M} ・ 最古 {oldest:%m/%d %H:%M}(日本時間)。リアルタイムではありません。最終確認は楽天トラベルでお願いします。" if newest else "")
                    + "</p></section>")
+        # 全体の数字(まとめ)は、宿の一覧とカレンダーの後に置く(AIはページ全体を読むので、位置が下でも引用される)
+        out.append(answer_html(*ans, mood=("happy" if any(info[d.isoformat()][0] for d in dates) else "sleepy"), keep=2))
+        if not page.get("auto"):
+            out.append(chips_html(scene_list, "./"))
+        out.append(share_html(canonical, title))
         out.append(g_html)
         out.append(facts_html(cfg, page, len(rows), newest, oldest))
         out.append(stats_block(stats, cfg, feat, flabel, today))
@@ -3050,7 +3061,7 @@ def area_pick_html(cfg, hotels, state, area, today, holidays, feats):
     qb = "".join(f'<button type="button" data-d="{d.isoformat()}">{esc(t)}</button>' for t, d in quick)
     return ('<section class="bookpanel" id="apick" hidden><h2>日付を選んで予約する</h2>'
             f'<div class="quick" aria-label="日付をすばやく選ぶ">{qb}</div>'
-            f'<label class="dinput">ほかの日付: <input type="date" id="ainput" min="{days[0].isoformat()}" max="{days[-1].isoformat()}"></label>'
+            f'<label class="dinput"><span class="dlab2">📅 ほかの日付を選ぶ</span><input type="date" id="ainput" min="{days[0].isoformat()}" max="{days[-1].isoformat()}"></label>'
             '<div class="qbook" id="aout"></div></section>'
             "<script>window.__AD=" + json.dumps(data, ensure_ascii=False).replace("</", "<\\/") + "</script>")
 

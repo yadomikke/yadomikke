@@ -256,8 +256,9 @@ with tempfile.TemporaryDirectory() as tmp:
     import build as _b
     check(_b.norm_name("ＨＯＴＥＬ　Ｒ９　Ｔｈｅ　Ｙａｒｄ（渋川）") == "HOTEL R9 The Yard(渋川)", "宿名の全角英数字・全角スペースを読みやすくそろえる")
     # ChatGPTから来た人が、日付を変えずにそのまま予約できるように
-    check('id="qbook"' in page and "予約する ›" in page and "lk(hh,cur,cc)" in page,
-          "条件ページは、日付の見出しのすぐ下に、その日の上位3軒の予約ボタンを出す")
+    check(page.index('id="bookpanel"') < page.index('id="cards"') < page.index('id="calendar"') < page.index('id="answer"')
+          and 'id="qbook"' not in page and "📅 ほかの日付を選ぶ" in page and "x.showPicker()" in page,
+          "条件ページは、日付を選ぶ欄のすぐ下にその日の宿のカード一覧、その下にカレンダー、全体のまとめは後ろ。「ほかの日付を選ぶ」はボタンの形")
     check(hp1.index('id="dpick"') < hp1.index('id="answer"') and 'id="maincta"' in hp1
           and "の空室・料金を楽天トラベルで確認 ›" in hp1 and "mc.href=link" in hp1,
           "宿ページは、指定の日付の空きを宿名のすぐ下に出し、大きな予約ボタンもその日付にする(開く日付をボタンに書く)")
