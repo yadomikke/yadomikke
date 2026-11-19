@@ -157,7 +157,7 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .fchips a.on{background:var(--navy);border-color:var(--navy);color:#fff}
 .fgrp{margin:6px 0 10px}.fgrp h3{font-size:13px;color:var(--sub);margin:4px 0 6px;font-weight:400}.fgrp h3 b{color:var(--navy);font-weight:700}
 .agrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}@media (min-width:720px){.agrid{grid-template-columns:repeat(6,minmax(0,1fr))}}
-.agrid a,.agrid span{display:flex;flex-direction:column;justify-content:center;min-height:52px;padding:6px 8px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--navy);text-decoration:none;line-height:1.3}
+.agrid a,.agrid span{display:flex;flex-direction:column;justify-content:flex-start;min-height:52px;overflow:hidden;padding:6px 8px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--navy);text-decoration:none;line-height:1.3}
 .agrid a:hover{background:#eef3fa}.agrid b{font-size:15px}.agrid small{font-size:11px;color:var(--sub);font-weight:400}
 .agrid .na{background:#f4f4f4;color:#aaa}.agrid .na small{color:#aaa}
 .fmore{margin:8px 0 0;font-size:14px}
@@ -171,6 +171,21 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .favtog.on{background:#ffeef4}
 .bdnote{width:100%;font-size:12px;color:var(--sub);margin:0 0 2px}
 .rctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.snum{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px 4px;margin:12px 0}
+.snum h2{font-size:17px;color:var(--navy);margin-bottom:8px}.snum h2 small{display:block;font-size:12px;font-weight:400;color:var(--sub);margin-top:2px}
+.stiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:8px}@media (min-width:720px){.stiles{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.stile{display:flex;flex-direction:column;align-items:flex-start;padding:10px 12px;border-radius:10px;background:#f6f9fd;border:1px solid #dbe5f1;color:var(--navy);text-decoration:none}
+.stile:hover{background:#eaf1fa}.stile .sl{font-size:13px;font-weight:700}.stile .sd{font-size:13px;color:#3b4148;line-height:1.25}.stile .sd b{font-size:26px;color:var(--cta);margin:0 2px;font-weight:800}
+.stile .sp{font-size:11px;color:var(--sub);margin-top:2px}.snum .amore summary{font-size:13px}
+.agrid img{display:block;width:calc(100% + 16px);height:44px;object-fit:cover;margin:-6px -8px 5px;border-radius:9px 9px 0 0;background:#e9edf2}
+@media (min-width:720px){.agrid img{height:60px}}.agrid .na img{filter:grayscale(1);opacity:.5}
+.picks{margin:16px 0}.picks .sub{font-size:12px;color:var(--sub);margin-top:8px}.picks h2{font-size:18px;color:var(--navy);margin-bottom:8px}
+.pgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}@media (min-width:720px){.pgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.pcard{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;color:var(--ink);text-decoration:none}
+.pcard:hover{box-shadow:0 2px 10px rgba(0,0,0,.08)}.pcard img{width:100%;aspect-ratio:4/3;object-fit:cover;background:#e9edf2}
+.pcard .pb{display:flex;flex-direction:column;gap:2px;padding:8px 10px 10px}.pcard .pa{font-size:11px;color:#fff;background:var(--navy);border-radius:4px;padding:1px 6px;align-self:flex-start}
+.pcard b{font-size:14px;line-height:1.35;color:var(--navy)}.pcard .pv{font-size:12.5px;color:#333}.pcard .pv small{color:var(--sub);margin-left:2px}
+.pcard .pp{font-size:12px;color:#3b4148}.pcard .pp em{font-style:normal;font-weight:800;color:var(--price);font-size:15px}.pcard .pp small{color:var(--sub)}
 .hero .qans{font-size:13px;line-height:1.6;color:#2a3138;background:#fff;border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:8px;padding:8px 10px;margin-top:8px}
 .rtab{margin:0 0 12px}.rtbl{border-collapse:collapse;font-size:13px;width:100%}.rtbl caption{text-align:left;font-size:12px;color:var(--sub);padding:4px 0}
 .rtbl th,.rtbl td{border-bottom:1px solid var(--line);padding:6px 6px;text-align:left;vertical-align:top}.rtbl td.pr{white-space:nowrap;font-weight:700;color:var(--price)}.rtbl td:first-child,.rtbl td:last-child{white-space:nowrap}
