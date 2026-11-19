@@ -316,6 +316,9 @@ with tempfile.TemporaryDirectory() as tmp:
           "連休は人の数え方(11/21〜11/23の3連休)で書き、泊まる日を添える。一覧の上に区分の説明、その日の質問をFAQに自動で足す")
     check('id="qans"' in _ar and 'class="amore rtab"' in _ar and 'tr class="sub"' in _ar and "泊まれる宿はありますか?" in _ar,
           "エリアページにも、冒頭の即答文・今週末の宿の表・日ごとの行・その日のFAQを出す")
+    check("安く泊まれる宿はどこですか?" in _ar and '"HotelRoom"' in page and "当サイトが空室データで確認した" in "".join(
+              x.read_text(encoding="utf-8") for x in list((out / "hotel").glob("*/index.html"))[:50]),
+          "安さのFAQ(エリア)、料金の構造化データに部屋名、宿ページに当サイトが確認した部屋名を出す")
     # 宿ページの並び: 宿名 → その日の結果と予約 → 日付を変える → カレンダー → 当てはまる条件 → 文章のまとめ → よくある質問 → 共有
     check(hp1.index('id="dout"') < hp1.index('class="dchg"') < hp1.index('id="calendar"') < hp1.index('id="features"') < hp1.index('id="answer"')
           < hp1.index("よくある質問") < hp1.index('class="share"') and 'data-r="' in hp1 and "1泊・大人2名・1室の最安(取得時点)" in hp1,

@@ -820,6 +820,7 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .pcard b{font-size:14px;line-height:1.35;color:var(--navy)}.pcard .pv{font-size:12.5px;color:#333}.pcard .pv small{color:var(--sub);margin-left:2px}
 .pcard .pp{font-size:12px;color:#3b4148}.pcard .pp em{font-style:normal;font-weight:800;color:var(--price);font-size:15px}.pcard .pp small{color:var(--sub)}
 table.stat tr.sub th,table.stat tr.sub td{font-size:12.5px;color:#4a5058;background:#fafbfc}
+.seenr{font-size:13px;color:#3b4148;margin:4px 0 6px}
 .rdef{font-size:12.5px;color:#3b4148;background:#f6f9fd;border-radius:8px;padding:6px 10px;margin:4px 0 6px}
 .hero .qans{font-size:13px;line-height:1.6;color:#2a3138;background:#fff;border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:8px;padding:8px 10px;margin-top:8px}
 .rtab{margin:0 0 12px}.rtbl{border-collapse:collapse;font-size:13px;width:100%}.rtbl caption{text-align:left;font-size:12px;color:var(--sub);padding:4px 0}
@@ -1458,8 +1459,13 @@ def item_list_ld(rows, state, feat, ds, canonical, limit=20):
         if pk and i < limit:
             _, p, d = pk[0]
             hu = canonical.split("/", 3)[0] + "//" + canonical.split("/", 3)[2] + f"/hotel/{h['no']}/"
-            hotel = {"@type": "Hotel", "name": h["name"], "url": hu,
-                     "makesOffer": offer_ld(p, d, parse_dt(state.get("fetched", {}).get(d.isoformat(), "")), hu)}
+            of = offer_ld(p, d, parse_dt(state.get("fetched", {}).get(d.isoformat(), "")), hu)
+            # 部屋の条件(客室露天風呂など)のページでは、どの部屋の料金かを伝える(宿全体の料金と読み違えないように)
+            rn = ((state["cells"].get(h["no"], {}).get(d.isoformat()) or {}).get("f") or {}).get(feat, [0, "", ""])[2]
+            if rn and not str(rn).startswith("宿全体"):
+                of["itemOffered"] = {"@type": "HotelRoom", "name": rn}
+                of["description"] = f"1泊・大人2名・1部屋の最安値({rn})"
+            hotel = {"@type": "Hotel", "name": h["name"], "url": hu, "makesOffer": of}
             if h.get("review") and h.get("reviews"):
                 try:
                     hotel["aggregateRating"] = {"@type": "AggregateRating", "ratingValue": float(h["review"]), "bestRating": 5, "ratingCount": int(h["reviews"])}
@@ -2066,6 +2072,34 @@ def alt_data(h, ctx, feat, dates):
     return "<script>window.__ALT=" + json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/") + ";</script>"
 
 
+def seen_rooms(cfg, state, h, area, n=3):
+    """部屋の条件(客室露天風呂など)ごとに、当サイトが空室データで実際に見た部屋名と、最後に見た取得日時。
+    [(条件名, [部屋名…], 最後に見た取得日時, 見た日数)]"""
+    cells = state["cells"].get(h["no"], {})
+    fb = state.get("fetched_by", {}).get(area, {})
+    out = []
+    for fk, f in cfg["features"].items():
+        if is_hotel_feat(cfg, fk):
+            continue
+        seen, last, days = {}, None, 0
+        for iso, c in cells.items():
+            v = (c.get("f") or {}).get(fk)
+            if not v or not v[2] or str(v[2]).startswith("宿全体"):
+                continue
+            days += 1
+            t = parse_dt(fb.get(iso, "")) or parse_dt(state.get("fetched", {}).get(iso, ""))
+            if t and (seen.get(v[2]) is None or t > seen[v[2]]):
+                seen[v[2]] = t
+            elif v[2] not in seen:
+                seen[v[2]] = None
+            if t and (last is None or t > last):
+                last = t
+        if seen:
+            names = sorted(seen, key=lambda x: (seen[x] is None, -(seen[x].timestamp() if seen[x] else 0)))[:n]
+            out.append((f["label"], names, last, days))
+    return out
+
+
 def render_hotel(cfg, page, h, ctx, state, stats, demo):
     """宿ページ(1軒1ページ)。page は、その宿が載っている代表のページ(部屋の条件のページを優先)"""
     site, feat, flabel, alabel = cfg["site"], ctx["feat"], ctx["flabel"], ctx["alabel"]
@@ -2169,7 +2203,10 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
     body.append('<div class="sbar" id="sbar" hidden><div class="st"><b></b><small>1泊・大人2名・1室の最安【PR】</small></div>'
                 '<a class="cta" target="_blank" rel="sponsored nofollow noopener">予約する ›</a></div>')
     body.append(alt_data(h, ctx, feat, dates))
+    _sr = seen_rooms(cfg, state, h, page["area"])
     body.append('<section class="card" id="features"><h2>この宿に当てはまる条件</h2>'
+                + "".join(f'<p class="seenr">当サイトが空室データで確認した「{esc(lab)}」の部屋: {esc("、".join(nm))}'
+                          + (f"(最終確認 {t.month}/{t.day} {t:%H:%M}・{dn}日分のデータ)" if t else f"({dn}日分のデータ)") + "</p>" for lab, nm, t, dn in _sr)
                 + ('<p class="fyes">' + "".join((f'<a href="../../{esc(sl)}/">{esc(lab)}</a>' if sl else f"<span>{esc(lab)}</span>") for lab, sl in yes_links) + "</p>"
                    if yes_links else "<p class='sub'>自動判定で当てはまる条件は、まだ見つかっていません。</p>")
                 + f'<details><summary>すべての条件の判定を見る({len(frs)}項目)</summary><div class="scroll"><table class="stat"><tbody>'
@@ -2946,6 +2983,15 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
         faq = faq[:1] + [(f"{day_label(d, holidays)}に{alabel}で{flabel}の宿は空いていますか?",
                           quick_answer(cfg, feat, flabel, alabel, rows, state, d, holidays, dates, info)
                           + "データは楽天トラベルの空室情報を定期的に取得したもので、リアルタイムではありません。") for d in _qd] + faq[1:]
+        # 土曜を優先。土曜の空きが2軒未満なら、今週末のほかの日
+        _cd = next((d for d in sorted(_qd, key=lambda x: x.weekday() != 5) if len(day_split(rows, state, feat, d)[0]) >= 2), None)
+        _ok = day_split(rows, state, feat, _cd)[0] if _cd else []
+        if len(_ok) >= 2:
+            _ft = parse_dt(state.get("fetched", {}).get(_cd.isoformat(), ""))
+            faq.insert(1 + len(_qd), (f"{day_label(_cd, holidays)}に{alabel}で{flabel}の宿に安く泊まれるのはどこですか?",
+                       "安い順に " + "、".join(f"{h['name']}" + (f"「{short_room(rn, 24)}」" if short_room(rn, 24) and not is_hotel_feat(cfg, feat) else "") + f"{yen_full(pr)}〜"
+                                               for pr, h, rn in _ok[:3])
+                       + f"です({cond_text(cfg)}" + (f"・{_ft.month}/{_ft.day} {_ft:%H:%M}取得" if _ft else "") + ")。料金はプランや人数で変わります。予約前に楽天トラベルでご確認ください。"))
     g_html, g_faq = (guide_html(cfg, feat, alabel, rows, state, dates, holidays, SNAPS.get(page["slug"]), newest)
                      if rows else ("", []))
     faq = faq[:1] + g_faq + faq[1:]
@@ -3432,6 +3478,15 @@ def render_area(cfg, hotels, state, area, wl, sums, now, demo):
         inner.append('<nav class="chips" aria-label="条件で絞り込む"><b>条件で絞り込む</b>'
                      + "".join(f'<a href="../{esc(p["slug"])}/">{esc(cfg["features"][p["feature"]]["label"])}</a>' for p in feats) + "</nav>")
     faq = [(f"{alabel}で今夜泊まれる宿はありますか?", lead)]
+    # 土曜を優先。土曜の空きが2軒未満なら、今週末のほかの日
+    for _cd in sorted(wk_ds, key=lambda x: x.weekday() != 5):
+        _c, _ok, _ft = area_day_info(hotels, state, area, _cd)
+        _ok = [x for x in _ok if x[0]]
+        if len(_ok) >= 2:
+            faq.append((f"{day_label(_cd, holidays)}に{alabel}で安く泊まれる宿はどこですか?",
+                        "安い順に " + "、".join(f"{h['name']}{yen_full(p)}〜" for p, h in _ok[:3])
+                        + f"です({cond_text(cfg)}・条件を問わない" + (f"・{_ft.month}/{_ft.day} {_ft:%H:%M}取得" if _ft else "") + ")。料金はプランや人数で変わります。予約前に楽天トラベルでご確認ください。"))
+            break
     for d in wk_ds:
         faq.append((f"{day_label(d, holidays)}に{alabel}で泊まれる宿はありますか?",
                     area_quick_answer(alabel, hotels, state, area, d, holidays, cfg)
