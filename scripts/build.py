@@ -819,6 +819,7 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .pcard .pb{display:flex;flex-direction:column;gap:2px;padding:8px 10px 10px}.pcard .pa{font-size:11px;color:#fff;background:var(--navy);border-radius:4px;padding:1px 6px;align-self:flex-start}
 .pcard b{font-size:14px;line-height:1.35;color:var(--navy)}.pcard .pv{font-size:12.5px;color:#333}.pcard .pv small{color:var(--sub);margin-left:2px}
 .pcard .pp{font-size:12px;color:#3b4148}.pcard .pp em{font-style:normal;font-weight:800;color:var(--price);font-size:15px}.pcard .pp small{color:var(--sub)}
+table.stat tr.sub th,table.stat tr.sub td{font-size:12.5px;color:#4a5058;background:#fafbfc}
 .rdef{font-size:12.5px;color:#3b4148;background:#f6f9fd;border-radius:8px;padding:6px 10px;margin:4px 0 6px}
 .hero .qans{font-size:13px;line-height:1.6;color:#2a3138;background:#fff;border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:8px;padding:8px 10px;margin-top:8px}
 .rtab{margin:0 0 12px}.rtbl{border-collapse:collapse;font-size:13px;width:100%}.rtbl caption{text-align:left;font-size:12px;color:var(--sub);padding:4px 0}
@@ -3296,6 +3297,55 @@ def area_pick_html(cfg, hotels, state, area, today, holidays, feats):
             "<script>window.__AD=" + json.dumps(data, ensure_ascii=False).replace("</", "<\\/") + "</script>")
 
 
+def area_day_info(hotels, state, area, d):
+    """エリアのその日の空き: (確認した宿の数, [(最安, 宿)] 安い順, 取得時刻)"""
+    v = area_vacancy(hotels, state, area, [d])
+    ok = sorted([(p, h) for h, p, _ in v["vacant"] if p], key=lambda x: (x[0], x[1]["name"]))
+    ok += [(None, h) for h, p, _ in v["vacant"] if not p]
+    return len(v["checked"]), ok, parse_dt(state.get("fetched_by", {}).get(area, {}).get(d.isoformat(), ""))
+
+
+def area_quick_answer(alabel, hotels, state, area, d, holidays, cfg):
+    """エリアページ冒頭の即答文(条件を問わない)。その日の空き軒数・最安・口コミの高い宿の例・取得時刻"""
+    n_chk, ok, ft = area_day_info(hotels, state, area, d)
+    head = f"{day_label(d, holidays)}・1泊大人2名1室" + (f"({ft.month}/{ft.day} {ft:%H:%M}取得)" if ft else "") + ": "
+    if not n_chk:
+        return head + f"{alabel}の空室は、まだ取得していません。"
+    if not ok:
+        return head + f"{alabel}で空きを確認できた宿はありませんでした(確認{n_chk}軒・すべて満室)。"
+    low = next((p for p, _ in ok if p), None)
+    good = sorted([(p, h) for p, h in ok if p and (h.get("reviews") or 0) >= PICK_MIN_REVIEWS],
+                  key=lambda x: (-_rv(x[1]), x[0]))[:2]
+    txt = head + f"{alabel}で空きを確認できた宿は{len(ok)}軒(確認{n_chk}軒中)" + (f"、最安{yen_full(low)}〜" if low else "") + "。"
+    if good:
+        txt += "口コミ評価の高い宿では " + "、".join(f"{h['name']}(★{h.get('review')}・{yen_full(p)}〜)" for p, h in good) + " など。"
+    full = n_chk - len(ok)
+    if full:
+        txt += f"満室{full}軒。"
+    return txt
+
+
+def area_table_html(hotels, state, area, ds, holidays, label, per_day=50):
+    """今週末など直近の日に空いている宿の一覧(安い順)。AIが予算などで絞り込めるように。普段は閉じておく"""
+    trs, n = [], 0
+    for d in ds:
+        _, ok, ft = area_day_info(hotels, state, area, d)
+        for p, h in [x for x in ok if x[0]][:per_day]:
+            n += 1
+            hh = hotel_href(h)
+            nm = f'<a href="{esc(hh)}?d={d.isoformat()}">{esc(h["name"])}</a>' if hh else esc(h["name"])
+            rv = f"★{h['review']}" if h.get("review") else ""
+            trs.append(f"<tr><td>{esc(day_label(d, holidays))}</td><td>{nm}</td><td>{esc(rv)}</td>"
+                       f"<td class=\"pr\">{yen_full(p)}〜</td><td>{(f'{ft.month}/{ft.day} {ft:%H:%M}') if ft else ''}</td></tr>")
+    if not trs:
+        return ""
+    cap = f"{label}に空いている宿(1泊・大人2名・1室、料金が安い順に各日{per_day}軒まで・計{n}件)"
+    return (f'<details class="amore rtab"><summary>📋 {esc(cap)}を表で見る</summary>'
+            '<div class="scroll"><table class="rtbl"><caption>' + esc(cap) + '</caption><thead><tr><th scope="col">宿泊日</th><th scope="col">宿名</th>'
+            '<th scope="col">口コミ</th><th scope="col">料金</th><th scope="col">取得</th></tr></thead><tbody>'
+            + "".join(trs) + '</tbody></table></div><p class="sub">取得時点の楽天トラベルの掲載額(宿全体の最安プラン)です。宿名を押すと、その日を選んだ宿のページが開きます。</p></details>')
+
+
 def render_area(cfg, hotels, state, area, wl, sums, now, demo):
     site = cfg["site"]
     base = site["url"].rstrip("/")
@@ -3304,11 +3354,14 @@ def render_area(cfg, hotels, state, area, wl, sums, now, demo):
     alabel = cfg["areas"][area]["label"]
     today = now.date()
     rows, parts, bullets, picks_html, ld_items = "", [], [], [], []
+    wk_per, wk_ds, wk_lbl = [], [], ""
     newest = None
     for slug, name, ds, note in wl:
         if not ds:
             continue
         v = dict(sums[slug]["per"])[area]
+        if slug == "shumatsu":
+            wk_ds, wk_lbl = ds, f"{name}({span_txt(ds, holidays)})"
         sp = span_txt(ds, holidays)
         lbl = name if slug in ("konya", "ashita") else f"{name}({sp})"
         if v["got"]:
@@ -3318,6 +3371,15 @@ def render_area(cfg, hotels, state, area, wl, sums, now, demo):
             parts.append(f"{lbl}は{nv}軒")
         rows += (f'<tr><th><a href="../{esc(slug)}/">{esc(lbl)}</a></th><td>{len(v["checked"]) or "取得中"}</td><td>{nv if v["checked"] else "—"}</td>'
                  f"<td>{esc(yen_full(v['low'])) + '〜' if v['low'] else '—'}</td><td>{time_html(v['got']) or '—'}</td></tr>")
+        if slug in ("shumatsu", "renkyu") and 2 <= len(ds) <= 3:
+            # 合計だと「土曜の数」と読み違えやすいので、日ごとの行も出す
+            for d in ds:
+                c_, ok_, ft_ = area_day_info(hotels, state, area, d)
+                lw = next((p for p, _ in ok_ if p), None)
+                rows += (f'<tr class="sub"><th>└ {esc(day_label(d, holidays))}</th><td>{c_ or "取得中"}</td><td>{len(ok_) if c_ else "—"}</td>'
+                         f"<td>{esc(yen_full(lw)) + '〜' if lw else '—'}</td><td>{time_html(ft_) or '—'}</td></tr>")
+                if slug == "shumatsu":
+                    wk_per.append((d, bool(c_), len(ok_), lw))
         if slug in ("konya", "shumatsu"):
             top = sorted([x for x in v["vacant"] if (x[0].get("reviews") or 0) >= PICK_MIN_REVIEWS],
                          key=lambda x: (-_rv(x[0]), x[1] or 9e9, x[0]["name"]))[:5]
@@ -3330,6 +3392,9 @@ def render_area(cfg, hotels, state, area, wl, sums, now, demo):
                 ld_items += [h for h, p, d in top]
     pc = price_cells(cfg, hotels, state, area, today)
     n_h = len(areastat.area_nos(hotels, area))
+    _wpd = per_day_txt(wk_per, "paren") if wk_per else ""
+    if _wpd:
+        parts = [(f"{wk_lbl}は{_wpd}" if x.startswith(wk_lbl + "は") else x) for x in parts]
     if parts:
         lead = (f"{when_txt(newest)}{alabel}(楽天トラベル掲載{n_h}軒)で空きがある宿は、" + "、".join(parts)
                 + f"です({cond_text(cfg)}、条件を問わない数)。")
@@ -3341,9 +3406,12 @@ def render_area(cfg, hotels, state, area, wl, sums, now, demo):
                       + f"です(今後{areastat.PRICE_DAYS}日の宿泊日・{cond_text(cfg)})。")
         bullets.append(souba_lead)
     feats = [p for p in LIVE if p["area"] == area]
+    # 即答文・FAQの日: 今週末の土曜(なければ今週末の最初の日)
+    _qday = next((d for d in wk_ds if d.weekday() == 5), wk_ds[0] if wk_ds else None)
     inner = [hero_banner(thin=True) + f'<div class="hero"><div class="crumb"><a href="../">{esc(site["name"])}</a> › {esc(alabel)}</div>'
              f"<h1>{esc(alabel)}の宿の空室【今夜・明日・今週末】</h1>"
-             f'<p class="lead">{esc(alabel)}の宿の空きを、日程ごとに自動で数えています。条件(客室露天風呂など)で絞り込むこともできます。</p></div>']
+             + (f'<p class="qans" id="qans">{esc(area_quick_answer(alabel, hotels, state, area, _qday, holidays, cfg))}</p>' if _qday else "")
+             + f'<p class="lead">{esc(alabel)}の宿の空きを、日程ごとに自動で数えています。条件(客室露天風呂など)で絞り込むこともできます。</p></div>']
     inner.append(area_pick_html(cfg, hotels, state, area, today, holidays, feats))
     # 宿の一覧(写真つき)を先に。全体の数字(まとめ・日程ごとの表)はその後(AIはページ全体を読むので位置は下でよい)
     inner += picks_html
@@ -3351,6 +3419,8 @@ def render_area(cfg, hotels, state, area, wl, sums, now, demo):
                          [f"楽天トラベルの空室検索APIから{freq_text(cfg)}に取得した値で、リアルタイムではありません。予約前に楽天トラベルでご確認ください。",
                           "「確認できた宿」は、当サイトがその日程の空室を確認した宿の数です。"],
                          f"{alabel}の空室まとめ", mood=("happy" if parts else "sleepy")))
+    if wk_ds:
+        inner.append(area_table_html(hotels, state, area, wk_ds, holidays, wk_lbl))
     inner.append('<section class="card"><h2>日程ごとの空き</h2><div class="scroll"><table class="stat"><thead><tr><th>日程</th><th>確認できた宿</th>'
                  f"<th>空きのある宿</th><th>最安値</th><th>取得</th></tr></thead><tbody>{rows}</tbody></table></div></section>")
     if any(pc.values()):
@@ -3362,6 +3432,10 @@ def render_area(cfg, hotels, state, area, wl, sums, now, demo):
         inner.append('<nav class="chips" aria-label="条件で絞り込む"><b>条件で絞り込む</b>'
                      + "".join(f'<a href="../{esc(p["slug"])}/">{esc(cfg["features"][p["feature"]]["label"])}</a>' for p in feats) + "</nav>")
     faq = [(f"{alabel}で今夜泊まれる宿はありますか?", lead)]
+    for d in wk_ds:
+        faq.append((f"{day_label(d, holidays)}に{alabel}で泊まれる宿はありますか?",
+                    area_quick_answer(alabel, hotels, state, area, d, holidays, cfg)
+                    + "データは楽天トラベルの空室情報を定期的に取得したもので、リアルタイムではありません。料金は大人2名1室の条件です。"))
     if souba_lead:
         faq.append((f"{alabel}の宿の相場はいくらですか?", souba_lead))
     inner.append(faq_html(faq))
@@ -3373,8 +3447,13 @@ def render_area(cfg, hotels, state, area, wl, sums, now, demo):
                {"@type": "ListItem", "position": i + 1, "name": h["name"], "url": base + HOTEL_HREF[h["no"]]}
                for i, h in enumerate(x for x in dict((y["no"], y) for y in ld_items).values() if HOTEL_HREF.get(x["no"]))]}},
           faq_ld(faq)]
-    title = f"{alabel}の宿の空室【今夜・明日・今週末 {md(today)}時点】 | {site['name']}"
-    return shell(cfg, demo, "../", title, lead, canonical, "".join(inner), ld)
+    _wpt = per_day_txt(wk_per, "tight") if wk_per else ""
+    title = (f"{alabel}の宿の空室|今週末 {_wpt}【{md(today)}更新】 | {site['name']}" if _wpt else
+             f"{alabel}の宿の空室【今夜・明日・今週末 {md(today)}時点】 | {site['name']}")
+    # 説明文は「地域・日付・軒数・最安」から(取得日時は後ろ)
+    desc = ((f"{alabel}の宿、{wk_lbl}は{_wpd}に空き(楽天トラベル掲載{n_h}軒・{cond_text(cfg)}・条件を問わない数)。"
+             + "、".join(x for x in parts if not x.startswith(wk_lbl)) + "。" + (f"({fmt_dt(newest)}時点)" if newest else "")) if _wpd else lead)[:260]
+    return shell(cfg, demo, "../", title, desc, canonical, "".join(inner), ld)
 
 
 def render_souba(cfg, hotels, state, now, demo):
