@@ -2228,7 +2228,32 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
     else:
         body.append(f'<p><a href="../../{esc(page["slug"])}/">{esc(alabel)}の{esc(flabel)} 全{len(ctx["rows"])}軒の空室表を見る</a></p>')
 
-    faq = [
+    # 宿名×日付の質問(「〇〇 11/21 空いてる?」)に答える: 今週末の各日の、宿全体の空きと(部屋の条件なら)その部屋の空き
+    _wk_ds = next((sc["dates"] for sc in all_scenes(cfg, ctx["today"]) if sc["slug"] == "shumatsu"), [])
+    _wk_short, _wk_faq = [], []
+    for d in _wk_ds:
+        c = state["cells"].get(h["no"], {}).get(d.isoformat())
+        if not c:
+            continue
+        ft = parse_dt(state.get("fetched_by", {}).get(page["area"], {}).get(d.isoformat(), "")) or parse_dt(state.get("fetched", {}).get(d.isoformat(), ""))
+        whole = (c.get("any") or [None])[0] if c.get("s") == "v" else None
+        if c.get("s") == "v":
+            _wk_short.append(f"{md(d)}({WD[d.weekday()]})空きあり" + (f"¥{whole:,}〜" if whole else ""))
+            a = f"宿全体で空きあり(2名1室の最安{yen_full(whole)}〜)" if whole else "宿全体で空きあり"
+        else:
+            _wk_short.append(f"{md(d)}({WD[d.weekday()]})満室")
+            a = "宿全体で満室(キャンセルで空くことがあります)"
+        if room and c.get("s") == "v":
+            st_ = status(c, feat)
+            a += (f"。{flabel}の部屋も空きあり「{short_room(c['f'][feat][2], 30)}」{yen_full(c['f'][feat][0])}〜" if st_ == "ok"
+                  else f"。ただし{flabel}の部屋の空きは確認できませんでした")
+        _wk_faq.append((f"{day_label(d, holidays)}に{h['name']}は空いていますか?",
+                        f"{day_label(d, holidays)}は{a}" + (f"({ft.month}/{ft.day} {ft:%H:%M}取得・{cond_text(cfg)})。" if ft else f"({cond_text(cfg)})。")
+                        + "予約前に楽天トラベルで最新の空室をご確認ください。"))
+    _wk_t = "・".join(_wk_short)
+    if _wk_short:
+        desc = (f"{h['name']}は今週末 " + "、".join(_wk_short) + f"({cond_text(cfg)})。" + desc)[:300]
+    faq = _wk_faq + [
         (f"{nm_f}は今空いていますか?", s1 + s2),
         (f"{h['name']}にはどんな特徴がありますか?",
          (f"楽天トラベルの情報からの自動判定では、{'、'.join(yes)}に当てはまります。" if yes else "自動判定で当てはまる条件は、まだ見つかっていません。")
@@ -2275,7 +2300,9 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
     # 宿名で検索する人が多いので、宿名+「空室・予約」+いまの空き状況を見出しにする
     nm_t = f"{h['name']}の空室・予約" + (f"({flabel})" if room else "")
     upd = f"【{md(ctx['today'])}更新】"
-    if ok and ok[0][0] == ctx["today"]:
+    if _wk_t:
+        title = f"{nm_t}|今週末 {_wk_t}{upd} | {site['name']}"
+    elif ok and ok[0][0] == ctx["today"]:
         title = f"{nm_t}|今夜空きあり {yen_full(ok[0][1])}〜{upd} | {site['name']}"
     elif ok:
         title = f"{nm_t}|{md(ok[0][0])}から空きあり {yen_full(min(prices))}〜{upd} | {site['name']}"
@@ -2983,6 +3010,18 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
         faq = faq[:1] + [(f"{day_label(d, holidays)}に{alabel}で{flabel}の宿は空いていますか?",
                           quick_answer(cfg, feat, flabel, alabel, rows, state, d, holidays, dates, info)
                           + "データは楽天トラベルの空室情報を定期的に取得したもので、リアルタイムではありません。") for d in _qd] + faq[1:]
+        # 予算別(土曜を優先)
+        _bd = next((d for d in sorted(_qd, key=lambda x: x.weekday() != 5) if len(day_split(rows, state, feat, d)[0]) >= 2), None)
+        if _bd:
+            _bt = budget_txt([(pr, h) for pr, h, _ in day_split(rows, state, feat, _bd)[0]])
+            if _bt:
+                faq.insert(1 + len(_qd), (f"{day_label(_bd, holidays)}に{alabel}で{flabel}の宿に予算内(2万・3万・5万・10万円以内)で泊まれますか?",
+                                          f"{day_label(_bd, holidays)}・{cond_text(cfg)}の最安で、{_bt}です。料金は取得時点の楽天トラベルの掲載額です。"))
+        # 空いている日(日付が決まっていない質問)
+        _fd = free_days_txt([(d, *info[d.isoformat()]) for d in dates if d.isoformat() in state.get("fetched", {})], holidays)
+        if _fd:
+            faq.insert(1 + len(_qd), (f"{alabel}で{flabel}の宿が空いている日はいつですか?",
+                                      f"向こう{len(dates)}日間(取得済みの日)で、{_fd}({cond_text(cfg)})"))
         # 土曜を優先。土曜の空きが2軒未満なら、今週末のほかの日
         _cd = next((d for d in sorted(_qd, key=lambda x: x.weekday() != 5) if len(day_split(rows, state, feat, d)[0]) >= 2), None)
         _ok = day_split(rows, state, feat, _cd)[0] if _cd else []
@@ -3343,6 +3382,43 @@ def area_pick_html(cfg, hotels, state, area, today, holidays, feats):
             "<script>window.__AD=" + json.dumps(data, ensure_ascii=False).replace("</", "<\\/") + "</script>")
 
 
+BUDGETS = (20000, 30000, 50000, 100000)
+
+
+def budget_txt(items):
+    """予算別の軒数。items は [(1泊2名1室の最安, 宿)]。「2万円以内3軒(口コミ最高: 〇〇★4.6・¥18,000〜)、3万円以内…」"""
+    items = [(p, h) for p, h in items if p]
+    parts, prev = [], 0
+    for b in BUDGETS:
+        inb = [(p, h) for p, h in items if p <= b]
+        if not inb or len(inb) == prev:
+            continue
+        prev = len(inb)
+        best = max(inb, key=lambda x: (_rv(x[1]), -(x[0])))
+        ex = f"(口コミ最高: {best[1]['name']}" + (f"★{best[1]['review']}" if best[1].get("review") else "") + f"・{yen_full(best[0])}〜)"
+        parts.append(f"{b // 10000}万円以内{len(inb)}軒{ex}")
+        if len(inb) == len(items):
+            break
+    return "、".join(parts)
+
+
+def free_days_txt(per, holidays, n=3):
+    """空いている日の答え。per は [(日付, 空きのある宿の数, 最安)](取得済みの日だけ)。土曜・祝前日と、全日の上位"""
+    per = [x for x in per if x[1]]
+    if not per:
+        return ""
+    def lab(x):
+        return f"{day_label(x[0], holidays)}{x[1]}軒" + (f"(¥{x[2]:,}〜)" if x[2] else "")
+    sat = [x for x in per if x[0].weekday() == 5 or (x[0] + timedelta(days=1)).isoformat() in holidays]
+    top_sat = sorted(sat, key=lambda x: (-x[1], x[0]))[:n]
+    top_all = sorted(per, key=lambda x: (-x[1], x[0]))[:n]
+    txt = ""
+    if top_sat:
+        txt += "空きが多い土曜・祝前日は " + "、".join(lab(x) for x in sorted(top_sat, key=lambda x: x[0])) + "。"
+    txt += "全日では " + "、".join(lab(x) for x in sorted(top_all, key=lambda x: x[0])) + "。"
+    return txt
+
+
 def area_day_info(hotels, state, area, d):
     """エリアのその日の空き: (確認した宿の数, [(最安, 宿)] 安い順, 取得時刻)"""
     v = area_vacancy(hotels, state, area, [d])
@@ -3478,6 +3554,22 @@ def render_area(cfg, hotels, state, area, wl, sums, now, demo):
         inner.append('<nav class="chips" aria-label="条件で絞り込む"><b>条件で絞り込む</b>'
                      + "".join(f'<a href="../{esc(p["slug"])}/">{esc(cfg["features"][p["feature"]]["label"])}</a>' for p in feats) + "</nav>")
     faq = [(f"{alabel}で今夜泊まれる宿はありますか?", lead)]
+    for _bd in sorted(wk_ds, key=lambda x: x.weekday() != 5):
+        _c, _ok, _ft = area_day_info(hotels, state, area, _bd)
+        _bt = budget_txt(_ok)
+        if len([x for x in _ok if x[0]]) >= 2 and _bt:
+            faq.append((f"{day_label(_bd, holidays)}に{alabel}で予算内(2万・3万・5万・10万円以内)で泊まれる宿は?",
+                        f"{day_label(_bd, holidays)}・{cond_text(cfg)}の最安で、{_bt}です(条件を問わない・取得時点の掲載額)。"))
+            break
+    _per = []
+    for i in range(area_days(cfg, area)):
+        d = today + timedelta(days=i)
+        c_, ok_, _ = area_day_info(hotels, state, area, d)
+        if c_:
+            _per.append((d, len(ok_), next((p for p, _ in ok_ if p), None)))
+    _fd = free_days_txt(_per, holidays)
+    if _fd:
+        faq.append((f"{alabel}で宿が空いている日はいつですか?", f"向こう{len(_per)}日間(取得済みの日)で、{_fd}({cond_text(cfg)}・条件を問わない数)"))
     # 土曜を優先。土曜の空きが2軒未満なら、今週末のほかの日
     for _cd in sorted(wk_ds, key=lambda x: x.weekday() != 5):
         _c, _ok, _ft = area_day_info(hotels, state, area, _cd)

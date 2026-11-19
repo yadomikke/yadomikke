@@ -319,6 +319,11 @@ with tempfile.TemporaryDirectory() as tmp:
     check("安く泊まれる宿はどこですか?" in _ar and '"HotelRoom"' in page and "当サイトが空室データで確認した" in "".join(
               x.read_text(encoding="utf-8") for x in list((out / "hotel").glob("*/index.html"))[:50]),
           "安さのFAQ(エリア)、料金の構造化データに部屋名、宿ページに当サイトが確認した部屋名を出す")
+    import build as _bb2
+    _H = lambda n, r: {"name": n, "review": r}
+    check(_bb2.budget_txt([(15000, _H("A", 4.1)), (28000, _H("B", 4.6)), (90000, _H("C", 4.9))]).startswith("2万円以内1軒(口コミ最高: A★4.1・¥15,000〜)、3万円以内2軒(口コミ最高: B")
+          and "空いている日はいつですか?" in _ar and "予算内" in page + _ar,
+          "予算別の軒数(2万・3万・5万・10万円以内)と、空いている日の答えをFAQに出す")
     # 宿ページの並び: 宿名 → その日の結果と予約 → 日付を変える → カレンダー → 当てはまる条件 → 文章のまとめ → よくある質問 → 共有
     check(hp1.index('id="dout"') < hp1.index('class="dchg"') < hp1.index('id="calendar"') < hp1.index('id="features"') < hp1.index('id="answer"')
           < hp1.index("よくある質問") < hp1.index('class="share"') and 'data-r="' in hp1 and "1泊・大人2名・1室の最安(取得時点)" in hp1,
