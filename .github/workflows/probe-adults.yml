@@ -1,0 +1,46 @@
+name: 人数(3名・4名)の調査(手動で実行)
+
+# 大人2名・3名・4名で、楽天の空室APIの返し方がどう変わるかを、少ない回数(約40回)で確かめます(scripts/probe_adults.py)。
+# 手動でしか動きません。サイトのページや空室データは変えず、結果を data/probe_adults.json に保存するだけです(アフィリエイトIDは伏せ字)。
+# 楽天APIは1秒1回の上限があるため、毎時の空室更新と同じ順番待ちのグループで動かします(同時には動きません)。
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-vacancy
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 人数ごとの返し方を調べる
+        env:
+          RAKUTEN_APP_ID: ${{ secrets.RAKUTEN_APP_ID }}
+          RAKUTEN_ACCESS_KEY: ${{ secrets.RAKUTEN_ACCESS_KEY }}
+          RAKUTEN_AFFILIATE_ID: ${{ secrets.RAKUTEN_AFFILIATE_ID }}
+        run: python scripts/probe_adults.py
+
+      - name: 結果を保存(サイトの公開はしません)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/probe_adults.json
+          if ! git diff --cached --quiet; then
+            git commit -m "人数の調査結果 [CF-Pages-Skip]"
+            for i in 1 2 3; do
+              git push && break
+              git pull --rebase -X theirs origin main
+            done
+          fi
