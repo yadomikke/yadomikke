@@ -294,7 +294,7 @@ with tempfile.TemporaryDirectory() as tmp:
     import build as _bq
     _D = __import__("datetime").date
     _per = [(_D(2026, 11, 20), True, 9, 30000), (_D(2026, 11, 21), True, 1, 90000)]
-    check(_bq.per_day_txt(_per, "paren") == "金曜9軒(¥30,000〜)・土曜1軒(¥90,000〜)" and _bq.per_day_txt(_per[:1]) == ""
+    check(_bq.per_day_txt(_per, "paren") == "11/20(金)9軒(¥30,000〜)・11/21(土)1軒(¥90,000〜)" and _bq.per_day_txt(_per[:1]) == ""
           and 'id="qans"' in page and "1泊大人2名1室" in page and 'class="amore rtab"' in page and "を表で見る" in page,
           "今週末の数は金曜・土曜に分けて出す(合計を土曜の数と読み違えないように)。H1の下に即答の1文、まとめの下に今週末の部屋の表")
     import build as _bb
@@ -310,6 +310,10 @@ with tempfile.TemporaryDirectory() as tmp:
           and _bh.in_area({"name": "有馬温泉 月光園", "address": "神戸市北区有馬町"}, "有馬") and not _bh.in_area({"name": "神戸みなと温泉 蓮", "address": "神戸市中央区"}, "有馬")
           and _bh.in_area({"name": "x", "address": "洲本市"}, "洲本(淡路島)"),
           "トップの空き数は大きな数字のタイル(文章はHTMLに残して折りたたむ・条件を問わない最安は出さない)。写真や人気の宿は、エリア名が宿名・住所にある宿から選ぶ")
+    _sc = {x["slug"]: x for x in scenes.all_scenes({"holidays": ["2026-11-23"]}, _D(2026, 11, 18))}
+    check(_sc["renkyu"].get("label") == "11/21〜11/23の3連休" and _sc["renkyu"]["span"].startswith("泊まる日 11/20(金)")
+          and 'class="rdef"' in page and "空いていますか?" in page,
+          "連休は人の数え方(11/21〜11/23の3連休)で書き、泊まる日を添える。一覧の上に区分の説明、その日の質問をFAQに自動で足す")
     # 宿ページの並び: 宿名 → その日の結果と予約 → 日付を変える → カレンダー → 当てはまる条件 → 文章のまとめ → よくある質問 → 共有
     check(hp1.index('id="dout"') < hp1.index('class="dchg"') < hp1.index('id="calendar"') < hp1.index('id="features"') < hp1.index('id="answer"')
           < hp1.index("よくある質問") < hp1.index('class="share"') and 'data-r="' in hp1 and "1泊・大人2名・1室の最安(取得時点)" in hp1,

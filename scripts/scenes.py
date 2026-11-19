@@ -66,13 +66,18 @@ def all_scenes(cfg, today):
 
     # 次の連休(土日祝で3日以上続くもの)。前日の夜から、最終日の前日まで
     days = [today + timedelta(days=i) for i in range(horizon + 8)]
-    ds = []
+    ds, blk = [], None
     for a, b in holiday_blocks(days, holidays):
         if b > today:
             ds = [d for d in [a - timedelta(days=1)] + [a + timedelta(days=i) for i in range((b - a).days)] if d >= today]
+            blk = (a, b)
             break
     add("renkyu", "次の連休", ds,
         "土日祝が3日以上続く、直近の連休の空室です(前日の夜から、最終日の前日泊まで)。祝日は設定ファイルの一覧にもとづきます。")
+    if blk and ds:
+        # 人は連休を「休みの日」で数える(例: 11/21〜11/23の3連休)。ここでの日付は泊まる日(前夜〜最終日の前日)なので、両方を書く
+        scenes[-1]["label"] = f"{md(blk[0])}〜{md(blk[1])}の{(blk[1] - blk[0]).days + 1}連休"
+        scenes[-1]["span"] = f"泊まる日 {dlabel(ds[0], holidays)}〜{dlabel(ds[-1], holidays)}"
 
     y = today.year if not (today.month == 1 and today.day <= 3) else today.year - 1
     ds = [d for d in (date(y, 12, 28) + timedelta(days=i) for i in range(7)) if d >= today]

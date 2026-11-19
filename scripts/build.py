@@ -819,6 +819,7 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .pcard .pb{display:flex;flex-direction:column;gap:2px;padding:8px 10px 10px}.pcard .pa{font-size:11px;color:#fff;background:var(--navy);border-radius:4px;padding:1px 6px;align-self:flex-start}
 .pcard b{font-size:14px;line-height:1.35;color:var(--navy)}.pcard .pv{font-size:12.5px;color:#333}.pcard .pv small{color:var(--sub);margin-left:2px}
 .pcard .pp{font-size:12px;color:#3b4148}.pcard .pp em{font-style:normal;font-weight:800;color:var(--price);font-size:15px}.pcard .pp small{color:var(--sub)}
+.rdef{font-size:12.5px;color:#3b4148;background:#f6f9fd;border-radius:8px;padding:6px 10px;margin:4px 0 6px}
 .hero .qans{font-size:13px;line-height:1.6;color:#2a3138;background:#fff;border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:8px;padding:8px 10px;margin-top:8px}
 .rtab{margin:0 0 12px}.rtbl{border-collapse:collapse;font-size:13px;width:100%}.rtbl caption{text-align:left;font-size:12px;color:var(--sub);padding:4px 0}
 .rtbl th,.rtbl td{border-bottom:1px solid var(--line);padding:6px 6px;text-align:left;vertical-align:top}.rtbl td.pr{white-space:nowrap;font-weight:700;color:var(--price)}.rtbl td:first-child,.rtbl td:last-child{white-space:nowrap}
@@ -1306,7 +1307,7 @@ def per_day_txt(per, price=None):
     if not (2 <= len(per) <= 3) or not all(f for _, f, _, _ in per):
         return ""
     def one(d, n, l):
-        t = f"{WD[d.weekday()]}曜{n}軒"
+        t = f"{md(d)}({WD[d.weekday()]}){n}軒"
         if price and n and l:
             t += f"({yen_full(l)}〜)" if price == "paren" else f"{yen_full(l)}〜"
         return t
@@ -1750,7 +1751,7 @@ def render_scene(cfg, page, sc, scene_list, ctx, state, stats, demo):
     body += summary
 
     faq = [
-        (f"{sc['name']}に空いている{alabel}の{flabel}はありますか?",
+        (f"{sc.get('label', sc['name'])}に空いている{alabel}の{flabel}はありますか?",
          lead + " " + " / ".join(bullets)),
         ("この情報はいつ取得したものですか?",
          (f"最新の取得は{newest:%Y-%m-%d %H:%M}(日本時間)です。" if newest else "取得前です。") + f"更新は{freq_text(cfg)}です。リアルタイムではありません。"),
@@ -1766,8 +1767,17 @@ def render_scene(cfg, page, sc, scene_list, ctx, state, stats, demo):
     if sc_rows:
         ld.append({"@context": "https://schema.org", "@type": "ItemList", "numberOfItems": len(sc_rows),
                    "itemListElement": item_list_ld(sc_rows, state, feat, sc["dates"], f"{ctx['base']}/{page['slug']}/")})
-    title = f"{name}" + (f"【{sc['span']}】" if sc["span"] else "") + f" | {site['name']}"
-    desc = (lead + " " + " / ".join(bullets))[:260]
+    # 検索結果で最初に見える部分を「地域・条件・日付・軒数・最安」にする(取得日時は後ろ)
+    _pd = per_day_txt(st["per"], "tight") if sc["dates"] else ""
+    _num = _pd or (f"{st['hotels']}軒に空き" + (f"・最安{yen_full(st['low'])}〜" if st["low"] else "") if sc["dates"] and st["got"] else "")
+    title = (f"{name}|{_num}【" + ("" if _pd else f"{sc['span']}・") + f"{md((newest or datetime.now(JST)).date())}更新】" if _num else
+             f"{name}" + (f"【{sc['span']}】" if sc["span"] else "")) + f" | {site['name']}"
+    if sc["dates"] and st["got"]:
+        _pdp = per_day_txt(st["per"], "paren")
+        desc = (f"{alabel}の{flabel}、{scn}({sc['span']})は" + (f"{_pdp}に空き" if _pdp else f"{st['hotels']}軒に空き{price_txt(st['low'])}")
+                + f"({cond_text(cfg)})。" + " / ".join(extra[:2]) + (f"({fmt_dt(newest)}時点・楽天トラベルの空室データ)" if newest else ""))[:260]
+    else:
+        desc = (lead + " " + " / ".join(bullets))[:260]
     return shell(cfg, demo, "../../", title, desc, canonical, "".join(body), ld)
 
 
@@ -1787,7 +1797,7 @@ def render_hub(cfg, fkey, sc, scene_list, area_ctxs, now, demo):
     holidays = set(cfg.get("holidays", []))
     newest = max([c["newest"] for _, c in area_ctxs if c["newest"]], default=None)
     asof = fmt_dt(newest) if newest else ""
-    name = f"{sc['name']}に空いている{flabel}【全エリア】"
+    name = f"{sc.get('label', sc['name'])}に空いている{flabel}【全エリア】"
 
     per_area, hot = [], []
     for page, ctx in area_ctxs:
@@ -1814,7 +1824,7 @@ def render_hub(cfg, fkey, sc, scene_list, area_ctxs, now, demo):
         lead = f"今年(今回)の{sc['name']}の日程は終了しました。次の日程が近づくと、このページに空室がまとまります。"
     elif n_hotels:
         top = min((st["low"], c["alabel"]) for _, c, st in per_area if st["low"])
-        lead = (f"{when_txt(newest)}{sc['name']}({sc['span']})に{flabel}の空きがあるのは、{n_areas}エリア・計{n_hotels}軒です。"
+        lead = (f"{when_txt(newest)}{sc.get('label', sc['name'])}({sc['span']})に{flabel}の空きがあるのは、{n_areas}エリア・計{n_hotels}軒です。"
                 f"最安は{top[1]}の{yen_full(top[0])}〜です。")
     elif got_any:
         lead = f"{when_txt(newest)}{sc['name']}の取得済みの日程では、どのエリアでも{flabel}の空きが見つかっていません。"
@@ -1843,7 +1853,7 @@ def render_hub(cfg, fkey, sc, scene_list, area_ctxs, now, demo):
                            f'<small>{esc(ctx["alabel"])} ・ {esc(day_label(d, holidays))}に{yen_full(p)}〜</small></li>')
             body.append(f'<section class="card"><h2>{esc(sc["name"])}に泊まれる宿(料金が安い順・全エリア)</h2><ul class="hl">{"".join(lis)}</ul></section>')
     faq = [
-        (f"{sc['name']}に空いている{flabel}の宿は、どのエリアにありますか?", lead + (" " + " / ".join(bullets) if bullets else "")),
+        (f"{sc.get('label', sc['name'])}に空いている{flabel}の宿は、どのエリアにありますか?", lead + (" " + " / ".join(bullets) if bullets else "")),
         ("この情報はいつ取得したものですか?",
          (f"最新の取得は{newest:%Y-%m-%d %H:%M}(日本時間)です。" if newest else "取得前です。") + f"更新は{freq_text(cfg)}です。リアルタイムではありません。"),
     ]
@@ -1857,8 +1867,15 @@ def render_hub(cfg, fkey, sc, scene_list, area_ctxs, now, demo):
           faq_ld(faq)]
     if items:
         ld.append({"@context": "https://schema.org", "@type": "ItemList", "itemListElement": items})
-    title = f"{name}" + (f"【{sc['span']}】" if sc["span"] else "") + f" | {site['name']}"
-    return shell(cfg, demo, "../../", title, (lead + " " + " / ".join(bullets))[:220], canonical, "".join(body), ld)
+    if sc["dates"] and n_hotels:
+        top = min((st["low"], c["alabel"]) for _, c, st in per_area if st["low"])
+        title = f"{name}|{n_areas}エリア計{n_hotels}軒・最安¥{top[0]:,}〜【{sc['span']}】 | {site['name']}"
+        desc = (f"{sc.get('label', sc['name'])}({sc['span']})に{flabel}の空きがあるのは{n_areas}エリア・計{n_hotels}軒、最安は{top[1]}の{yen_full(top[0])}〜({cond_text(cfg)})。"
+                + " / ".join(bullets) + (f"({fmt_dt(newest)}時点)" if newest else ""))[:220]
+    else:
+        title = f"{name}" + (f"【{sc['span']}】" if sc["span"] else "") + f" | {site['name']}"
+        desc = (lead + " " + " / ".join(bullets))[:220]
+    return shell(cfg, demo, "../../", title, desc, canonical, "".join(body), ld)
 
 
 # ---- テーマ別ページ(口コミ高評価・価格帯など。取得済みの数字だけで判定する) ----------------
@@ -2921,6 +2938,13 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
          + "個別に確認した情報ではないため、実際の設備は宿のページでご確認ください。"),
         ("このサイトの利用料金は?", "閲覧は無料です。予約は楽天トラベルで行います。"),
     ]
+    # その日の質問(AIに聞かれる形)と答えを、データから自動で作る(今週末の各日と、初期表示の日)
+    _qd = [d for d in ((wk["dates"] if wk else []) + [default]) if d.isoformat() in state.get("fetched", {})]
+    _qd = sorted(set(_qd))[:3]
+    if rows:
+        faq = faq[:1] + [(f"{day_label(d, holidays)}に{alabel}で{flabel}の宿は空いていますか?",
+                          quick_answer(cfg, feat, flabel, alabel, rows, state, d, holidays, dates, info)
+                          + "データは楽天トラベルの空室情報を定期的に取得したもので、リアルタイムではありません。") for d in _qd] + faq[1:]
     g_html, g_faq = (guide_html(cfg, feat, alabel, rows, state, dates, holidays, SNAPS.get(page["slug"]), newest)
                      if rows else ("", []))
     faq = faq[:1] + g_faq + faq[1:]
@@ -3001,7 +3025,8 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
                    + (f'<p class="rkeep" id="rkeep">📊 今空いている宿のうち、{esc(md(default))}まで空いたまま残るのは約{_k0}%の見込み(当サイトの観測)。{keep_advice(_k0)}</p>' if _k0 and n_def and default > today else '<p class="rkeep" id="rkeep" hidden></p>')
                    + '<div class="rctl"><button type="button" id="favtog" class="favtog" hidden aria-pressed="false">♡ お気に入りだけ</button><label class="sort">絞り込み <select id="fltsel"><option value="">すべて</option>' + "".join(f'<option value="{esc(b["id"])}">{esc(b["label"])}</option>' for b in cfg.get("badges", [])) + '</select></label><label class="sort">並び替え <select id="sortsel"><option value="p">料金が安い順</option>'
                    '<option value="r">口コミ評価が高い順</option></select></label></div></div>'
-                   '<p class="rsub">1泊・大人2名・1部屋の料金です(取得時点の掲載額)。ボタンを押すと楽天トラベルの予約ページが開きます。バッジは当サイト独自の基準で付けています(<a href="../about/#badges">基準を見る</a>)。</p>')
+                   + ('' if is_hotel_feat(cfg, feat) else f'<p class="rdef">この一覧は「{esc(room_noun(flabel))}に空きを確認できた宿」です。宿に空きはあるが{esc(flabel)}は未確認の宿は「参考」、空室なしは「満室の宿」として下に分けています(まだ取得していない日は満室ではありません)。</p>')
+                   + '<p class="rsub">1泊・大人2名・1部屋の料金です(取得時点の掲載額)。ボタンを押すと楽天トラベルの予約ページが開きます。バッジは当サイト独自の基準で付けています(<a href="../about/#badges">基準を見る</a>)。</p>')
         out.append(f'<div id="cards">{res}</div></div>')
         out.append('<section class="sec" id="calendar"><h2>カレンダーで比べる</h2>'
                    '<p class="sub">日付(数字)をタップすると、その日の宿が上の一覧に表示されます。◯・△・満のマスを押すと、その日の楽天トラベルのページが開きます。'
@@ -3052,6 +3077,9 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
 def when_list(cfg, today):
     """(slug, 呼び名, 日付の一覧, 説明) の一覧。トップページの答えと、/konya/ などのページに使う"""
     sc = {x["slug"]: x for x in all_scenes(cfg, today)}
+    for x in sc.values():
+        if x["dates"] and x["span"]:
+            SCENE_SPANS[tuple(x["dates"])] = x["span"]
     out = [("konya", "今夜", [today], "今日チェックインする場合(今夜泊まる場合)の空室です。"),
            ("ashita", "明日", [today + timedelta(days=1)], "明日チェックインする場合の空室です。")]
     for k in ("shumatsu", "renkyu", "nenmatsu"):
@@ -3064,9 +3092,14 @@ def when_title(slug, name):
     return f"{name}泊まれる温泉地の宿" if slug in ("konya", "ashita") else f"{name}に空いている温泉地の宿"
 
 
+SCENE_SPANS = {}   # 日付の並び → 見出し用の言い方(連休は「11/21(土)〜11/23(月祝)の3連休・泊まる日…」)。when_list() が入れる
+
+
 def span_txt(ds, holidays):
     if not ds:
         return ""
+    if tuple(ds) in SCENE_SPANS:
+        return SCENE_SPANS[tuple(ds)]
     return day_label(ds[0], holidays) + (f"〜{day_label(ds[-1], holidays)}" if len(ds) > 1 else "")
 
 
@@ -3197,8 +3230,14 @@ def render_when(cfg, hotels, state, slug, name, ds, note, wl, now, demo):
                {"@type": "ListItem", "position": i + 1, "name": h["name"], "url": base + (HOTEL_HREF.get(h["no"]) or f"/hotel/{h['no']}/")}
                for i, h in enumerate(x for x in ld_items if HOTEL_HREF.get(x["no"]))]}},
           faq_ld(faq)]
-    title = f"{t}【{md(now.date())}時点・全エリア】 | {site['name']}"
-    return shell(cfg, demo, "../", title, lead, canonical, "".join(inner), ld), sm
+    if ds and sm["checked"]:
+        title = f"{t}|{len(cfg['areas'])}温泉地で計{sm['vacant']:,}軒に空き【{sp}・{md(now.date())}更新】 | {site['name']}"
+        desc = (f"{name}({sp})に空きがある温泉地の宿は、{len(cfg['areas'])}エリアで計{sm['vacant']:,}軒(確認できた{sm['checked']:,}軒中・{cond_text(cfg)}・条件を問わない数)。"
+                + " / ".join(bullets[:6]) + (f"({fmt_dt(sm['newest'])}時点)" if sm["newest"] else ""))[:240]
+    else:
+        title = f"{t}【{md(now.date())}時点・全エリア】 | {site['name']}"
+        desc = lead
+    return shell(cfg, demo, "../", title, desc, canonical, "".join(inner), ld), sm
 
 
 # ---- エリアページ(/hakone/ など)・料金の相場(/souba/)・月別レポート(/report/) -----------------
@@ -3551,7 +3590,7 @@ def home_answer(cfg, sums, wl, holidays, wkd=None):
     newest = max([s["newest"] for s in sums.values() if s["newest"]], default=None)
     wk_txt = ""
     if wkd and 2 <= len(wkd) <= 3:
-        wk_txt = "・".join(f"{WD[d.weekday()]}曜{n:,}軒" for d, n in wkd)
+        wk_txt = "・".join(f"{md(d)}({WD[d.weekday()]}){n:,}軒" for d, n in wkd)
     for slug, name, ds, note in wl:
         sm = sums.get(slug)
         if not ds or not sm or not sm["checked"]:
