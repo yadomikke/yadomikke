@@ -1,7 +1,7 @@
 {
  "name": "ヤドミッケ 温泉地の空室・料金データ",
  "description": "楽天トラベルの空室検索APIから自動で取得し、ヤドミッケが集計した、温泉地の宿の空き数と料金の最新値です。",
- "generated_at": "2026-11-19T18:20:54+09:00",
+ "generated_at": "2026-11-19T20:11:17+09:00",
  "source": "楽天トラベル 空室検索API(楽天ウェブサービス)",
  "attribution": "ヤドミッケ(楽天トラベルの空室データをもとに集計)",
  "site_url": "https://yadomikke.com/",
@@ -152,16 +152,16 @@
     "wd": {
      "label": "平日(日〜木)",
      "median_jpy": 15600,
-     "p25_jpy": 7650,
+     "p25_jpy": 7700,
      "p75_jpy": 41000,
-     "samples": 3614
+     "samples": 3598
     },
     "fri": {
      "label": "金曜",
-     "median_jpy": 14756,
+     "median_jpy": 14803,
      "p25_jpy": 7300,
      "p75_jpy": 46462,
-     "samples": 681
+     "samples": 682
     },
     "sat": {
      "label": "土曜・祝前日",
@@ -326,15 +326,15 @@
      "label": "平日(日〜木)",
      "median_jpy": 13387,
      "p25_jpy": 8448,
-     "p75_jpy": 32400,
-     "samples": 3063
+     "p75_jpy": 32000,
+     "samples": 3028
     },
     "fri": {
      "label": "金曜",
      "median_jpy": 13360,
-     "p25_jpy": 8352,
-     "p75_jpy": 33000,
-     "samples": 583
+     "p25_jpy": 8448,
+     "p75_jpy": 31290,
+     "samples": 572
     },
     "sat": {
      "label": "土曜・祝前日",
@@ -658,7 +658,7 @@
      "median_jpy": 12400,
      "p25_jpy": 6248,
      "p75_jpy": 20900,
-     "samples": 757
+     "samples": 753
     },
     "fri": {
      "label": "金曜",
@@ -831,7 +831,7 @@
      "median_jpy": 12100,
      "p25_jpy": 7850,
      "p75_jpy": 18500,
-     "samples": 1086
+     "samples": 1083
     },
     "fri": {
      "label": "金曜",
@@ -1325,7 +1325,7 @@
      "median_jpy": 13600,
      "p25_jpy": 8800,
      "p75_jpy": 34104,
-     "samples": 1642
+     "samples": 1627
     },
     "fri": {
      "label": "金曜",
@@ -1480,10 +1480,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 11276,
-     "p25_jpy": 6669,
-     "p75_jpy": 21000,
-     "samples": 2386
+     "median_jpy": 11248,
+     "p25_jpy": 6600,
+     "p75_jpy": 20100,
+     "samples": 2370
     },
     "fri": {
      "label": "金曜",
@@ -1656,7 +1656,7 @@
      "median_jpy": 9000,
      "p25_jpy": 6000,
      "p75_jpy": 16400,
-     "samples": 1294
+     "samples": 1295
     },
     "fri": {
      "label": "金曜",
@@ -1824,7 +1824,7 @@
      "median_jpy": 11000,
      "p25_jpy": 6200,
      "p75_jpy": 22000,
-     "samples": 648
+     "samples": 650
     },
     "fri": {
      "label": "金曜",
@@ -1987,7 +1987,7 @@
      "median_jpy": 9500,
      "p25_jpy": 6800,
      "p75_jpy": 16240,
-     "samples": 2641
+     "samples": 2633
     },
     "fri": {
      "label": "金曜",
@@ -2154,8 +2154,8 @@
      "label": "平日(日〜木)",
      "median_jpy": 12100,
      "p25_jpy": 7623,
-     "p75_jpy": 30650,
-     "samples": 986
+     "p75_jpy": 30800,
+     "samples": 980
     },
     "fri": {
      "label": "金曜",
@@ -2315,10 +2315,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 8650,
+     "median_jpy": 8600,
      "p25_jpy": 7150,
      "p75_jpy": 23100,
-     "samples": 475
+     "samples": 473
     },
     "fri": {
      "label": "金曜",
@@ -2480,8 +2480,8 @@
      "label": "平日(日〜木)",
      "median_jpy": 11000,
      "p25_jpy": 6900,
-     "p75_jpy": 20487,
-     "samples": 844
+     "p75_jpy": 20240,
+     "samples": 831
     },
     "fri": {
      "label": "金曜",
@@ -2649,7 +2649,7 @@
      "median_jpy": 6600,
      "p25_jpy": 5000,
      "p75_jpy": 13900,
-     "samples": 1731
+     "samples": 1728
     },
     "fri": {
      "label": "金曜",
@@ -2820,9 +2820,9 @@
     "wd": {
      "label": "平日(日〜木)",
      "median_jpy": 6600,
-     "p25_jpy": 4000,
+     "p25_jpy": 4030,
      "p75_jpy": 12100,
-     "samples": 2095
+     "samples": 2089
     },
     "fri": {
      "label": "金曜",
@@ -2992,10 +2992,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 19899,
-     "p25_jpy": 13650,
-     "p75_jpy": 35600,
-     "samples": 366
+     "median_jpy": 19800,
+     "p25_jpy": 13200,
+     "p75_jpy": 37675,
+     "samples": 362
     },
     "fri": {
      "label": "金曜",
