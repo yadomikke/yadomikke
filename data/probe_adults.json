@@ -1,0 +1,2569 @@
+{
+ "area": "hakone",
+ "hotels": 45,
+ "days": [
+  "2026-11-27",
+  "2026-11-28"
+ ],
+ "stepA": {
+  "2026-11-27_2": {
+   "19684": {
+    "min_total": 41700,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 41700,
+     "rakutenCharge": 20850,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 11800
+   },
+   "30888": {
+    "min_total": 55000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 55000,
+     "rakutenCharge": 27500,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 9900
+   },
+   "54102": {
+    "min_total": 63824,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 63824,
+     "rakutenCharge": 31912,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 19607
+   },
+   "5081": {
+    "min_total": 26400,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 26400,
+     "rakutenCharge": 13200,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 11000
+   },
+   "15250": {
+    "min_total": 42000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 42000,
+     "rakutenCharge": 21000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 10000
+   },
+   "19786": {
+    "min_total": 58000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 58000,
+     "rakutenCharge": 29000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 14750
+   },
+   "5066": {
+    "min_total": 37400,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 37400,
+     "rakutenCharge": 18700,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 8800
+   },
+   "138119": {
+    "min_total": 50600,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 50600,
+     "rakutenCharge": 25300,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 12100
+   },
+   "1727": {
+    "min_total": 183400,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 183400,
+     "rakutenCharge": 91700,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 22220
+   },
+   "50826": {
+    "min_total": 60144,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 60144,
+     "rakutenCharge": 30072,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 21275
+   },
+   "75252": {
+    "min_total": 26680,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 26680,
+     "rakutenCharge": 13340,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 10340
+   },
+   "8968": {
+    "min_total": 22660,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 22660,
+     "rakutenCharge": 11330,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 5280
+   },
+   "9669": {
+    "min_total": 69100,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 69100,
+     "rakutenCharge": 34550,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 6550
+   },
+   "162753": {
+    "min_total": 51480,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 51480,
+     "rakutenCharge": 25740,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 11000
+   },
+   "149477": {
+    "min_total": 69460,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 69460,
+     "rakutenCharge": 34730,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 20240
+   },
+   "158501": {
+    "min_total": 162800,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 162800,
+     "rakutenCharge": 81400,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 38500
+   },
+   "29488": {
+    "min_total": 75680,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 75680,
+     "rakutenCharge": 37840,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 19360
+   },
+   "74776": {
+    "min_total": 49984,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 49984,
+     "rakutenCharge": 24992,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 12753
+   },
+   "59637": {
+    "min_total": 63600,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 63600,
+     "rakutenCharge": 31800,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 8400
+   },
+   "16106": {
+    "min_total": 58740,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 58740,
+     "rakutenCharge": 29370,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 22000
+   },
+   "165555": {
+    "min_total": 107640,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 107640,
+     "rakutenCharge": 53820,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 29260
+   },
+   "164532": {
+    "min_total": 64382,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 64382,
+     "rakutenCharge": 32191,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 16352
+   },
+   "1817": {
+    "min_total": 44000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 44000,
+     "rakutenCharge": 22000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 9900
+   },
+   "73891": {
+    "min_total": 66000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 66000,
+     "rakutenCharge": 33000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 14850
+   },
+   "19985": {
+    "min_total": 118800,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 118800,
+     "rakutenCharge": 59400,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 31900
+   },
+   "68545": {
+    "min_total": 46200,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 46200,
+     "rakutenCharge": 23100,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 12100
+   },
+   "161012": {
+    "min_total": 30000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 30000,
+     "rakutenCharge": 15000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 7000
+   },
+   "49387": {
+    "min_total": 92400,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 92400,
+     "rakutenCharge": 46200,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 26400
+   },
+   "37864": {
+    "min_total": 29400,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 29400,
+     "rakutenCharge": 14700,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 9600
+   },
+   "10956": {
+    "min_total": 31600,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 31600,
+     "rakutenCharge": 15800,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 10800
+   },
+   "29435": {
+    "min_total": 40072,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 40072,
+     "rakutenCharge": 20036,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 9700
+   },
+   "1728": {
+    "min_total": 82000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 82000,
+     "rakutenCharge": 41000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 22000
+   }
+  },
+  "2026-11-27_3": {
+   "19684": {
+    "min_total": 57600,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 57600,
+     "rakutenCharge": 19200,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 11800
+   },
+   "30888": {
+    "min_total": 72600,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 72600,
+     "rakutenCharge": 24200,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 9900
+   },
+   "5081": {
+    "min_total": 36300,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 36300,
+     "rakutenCharge": 12100,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 11000
+   },
+   "15250": {
+    "min_total": 57000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 57000,
+     "rakutenCharge": 19000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 10000
+   },
+   "19786": {
+    "min_total": 79500,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 79500,
+     "rakutenCharge": 26500,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 14750
+   },
+   "5066": {
+    "min_total": 49500,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 49500,
+     "rakutenCharge": 16500,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 8800
+   },
+   "138119": {
+    "min_total": 72300,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 72300,
+     "rakutenCharge": 24100,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 12100
+   },
+   "1727": {
+    "min_total": 255000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 255000,
+     "rakutenCharge": 85000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 22220
+   },
+   "50826": {
+    "min_total": 86766,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 86766,
+     "rakutenCharge": 28922,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 21275
+   },
+   "18497": {
+    "min_total": 51000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 51000,
+     "rakutenCharge": 17000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 14000
+   },
+   "75252": {
+    "min_total": 38520,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 38520,
+     "rakutenCharge": 12840,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 10340
+   },
+   "8968": {
+    "min_total": 30690,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 30690,
+     "rakutenCharge": 10230,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 5280
+   },
+   "9669": {
+    "min_total": 70800,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 70800,
+     "rakutenCharge": 23600,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 6550
+   },
+   "162753": {
+    "min_total": 115830,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 115830,
+     "rakutenCharge": 38610,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 11000
+   },
+   "158501": {
+    "min_total": 237600,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 237600,
+     "rakutenCharge": 79200,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 38500
+   },
+   "29488": {
+    "min_total": 100320,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 100320,
+     "rakutenCharge": 33440,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 19360
+   },
+   "74776": {
+    "min_total": 71889,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 71889,
+     "rakutenCharge": 23963,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 12753
+   },
+   "59637": {
+    "min_total": 64200,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 64200,
+     "rakutenCharge": 21400,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 8400
+   },
+   "16106": {
+    "min_total": 79200,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 79200,
+     "rakutenCharge": 26400,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 22000
+   },
+   "164532": {
+    "min_total": 90402,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 90402,
+     "rakutenCharge": 30134,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 16352
+   },
+   "1817": {
+    "min_total": 62700,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 62700,
+     "rakutenCharge": 20900,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 9900
+   },
+   "73891": {
+    "min_total": 106500,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 106500,
+     "rakutenCharge": 35500,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 14850
+   },
+   "19985": {
+    "min_total": 165000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 165000,
+     "rakutenCharge": 55000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 31900
+   },
+   "68545": {
+    "min_total": 62700,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 62700,
+     "rakutenCharge": 20900,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 12100
+   },
+   "161012": {
+    "min_total": 48000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 48000,
+     "rakutenCharge": 16000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 7000
+   },
+   "40781": {
+    "min_total": 40194,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 40194,
+     "rakutenCharge": 13398,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 7898
+   },
+   "37864": {
+    "min_total": 40200,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 40200,
+     "rakutenCharge": 13400,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 9600
+   },
+   "10956": {
+    "min_total": 53400,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 53400,
+     "rakutenCharge": 17800,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 10800
+   },
+   "29435": {
+    "min_total": 43077,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 43077,
+     "rakutenCharge": 14359,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 9700
+   },
+   "1728": {
+    "min_total": 273000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 273000,
+     "rakutenCharge": 91000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 22000
+   }
+  },
+  "2026-11-27_4": {
+   "19684": {
+    "min_total": 72400,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 72400,
+     "rakutenCharge": 18100,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 11800
+   },
+   "30888": {
+    "min_total": 88000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 88000,
+     "rakutenCharge": 22000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 9900
+   },
+   "5081": {
+    "min_total": 44000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 44000,
+     "rakutenCharge": 11000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 11000
+   },
+   "15250": {
+    "min_total": 80000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 80000,
+     "rakutenCharge": 20000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 10000
+   },
+   "5066": {
+    "min_total": 70400,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 70400,
+     "rakutenCharge": 17600,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 8800
+   },
+   "138119": {
+    "min_total": 91600,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 91600,
+     "rakutenCharge": 22900,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 12100
+   },
+   "1727": {
+    "min_total": 255600,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 255600,
+     "rakutenCharge": 63900,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 22220
+   },
+   "50826": {
+    "min_total": 111088,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 111088,
+     "rakutenCharge": 27772,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 21275
+   },
+   "18497": {
+    "min_total": 64000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 64000,
+     "rakutenCharge": 16000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 14000
+   },
+   "75252": {
+    "min_total": 49360,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 49360,
+     "rakutenCharge": 12340,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 10340
+   },
+   "8968": {
+    "min_total": 45320,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 45320,
+     "rakutenCharge": 11330,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 5280
+   },
+   "9669": {
+    "min_total": 90000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 90000,
+     "rakutenCharge": 22500,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 6550
+   },
+   "162753": {
+    "min_total": 150480,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 150480,
+     "rakutenCharge": 37620,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 11000
+   },
+   "158501": {
+    "min_total": 308000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 308000,
+     "rakutenCharge": 77000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 38500
+   },
+   "29488": {
+    "min_total": 126720,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 126720,
+     "rakutenCharge": 31680,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 19360
+   },
+   "74776": {
+    "min_total": 95852,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 95852,
+     "rakutenCharge": 23963,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 12753
+   },
+   "16106": {
+    "min_total": 202400,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 202400,
+     "rakutenCharge": 50600,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 22000
+   },
+   "73891": {
+    "min_total": 138000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 138000,
+     "rakutenCharge": 34500,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 14850
+   },
+   "19985": {
+    "min_total": 202400,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 202400,
+     "rakutenCharge": 50600,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 31900
+   },
+   "68545": {
+    "min_total": 74800,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 74800,
+     "rakutenCharge": 18700,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 12100
+   },
+   "161012": {
+    "min_total": 86000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 86000,
+     "rakutenCharge": 21500,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 7000
+   },
+   "40781": {
+    "min_total": 49192,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 49192,
+     "rakutenCharge": 12298,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 7898
+   },
+   "37864": {
+    "min_total": 51200,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 51200,
+     "rakutenCharge": 12800,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 9600
+   },
+   "10956": {
+    "min_total": 71200,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 71200,
+     "rakutenCharge": 17800,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 10800
+   },
+   "29435": {
+    "min_total": 66068,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 66068,
+     "rakutenCharge": 16517,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 9700
+   },
+   "1728": {
+    "min_total": 272000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 272000,
+     "rakutenCharge": 68000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 22000
+   }
+  },
+  "2026-11-28_2": {
+   "54102": {
+    "min_total": 104880,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 104880,
+     "rakutenCharge": 52440,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 19607
+   },
+   "5081": {
+    "min_total": 123200,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 123200,
+     "rakutenCharge": 61600,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 11000
+   },
+   "15250": {
+    "min_total": 58000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 58000,
+     "rakutenCharge": 29000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 10000
+   },
+   "5066": {
+    "min_total": 72600,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 72600,
+     "rakutenCharge": 36300,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 8800
+   },
+   "1727": {
+    "min_total": 200000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 200000,
+     "rakutenCharge": 100000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 22220
+   },
+   "50826": {
+    "min_total": 74864,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 74864,
+     "rakutenCharge": 37432,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 21275
+   },
+   "162753": {
+    "min_total": 71060,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 71060,
+     "rakutenCharge": 35530,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 11000
+   },
+   "149477": {
+    "min_total": 62330,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 62330,
+     "rakutenCharge": 31165,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 20240
+   },
+   "158501": {
+    "min_total": 121000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 121000,
+     "rakutenCharge": 60500,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 38500
+   },
+   "29488": {
+    "min_total": 92720,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 92720,
+     "rakutenCharge": 46360,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 19360
+   },
+   "59637": {
+    "min_total": 81000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 81000,
+     "rakutenCharge": 40500,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 8400
+   },
+   "16106": {
+    "min_total": 129800,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 129800,
+     "rakutenCharge": 64900,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 22000
+   },
+   "1817": {
+    "min_total": 44000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 44000,
+     "rakutenCharge": 22000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 9900
+   },
+   "184829": {
+    "min_total": 64624,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 64624,
+     "rakutenCharge": 32312,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 18590
+   },
+   "73891": {
+    "min_total": 70200,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 70200,
+     "rakutenCharge": 35100,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 14850
+   },
+   "68545": {
+    "min_total": 85800,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 85800,
+     "rakutenCharge": 42900,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 12100
+   },
+   "49387": {
+    "min_total": 176000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 176000,
+     "rakutenCharge": 88000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 26400
+   },
+   "10956": {
+    "min_total": 45600,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 45600,
+     "rakutenCharge": 22800,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 10800
+   },
+   "29435": {
+    "min_total": 51140,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 51140,
+     "rakutenCharge": 25570,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 9700
+   },
+   "1728": {
+    "min_total": 80000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 80000,
+     "rakutenCharge": 40000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 22000
+   }
+  },
+  "2026-11-28_3": {
+   "19684": {
+    "min_total": 154800,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 154800,
+     "rakutenCharge": 51600,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 11800
+   },
+   "54102": {
+    "min_total": 138690,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 138690,
+     "rakutenCharge": 46230,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 19607
+   },
+   "5081": {
+    "min_total": 165000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 165000,
+     "rakutenCharge": 55000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 11000
+   },
+   "15250": {
+    "min_total": 84000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 84000,
+     "rakutenCharge": 28000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 10000
+   },
+   "5066": {
+    "min_total": 105600,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 105600,
+     "rakutenCharge": 35200,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 8800
+   },
+   "50826": {
+    "min_total": 108846,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 108846,
+     "rakutenCharge": 36282,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 21275
+   },
+   "162753": {
+    "min_total": 141075,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 141075,
+     "rakutenCharge": 47025,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 11000
+   },
+   "149477": {
+    "min_total": 90045,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 90045,
+     "rakutenCharge": 30015,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 20240
+   },
+   "158501": {
+    "min_total": 174900,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 174900,
+     "rakutenCharge": 58300,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 38500
+   },
+   "29488": {
+    "min_total": 125880,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 125880,
+     "rakutenCharge": 41960,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 19360
+   },
+   "59637": {
+    "min_total": 81600,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 81600,
+     "rakutenCharge": 27200,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 8400
+   },
+   "16106": {
+    "min_total": 181500,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 181500,
+     "rakutenCharge": 60500,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 22000
+   },
+   "184829": {
+    "min_total": 119640,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 119640,
+     "rakutenCharge": 39880,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 18590
+   },
+   "73891": {
+    "min_total": 102300,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 102300,
+     "rakutenCharge": 34100,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 14850
+   },
+   "19985": {
+    "min_total": 188100,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 188100,
+     "rakutenCharge": 62700,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 31900
+   },
+   "68545": {
+    "min_total": 115500,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 115500,
+     "rakutenCharge": 38500,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 12100
+   },
+   "10956": {
+    "min_total": 68400,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 68400,
+     "rakutenCharge": 22800,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 10800
+   },
+   "29435": {
+    "min_total": 54144,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 54144,
+     "rakutenCharge": 18048,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 9700
+   },
+   "1728": {
+    "min_total": 102000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 102000,
+     "rakutenCharge": 34000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 22000
+   }
+  },
+  "2026-11-28_4": {
+   "19684": {
+    "min_total": 202000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 202000,
+     "rakutenCharge": 50500,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 11800
+   },
+   "54102": {
+    "min_total": 189060,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 189060,
+     "rakutenCharge": 47265,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 19607
+   },
+   "5081": {
+    "min_total": 211200,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 211200,
+     "rakutenCharge": 52800,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 11000
+   },
+   "15250": {
+    "min_total": 116000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 116000,
+     "rakutenCharge": 29000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 10000
+   },
+   "5066": {
+    "min_total": 171600,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 171600,
+     "rakutenCharge": 42900,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 8800
+   },
+   "50826": {
+    "min_total": 140528,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 140528,
+     "rakutenCharge": 35132,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 21275
+   },
+   "75252": {
+    "min_total": 53360,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 53360,
+     "rakutenCharge": 13340,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 10340
+   },
+   "162753": {
+    "min_total": 179740,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 179740,
+     "rakutenCharge": 44935,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 11000
+   },
+   "158501": {
+    "min_total": 228800,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 228800,
+     "rakutenCharge": 57200,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 38500
+   },
+   "29488": {
+    "min_total": 160800,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 160800,
+     "rakutenCharge": 40200,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 19360
+   },
+   "59637": {
+    "min_total": 82400,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 82400,
+     "rakutenCharge": 20600,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 8400
+   },
+   "16106": {
+    "min_total": 228800,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 228800,
+     "rakutenCharge": 57200,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 22000
+   },
+   "184829": {
+    "min_total": 151280,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 151280,
+     "rakutenCharge": 37820,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 18590
+   },
+   "73891": {
+    "min_total": 144400,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 144400,
+     "rakutenCharge": 36100,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 14850
+   },
+   "19985": {
+    "min_total": 242000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 242000,
+     "rakutenCharge": 60500,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 31900
+   },
+   "10956": {
+    "min_total": 95200,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 95200,
+     "rakutenCharge": 23800,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 10800
+   },
+   "29435": {
+    "min_total": 83208,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 83208,
+     "rakutenCharge": 20802,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 9700
+   },
+   "1728": {
+    "min_total": 284000,
+    "rooms": 1,
+    "charge_keys": [
+     "chargeFlag",
+     "rakutenCharge",
+     "stayDate",
+     "total"
+    ],
+    "charge_sample": {
+     "total": 284000,
+     "rakutenCharge": 71000,
+     "chargeFlag": 0
+    },
+    "hotelMinCharge": 22000
+   }
+  }
+ },
+ "stepB": [
+  {
+   "no": "19684",
+   "name": "箱根湯本温泉　ホテル　おかだ",
+   "rooms_returned": 2,
+   "rooms": [
+    {
+     "roomName": "【最上階　温泉露天風呂付　雅〜MIYABI〜】和洋室64平米",
+     "planName": "美肌の湯とバイキング1泊2食付きプラン☆飲み放題＆熱々ステーキと天ぷら　リーズナ",
+     "total": 154800,
+     "reserve_url_people": {
+      "f_heya_su": "1",
+      "f_otona_su": "3"
+     }
+    },
+    {
+     "roomName": "【最上階温泉露天風呂付　牡丹〜BOTAN〜】和洋室　76平米",
+     "planName": "美肌の湯とバイキング1泊2食付きプラン☆飲み放題＆熱々ステーキと天ぷら　リーズナ",
+     "total": 160500,
+     "reserve_url_people": {
+      "f_heya_su": "1",
+      "f_otona_su": "3"
+     }
+    }
+   ]
+  },
+  {
+   "no": "54102",
+   "name": "季の湯　雪月花（共立リゾート）",
+   "rooms_returned": 9,
+   "rooms": [
+    {
+     "roomName": "【露天風呂付き客室】和洋室　３６平米（２〜３名様定員）",
+     "planName": "【グループ歓迎】≪最大10％オフ≫1室3名または4名宿泊＆10：00チェックアウ",
+     "total": 138690,
+     "reserve_url_people": {
+      "f_heya_su": "1",
+      "f_otona_su": "3"
+     }
+    },
+    {
+     "roomName": "【露天風呂付き客室】和洋室　３６平米（２〜３名様定員）",
+     "planName": "【20周年記念】夕食に和牛の握り寿司2貫付！★強羅駅徒歩1分★全室檜露天風呂付＜",
+     "total": 153870,
+     "reserve_url_people": {
+      "f_heya_su": "1",
+      "f_otona_su": "3"
+     }
+    },
+    {
+     "roomName": "【露天風呂付き客室】和洋室　３６平米（２〜３名様定員）",
+     "planName": "【スタンダード】★全室檜の露天風呂付★貸切露天風呂・湯上りドリンクなど無料サービ",
+     "total": 153870,
+     "reserve_url_people": {
+      "f_heya_su": "1",
+      "f_otona_su": "3"
+     }
+    },
+    {
+     "roomName": "【露天風呂付き客室】和洋室　３６平米（２〜３名様定員）",
+     "planName": "【マタニティプラン】＼未来のママさん応援！／出産前の癒し旅♪妊婦さんに優しいお食",
+     "total": 153870,
+     "reserve_url_people": {
+      "f_heya_su": "1",
+      "f_otona_su": "3"
+     }
+    },
+    {
+     "roomName": "【露天風呂付き客室】和洋室　３６平米（２〜３名様定員）",
+     "planName": "【夕食グレードＵＰ】★一人1皿★A4ランク和牛陶板焼きを堪能♪お肉好きな方必見で",
+     "total": 159045,
+     "reserve_url_people": {
+      "f_heya_su": "1",
+      "f_otona_su": "3"
+     }
+    },
+    {
+     "roomName": "【露天風呂付き客室】和洋室　４５平米（２〜４名様定員）",
+     "planName": "【20周年記念】夕食に和牛の握り寿司2貫付！★強羅駅徒歩1分★全室檜露天風呂付＜",
+     "total": 160770,
+     "reserve_url_people": {
+      "f_heya_su": "1",
+      "f_otona_su": "3"
+     }
+    },
+    {
+     "roomName": "【露天風呂付き客室】和洋室　４５平米（２〜４名様定員）",
+     "planName": "【スタンダード】★全室檜の露天風呂付★貸切露天風呂・湯上りドリンクなど無料サービ",
+     "total": 160770,
+     "reserve_url_people": {
+      "f_heya_su": "1",
+      "f_otona_su": "3"
+     }
+    },
+    {
+     "roomName": "【露天風呂付き客室】和洋室　４５平米（２〜４名様定員）",
+     "planName": "【マタニティプラン】＼未来のママさん応援！／出産前の癒し旅♪妊婦さんに優しいお食",
+     "total": 160770,
+     "reserve_url_people": {
+      "f_heya_su": "1",
+      "f_otona_su": "3"
+     }
+    }
+   ]
+  },
+  {
+   "no": "5081",
+   "name": "箱根湯本温泉　ホテルおくゆもと",
+   "rooms_returned": 3,
+   "rooms": [
+    {
+     "roomName": "【禁煙】温泉露天風呂・専用庭園付特別室和洋室【つばきの間】",
+     "planName": "■■厳選五品の天ぷら盛りと国産牛ステーキを味わう山里満足プラン♪■■",
+     "total": 165000,
+     "reserve_url_people": {
+      "f_heya_su": "1",
+      "f_otona_su": "3"
+     }
+    },
+    {
+     "roomName": "【禁煙】温泉露天風呂・専用庭園付特別室和洋室【つばきの間】",
+     "planName": "■□■記念日は温泉で！■□■大切な人とゆったり温泉旅行を満喫する！！ケーキ付きプ",
+     "total": 171600,
+     "reserve_url_people": {
+      "f_heya_su": "1",
+      "f_otona_su": "3"
+     }
+    },
+    {
+     "roomName": "【禁煙】温泉露天風呂・専用庭園付特別室和洋室【つばきの間】",
+     "planName": "◆専用庭園露天風呂付客室◆でごゆっくりと寛ぎ＾＾お食事処『山里』で熱々料理を楽し",
+     "total": 178200,
+     "reserve_url_people": {
+      "f_heya_su": "1",
+      "f_otona_su": "3"
+     }
+    }
+   ]
+  }
+ ],
+ "notes": [
+  {
+   "day": "2026-11-27",
+   "both": 28,
+   "ratio_3_over_2": [
+    1.01,
+    1.02,
+    1.07,
+    1.32,
+    1.32,
+    1.33,
+    1.35,
+    1.35,
+    1.36,
+    1.36,
+    1.37,
+    1.37,
+    1.38,
+    1.38,
+    1.39,
+    1.39,
+    1.4,
+    1.43,
+    1.43,
+    1.44,
+    1.44,
+    1.44,
+    1.46,
+    1.6,
+    1.61,
+    1.69,
+    2.25,
+    3.33
+   ],
+   "only3": 2,
+   "only2": 4
+  },
+  {
+   "day": "2026-11-28",
+   "both": 17,
+   "ratio_3_over_2": [
+    1.01,
+    1.06,
+    1.27,
+    1.32,
+    1.34,
+    1.35,
+    1.36,
+    1.4,
+    1.44,
+    1.45,
+    1.45,
+    1.45,
+    1.45,
+    1.46,
+    1.5,
+    1.85,
+    1.99
+   ],
+   "only3": 2,
+   "only2": 3
+  }
+ ],
+ "planlist_url_people": {
+  "2": {
+   "planListUrl": {},
+   "reserveUrl": {
+    "f_heya_su": "1",
+    "f_otona_su": "2"
+   }
+  },
+  "3": {
+   "planListUrl": {},
+   "reserveUrl": {
+    "f_heya_su": "1",
+    "f_otona_su": "3"
+   }
+  },
+  "4": {
+   "planListUrl": {},
+   "reserveUrl": {
+    "f_heya_su": "1",
+    "f_otona_su": "4"
+   }
+  }
+ },
+ "api_calls": 26
+}
