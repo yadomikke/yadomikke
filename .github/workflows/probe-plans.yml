@@ -1,0 +1,46 @@
+name: プラン名(カップル・記念日・赤ちゃん連れ)の調査(手動で実行)
+
+# プラン名・部屋名に「カップル・記念日」「赤ちゃん連れ」などの言葉を含む宿が、エリアごとに何軒あるかを数えます(scripts/probe_plans.py・最大約400回)。
+# 手動でしか動きません。サイトのページや空室データは変えず、結果を data/probe_plans.json に保存するだけです(URLは保存しません)。
+# 楽天APIは1秒1回の上限があるため、毎時の空室更新と同じ順番待ちのグループで動かします(同時には動きません)。
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-vacancy
+  cancel-in-progress: false
+
+jobs:
+  probe-plans:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: プラン名の言葉を数える
+        env:
+          RAKUTEN_APP_ID: ${{ secrets.RAKUTEN_APP_ID }}
+          RAKUTEN_ACCESS_KEY: ${{ secrets.RAKUTEN_ACCESS_KEY }}
+          RAKUTEN_AFFILIATE_ID: ${{ secrets.RAKUTEN_AFFILIATE_ID }}
+        run: python scripts/probe_plans.py
+
+      - name: 結果を保存(サイトの公開はしません)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/probe_plans.json
+          if ! git diff --cached --quiet; then
+            git commit -m "プラン名の調査結果 [CF-Pages-Skip]"
+            for i in 1 2 3; do
+              git push && break
+              git pull --rebase -X theirs origin main
+            done
+          fi
