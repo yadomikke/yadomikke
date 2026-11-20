@@ -70,10 +70,10 @@ def main():
                 hit = []
                 for r in rooms:
                     b = r["basic"]
-                    text = f"{b.get('planName', '')} {b.get('roomName', '')}"
+                    text = f"{b.get('planName') or ''} {b.get('roomName') or ''}"
                     ws = [k for k in ks if k in text]
                     if ws:
-                        hit.append((rk.to_int((r.get("charge") or {}).get("total")), b.get("planName", "")[:50], b.get("roomName", "")[:40], ws))
+                        hit.append((rk.to_int((r.get("charge") or {}).get("total")), (b.get("planName") or "")[:50], (b.get("roomName") or "")[:40], ws))
                 if hit:
                     for k in {w for x in hit for w in x[3]}:
                         kw_count[g][k] += 1
