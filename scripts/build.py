@@ -821,6 +821,7 @@ footer{border-top:1px solid var(--line);padding:20px 14px 44px;text-align:center
 .pcard .pp{font-size:12px;color:#3b4148}.pcard .pp em{font-style:normal;font-weight:800;color:var(--price);font-size:15px}.pcard .pp small{color:var(--sub)}
 table.stat tr.sub th,table.stat tr.sub td{font-size:12.5px;color:#4a5058;background:#fafbfc}
 .seenr{font-size:13px;color:#3b4148;margin:4px 0 6px}
+.adh{margin:8px 0 2px;font-size:14px}.adl{margin:0 0 6px}
 .rdef{font-size:12.5px;color:#3b4148;background:#f6f9fd;border-radius:8px;padding:6px 10px;margin:4px 0 6px}
 .hero .qans{font-size:13px;line-height:1.6;color:#2a3138;background:#fff;border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:8px;padding:8px 10px;margin-top:8px}
 .rtab{margin:0 0 12px}.rtbl{border-collapse:collapse;font-size:13px;width:100%}.rtbl caption{text-align:left;font-size:12px;color:var(--sub);padding:4px 0}
@@ -2242,13 +2243,17 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
             a = f"宿全体で空きあり(2名1室の最安{yen_full(whole)}〜)" if whole else "宿全体で空きあり"
         else:
             _wk_short.append(f"{md(d)}({WD[d.weekday()]})満室")
-            a = "宿全体で満室(キャンセルで空くことがあります)"
+            a = "宿全体で満室(大人2名1室の条件。キャンセルで空くことがあります)"
         if room and c.get("s") == "v":
             st_ = status(c, feat)
             a += (f"。{flabel}の部屋も空きあり「{short_room(c['f'][feat][2], 30)}」{yen_full(c['f'][feat][0])}〜" if st_ == "ok"
                   else f"。ただし{flabel}の部屋の空きは確認できませんでした")
+        _ft3, _v3 = adults_day(state, page["area"], d)
+        if _v3 is not None and c.get("s") == "v":
+            _m3 = next((x for x in _v3 if x[1] == h["no"]), None)
+            a += (f"。大人3名1室でも空きあり({yen_full(_m3[0])}〜・3名1室の合計)" if _m3 else "。大人3名1室では空きが見つかりませんでした")
         _wk_faq.append((f"{day_label(d, holidays)}に{h['name']}は空いていますか?",
-                        f"{day_label(d, holidays)}は{a}" + (f"({ft.month}/{ft.day} {ft:%H:%M}取得・{cond_text(cfg)})。" if ft else f"({cond_text(cfg)})。")
+                        f"{day_label(d, holidays)}は{a}" + (f"({ft.month}/{ft.day} {ft:%H:%M}取得・1泊)。" if ft else "(1泊)。")
                         + "予約前に楽天トラベルで最新の空室をご確認ください。"))
     _wk_t = "・".join(_wk_short)
     if _wk_short:
@@ -3382,6 +3387,61 @@ def area_pick_html(cfg, hotels, state, area, today, holidays, feats):
             "<script>window.__AD=" + json.dumps(data, ensure_ascii=False).replace("</", "<\\/") + "</script>")
 
 
+EXTRA_ADULTS = 3
+
+
+def adults_day(state, area, d, a=EXTRA_ADULTS):
+    """人数を変えた空き(update.py の fetch_adults)。(取得日時, [(1室の最安, 施設番号, 部屋名)] 安い順) 。未取得なら (None, None)"""
+    e = state.get("adults", {}).get(str(a), {}).get(area, {}).get(d.isoformat())
+    if not e:
+        return None, None
+    v = sorted([(x[0], no, x[1]) for no, x in (e.get("v") or {}).items() if x and x[0]], key=lambda y: (y[0], y[1]))
+    return parse_dt(e.get("t", "")), v
+
+
+def adults_link(no, d, a=EXTRA_ADULTS):
+    """大人a名・1室の条件で開く、日付つきプラン一覧(アフィリエイト経由)"""
+    if LINK:
+        return stay_link(LINK["a"], no, d, a, LINK["n"])
+    return ""
+
+
+def adults_area_html(hotels, state, area, ds, holidays, alabel):
+    """エリアページ: 3人で泊まれる宿(今週末の各日・安い順に5軒まで)。予約ボタンは3名1室の条件で楽天を開く"""
+    byno = {h["no"]: h for h in hotels.get("areas", {}).get(area, [])}
+    blocks, faqs = [], []
+    for d in ds:
+        ft, v = adults_day(state, area, d)
+        if v is None:
+            continue
+        v = [x for x in v if x[1] in byno]
+        lab = day_label(d, holidays)
+        tm = f"({ft.month}/{ft.day} {ft:%H:%M}取得)" if ft else ""
+        if not v:
+            blocks.append(f'<p class="adh"><b>{esc(lab)}</b>: 3人で空きのある宿は見つかりませんでした{esc(tm)}</p>')
+            faqs.append((f"{lab}に{alabel}で3人で泊まれる宿はありますか?", f"{lab}は、大人3名1室で空きのある宿は見つかりませんでした{tm}。キャンセルで空くことがあります。"))
+            continue
+        lis = []
+        for p, no, rn in v[:5]:
+            h = byno[no]
+            u = adults_link(no, d)
+            rv = f"★{h['review']} " if h.get("review") else ""
+            nm = (f'<a href="{esc(safe_url(u))}" target="_blank" rel="sponsored nofollow noopener">{esc(h["name"])}</a>' if u else esc(h["name"]))
+            lis.append(f"<li>{nm}<small>{esc(rv)}3名1室 {yen_full(p)}〜</small></li>")
+        blocks.append(f'<p class="adh"><b>{esc(lab)}</b>: 3人で泊まれる宿 <b>{len(v)}軒</b>・3名1室の最安{yen_full(v[0][0])}〜{esc(tm)}</p>'
+                      f'<details class="amore"><summary>安い順に{len(lis)}軒を見る(3名1室で予約ページへ)</summary><ol class="hl adl">{"".join(lis)}</ol></details>')
+        faqs.append((f"{lab}に{alabel}で3人で泊まれる宿はありますか?",
+                     f"{lab}に大人3名1室で空きのある宿は{len(v)}軒です{tm}。安い順に "
+                     + "、".join(f"{byno[no]['name']}{yen_full(p)}〜" for p, no, _ in v[:3])
+                     + "(料金は3名1室の合計・1泊)。予約前に楽天トラベルで最新の空室をご確認ください。"))
+    if not blocks:
+        return "", []
+    html = (f'<section class="card" id="adults3"><h2>3人で泊まれる宿(今週末)</h2>{"".join(blocks)}'
+            '<p class="legend">大人3名・1室の条件で楽天トラベルから取得した空室と、3名1室の合計の最安です(約8時間ごと)。'
+            '宿名を押すと、3名1室の条件で楽天トラベルのプラン一覧が開きます【PR】。</p></section>')
+    return html, faqs
+
+
 BUDGETS = (20000, 30000, 50000, 100000)
 
 
@@ -3543,6 +3603,8 @@ def render_area(cfg, hotels, state, area, wl, sums, now, demo):
                          f"{alabel}の空室まとめ", mood=("happy" if parts else "sleepy")))
     if wk_ds:
         inner.append(area_table_html(hotels, state, area, wk_ds, holidays, wk_lbl))
+    _a3_html, _a3_faq = adults_area_html(hotels, state, area, wk_ds, holidays, alabel)
+    inner.append(_a3_html)
     inner.append('<section class="card"><h2>日程ごとの空き</h2><div class="scroll"><table class="stat"><thead><tr><th>日程</th><th>確認できた宿</th>'
                  f"<th>空きのある宿</th><th>最安値</th><th>取得</th></tr></thead><tbody>{rows}</tbody></table></div></section>")
     if any(pc.values()):
@@ -3579,6 +3641,7 @@ def render_area(cfg, hotels, state, area, wl, sums, now, demo):
                         "安い順に " + "、".join(f"{h['name']}{yen_full(p)}〜" for p, h in _ok[:3])
                         + f"です({cond_text(cfg)}・条件を問わない" + (f"・{_ft.month}/{_ft.day} {_ft:%H:%M}取得" if _ft else "") + ")。料金はプランや人数で変わります。予約前に楽天トラベルでご確認ください。"))
             break
+    faq += _a3_faq
     for d in wk_ds:
         faq.append((f"{day_label(d, holidays)}に{alabel}で泊まれる宿はありますか?",
                     area_quick_answer(alabel, hotels, state, area, d, holidays, cfg)

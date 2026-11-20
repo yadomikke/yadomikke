@@ -12,7 +12,11 @@
     "days_ahead": 31,
     "probe_checks": 5,
     "max_pages": 3,
-    "scene_days_ahead": 150
+    "scene_days_ahead": 150,
+    "extra_adults": [
+      3
+    ],
+    "extra_adults_hours": 8
   },
   "refresh": {
     "hotels_days": 7,

@@ -308,6 +308,49 @@ def fetch_date(client, cfg, active, day, light=frozenset()):
     return cells, notes
 
 
+def fetch_adults(client, cfg, active, day, adults):
+    """大人の人数を変えて、その日に空きのある宿と最安(1室の合計)だけを取る(手順Aのみ・部屋の細かい確認はしない)。
+    戻り値: {施設番号: [1室の合計の最安, その部屋名]}"""
+    s = cfg["search"]
+    base = dict(checkinDate=day.isoformat(), checkoutDate=(day + timedelta(days=s["nights"])).isoformat(),
+                adultNum=adults, roomNum=1)
+    out = {}
+    for batch in chunks(active, 15):
+        page = 1
+        while True:
+            try:
+                data = client.call("VacantHotelSearch", hotelNo=",".join(batch), searchPattern=0, hits=30,
+                                   page=page, responseType="small", **base)
+            except rk.NotFound:
+                break
+            for no, e in rk.split_hotels(data).items():
+                priced = [(room_total(r), r) for r in e["rooms"] if room_total(r)]
+                if priced:
+                    p, r = min(priced, key=lambda x: x[0])
+                    out[no] = [p, r["basic"].get("roomName", "")]
+                else:
+                    out[no] = [None, ""]
+            if page >= rk.page_count(data):
+                break
+            page += 1
+    return out
+
+
+def adults_units(cfg, state, today):
+    """人数を変えた取得(今週末の金・土)のうち、取り直しが必要な (人数, エリア, 日付)"""
+    s = cfg["search"]
+    hours = float(s.get("extra_adults_hours", 8))
+    wk = next((sc["dates"] for sc in scenes.all_scenes(cfg, today) if sc["slug"] == "shumatsu"), [])
+    out = []
+    for a in s.get("extra_adults", []):
+        for area in cfg["areas"]:
+            for d in wk:
+                got = state.get("adults", {}).get(str(a), {}).get(area, {}).get(d.isoformat(), {}).get("t")
+                if got is None or (now() - datetime.fromisoformat(got)).total_seconds() / 3600 >= hours:
+                    out.append((a, area, d))
+    return out
+
+
 # ---- 宿の詳細(大浴場・貸切風呂・客室数・口コミ点数など) ----------------------
 DETAIL_REFRESH_DAYS = 30
 
@@ -536,6 +579,7 @@ def main():
         state.pop("fetched", None)          # 旧形式(エリア別でない)は使わない
         state.setdefault("fetched_by", {})  # fetched_by[エリア][日付] = 取得した日時
         state.setdefault("meta", {})
+        state.setdefault("adults", {})      # adults[人数][エリア][日付] = {"t": 取得日時, "v": {施設番号: [1室の最安, 部屋名]}}
         if args.reprobe:
             state["meta"] = {}
         stats = load_json(data_dir / "stats.json", None) or new_stats(today)
@@ -547,6 +591,8 @@ def main():
         state["fetched_by"] = {a: {d: t for d, t in fd.items() if d >= keep} for a, fd in state["fetched_by"].items()}
         for no in list(state["cells"]):
             state["cells"][no] = {d: c for d, c in state["cells"][no].items() if d >= keep}
+        for a in list(state["adults"]):
+            state["adults"][a] = {ar: {d: v for d, v in dd.items() if d >= keep} for ar, dd in state["adults"][a].items()}
 
         area_nos = {a: sorted({h["no"] for h in hotels["areas"].get(a, [])}) for a in cfg["areas"]}
         excluded = {str(x) for x in cfg["exclude"]}
@@ -569,6 +615,21 @@ def main():
         def is_active(no):
             # 部屋名での判定が済んだ宿に加え、宿そのものの条件(大浴場など)に当てはまる宿・口コミの多い宿も、空き状況を取る
             return is_room_active(no) or ((no in hotel_hit or no in popular) and no not in excluded)
+
+        # 3名など、人数を変えた空き(今週末の金・土だけ。手順Aのみで軽い)。8時間ごと。1回の更新で最大10分まで
+        ad_deadline = min(deadline, time.time() + 600)
+        for a, area, day in adults_units(cfg, state, today):
+            if time.time() > ad_deadline:
+                log("人数を変えた取得は、残りを次回に回します")
+                break
+            active = [n for n in area_nos[area] if is_active(n)]
+            if not active:
+                continue
+            got = fetch_adults(client, cfg, active, day, a)
+            state["adults"].setdefault(str(a), {}).setdefault(area, {})[day.isoformat()] = {
+                "t": now().isoformat(timespec="seconds"), "v": got}
+            save_json(data_dir / "state.json", state)
+            log(f"{cfg['areas'][area]['label']} {day} 大人{a}名: 対象{len(active)}軒中 空きあり{len(got)}軒 (累計API {client.requests}回)")
 
         units = pick_units(cfg, state, today)
         if not units:

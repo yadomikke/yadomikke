@@ -324,6 +324,23 @@ with tempfile.TemporaryDirectory() as tmp:
     check(_bb2.budget_txt([(15000, _H("A", 4.1)), (28000, _H("B", 4.6)), (90000, _H("C", 4.9))]).startswith("2万円以内1軒(口コミ最高: A★4.1・¥15,000〜)、3万円以内2軒(口コミ最高: B")
           and "空いている日はいつですか?" in _ar and "予算内" in page + _ar,
           "予算別の軒数(2万・3万・5万・10万円以内)と、空いている日の答えをFAQに出す")
+    import build as _b3
+    _d3 = _D(2026, 11, 21)
+    _st3 = {"adults": {"3": {"hakone": {"2026-11-21": {"t": "2026-11-19T15:00:00+09:00", "v": {"1": [30000, "和室"], "2": [21000, "洋室"]}}}}}}
+    _h3 = {"areas": {"hakone": [{"no": "1", "name": "宿A", "review": 4.5}, {"no": "2", "name": "宿B"}]}}
+    _html3, _faq3 = _b3.adults_area_html(_h3, _st3, "hakone", [_d3], set(), "箱根")
+    _old_link = _b3.LINK
+    _b3.LINK = {"a": "TESTAFF", "ad": 2, "n": 1}
+    _u3 = _b3.adults_link("1", _d3)
+    _b3.LINK = _old_link
+    check("3人で泊まれる宿 <b>2軒</b>" in _html3 and "宿B¥21,000〜、宿A¥30,000〜" in _faq3[0][1]
+          and _u3.startswith("https://hb.afl.rakuten.co.jp/hgc/TESTAFF/?pc=") and "f_otona_su%3D3" in _u3 and "f_heya_su%3D1" in _u3
+          and _b3.adults_day({}, "hakone", _d3) == (None, None),
+          "3人で泊まれる宿(今週末): 3名1室の最安・安い順・FAQ。予約リンクは3名1室の条件でアフィリエイト経由。未取得なら出さない")
+    import update as _u
+    _cfg3 = {"search": {"extra_adults": [3], "extra_adults_hours": 8}, "areas": {"hakone": {}}, "holidays": []}
+    check(len(_u.adults_units(_cfg3, {}, _D(2026, 11, 18))) == 2 and _u.adults_units(dict(_cfg3, search={}), {}, _D(2026, 11, 18)) == [],
+          "3名の取得は、今週末の金・土を8時間ごと(設定がなければ取らない)")
     # 宿ページの並び: 宿名 → その日の結果と予約 → 日付を変える → カレンダー → 当てはまる条件 → 文章のまとめ → よくある質問 → 共有
     check(hp1.index('id="dout"') < hp1.index('class="dchg"') < hp1.index('id="calendar"') < hp1.index('id="features"') < hp1.index('id="answer"')
           < hp1.index("よくある質問") < hp1.index('class="share"') and 'data-r="' in hp1 and "1泊・大人2名・1室の最安(取得時点)" in hp1,
