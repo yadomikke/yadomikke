@@ -300,7 +300,9 @@ def fetch_date(client, cfg, active, day, light=frozenset()):
             hit = [(room_total(r), r) for r in rooms if matches(r, feat) and room_total(r)]
             if hit:
                 p, r = min(hit, key=lambda x: x[0])
-                feats[fname] = [p, r["basic"].get("reserveUrl", ""), r["basic"].get("roomName", "")]
+                # プラン名で判定する条件(記念日・カップルなど)は、部屋名ではなくプラン名を残す(何のプランかが分かるように)
+                nm = r["basic"].get("planName") if "planName" in feat["fields"] else r["basic"].get("roomName")
+                feats[fname] = [p, r["basic"].get("reserveUrl", ""), nm or r["basic"].get("roomName", "")]
         if feats:
             cell["f"] = feats
         cells[no] = cell
@@ -602,11 +604,23 @@ def main():
         detail = enrich_hotels(client, hotels, data_dir, min(deadline, time.time() + 300), cap=60)
         hotel_hit = set().union(*hotelfeat.matched_nos(hotels["areas"], detail).values())
 
+        room_feats = [f for f, v in cfg["features"].items() if not v.get("hotel")]
+
+        def fchecks(m, f):
+            """部屋・プラン単位の条件ごとの、確認した回数。あとから足した条件は0から数える(既存の条件は今までの回数)"""
+            n = (m.get("fchecks") or {}).get(f)
+            if n is None:
+                n = m.get("checks", 0) if not cfg["features"][f].get("probe_checks") else 0
+            return n
+
+        def needs_probe(m):
+            return any(fchecks(m, f) < int(cfg["features"][f].get("probe_checks", probe)) for f in room_feats)
+
         def is_room_active(no):
             if no in excluded:
                 return False
             m = state["meta"].get(no, {})
-            return bool(m.get("seen")) or m.get("checks", 0) < probe or no in {str(x) for x in cfg["force_include"]}
+            return bool(m.get("seen")) or needs_probe(m) or no in {str(x) for x in cfg["force_include"]}
 
         # 口コミの多い宿は、条件に当てはまらなくても空き状況を取る(宿ページを作るため。宿全体の空きと最安だけなので軽い)
         popular = {h["no"] for lst in hotels["areas"].values() for h in lst
@@ -662,7 +676,9 @@ def main():
             for no, note in notes.items():
                 m = state["meta"].setdefault(no, {"checks": 0, "seen": {}})
                 if note["rooms_seen"]:
+                    fc = {f: fchecks(m, f) + 1 for f in room_feats}
                     m["checks"] += 1
+                    m["fchecks"] = fc
                 for f in note["features"]:
                     m["seen"][f] = True
             fetched[dk] = now().isoformat(timespec="seconds")

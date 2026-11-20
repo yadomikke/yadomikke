@@ -302,7 +302,7 @@ with tempfile.TemporaryDirectory() as tmp:
     check(_bb.keep_pct(_hz, 7) == round(100 * __import__("math").exp(-(6 * 0.01 + 7 * 24 * 0.01))) and _bb.keep_pct({0: 0.01}, 3) is None
           and 'id="rkeep"' in page and "D.kp" in page,
           "空きが宿泊日まで残る見込み(当サイトの観測から計算)を、条件ページの一覧の見出しの下に出す。観測が足りない日数は出さない")
-    check("data-nosnippet" in page and "別の部屋なら空きあり" in page and "以外も含む最安(参考)" in page and "宿全体の最安目安" not in page,
+    check("data-nosnippet" in page and "ほかの部屋・プランなら空きあり" in page and "以外も含む最安(参考)" in page and "宿全体の最安目安" not in page,
           "「参考」欄(条件の部屋は未確認の宿)は、条件の料金と読み違えられないよう言い方を明確にし、検索・AIの引用対象から外す(data-nosnippet)")
     import build as _bh
     check('class="stiles"' in home and 'class="stile"' in home and "文章で読む・ほかのデータを見る" in home and 'class="lead2"' in home
@@ -341,6 +341,12 @@ with tempfile.TemporaryDirectory() as tmp:
     _cfg3 = {"search": {"extra_adults": [3], "extra_adults_hours": 8}, "areas": {"hakone": {}}, "holidays": []}
     check(len(_u.adults_units(_cfg3, {}, _D(2026, 11, 18))) == 2 and _u.adults_units(dict(_cfg3, search={}), {}, _D(2026, 11, 18)) == [],
           "3名の取得は、今週末の金・土を8時間ごと(設定がなければ取らない)")
+    import update as _up
+    _rk = {"basic": {"planName": "【記念日プラン】ケーキ付き", "roomName": "和室10畳"}}
+    _fk = cfg["features"]["kinenbi"]
+    check(_up.matches(_rk, _fk) and not _up.matches({"basic": {"planName": "家族風呂30分付", "roomName": "和室"}}, _fk)
+          and _bb2.room_noun("記念日・カップル向けプラン") == "記念日・カップル向けプラン" and "プラン名" in _bb2.fdesc(cfg, "kinenbi"),
+          "記念日・カップル向けプラン: プラン名・部屋名の言葉で判定(家族風呂などは拾わない)。説明は「プラン名・部屋名に…を含むプラン」")
     # 宿ページの並び: 宿名 → その日の結果と予約 → 日付を変える → カレンダー → 当てはまる条件 → 文章のまとめ → よくある質問 → 共有
     check(hp1.index('id="dout"') < hp1.index('class="dchg"') < hp1.index('id="calendar"') < hp1.index('id="features"') < hp1.index('id="answer"')
           < hp1.index("よくある質問") < hp1.index('class="share"') and 'data-r="' in hp1 and "1泊・大人2名・1室の最安(取得時点)" in hp1,

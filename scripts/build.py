@@ -53,7 +53,7 @@ def is_hotel_feat(cfg, feat):
 def fdesc(cfg, feat):
     """「◯◯」はどう判定しているか(ページに載せる説明の中身)"""
     f = cfg["features"][feat]
-    if f.get("hotel"):
+    if f.get("hotel") or f.get("def"):
         return f["def"]
     return "部屋名に「" + "」「".join(f["keywords"]) + "」を含む部屋"
 
@@ -560,7 +560,7 @@ def results_html(cfg, rows, state, feat, flabel, day, dates, info, holidays, now
         out += (f'<div class="none">{owl_html("sleepy")}<div class="nt"><b>この日は「{esc(flabel)}」の空きが見つかりませんでした。</b>'
                 f"<p>前後の日付や、空きのある日を選んでみてください。</p>{hint}</div></div>")
     if parts:
-        out += (f'<details class="more" data-nosnippet><summary>参考: {esc(flabel)}の空きは確認できない宿({len(parts)}軒・別の部屋なら空きあり)</summary>'
+        out += (f'<details class="more" data-nosnippet><summary>参考: {esc(flabel)}の空きは確認できない宿({len(parts)}軒・ほかの部屋・プランなら空きあり)</summary>'
                 f'<p class="pnote">※この欄の料金は「{esc(flabel)}」ではない部屋も含む、宿全体の最安の目安です。</p>'
                 + "".join(card_html(h, c, feat, flabel, "part") for h, c in parts) + "</details>")
     if fulls:
@@ -1080,7 +1080,7 @@ function render(){
     near.slice(0,3).forEach(function(x){var s=el('button','nb',x.l+'に空きあり');s.type='button';s.style.border='0';s.style.cursor='pointer';
       s.addEventListener('click',function(){pick(x.d,true);});nt.appendChild(s);});
     cards.appendChild(n);}
-  if(parts.length){var dp=el('details','more');dp.setAttribute('data-nosnippet','');dp.appendChild(el('summary',null,'参考: '+FL+'の空きは確認できない宿('+parts.length+'軒・別の部屋なら空きあり)'));
+  if(parts.length){var dp=el('details','more');dp.setAttribute('data-nosnippet','');dp.appendChild(el('summary',null,'参考: '+FL+'の空きは確認できない宿('+parts.length+'軒・ほかの部屋・プランなら空きあり)'));
     dp.appendChild(el('p','pnote','※この欄の料金は「'+FL+'」ではない部屋も含む、宿全体の最安の目安です。'));
     for(i=0;i<parts.length;i++)dp.appendChild(card(parts[i][0],parts[i][1],'p'));cards.appendChild(dp);}
   if(fulls.length){var df=el('details','more');df.appendChild(el('summary',null,'満室の宿('+fulls.length+'軒)'));
@@ -1318,7 +1318,7 @@ def per_day_txt(per, price=None):
 
 
 def room_noun(flabel):
-    return flabel if flabel.endswith(("客室", "部屋")) else f"{flabel}の部屋"
+    return flabel if flabel.endswith(("客室", "部屋", "プラン")) else f"{flabel}の部屋"
 
 
 def short_room(rn, n=28):
@@ -1542,6 +1542,7 @@ def answer_html(asof, lead, bullets, details, title="いまの空室まとめ", 
 
 
 LIVE = []   # 実際にページを作る(エリア, 条件)の一覧。main() が決める
+AUTO_PAGE_MIN = 3   # プラン名の条件(記念日・カップルなど)のページを作る、当てはまる宿の最低数
 
 
 def switcher_html(cfg, page, root):
@@ -1805,7 +1806,7 @@ def render_hub(cfg, fkey, sc, scene_list, area_ctxs, now, demo):
     holidays = set(cfg.get("holidays", []))
     newest = max([c["newest"] for _, c in area_ctxs if c["newest"]], default=None)
     asof = fmt_dt(newest) if newest else ""
-    name = f"{sc.get('label', sc['name'])}に空いている{flabel}【全エリア】"
+    name = f"{sc.get('label', sc['name'])}に空いている{flabel}" + ("の宿" if flabel.endswith("プラン") else "") + "【全エリア】"
 
     per_area, hot = [], []
     for page, ctx in area_ctxs:
@@ -2534,6 +2535,10 @@ def llms_txt(cfg, digests, snaps_ok, now, wl=()):
 # 説明文は一般的な目安だけを書き、宿ごとの事実は楽天トラベルの掲載値と当サイトの取得データだけから作ります。
 
 GUIDES = {
+    "kinenbi": {"noun": "記念日・カップル向けプランのある宿",
+                "what": "記念日・カップル向けプランは、ケーキや花束、スパークリングワインなどのお祝いの特典や、貸切風呂・客室露天風呂などを組み合わせた、2人旅向けのプランです。",
+                "who": "誕生日や結婚記念日、プロポーズなどの特別な日の旅行や、カップル・夫婦でゆっくり過ごしたい方に向いています。",
+                "tips": ["特典(ケーキ・花束など)は事前の予約が必要なことが多いので、プランの説明を確認しましょう。", "記念日プランは数が限られ、週末から先に埋まりやすい傾向があります。", "客室露天風呂や貸切風呂と組み合わせると、より特別な時間になります。"]},
     "roten": {"noun": "客室露天風呂付きの宿",
               "what": "客室露天風呂は、部屋のベランダやテラスに専用の露天風呂がある客室です。大浴場に行かなくても、好きな時間に人目を気にせず温泉を楽しめます。",
               "who": "カップル・夫婦の記念日旅行や、大浴場が苦手な方、小さな子ども連れで部屋でゆっくりしたい方に向いています。",
@@ -3004,7 +3009,7 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
          + "人数や泊数を変えると変わります。最終確認は楽天トラベルでお願いします。"),
         (f"「{flabel}」はどう判定していますか?",
          (f"{fdesc(cfg, feat)}を、楽天トラベルの施設情報から自動で判定しています。" if is_hotel_feat(cfg, feat)
-          else f"楽天トラベルから取得した部屋名に「{'」「'.join(cfg['features'][feat]['keywords'])}」が含まれる部屋を自動で判定しています。")
+          else f"楽天トラベルから取得した{fdesc(cfg, feat)}を自動で判定しています。")
          + "個別に確認した情報ではないため、実際の設備は宿のページでご確認ください。"),
         ("このサイトの利用料金は?", "閲覧は無料です。予約は楽天トラベルで行います。"),
     ]
@@ -4293,6 +4298,18 @@ def main():
     if detail:
         n_auto = apply_hotel_features(cfg, hotels, state, detail)
         print(f"宿の条件ページ: {n_auto} 枚(詳細取得済み {len(detail)} 軒)")
+    # プラン名で判定する条件(記念日・カップルなど)は、当てはまる宿が AUTO_PAGE_MIN 軒以上のエリアだけ、ページを自動で足す
+    have_slugs = {pg["slug"] for pg in cfg["pages"]}
+    for fk, fv in cfg["features"].items():
+        if not fv.get("auto_pages") or fv.get("hotel"):
+            continue
+        for ak, av in cfg["areas"].items():
+            n = sum(1 for h in hotels.get("areas", {}).get(ak, []) if state.get("meta", {}).get(h["no"], {}).get("seen", {}).get(fk))
+            slug = f"{ak}-{fk}"
+            if n >= AUTO_PAGE_MIN and slug not in have_slugs:
+                cfg["pages"].append({"slug": slug, "area": ak, "feature": fk,
+                                     "title": f"{av['label']}で今空いている{fv['label']}の宿",
+                                     "lead": f"{av['label']}で、{fdesc(cfg, fk)}の空きを、日付ごとにまとめています(プラン名からの自動判定)。"})
     # 部屋名ベースのページを先に作り、そのあと宿の条件ページを作る(宿ページへのリンクを共有するため)
     cfg["pages"].sort(key=lambda p: bool(p.get("auto")))
     now = datetime.now(JST)

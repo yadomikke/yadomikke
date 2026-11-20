@@ -61,6 +61,23 @@
         "roomClass",
         "roomName"
       ]
+    },
+    "kinenbi": {
+      "label": "記念日・カップル向けプラン",
+      "short": "記念日・カップル",
+      "keywords": [
+        "記念日",
+        "アニバーサリー",
+        "カップル",
+        "ご夫婦"
+      ],
+      "fields": [
+        "planName",
+        "roomName"
+      ],
+      "auto_pages": true,
+      "probe_checks": 3,
+      "def": "プラン名・部屋名に「記念日」「アニバーサリー」「カップル」「ご夫婦」を含むプラン"
     }
   },
   "areas": {
