@@ -100,6 +100,8 @@ def compact(parts):
     return {
         "rooms": to_int(fc.get("hotelRoomNum")),
         "last_in": str(dt.get("lastCheckinTime") or ""),
+        "in": str(dt.get("checkinTime") or ""),
+        "out": str(dt.get("checkoutTime") or ""),
         "bt": re.sub(r"\s+", " ", bath).strip()[:700],
         "ft": re.sub(r"\s+", " ", fac).strip()[:900],
         "bath": to_float(rt.get("bathAverage")),

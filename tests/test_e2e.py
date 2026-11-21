@@ -347,6 +347,13 @@ with tempfile.TemporaryDirectory() as tmp:
     check(_up.matches(_rk, _fk) and not _up.matches({"basic": {"planName": "家族風呂30分付", "roomName": "和室"}}, _fk)
           and _bb2.room_noun("記念日・カップル向けプラン") == "記念日・カップル向けプラン" and "プラン名" in _bb2.fdesc(cfg, "kinenbi"),
           "記念日・カップル向けプラン: プラン名・部屋名の言葉で判定(家族風呂などは拾わない)。説明は「プラン名・部屋名に…を含むプラン」")
+    _bas = _bb2.hotel_basics({"name": "宿X", "address": "箱根町1", "access": "駅から徒歩5分", "parking": "有り 10台", "review": 4.5, "reviews": 100},
+                             {"in": "15:00", "out": "10:00", "last_in": "22:00", "rooms": 20, "bt": "天然温泉 露天風呂 サウナ", "bath": 4.6})
+    _bf = _bb2.hotel_basic_faq({"name": "宿X"}, _bas)
+    check(dict(_bas)["チェックイン"] == "15:00から(最終22:00)" and dict(_bas)["お風呂"].startswith("天然温泉・露天風呂")
+          and any("駐車場はありますか" in q for q, _ in _bf) and (out / "imakara" / "index.html").exists()
+          and "今から泊まれる" in (out / "imakara" / "index.html").read_text(encoding="utf-8"),
+          "宿ページの基本情報(住所・アクセス・駐車場・チェックイン・お風呂・口コミ)とそのFAQ。「今から泊まれる宿」のページを作る")
     # 宿ページの並び: 宿名 → その日の結果と予約 → 日付を変える → カレンダー → 当てはまる条件 → 文章のまとめ → よくある質問 → 共有
     check(hp1.index('id="dout"') < hp1.index('class="dchg"') < hp1.index('id="calendar"') < hp1.index('id="features"') < hp1.index('id="answer"')
           < hp1.index("よくある質問") < hp1.index('class="share"') and 'data-r="' in hp1 and "1泊・大人2名・1室の最安(取得時点)" in hp1,
