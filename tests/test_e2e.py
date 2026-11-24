@@ -263,7 +263,7 @@ with tempfile.TemporaryDirectory() as tmp:
           and "の空室・料金を楽天トラベルで確認 ›" in hp1 and "mc.href=link" in hp1,
           "宿ページは、指定の日付の空きを宿名のすぐ下に出し、大きな予約ボタンもその日付にする(開く日付をボタンに書く)")
     # トップ: ①条件 → ②エリア の一方向。エリアの一覧は1つだけ(選んだ条件で中身が切り替わる)
-    check('id="finder"' in home and home.count('<div class="agrid">') == home.count('class="fgrp"') and 'data-f="all"' in home
+    check('id="finder"' in home and home.count('<div class="agrid">') >= home.count('class="fgrp"') and 'data-f="all"' in home
           and 'href="hakone/"' in home and 'href="hakone-roten/"' in home and "エリアから探す(条件なし)" not in home and 'id="ftabs"' not in home
           and home.index('data-f="all"') < home.index('data-f="roten"'),
           "トップは「1 条件をえらぶ(なくてもOK)→ 2 エリアをえらぶ」の順で、エリアの一覧は1つ(条件なしはエリアのページへ)")
@@ -362,6 +362,12 @@ with tempfile.TemporaryDirectory() as tmp:
           and _rb.startswith('<a class="pbtn" href="https://hb.afl.rakuten.co.jp/hgc/TESTAFF/?pc=') and 'rel="sponsored nofollow noopener"' in _rb
           and 'class="tb"' in _ar and "の空室を見る ›" in page,
           "楽天へ直接行けるボタン: 即答文の下の宿名リンク・トップの人気宿カード・今週末の表の「予約」、条件ページのスマホ下の固定バー、日付入りの予約ボタン")
+    _cfgA = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
+    check(_b3.region_of(_cfgA["areas"]["hakone"]) == "関東" and _b3.region_of(_cfgA["areas"]["beppu"]) == "九州"
+          and all(v.get("pref") for v in _cfgA["areas"].values())
+          and all(v.get("light") for k, v in _cfgA["areas"].items() if k in ("shimoda", "misasa"))
+          and 'id="aq"' in home and 'id="rchips"' in home and 'class="rg"' in home,
+          "エリアは地方ごと(見出し・地方ボタン・名前と県名での絞り込み)。追加した温泉地は軽い取り方(宿単位の空きだけ)")
     # 宿ページの並び: 宿名 → その日の結果と予約 → 日付を変える → カレンダー → 当てはまる条件 → 文章のまとめ → よくある質問 → 共有
     check(hp1.index('id="dout"') < hp1.index('class="dchg"') < hp1.index('id="calendar"') < hp1.index('id="features"') < hp1.index('id="answer"')
           < hp1.index("よくある質問") < hp1.index('class="share"') and 'data-r="' in hp1 and "1泊・大人2名・1室の最安(取得時点)" in hp1,

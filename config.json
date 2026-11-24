@@ -87,7 +87,8 @@
       "middle": "kanagawa",
       "small": "hakone",
       "detail": "auto",
-      "days_ahead": 31
+      "days_ahead": 31,
+      "pref": "神奈川"
     },
     "atami": {
       "label": "熱海",
@@ -95,7 +96,8 @@
       "middle": "shizuoka",
       "small": "atami",
       "detail": "auto",
-      "days_ahead": 31
+      "days_ahead": 31,
+      "pref": "静岡"
     },
     "ito": {
       "label": "伊東",
@@ -103,7 +105,8 @@
       "middle": "shizuoka",
       "small": "ito",
       "detail": "auto",
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "静岡"
     },
     "kinugawa": {
       "label": "鬼怒川",
@@ -111,7 +114,8 @@
       "middle": "tochigi",
       "small": "kinugawa",
       "detail": "auto",
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "栃木"
     },
     "kusatsu": {
       "label": "草津",
@@ -119,7 +123,8 @@
       "middle": "gunma",
       "small": "kusatsu",
       "detail": "auto",
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "群馬"
     },
     "karuizawa": {
       "label": "軽井沢",
@@ -127,7 +132,8 @@
       "middle": "nagano",
       "small": "karuizawa",
       "detail": "auto",
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "長野"
     },
     "arima": {
       "label": "有馬",
@@ -135,7 +141,8 @@
       "middle": "hyogo",
       "small": "arima",
       "detail": "auto",
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "兵庫"
     },
     "yufuin": {
       "label": "湯布院",
@@ -143,7 +150,8 @@
       "middle": "oita",
       "small": "yufuin",
       "detail": "auto",
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "大分"
     },
     "nasu": {
       "label": "那須",
@@ -151,7 +159,8 @@
       "middle": "tochigi",
       "small": "nasu",
       "detail": "auto",
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "栃木"
     },
     "nikko": {
       "label": "日光",
@@ -159,7 +168,8 @@
       "middle": "tochigi",
       "small": "nikko",
       "detail": "auto",
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "栃木"
     },
     "ikaho": {
       "label": "伊香保",
@@ -167,7 +177,8 @@
       "middle": "gunma",
       "small": "ikaho",
       "detail": "auto",
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "群馬"
     },
     "kawaguchiko": {
       "label": "河口湖",
@@ -175,7 +186,8 @@
       "middle": "yamanasi",
       "small": "kawaguchiko",
       "detail": "auto",
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "山梨"
     },
     "shuzenji": {
       "label": "修善寺",
@@ -183,7 +195,8 @@
       "middle": "shizuoka",
       "small": "naka",
       "detail": "auto",
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "静岡"
     },
     "gero": {
       "label": "下呂",
@@ -191,7 +204,8 @@
       "middle": "gihu",
       "small": "gero",
       "detail": "auto",
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "岐阜"
     },
     "kinosaki": {
       "label": "城崎",
@@ -199,7 +213,8 @@
       "middle": "hyogo",
       "small": "kita",
       "detail": "auto",
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "兵庫"
     },
     "shirahama": {
       "label": "白浜",
@@ -207,7 +222,8 @@
       "middle": "wakayama",
       "small": "shirahama",
       "detail": "auto",
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "和歌山"
     },
     "beppu": {
       "label": "別府",
@@ -215,7 +231,8 @@
       "middle": "ooita",
       "small": "beppu",
       "detail": "auto",
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "大分"
     },
     "kurokawa": {
       "label": "黒川",
@@ -223,91 +240,374 @@
       "middle": "kumamoto",
       "small": "kurokawa",
       "detail": "auto",
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "熊本"
     },
     "isawa": {
       "label": "石和",
       "lat": 35.6571,
       "lng": 138.6461,
       "radius": 3.0,
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "山梨"
     },
     "izukogen": {
       "label": "伊豆高原",
       "lat": 34.904,
       "lng": 139.12,
       "radius": 3.0,
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "静岡"
     },
     "yugawara": {
       "label": "湯河原",
       "lat": 35.14,
       "lng": 139.083,
       "radius": 3.0,
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "神奈川"
     },
     "toba": {
       "label": "鳥羽",
       "lat": 34.481,
       "lng": 136.843,
       "radius": 3.0,
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "三重"
     },
     "atagawa": {
       "label": "熱川・稲取",
       "lat": 34.817,
       "lng": 139.0699,
       "radius": 3.0,
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "静岡"
     },
     "dogo": {
       "label": "道後",
       "lat": 33.852,
       "lng": 132.786,
       "radius": 1.0,
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "愛媛"
     },
     "shiobara": {
       "label": "塩原",
       "lat": 36.973,
       "lng": 139.817,
       "radius": 3.0,
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "栃木"
     },
     "higashiyama": {
       "label": "会津東山",
       "lat": 37.475,
       "lng": 139.957,
       "radius": 1.5,
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "福島"
     },
     "sumoto": {
       "label": "洲本(淡路島)",
       "lat": 34.34,
       "lng": 134.903,
       "radius": 3.0,
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "兵庫"
     },
     "awara": {
       "label": "あわら",
       "lat": 36.222,
       "lng": 136.193,
       "radius": 3.0,
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "福井"
     },
     "minakami": {
       "label": "水上",
       "lat": 36.7879,
       "lng": 138.981,
       "radius": 3.0,
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "群馬"
     },
     "kaike": {
       "label": "皆生",
       "lat": 35.4576,
       "lng": 133.3616,
       "radius": 2.0,
-      "days_ahead": 21
+      "days_ahead": 21,
+      "pref": "鳥取"
+    },
+    "shimoda": {
+      "label": "下田",
+      "pref": "静岡",
+      "lat": 34.681,
+      "lng": 138.9698,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "toi": {
+      "label": "土肥(西伊豆)",
+      "pref": "静岡",
+      "lat": 34.9115,
+      "lng": 138.7903,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "echigoyuzawa": {
+      "label": "越後湯沢",
+      "pref": "新潟",
+      "lat": 36.9378,
+      "lng": 138.8075,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "shima": {
+      "label": "四万",
+      "pref": "群馬",
+      "lat": 36.6863,
+      "lng": 138.7753,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "katsuura": {
+      "label": "南紀勝浦",
+      "pref": "和歌山",
+      "lat": 33.6284,
+      "lng": 135.9419,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "yudanaka": {
+      "label": "湯田中・渋",
+      "pref": "長野",
+      "lat": 36.7347,
+      "lng": 138.4287,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "akiu": {
+      "label": "秋保",
+      "pref": "宮城",
+      "lat": 38.2266,
+      "lng": 140.7223,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "chichibu": {
+      "label": "秩父",
+      "pref": "埼玉",
+      "lat": 35.9972,
+      "lng": 139.0868,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "tateshina": {
+      "label": "蓼科",
+      "pref": "長野",
+      "lat": 36.0533,
+      "lng": 138.2674,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "yamashiro": {
+      "label": "山代",
+      "pref": "石川",
+      "lat": 36.2884,
+      "lng": 136.3611,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "zao": {
+      "label": "蔵王温泉",
+      "pref": "山形",
+      "lat": 38.1665,
+      "lng": 140.3959,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "hirugami": {
+      "label": "昼神",
+      "pref": "長野",
+      "lat": 35.456,
+      "lng": 137.7133,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "yunokawa": {
+      "label": "湯の川",
+      "pref": "北海道",
+      "lat": 41.777,
+      "lng": 140.7864,
+      "radius": 1.5,
+      "days_ahead": 21,
+      "light": true
+    },
+    "ureshino": {
+      "label": "嬉野",
+      "pref": "佐賀",
+      "lat": 33.0958,
+      "lng": 129.9839,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "kotohira": {
+      "label": "琴平",
+      "pref": "香川",
+      "lat": 34.1886,
+      "lng": 133.8193,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "yuda": {
+      "label": "湯田",
+      "pref": "山口",
+      "lat": 34.1654,
+      "lng": 131.4568,
+      "radius": 1.5,
+      "days_ahead": 21,
+      "light": true
+    },
+    "tendo": {
+      "label": "天童",
+      "pref": "山形",
+      "lat": 38.3591,
+      "lng": 140.3832,
+      "radius": 1.5,
+      "days_ahead": 21,
+      "light": true
+    },
+    "kanzanji": {
+      "label": "舘山寺",
+      "pref": "静岡",
+      "lat": 34.7643,
+      "lng": 137.615,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "jozankei": {
+      "label": "定山渓",
+      "pref": "北海道",
+      "lat": 42.971,
+      "lng": 141.1669,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "iizaka": {
+      "label": "飯坂",
+      "pref": "福島",
+      "lat": 37.835,
+      "lng": 140.4512,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "yamanaka": {
+      "label": "山中",
+      "pref": "石川",
+      "lat": 36.2422,
+      "lng": 136.3715,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "tamatsukuri": {
+      "label": "玉造",
+      "pref": "島根",
+      "lat": 35.4172,
+      "lng": 133.0094,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "amanohashidate": {
+      "label": "天橋立",
+      "pref": "京都",
+      "lat": 35.5571,
+      "lng": 135.192,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "naruko": {
+      "label": "鳴子",
+      "pref": "宮城",
+      "lat": 38.743,
+      "lng": 140.7267,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "gamagori": {
+      "label": "蒲郡",
+      "pref": "愛知",
+      "lat": 34.8159,
+      "lng": 137.2487,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "okuhida": {
+      "label": "奥飛騨",
+      "pref": "岐阜",
+      "lat": 36.239,
+      "lng": 137.5301,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "wakura": {
+      "label": "和倉",
+      "pref": "石川",
+      "lat": 37.0884,
+      "lng": 136.9165,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "kamogawa": {
+      "label": "鴨川",
+      "pref": "千葉",
+      "lat": 35.0909,
+      "lng": 140.0973,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "yunoyama": {
+      "label": "湯の山",
+      "pref": "三重",
+      "lat": 35.0154,
+      "lng": 136.4492,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
+    },
+    "misasa": {
+      "label": "三朝",
+      "pref": "鳥取",
+      "lat": 35.4112,
+      "lng": 133.8933,
+      "radius": 3.0,
+      "days_ahead": 21,
+      "light": true
     }
   },
   "pages": [

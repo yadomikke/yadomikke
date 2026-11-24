@@ -58,6 +58,25 @@ def fdesc(cfg, feat):
     return "部屋名に「" + "」「".join(f["keywords"]) + "」を含む部屋"
 
 
+REGIONS = [("北海道・東北", "北海道 青森 岩手 宮城 秋田 山形 福島"), ("関東", "茨城 栃木 群馬 埼玉 千葉 東京 神奈川"),
+           ("甲信越", "山梨 長野 新潟"), ("北陸", "富山 石川 福井"), ("東海", "静岡 愛知 岐阜 三重"),
+           ("近畿", "滋賀 京都 大阪 兵庫 奈良 和歌山"), ("中国・四国", "鳥取 島根 岡山 広島 山口 徳島 香川 愛媛 高知"),
+           ("九州", "福岡 佐賀 長崎 熊本 大分 宮崎 鹿児島 沖縄")]
+
+
+def region_of(area_cfg):
+    pref = area_cfg.get("pref", "")
+    return next((r for r, ps in REGIONS if pref and pref in ps.split()), "その他")
+
+
+def by_region(cfg, keys):
+    """エリアのキーを、地方ごとに(地方の順・エリアの並びはそのまま)。[(地方, [キー…])]"""
+    out = {}
+    for k in keys:
+        out.setdefault(region_of(cfg["areas"][k]), []).append(k)
+    return [(r, out[r]) for r, _ in REGIONS + [("その他", "")] if r in out]
+
+
 def hotel_href(h):
     """宿のページへのリンク(サイト直下からのパス。なければ空文字)。宿ページは条件に関係なく1軒1ページ(/hotel/番号/)"""
     return HOTEL_HREF.get(h["no"], "")
@@ -839,6 +858,13 @@ table.stat tr.sub th,table.stat tr.sub td{font-size:12.5px;color:#4a5058;backgro
 .pcard .pbtn{display:block;margin:0 10px 10px;padding:8px 6px;border-radius:8px;background:var(--cta);color:#fff;font-weight:700;font-size:12.5px;text-align:center;text-decoration:none;line-height:1.3}
 .pcard .pbtn:hover{background:var(--cta2)}
 .adnote{margin:0;padding:3px max(16px,env(safe-area-inset-right,0px)) 3px max(16px,env(safe-area-inset-left,0px));font-size:11px;color:var(--sub);text-align:right}
+.afind{margin:2px 0 8px}.afind input{width:100%;box-sizing:border-box;min-height:42px;padding:8px 12px;border:1px solid #bbb;border-radius:10px;font-size:15px;background:#fff;color:var(--ink)}
+.rchips{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px;scrollbar-width:none}.rchips::-webkit-scrollbar{display:none}
+.rchips button{flex:none;min-height:34px;padding:0 12px;border:1px solid #ccc;border-radius:999px;background:#fff;color:var(--navy);font-weight:700;font-size:13px;cursor:pointer}
+.rchips button.on{background:var(--navy);border-color:var(--navy);color:#fff}.anone{font-size:13px;color:var(--sub)}
+.rg h4{font-size:13px;color:var(--navy);margin:10px 0 6px;padding-left:6px;border-left:3px solid var(--cta)}
+.chips .rgl{flex-basis:100%;font-size:11.5px;color:var(--sub);margin-top:4px}
+[hidden]{display:none!important}
 .rdef{font-size:12.5px;color:#3b4148;background:#f6f9fd;border-radius:8px;padding:6px 10px;margin:4px 0 6px}
 .hero .qans{font-size:13px;line-height:1.6;color:#2a3138;background:#fff;border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:8px;padding:8px 10px;margin-top:8px}
 .rtab{margin:0 0 12px}.rtbl{border-collapse:collapse;font-size:13px;width:100%}.rtbl caption{text-align:left;font-size:12px;color:var(--sub);padding:4px 0}
@@ -1573,8 +1599,11 @@ def switcher_html(cfg, page, root):
     same_a = [p for p in LIVE if p["area"] == page["area"]]
     rows = []
     if len(same_f) > 1:
-        links = "".join(f'<span class="cur">{esc(cfg["areas"][p["area"]]["label"])}</span>' if p["slug"] == page["slug"]
-                        else f'<a href="{root}{esc(p["slug"])}/">{esc(cfg["areas"][p["area"]]["label"])}</a>' for p in same_f)
+        byp = {p["area"]: p for p in same_f}
+        links = "".join(f'<small class="rgl">{esc(r)}</small>' + "".join(
+            f'<span class="cur">{esc(cfg["areas"][a]["label"])}</span>' if byp[a]["slug"] == page["slug"]
+            else f'<a href="{root}{esc(byp[a]["slug"])}/">{esc(cfg["areas"][a]["label"])}</a>' for a in ks)
+            for r, ks in by_region(cfg, [p["area"] for p in same_f]))
         links += f'<a href="{root}{esc(hub_slug(cfg, page["feature"]))}/">全エリアまとめ</a>'
         rows.append(f'<nav class="chips" aria-label="エリアを選ぶ"><b>エリア</b>{links}</nav>')
     if len(same_a) > 1:
@@ -4360,31 +4389,54 @@ def render_home(cfg, digests, now, demo, scene_list=(), answer=("", ""), area_to
     short = lambda k, f: FCHIP_SHORT.get(k) or f.get("short") or f["label"]
     rows = [chip("all", "指定なし", "#finder", True)] + [chip(k, short(k, f), hub_slug(cfg, k) + "/", False) for k, f in room + hotelf]
     grps = []
-    cells = []
+
+    def sdata(a):
+        v = cfg["areas"][a]
+        return f' data-s="{esc(v["label"])} {esc(v.get("pref", ""))} {esc(a)}"'
+
+    def grouped(cellmap):
+        """エリアのマスを地方ごとに並べる(地方の見出しつき)"""
+        return "".join(f'<div class="rg" data-rg="{esc(r)}"><h4>{esc(r)}</h4><div class="agrid">' + "".join(cellmap[k] for k in ks) + "</div></div>"
+                       for r, ks in by_region(cfg, list(cfg["areas"])))
+    cellmap = {}
     for a, v in cfg["areas"].items():
         n = area_today.get(a)
-        cells.append(f'<a href="{esc(a)}/">{ai(a)}<b>{esc(v["label"])}</b><small>' + (f"今日の空き {n}軒" if n is not None else "空室を見る") + "</small></a>")
-    grps.append('<div class="fgrp" data-f="all"><h3>選択中: <b>条件なし</b>(エリアのページへ)</h3><div class="agrid">' + "".join(cells) + "</div></div>")
+        cellmap[a] = (f'<a href="{esc(a)}/"{sdata(a)}>{ai(a)}<b>{esc(v["label"])}</b><small>' + (f"今日の空き {n}軒" if n is not None else "空室を見る") + "</small></a>")
+    grps.append('<div class="fgrp" data-f="all"><h3>選択中: <b>条件なし</b>(エリアのページへ)</h3>' + grouped(cellmap) + "</div>")
     for fkey, f in feats:
         bya = {d[0]["area"]: d for d in digests if d[0]["feature"] == fkey}
-        cells = []
+        cellmap = {}
         for a, v in cfg["areas"].items():
             d = bya.get(a)
             if d:
                 p, n, today_n, _ = d
-                cells.append(f'<a href="{esc(p["slug"])}/">{ai(a)}<b>{esc(v["label"])}</b><small>'
-                             + (f"今日の空き {today_n}軒" if n else "準備中") + "</small></a>")
+                cellmap[a] = (f'<a href="{esc(p["slug"])}/"{sdata(a)}>{ai(a)}<b>{esc(v["label"])}</b><small>'
+                              + (f"今日の空き {today_n}軒" if n else "準備中") + "</small></a>")
             else:
-                cells.append(f'<span class="na">{ai(a)}<b>{esc(v["label"])}</b><small>対象の宿なし</small></span>')
+                cellmap[a] = f'<span class="na"{sdata(a)}>{ai(a)}<b>{esc(v["label"])}</b><small>対象の宿なし</small></span>'
         hub = hub_slug(cfg, fkey)
         more = [f'<a href="{esc(hub)}/">{esc(short(fkey, f))}の全エリアまとめ ›</a>']
         if not is_hotel_feat(cfg, fkey):
             more += [f'<a href="{esc(hub)}/{esc(sc["slug"])}/">{esc(sc["name"])}</a>' for sc in scene_list]
-        grps.append(f'<div class="fgrp" data-f="{esc(fkey)}"><h3>選択中: <b>{esc(f["label"])}</b></h3><div class="agrid">' + "".join(cells) + "</div>"
+        grps.append(f'<div class="fgrp" data-f="{esc(fkey)}"><h3>選択中: <b>{esc(f["label"])}</b></h3>' + grouped(cellmap)
                     + '<p class="fmore">' + " ・ ".join(more) + "</p></div>")
     inner.append('<section class="card finder" id="finder"><h2>エリアと条件でさがす</h2>'
                  '<p class="fstep"><b>1</b>条件をえらぶ(なくてもOK)</p><nav class="fchips" id="fchips" aria-label="条件を選ぶ">' + "".join(rows) + "</nav>"
-                 '<p class="fstep"><b>2</b>エリアをえらぶ <small>数字は今日の空き軒数</small></p>' + "".join(grps) + "</section>")
+                 f'<p class="fstep"><b>2</b>エリアをえらぶ <small>{len(cfg["areas"])}温泉地・数字は今日の空き軒数</small></p>'
+                 '<div class="afind"><input type="search" id="aq" placeholder="温泉地名・県名で探す(例: 箱根、静岡)" aria-label="温泉地名・県名で探す" autocomplete="off">'
+                 '<nav class="rchips" id="rchips" aria-label="地方で絞り込む"><button type="button" data-r="" class="on">すべて</button>'
+                 + "".join(f'<button type="button" data-r="{esc(r)}">{esc(r)}</button>' for r, _ in by_region(cfg, list(cfg["areas"])))
+                 + '</nav><p class="anone" id="anone" hidden>見つかりませんでした。ほかの名前や県名で探してみてください。</p></div>'
+                 + "".join(grps) + "</section>")
+    # 地方のボタンと、名前・県名での絞り込み(どの条件を選んでいても効く)
+    inner.append("<script>(function(){var q=document.getElementById('aq'),rc=document.getElementById('rchips'),no=document.getElementById('anone');if(!q||!rc)return;var cur='';"
+                 "function ap(){var t=(q.value||'').trim(),vis=0;var gs=document.querySelectorAll('.fgrp');for(var i=0;i<gs.length;i++){if(gs[i].hidden)continue;"
+                 "var rs=gs[i].querySelectorAll('.rg');for(var j=0;j<rs.length;j++){var r=rs[j],okr=!cur||r.getAttribute('data-rg')===cur,n=0;"
+                 "var cs=r.querySelectorAll('[data-s]');for(var k=0;k<cs.length;k++){var ok=okr&&(!t||cs[k].getAttribute('data-s').indexOf(t)>=0);cs[k].hidden=!ok;if(ok)n++;}"
+                 "r.hidden=!n;vis+=n;}}no.hidden=vis>0;}"
+                 "q.addEventListener('input',ap);rc.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;cur=b.getAttribute('data-r');"
+                 "var bs=rc.querySelectorAll('button');for(var i=0;i<bs.length;i++)bs[i].classList.toggle('on',bs[i]===b);ap();});"
+                 "var fc=document.getElementById('fchips');if(fc)fc.addEventListener('click',function(){setTimeout(ap,0);});})();</script>")
     inner.append("<script>(function(){var c=document.getElementById('fchips');if(!c)return;var b=c.querySelectorAll('a[data-f]'),g=document.querySelectorAll('.fgrp');"
                  "function show(f){for(var i=0;i<b.length;i++){var on=b[i].getAttribute('data-f')===f;b[i].classList.toggle('on',on);b[i].setAttribute('aria-pressed',on?'true':'false');}"
                  "for(var j=0;j<g.length;j++)g[j].hidden=g[j].getAttribute('data-f')!==f;}"

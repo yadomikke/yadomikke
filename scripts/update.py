@@ -661,6 +661,9 @@ def main():
             if not active:
                 continue
             light = {n for n in active if not is_room_active(n)}   # 部屋単位の確認が不要な宿(宿全体の空きと最安だけ取る)
+            if cfg["areas"][area].get("light"):
+                # 軽い取り方のエリア: 部屋・プランは見ない(宿全体の空きと最安だけ)。更新の負担をおさえるため
+                light = set(active)
             cells, notes = fetch_date(client, cfg, active, day, light)
             dk = day.isoformat()
             fetched = state["fetched_by"].setdefault(area, {})
