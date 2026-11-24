@@ -1,7 +1,7 @@
 {
  "name": "ヤドミッケ 温泉地の空室・料金データ",
  "description": "楽天トラベルの空室検索APIから自動で取得し、ヤドミッケが集計した、温泉地の宿の空き数と料金の最新値です。",
- "generated_at": "2026-11-25T00:17:30+09:00",
+ "generated_at": "2026-11-25T02:18:47+09:00",
  "source": "楽天トラベル 空室検索API(楽天ウェブサービス)",
  "attribution": "ヤドミッケ(楽天トラベルの空室データをもとに集計)",
  "site_url": "https://yadomikke.com/",
@@ -330,9 +330,9 @@
     "wd": {
      "label": "平日(日〜木)",
      "median_jpy": 15800,
-     "p25_jpy": 9570,
+     "p25_jpy": 9625,
      "p75_jpy": 34500,
-     "samples": 3294
+     "samples": 3293
     },
     "fri": {
      "label": "金曜",
@@ -504,8 +504,8 @@
      "label": "平日(日〜木)",
      "median_jpy": 12644,
      "p25_jpy": 5922,
-     "p75_jpy": 28710,
-     "samples": 1282
+     "p75_jpy": 28600,
+     "samples": 1283
     },
     "fri": {
      "label": "金曜",
@@ -673,7 +673,7 @@
      "median_jpy": 13596,
      "p25_jpy": 6500,
      "p75_jpy": 24800,
-     "samples": 777
+     "samples": 776
     },
     "fri": {
      "label": "金曜",
@@ -848,9 +848,9 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 13100,
+     "median_jpy": 13050,
      "p25_jpy": 8382,
-     "p75_jpy": 25910,
+     "p75_jpy": 25955,
      "samples": 1074
     },
     "fri": {
@@ -1024,7 +1024,7 @@
      "median_jpy": 12111,
      "p25_jpy": 6675,
      "p75_jpy": 24000,
-     "samples": 2003
+     "samples": 2002
     },
     "fri": {
      "label": "金曜",
@@ -1189,10 +1189,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 8234,
+     "median_jpy": 8174,
      "p25_jpy": 4590,
      "p75_jpy": 26400,
-     "samples": 1769
+     "samples": 1771
     },
     "fri": {
      "label": "金曜",
@@ -1357,10 +1357,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 14036,
+     "median_jpy": 14000,
      "p25_jpy": 9200,
-     "p75_jpy": 37525,
-     "samples": 1745
+     "p75_jpy": 37400,
+     "samples": 1736
     },
     "fri": {
      "label": "金曜",
@@ -1523,7 +1523,7 @@
      "median_jpy": 12600,
      "p25_jpy": 7200,
      "p75_jpy": 23600,
-     "samples": 2358
+     "samples": 2359
     },
     "fri": {
      "label": "金曜",
@@ -1699,7 +1699,7 @@
     "wd": {
      "label": "平日(日〜木)",
      "median_jpy": 9315,
-     "p25_jpy": 6075,
+     "p25_jpy": 6050,
      "p75_jpy": 17000,
      "samples": 1329
     },
@@ -1874,7 +1874,7 @@
      "median_jpy": 14300,
      "p25_jpy": 6600,
      "p75_jpy": 23200,
-     "samples": 664
+     "samples": 659
     },
     "fri": {
      "label": "金曜",
@@ -2041,8 +2041,8 @@
      "label": "平日(日〜木)",
      "median_jpy": 9594,
      "p25_jpy": 6960,
-     "p75_jpy": 17700,
-     "samples": 2803
+     "p75_jpy": 17516,
+     "samples": 2806
     },
     "fri": {
      "label": "金曜",
@@ -2215,7 +2215,7 @@
      "median_jpy": 15400,
      "p25_jpy": 8138,
      "p75_jpy": 31300,
-     "samples": 1020
+     "samples": 1017
     },
     "fri": {
      "label": "金曜",
@@ -2382,8 +2382,8 @@
      "label": "平日(日〜木)",
      "median_jpy": 10000,
      "p25_jpy": 7150,
-     "p75_jpy": 26905,
-     "samples": 516
+     "p75_jpy": 26715,
+     "samples": 514
     },
     "fri": {
      "label": "金曜",
@@ -2550,8 +2550,8 @@
      "label": "平日(日〜木)",
      "median_jpy": 12100,
      "p25_jpy": 7060,
-     "p75_jpy": 24200,
-     "samples": 866
+     "p75_jpy": 24000,
+     "samples": 867
     },
     "fri": {
      "label": "金曜",
@@ -2721,10 +2721,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 8789,
+     "median_jpy": 8778,
      "p25_jpy": 5280,
      "p75_jpy": 17600,
-     "samples": 1736
+     "samples": 1735
     },
     "fri": {
      "label": "金曜",
@@ -2902,7 +2902,7 @@
      "median_jpy": 7000,
      "p25_jpy": 3870,
      "p75_jpy": 18000,
-     "samples": 2227
+     "samples": 2225
     },
     "fri": {
      "label": "金曜",
@@ -3079,7 +3079,7 @@
      "label": "平日(日〜木)",
      "median_jpy": 23000,
      "p25_jpy": 13800,
-     "p75_jpy": 48400,
+     "p75_jpy": 46900,
      "samples": 430
     },
     "fri": {
@@ -3242,7 +3242,7 @@
      "label": "平日(日〜木)",
      "median_jpy": 12000,
      "p25_jpy": 5800,
-     "p75_jpy": 20724,
+     "p75_jpy": 20196,
      "samples": 536
     },
     "fri": {
@@ -3409,9 +3409,9 @@
     "wd": {
      "label": "平日(日〜木)",
      "median_jpy": 13044,
-     "p25_jpy": 7750,
-     "p75_jpy": 30400,
-     "samples": 2261
+     "p25_jpy": 7725,
+     "p75_jpy": 30350,
+     "samples": 2260
     },
     "fri": {
      "label": "金曜",
@@ -6469,6 +6469,11 @@
      "url_with_date": "https://yadomikke.com/zao-seiketsu/?d=YYYY-MM-DD"
     },
     {
+     "condition": "サウナのある宿",
+     "url": "https://yadomikke.com/zao-sauna/",
+     "url_with_date": "https://yadomikke.com/zao-sauna/?d=YYYY-MM-DD"
+    },
+    {
      "condition": "硫黄泉の宿",
      "url": "https://yadomikke.com/zao-iou/",
      "url_with_date": "https://yadomikke.com/zao-iou/?d=YYYY-MM-DD"
@@ -6553,7 +6558,53 @@
     }
    },
    "price_next_30_days": {},
-   "condition_pages": []
+   "condition_pages": [
+    {
+     "condition": "大浴場のある宿",
+     "url": "https://yadomikke.com/hirugami-daiyoku/",
+     "url_with_date": "https://yadomikke.com/hirugami-daiyoku/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "貸切風呂・家族風呂のある宿",
+     "url": "https://yadomikke.com/hirugami-kashikiri/",
+     "url_with_date": "https://yadomikke.com/hirugami-kashikiri/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "夕食の口コミ評価が高い宿",
+     "url": "https://yadomikke.com/hirugami-yushoku/",
+     "url_with_date": "https://yadomikke.com/hirugami-yushoku/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "お風呂の口コミ評価が高い宿",
+     "url": "https://yadomikke.com/hirugami-furohyoka/",
+     "url_with_date": "https://yadomikke.com/hirugami-furohyoka/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "清潔さの口コミ評価が高い宿",
+     "url": "https://yadomikke.com/hirugami-seiketsu/",
+     "url_with_date": "https://yadomikke.com/hirugami-seiketsu/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "サウナのある宿",
+     "url": "https://yadomikke.com/hirugami-sauna/",
+     "url_with_date": "https://yadomikke.com/hirugami-sauna/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "硫黄泉の宿",
+     "url": "https://yadomikke.com/hirugami-iou/",
+     "url_with_date": "https://yadomikke.com/hirugami-iou/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "送迎のある宿",
+     "url": "https://yadomikke.com/hirugami-sougei/",
+     "url_with_date": "https://yadomikke.com/hirugami-sougei/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "バリアフリー対応の宿(車椅子可など)",
+     "url": "https://yadomikke.com/hirugami-barrierfree/",
+     "url_with_date": "https://yadomikke.com/hirugami-barrierfree/?d=YYYY-MM-DD"
+    }
+   ]
   },
   {
    "key": "yunokawa",
@@ -6623,7 +6674,28 @@
     }
    },
    "price_next_30_days": {},
-   "condition_pages": []
+   "condition_pages": [
+    {
+     "condition": "大浴場のある宿",
+     "url": "https://yadomikke.com/yunokawa-daiyoku/",
+     "url_with_date": "https://yadomikke.com/yunokawa-daiyoku/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "夜遅くても泊まれる宿(最終チェックイン22時以降)",
+     "url": "https://yadomikke.com/yunokawa-osoitsuki/",
+     "url_with_date": "https://yadomikke.com/yunokawa-osoitsuki/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "サウナのある宿",
+     "url": "https://yadomikke.com/yunokawa-sauna/",
+     "url_with_date": "https://yadomikke.com/yunokawa-sauna/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "バリアフリー対応の宿(車椅子可など)",
+     "url": "https://yadomikke.com/yunokawa-barrierfree/",
+     "url_with_date": "https://yadomikke.com/yunokawa-barrierfree/?d=YYYY-MM-DD"
+    }
+   ]
   },
   {
    "key": "ureshino",
