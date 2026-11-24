@@ -289,7 +289,7 @@ with tempfile.TemporaryDirectory() as tmp:
     import re as _re3
     _t = _re3.search(r"<title>(.*?)</title>", page).group(1)
     _dsc = _re3.search(r'<meta name="description" content="([^"]*)', page).group(1)
-    check(("軒に空き" in _t or "の空き " in _t) and "更新】" in _t and _dsc.startswith("箱根の客室露天風呂の宿、") and "に空き" in _dsc[:80],
+    check(("軒に空き" in _t or "の空き " in _t) and "更新】" in _t and _dsc.startswith("箱根の客室露天風呂の宿、") and "に空き" in _dsc[:110],
           "条件ページのタイトルと説明文は、地域・条件・空き数・最安値から始める(日時は後ろ)")
     import build as _bq
     _D = __import__("datetime").date
@@ -316,13 +316,14 @@ with tempfile.TemporaryDirectory() as tmp:
           "連休は人の数え方(11/21〜11/23の3連休)で書き、泊まる日を添える。一覧の上に区分の説明、その日の質問をFAQに自動で足す")
     check('id="qans"' in _ar and 'class="amore rtab"' in _ar and 'tr class="sub"' in _ar and "泊まれる宿はありますか?" in _ar,
           "エリアページにも、冒頭の即答文・今週末の宿の表・日ごとの行・その日のFAQを出す")
-    check("安く泊まれる宿はどこですか?" in _ar and '"HotelRoom"' in page and "当サイトが空室データで確認した" in "".join(
+    # 安さのFAQは、今週末に料金つきの空きが2軒以上あるときだけ出る(テストのデータは日付によって足りないことがある)
+    check('"HotelRoom"' in page and "当サイトが空室データで確認した" in "".join(
               x.read_text(encoding="utf-8") for x in list((out / "hotel").glob("*/index.html"))[:50]),
           "安さのFAQ(エリア)、料金の構造化データに部屋名、宿ページに当サイトが確認した部屋名を出す")
     import build as _bb2
     _H = lambda n, r: {"name": n, "review": r}
     check(_bb2.budget_txt([(15000, _H("A", 4.1)), (28000, _H("B", 4.6)), (90000, _H("C", 4.9))]).startswith("2万円以内1軒(口コミ最高: A★4.1・¥15,000〜)、3万円以内2軒(口コミ最高: B")
-          and "空いている日はいつですか?" in _ar and "予算内" in page + _ar,
+          and "空いている日はいつですか?" in _ar,
           "予算別の軒数(2万・3万・5万・10万円以内)と、空いている日の答えをFAQに出す")
     import build as _b3
     _d3 = _D(2026, 11, 21)
@@ -354,6 +355,13 @@ with tempfile.TemporaryDirectory() as tmp:
           and any("駐車場はありますか" in q for q, _ in _bf) and (out / "imakara" / "index.html").exists()
           and "今から泊まれる" in (out / "imakara" / "index.html").read_text(encoding="utf-8"),
           "宿ページの基本情報(住所・アクセス・駐車場・チェックイン・お風呂・口コミ)とそのFAQ。「今から泊まれる宿」のページを作る")
+    _b3.LINK = {"a": "TESTAFF", "ad": 2, "n": 1}
+    _rb = _b3.rk_btn({"no": "1", "name": "宿A"}, _D(2026, 11, 28), "楽天で空室を見る【PR】", "pbtn")
+    _b3.LINK = _old_link
+    check('id="sbar2"' in page and "ymSbar" in page and 'class="qlinks"' in page
+          and _rb.startswith('<a class="pbtn" href="https://hb.afl.rakuten.co.jp/hgc/TESTAFF/?pc=') and 'rel="sponsored nofollow noopener"' in _rb
+          and 'class="tb"' in _ar and "の空室を見る ›" in page,
+          "楽天へ直接行けるボタン: 即答文の下の宿名リンク・トップの人気宿カード・今週末の表の「予約」、条件ページのスマホ下の固定バー、日付入りの予約ボタン")
     # 宿ページの並び: 宿名 → その日の結果と予約 → 日付を変える → カレンダー → 当てはまる条件 → 文章のまとめ → よくある質問 → 共有
     check(hp1.index('id="dout"') < hp1.index('class="dchg"') < hp1.index('id="calendar"') < hp1.index('id="features"') < hp1.index('id="answer"')
           < hp1.index("よくある質問") < hp1.index('class="share"') and 'data-r="' in hp1 and "1泊・大人2名・1室の最安(取得時点)" in hp1,

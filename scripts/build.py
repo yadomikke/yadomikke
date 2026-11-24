@@ -153,6 +153,15 @@ if(spot){var n=d.createElement('div');n.className='iosn2';n.innerHTML='<p>楽天
 dl.push({event:'iab_show',ym_btn:BTN?1:0});}catch(e){}})();"""
 
 
+# 条件ページの固定バー: 一覧の先頭(最安)の宿の予約ボタンと同じリンク
+SBAR2_JS = r"""(function(){var sb=document.getElementById('sbar2');if(!sb)return;var hd=document.getElementById('rhead');
+function chk(){var show=sb.getAttribute('data-ok')==='1'&&hd&&hd.getBoundingClientRect().bottom<0;sb.hidden=!show;document.body.classList.toggle('hasbar',show);}
+window.ymSbar=function(){var a=document.querySelector('#cards article.hc:not(.part) a.cta');if(!a){sb.setAttribute('data-ok','');chk();return;}
+var art=a.closest('article'),nm=art.querySelector('h3'),pv=art.querySelector('.pv'),t=document.getElementById('rt');
+sb.querySelector('b').textContent=(t&&t.firstChild?t.firstChild.textContent.replace('に泊まれる宿','').trim()+' ':'')+'最安'+(pv?pv.textContent.replace(/\s+/g,''):'');
+sb.querySelector('small').textContent=(nm?nm.textContent.trim():'')+'【PR】';sb.querySelector('a').href=a.href;sb.setAttribute('data-ok','1');chk();};
+window.addEventListener('scroll',chk,{passive:true});window.ymSbar();})();"""
+
 # 予約リンク(日付つきプラン一覧・アフィリエイト経由)を、宿番号と日付からブラウザ側で組み立てる。stay_link() と同じ形
 SL_JS = r"""(function(){var L=window.__LT;if(!L)return;var as=document.querySelectorAll('a[data-sl]');
 for(var i=0;i<as.length;i++){var a=as[i],x=a.getAttribute('data-sl').split('|'),p=x[1].split('-'),
@@ -506,7 +515,7 @@ def badge_html(cfg, ids):
 
 # ---- カード(サーバー側の初期表示。JavaScriptが無くても見える) ---------
 
-def card_html(h, cell, feat, flabel, kind, bd="", flags="", got=None):
+def card_html(h, cell, feat, flabel, kind, bd="", flags="", got=None, day=None):
     img = safe_url(h.get("image")) if h.get("image") else "#"
     imgtag = ""
     if img != "#":
@@ -522,7 +531,7 @@ def card_html(h, cell, feat, flabel, kind, bd="", flags="", got=None):
         p, url, name = cell["f"][feat]
         tag = f'<p class="tags"><span class="tag">{esc(flabel)}</span> <span class="rn">{esc(name)}</span></p>'
         price = (bd + f'<p class="pl">1泊2名・1部屋</p><p class="pv">{yen_full(p)}<span>〜</span></p>'
-                 + btn(url or h.get("url"), "cta", "空室・プランを見る ›"))
+                 + btn(url or h.get("url"), "cta", (f"{md(day)}({WD[day.weekday()]})の空室を見る ›" if day else "空室・プランを見る ›")))
         cls = "hc"
     else:
         a = cell.get("any") or [0, ""]
@@ -552,7 +561,7 @@ def results_html(cfg, rows, state, feat, flabel, day, dates, info, holidays, now
     if oks:
         n_d, low_d = info[k]
         out += "".join(card_html(h, c, feat, flabel, "ok", badge_html(cfg, badges_for(cfg, h, p, low_d, n_d)),
-                                 flags_html(False, n_d == 1), got_k) for p, h, c in oks)
+                                 flags_html(False, n_d == 1), got_k, day) for p, h, c in oks)
     else:
         near = [d for d in dates if info[d.isoformat()][0] > 0][:4]
         near.sort(key=lambda d: abs((d - day).days))
@@ -823,6 +832,12 @@ table.stat tr.sub th,table.stat tr.sub td{font-size:12.5px;color:#4a5058;backgro
 .seenr{font-size:13px;color:#3b4148;margin:4px 0 6px}
 .adh{margin:8px 0 2px;font-size:14px}.adl{margin:0 0 6px}
 #basics th{white-space:nowrap;width:6.5em}#basics td{text-align:left}
+.qlinks{font-size:13px;margin:6px 0 0;line-height:1.7}.qlinks .ql{font-weight:700}
+.rtbl .tb{display:inline-block;white-space:nowrap;font-size:12px;font-weight:700;color:#fff;background:var(--cta);border-radius:6px;padding:3px 8px;text-decoration:none}
+@media (max-width:640px){.rtbl td:nth-child(6){grid-column:1/-1;margin-top:4px}}
+.pcard .pin{display:flex;flex-direction:column;color:var(--ink);text-decoration:none;flex:1}
+.pcard .pbtn{display:block;margin:0 10px 10px;padding:8px 6px;border-radius:8px;background:var(--cta);color:#fff;font-weight:700;font-size:12.5px;text-align:center;text-decoration:none;line-height:1.3}
+.pcard .pbtn:hover{background:var(--cta2)}
 .rdef{font-size:12.5px;color:#3b4148;background:#f6f9fd;border-radius:8px;padding:6px 10px;margin:4px 0 6px}
 .hero .qans{font-size:13px;line-height:1.6;color:#2a3138;background:#fff;border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:8px;padding:8px 10px;margin-top:8px}
 .rtab{margin:0 0 12px}.rtbl{border-collapse:collapse;font-size:13px;width:100%}.rtbl caption{text-align:left;font-size:12px;color:var(--sub);padding:4px 0}
@@ -1030,7 +1045,7 @@ function card(h,c,kind){
   if(kind==='o'&&filterId&&c[4].indexOf(filterId)<0&&c[5]&&c[5].indexOf(filterId)>=0&&D.badges[filterId]){hp.appendChild(el('p','bdnote','「'+D.badges[filterId].l.replace('★','')+'」の条件にも当てはまります'));}
   if(kind==='o'){hp.appendChild(el('p','pl','1泊2名・1部屋'));
     var pv=el('p','pv',yen(c[1]));pv.appendChild(el('span',null,'〜'));hp.appendChild(pv);
-    hp.appendChild(btn(lk(h,cur,c),'cta','空室・プランを見る ›'));}
+    var _di=dinfo(cur);hp.appendChild(btn(lk(h,cur,c),'cta',_di?_di.l.replace(/\((.).*\)$/,'($1)')+'の空室を見る ›':'空室・プランを見る ›'));}
   else{hp.appendChild(el('p','pl',FL+'以外も含む最安(参考)'));
     if(c[1]){var pv2=el('p','pv sm',yen(c[1]));pv2.appendChild(el('span',null,'〜'));hp.appendChild(pv2);}
     hp.appendChild(btn(lk(h,cur,c),'cta ghost','プラン一覧を見る ›'));}
@@ -1092,6 +1107,7 @@ function render(){
   var qb=document.querySelectorAll('.quick button');
   for(i=0;i<qb.length;i++){qb[i].classList.toggle('on',qb[i].getAttribute('data-d')===cur);}
   if(window.relt){window.relt();}
+  if(window.ymSbar){window.ymSbar();}
 }
 var areaCal=null;
 function pick(d,scroll){cur=d;render();
@@ -1393,14 +1409,16 @@ def room_table_html(cfg, feat, flabel, rows, state, ds, holidays, label, limit=8
             hh = hotel_href(h)
             nm = (f'<a href="{esc(hh)}?d={d.isoformat()}">{esc(h["name"])}</a>' if hh else esc(h["name"]))
             room = "宿全体の最安プラン" if (hotel_feat or not short_room(rn, 60)) else short_room(rn, 60)
+            _u = ((state["cells"].get(h["no"], {}).get(d.isoformat()) or {}).get("f") or {}).get(feat, [0, ""])[1]
             trs.append(f"<tr><td>{esc(day_label(d, holidays))}</td><td>{nm}</td><td>{esc(room)}</td>"
-                       f"<td class=\"pr\">{yen_full(pr)}〜</td><td>{(f'{ft.month}/{ft.day} {ft:%H:%M}') if ft else ''}</td></tr>")
+                       f"<td class=\"pr\">{yen_full(pr)}〜</td><td>{(f'{ft.month}/{ft.day} {ft:%H:%M}') if ft else ''}</td>"
+                       f"<td>{rk_btn(h, d, '予約【PR】', 'tb', _u)}</td></tr>")
     if not trs:
         return ""
     cap = f"{label}に空いている{esc(flabel)}" + ("" if hotel_feat or room_noun(flabel) == flabel else "の部屋") + f"(1泊・大人2名・1室、{n}件、料金が安い順)"
     return (f'<details class="amore rtab"><summary>📋 {cap}を表で見る</summary>'
             '<div class="scroll"><table class="rtbl"><caption>' + cap + '</caption><thead><tr><th scope="col">宿泊日</th><th scope="col">宿名</th><th scope="col">'
-            + ("プラン" if hotel_feat else "部屋(各宿の最安の部屋)") + '</th><th scope="col">料金</th><th scope="col">取得</th></tr></thead><tbody>'
+            + ("プラン" if hotel_feat else "部屋(各宿の最安の部屋)") + '</th><th scope="col">料金</th><th scope="col">取得</th><th scope="col">予約</th></tr></thead><tbody>'
             + "".join(trs) + '</tbody></table></div><p class="sub">取得時点の楽天トラベルの掲載額です。宿名を押すと、その日を選んだ宿のページが開きます。</p></details>')
 
 
@@ -3158,7 +3176,9 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
     out = [head(cfg, title, desc, canonical, demo, ld_html), header_html(cfg, demo), '<div class="wrap">']
     out.append(hero_banner(thin=True) + f'<div class="hero"><div class="crumb"><a href="../">{esc(site["name"])}</a> › <a href="../{esc(page["area"])}/">{esc(alabel)}</a> › {esc(flabel)}</div>'
                f'<h1>{esc(page["title"])}</h1>'
-               + (f'<p class="qans" id="qans">{esc(quick_answer(cfg, feat, flabel, alabel, rows, state, default, holidays, dates, info))}</p>' if rows else "")
+               + (f'<p class="qans" id="qans">{esc(quick_answer(cfg, feat, flabel, alabel, rows, state, default, holidays, dates, info))}</p>'
+                  + qlinks_html([(h, ((state["cells"].get(h["no"], {}).get(default.isoformat()) or {}).get("f") or {}).get(feat, [0, ""])[1])
+                                 for _, h, _ in day_split(rows, state, feat, default)[0][:3]], default, holidays) if rows else "")
                + f'<p class="lead">{esc(page.get("lead", ""))} <a href="#switch">エリア・条件を変える ↓</a></p></div>')
 
     if rows:
@@ -3182,6 +3202,9 @@ def render_page(cfg, hotels, state, stats, page, now, demo):
                    + ('' if is_hotel_feat(cfg, feat) else f'<p class="rdef">この一覧は「{esc(room_noun(flabel))}に空きを確認できた宿」です。宿に空きはあるが{esc(flabel)}は未確認の宿は「参考」、空室なしは「満室の宿」として下に分けています(まだ取得していない日は満室ではありません)。</p>')
                    + '<p class="rsub">1泊・大人2名・1部屋の料金です(取得時点の掲載額)。ボタンを押すと楽天トラベルの予約ページが開きます。バッジは当サイト独自の基準で付けています(<a href="../about/#badges">基準を見る</a>)。</p>')
         out.append(f'<div id="cards">{res}</div></div>')
+        # スマホ: 一覧の見出しを過ぎたら、画面の下に「その日の最安の宿を楽天で見る」を出す(日付を変えると中身も変わる)
+        out.append('<div class="sbar" id="sbar2" hidden><div class="st"><b></b><small></small></div>'
+                   '<a class="cta" target="_blank" rel="sponsored nofollow noopener">楽天で見る ›</a></div><script>' + SBAR2_JS + '</script>')
         out.append('<section class="sec" id="calendar"><h2>カレンダーで比べる</h2>'
                    '<p class="sub">日付(数字)をタップすると、その日の宿が上の一覧に表示されます。◯・△・満のマスを押すと、その日の楽天トラベルのページが開きます。'
                    'このページは、アドレスの最後に「?d=2026-11-28」のように日付を付けると、その日付を選んだ状態で開きます。</p>'
@@ -3302,6 +3325,22 @@ def book_a(h, d, text):
     fb = hotel_href(h) or safe_url(h.get("url"))
     return (f'<a href="{esc(fb)}" data-sl="{esc(h["no"])}|{d.isoformat()}" target="_blank" '
             f'rel="sponsored nofollow noopener">{text}</a>')
+
+
+def rk_btn(h, d, text, cls="rkb", url=""):
+    """楽天トラベルへ直接行く予約ボタン(アフィリエイト経由)。url があればそれを、なければ日付つきプラン一覧"""
+    u = url or book_link(h, d)
+    return (f'<a class="{cls}" href="{esc(safe_url(u))}" target="_blank" rel="sponsored nofollow noopener">{text}</a>'
+            if safe_url(u) != "#" else "")
+
+
+def qlinks_html(items, d, holidays):
+    """冒頭の即答文の下に置く、例に挙げた宿の予約リンク。items は [(宿, URL)]"""
+    links = [rk_btn(h, d, esc(h["name"]), "ql", u) for h, u in items]
+    links = [x for x in links if x]
+    if not links:
+        return ""
+    return f'<p class="qlinks">{esc(day_label(d, holidays))}の空室を楽天で見る: ' + " ・ ".join(links) + " 【PR】</p>"
 
 
 def name_link(h, d):
@@ -3654,13 +3693,14 @@ def area_table_html(hotels, state, area, ds, holidays, label, per_day=50):
             nm = f'<a href="{esc(hh)}?d={d.isoformat()}">{esc(h["name"])}</a>' if hh else esc(h["name"])
             rv = f"★{h['review']}" if h.get("review") else ""
             trs.append(f"<tr><td>{esc(day_label(d, holidays))}</td><td>{nm}</td><td>{esc(rv)}</td>"
-                       f"<td class=\"pr\">{yen_full(p)}〜</td><td>{(f'{ft.month}/{ft.day} {ft:%H:%M}') if ft else ''}</td></tr>")
+                       f"<td class=\"pr\">{yen_full(p)}〜</td><td>{(f'{ft.month}/{ft.day} {ft:%H:%M}') if ft else ''}</td>"
+                       f"<td>{rk_btn(h, d, '予約【PR】', 'tb')}</td></tr>")
     if not trs:
         return ""
     cap = f"{label}に空いている宿(1泊・大人2名・1室、料金が安い順に各日{per_day}軒まで・計{n}件)"
     return (f'<details class="amore rtab"><summary>📋 {esc(cap)}を表で見る</summary>'
             '<div class="scroll"><table class="rtbl"><caption>' + esc(cap) + '</caption><thead><tr><th scope="col">宿泊日</th><th scope="col">宿名</th>'
-            '<th scope="col">口コミ</th><th scope="col">料金</th><th scope="col">取得</th></tr></thead><tbody>'
+            '<th scope="col">口コミ</th><th scope="col">料金</th><th scope="col">取得</th><th scope="col">予約</th></tr></thead><tbody>'
             + "".join(trs) + '</tbody></table></div><p class="sub">取得時点の楽天トラベルの掲載額(宿全体の最安プラン)です。宿名を押すと、その日を選んだ宿のページが開きます。</p></details>')
 
 
@@ -3728,7 +3768,9 @@ def render_area(cfg, hotels, state, area, wl, sums, now, demo):
     _qday = next((d for d in wk_ds if d.weekday() == 5), wk_ds[0] if wk_ds else None)
     inner = [hero_banner(thin=True) + f'<div class="hero"><div class="crumb"><a href="../">{esc(site["name"])}</a> › {esc(alabel)}</div>'
              f"<h1>{esc(alabel)}の宿の空室【今夜・明日・今週末】</h1>"
-             + (f'<p class="qans" id="qans">{esc(area_quick_answer(alabel, hotels, state, area, _qday, holidays, cfg))}</p>' if _qday else "")
+             + (f'<p class="qans" id="qans">{esc(area_quick_answer(alabel, hotels, state, area, _qday, holidays, cfg))}</p>'
+                + qlinks_html([(h, "") for p_, h in sorted([(p_, h) for p_, h in area_day_info(hotels, state, area, _qday)[1] if p_ and (h.get("reviews") or 0) >= PICK_MIN_REVIEWS],
+                                                       key=lambda x: (-_rv(x[1]), x[0]))[:3]], _qday, holidays) if _qday else "")
              + f'<p class="lead">{esc(alabel)}の宿の空きを、日程ごとに自動で数えています。条件(客室露天風呂など)で絞り込むこともできます。</p></div>']
     inner.append(area_pick_html(cfg, hotels, state, area, today, holidays, feats))
     # 宿の一覧(写真つき)を先に。全体の数字(まとめ・日程ごとの表)はその後(AIはページ全体を読むので位置は下でよい)
@@ -4280,11 +4322,12 @@ def picks_html(picks, holidays, title):
     for h, al, p, d in picks:
         img = h.get("image_l") if str(h.get("image_l", "")).startswith("https://") else h.get("image")
         rv = (f'<span class="pv">★{esc(h["review"])}' + (f'<small>({h["reviews"]:,}件)</small>' if h.get("reviews") else "") + "</span>") if h.get("review") else ""
-        cards.append(f'<a class="pcard" href="{esc(hotel_href(h))}?d={d.isoformat()}"><img src="{esc(safe_url(img))}" alt="" loading="lazy">'
+        cards.append(f'<div class="pcard"><a class="pin" href="{esc(hotel_href(h))}?d={d.isoformat()}"><img src="{esc(safe_url(img))}" alt="" loading="lazy">'
                      f'<span class="pb"><span class="pa">{esc(al)}</span><b>{esc(h["name"])}</b>{rv}'
-                     f'<span class="pp">{esc(day_label(d, holidays))} <em>{yen_full(p)}〜</em><small>(2名1室)</small></span></span></a>')
+                     f'<span class="pp">{esc(day_label(d, holidays))} <em>{yen_full(p)}〜</em><small>(2名1室)</small></span></span></a>'
+                     + rk_btn(h, d, "楽天で空室を見る【PR】", "pbtn") + "</div>")
     return (f'<section class="picks" id="picks"><h2>{esc(title)}</h2><div class="pgrid">{"".join(cards)}</div>'
-            '<p class="sub">口コミの多い宿のうち、評価(口コミ件数も加味)の高い順に各エリア1軒まで。料金は取得時点の楽天トラベルの掲載額(1泊・大人2名・1室の最安)です。押すと、その日を選んだ宿のページが開きます。</p></section>')
+            '<p class="sub">口コミの多い宿のうち、評価(口コミ件数も加味)の高い順に各エリア1軒まで。料金は取得時点の楽天トラベルの掲載額(1泊・大人2名・1室の最安)です。写真・宿名を押すとその日を選んだ宿のページ、ボタンを押すと楽天トラベルのその日のプラン一覧が開きます。</p></section>')
 
 
 def render_home(cfg, digests, now, demo, scene_list=(), answer=("", ""), area_today=None, n_hotels=0, aimg=None, picks=""):
