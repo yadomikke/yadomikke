@@ -138,7 +138,7 @@ with tempfile.TemporaryDirectory() as tmp:
     check(f"https://hb.afl.rakuten.co.jp/hgc/z/?pc={plan}" in page and "https://aff/r1" not in page,
           "予約リンクは、ログインなしで開ける日付つきのプラン一覧(アフィリエイト経由)になる")
     check('rel="sponsored nofollow noopener"' in page, "広告リンクの印(sponsored)が付く")
-    check("【PR】" in page and "Supported by Rakuten Developers" in page, "広告表記(【PR】)とクレジットが入る")
+    check("【PR】" in page and "アフィリエイト広告を利用しています" in page and page.count("【PR】") <= 2 and "Supported by Rakuten Developers" in page, "広告表記はページの最初に1か所とフッター(ボタンごとの【PR】は付けない)とクレジット")
     out = tmp / "out"
     for rel in ("about", "privacy", "hakone-roten/shumatsu", "hakone-roten/nenmatsu", "hotel/1", "hotel/11", "roten"):
         check((out / rel / "index.html").exists(), f"{rel}/ のページが作られる")

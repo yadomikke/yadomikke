@@ -159,7 +159,7 @@ function chk(){var show=sb.getAttribute('data-ok')==='1'&&hd&&hd.getBoundingClie
 window.ymSbar=function(){var a=document.querySelector('#cards article.hc:not(.part) a.cta');if(!a){sb.setAttribute('data-ok','');chk();return;}
 var art=a.closest('article'),nm=art.querySelector('h3'),pv=art.querySelector('.pv'),t=document.getElementById('rt');
 sb.querySelector('b').textContent=(t&&t.firstChild?t.firstChild.textContent.replace('に泊まれる宿','').trim()+' ':'')+'最安'+(pv?pv.textContent.replace(/\s+/g,''):'');
-sb.querySelector('small').textContent=(nm?nm.textContent.trim():'')+'【PR】';sb.querySelector('a').href=a.href;sb.setAttribute('data-ok','1');chk();};
+sb.querySelector('small').textContent=(nm?nm.textContent.trim():'');sb.querySelector('a').href=a.href;sb.setAttribute('data-ok','1');chk();};
 window.addEventListener('scroll',chk,{passive:true});window.ymSbar();})();"""
 
 # 予約リンク(日付つきプラン一覧・アフィリエイト経由)を、宿番号と日付からブラウザ側で組み立てる。stay_link() と同じ形
@@ -225,10 +225,10 @@ function show(q,push){out.textContent='';inp.value=q;
  if(ok){var rn=c.getAttribute('data-r');out.appendChild(mk('p','qm','1泊・大人2名・1室の最安(取得時点)'+(rn?' / '+rn:'')));
   try{var kp=JSON.parse(box.getAttribute('data-kp')||'null'),ld=Math.round((Date.UTC(+q.slice(0,4),+q.slice(5,7)-1,+q.slice(8,10))-Date.UTC(+mn.slice(0,4),+mn.slice(5,7)-1,+mn.slice(8,10)))/864e5);
    if(kp&&ld>0&&kp[ld]){out.appendChild(mk('p','qkeep','📊 このエリアで今空いている宿が、この日まで空いたまま残る見込み: 約'+kp[ld]+'%(当サイトの観測)。'+(kp[ld]<40?'早めの予約がおすすめです':(kp[ld]>=70?'まだ少し余裕がありそうです':'数日のうちに埋まる宿も出てきそうです'))));}}catch(e){}}
- if(link){var a=mk('a','cta'+(ok?'':' ghost'),L+'を楽天トラベルで'+(ok?'予約する ›':'最新の空きを確認する ›')+'【PR】');a.href=link;a.target='_blank';a.rel='sponsored nofollow noopener';var pp=mk('p');pp.appendChild(a);out.appendChild(pp);}
+ if(link){var a=mk('a','cta'+(ok?'':' ghost'),L+'を楽天トラベルで'+(ok?'予約する ›':'最新の空きを確認する ›'));a.href=link;a.target='_blank';a.rel='sponsored nofollow noopener';var pp=mk('p');pp.appendChild(a);out.appendChild(pp);}
  if(!ok)alts(q);
  var mc=document.querySelector('#maincta a');if(mc&&link){mc.href=link;mc.textContent=L+'の空室・料金を楽天トラベルで確認 ›';}
- if(sb&&link){sl.textContent=L+(ok&&pr?' ¥'+(+pr).toLocaleString('ja-JP')+'〜':(c&&c.getAttribute('data-s')==='full'?' 取得時点で満室':''));sm.textContent=(ok&&pr?'1泊・大人2名の最安(取得時点)【PR】':'楽天トラベルで最新の空きを確認【PR】');sa.href=link;sa.textContent=(ok?'予約する ›':'空きを確認 ›');sb.hidden=false;document.body.classList.add('hasbar');}}
+ if(sb&&link){sl.textContent=L+(ok&&pr?' ¥'+(+pr).toLocaleString('ja-JP')+'〜':(c&&c.getAttribute('data-s')==='full'?' 取得時点で満室':''));sm.textContent=(ok&&pr?'1泊・大人2名の最安(取得時点)':'楽天トラベルで最新の空きを確認');sa.href=link;sa.textContent=(ok?'予約する ›':'空きを確認 ›');sb.hidden=false;document.body.classList.add('hasbar');}}
 // この宿が空いていない日は、同じ条件で、その日に空いていた近くの宿を出す(取得時点の値)
 function alts(q){var A=window.__ALT;if(!A)return;var i=A.d.indexOf(q);if(i<0)return;
  var r=A.h.filter(function(x){return x[2][i]>0;}).sort(function(a,b){return a[2][i]-b[2][i];}).slice(0,3);if(!r.length)return;
@@ -838,6 +838,7 @@ table.stat tr.sub th,table.stat tr.sub td{font-size:12.5px;color:#4a5058;backgro
 .pcard .pin{display:flex;flex-direction:column;color:var(--ink);text-decoration:none;flex:1}
 .pcard .pbtn{display:block;margin:0 10px 10px;padding:8px 6px;border-radius:8px;background:var(--cta);color:#fff;font-weight:700;font-size:12.5px;text-align:center;text-decoration:none;line-height:1.3}
 .pcard .pbtn:hover{background:var(--cta2)}
+.adnote{margin:0;padding:3px max(16px,env(safe-area-inset-right,0px)) 3px max(16px,env(safe-area-inset-left,0px));font-size:11px;color:var(--sub);text-align:right}
 .rdef{font-size:12.5px;color:#3b4148;background:#f6f9fd;border-radius:8px;padding:6px 10px;margin:4px 0 6px}
 .hero .qans{font-size:13px;line-height:1.6;color:#2a3138;background:#fff;border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:8px;padding:8px 10px;margin-top:8px}
 .rtab{margin:0 0 12px}.rtbl{border-collapse:collapse;font-size:13px;width:100%}.rtbl caption{text-align:left;font-size:12px;color:var(--sub);padding:4px 0}
@@ -1203,6 +1204,8 @@ def header_html(cfg, demo, root="../"):
         out += '<div class="demo">これは見本です。宿・料金・空室はすべて架空のデータです(公開されません)</div>'
     out += (f'<header class="hdr"><a class="logo" href="{root}">{esc(cfg["site"]["name"])}<svg viewBox="0 0 32 32" role="img" aria-label="フクロウのキャラクター">{OWL_SVG}</svg></a>'
             "<small>宿の空室をまとめてチェック</small></header>"
+            # ステルスマーケティング規制への対応: ボタンごとの【PR】の代わりに、どのページも最初に1か所だけ広告であることを示す
+            '<p class="adnote">当サイトは楽天トラベルのアフィリエイト広告を利用しています</p>'
             )
     return out
 
@@ -1412,7 +1415,7 @@ def room_table_html(cfg, feat, flabel, rows, state, ds, holidays, label, limit=8
             _u = ((state["cells"].get(h["no"], {}).get(d.isoformat()) or {}).get("f") or {}).get(feat, [0, ""])[1]
             trs.append(f"<tr><td>{esc(day_label(d, holidays))}</td><td>{nm}</td><td>{esc(room)}</td>"
                        f"<td class=\"pr\">{yen_full(pr)}〜</td><td>{(f'{ft.month}/{ft.day} {ft:%H:%M}') if ft else ''}</td>"
-                       f"<td>{rk_btn(h, d, '予約【PR】', 'tb', _u)}</td></tr>")
+                       f"<td>{rk_btn(h, d, '予約', 'tb', _u)}</td></tr>")
     if not trs:
         return ""
     cap = f"{label}に空いている{esc(flabel)}" + ("" if hotel_feat or room_noun(flabel) == flabel else "の部屋") + f"(1泊・大人2名・1室、{n}件、料金が安い順)"
@@ -2273,7 +2276,7 @@ def render_hotel(cfg, page, h, ctx, state, stats, demo):
             '<p class="sub">◯=空きあり(数字は最安) ／ △=宿に空きはあるが該当の部屋は確認できない ／ 満=空室なし ／ —=未取得。日付を押すと、上にその日の料金と予約ボタンが出ます。</p>'
             f'{cal}</section>',
             '<p style="margin:10px 0" id="maincta">' + btn(cta_url, "cta", cta_txt) + "</p>"]
-    body.append('<div class="sbar" id="sbar" hidden><div class="st"><b></b><small>1泊・大人2名・1室の最安【PR】</small></div>'
+    body.append('<div class="sbar" id="sbar" hidden><div class="st"><b></b><small>1泊・大人2名・1室の最安</small></div>'
                 '<a class="cta" target="_blank" rel="sponsored nofollow noopener">予約する ›</a></div>')
     body.append(alt_data(h, ctx, feat, dates))
     _bas = hotel_basics(h, DETAIL.get(h["no"]))
@@ -3340,7 +3343,7 @@ def qlinks_html(items, d, holidays):
     links = [x for x in links if x]
     if not links:
         return ""
-    return f'<p class="qlinks">{esc(day_label(d, holidays))}の空室を楽天で見る: ' + " ・ ".join(links) + " 【PR】</p>"
+    return f'<p class="qlinks">{esc(day_label(d, holidays))}の空室を楽天で見る: ' + " ・ ".join(links) + "</p>"
 
 
 def name_link(h, d):
@@ -3417,7 +3420,7 @@ def render_imakara(cfg, hotels, state, now, demo):
         lis = "".join(
             f"<li class='wimg'>{thumb_html(h)}<div>{name_link(h, today)}<small>"
             + (f"★{esc(h.get('review'))} ・ " if h.get("review") else "") + f"最終チェックイン {esc(li)}"
-            + (f" ・ 最安{yen_full(p)}〜" if p else "") + f' ・ {book_a(h, today, "楽天トラベルで空室を見る【PR】")}</small></div></li>'
+            + (f" ・ 最安{yen_full(p)}〜" if p else "") + f' ・ {book_a(h, today, "楽天トラベルで空室を見る")}</small></div></li>'
             for p, h, li in lst[:6])
         secs.append(f'<section class="card"><h2>{esc(lab)}で今から泊まれる宿({len(lst)}軒)</h2>'
                     + (f'<p class="sub">取得: {esc(fmt_dt(ft))}</p>' if ft else "")
@@ -3462,7 +3465,7 @@ def render_when(cfg, hotels, state, slug, name, ds, note, wl, now, demo):
             lis = "".join(
                 f"<li>{name_link(h, d)}<small>★{esc(h.get('review'))}(口コミ{(h.get('reviews') or 0):,}件)"
                 + (f" ・ 最安{yen_full(p)}〜" if p else "") + (f"({esc(day_label(d, holidays))})" if len(ds) > 1 else "")
-                + f' ・ {book_a(h, d, "楽天トラベルで空室を見る【PR】")}</small></li>' for h, p, d in top)
+                + f' ・ {book_a(h, d, "楽天トラベルで空室を見る")}</small></li>' for h, p, d in top)
             picks_html.append(f'<section class="card"><h2>{esc(alabel)}で{esc(name)}空いている、口コミ評価の高い宿</h2><ol class="hl picks">{lis}</ol>'
                               f'<p class="legend"><a href="../{esc(area)}/">{esc(alabel)}の空室まとめ(ほかの宿・料金相場) ›</a></p></section>')
             ld_items += [h for h, p, d in top]
@@ -3613,7 +3616,7 @@ def adults_area_html(hotels, state, area, ds, holidays, alabel):
         return "", []
     html = (f'<section class="card" id="adults3"><h2>3人で泊まれる宿(今週末)</h2>{"".join(blocks)}'
             '<p class="legend">大人3名・1室の条件で楽天トラベルから取得した空室と、3名1室の合計の最安です(約8時間ごと)。'
-            '宿名を押すと、3名1室の条件で楽天トラベルのプラン一覧が開きます【PR】。</p></section>')
+            '宿名を押すと、3名1室の条件で楽天トラベルのプラン一覧が開きます。</p></section>')
     return html, faqs
 
 
@@ -3694,7 +3697,7 @@ def area_table_html(hotels, state, area, ds, holidays, label, per_day=50):
             rv = f"★{h['review']}" if h.get("review") else ""
             trs.append(f"<tr><td>{esc(day_label(d, holidays))}</td><td>{nm}</td><td>{esc(rv)}</td>"
                        f"<td class=\"pr\">{yen_full(p)}〜</td><td>{(f'{ft.month}/{ft.day} {ft:%H:%M}') if ft else ''}</td>"
-                       f"<td>{rk_btn(h, d, '予約【PR】', 'tb')}</td></tr>")
+                       f"<td>{rk_btn(h, d, '予約', 'tb')}</td></tr>")
     if not trs:
         return ""
     cap = f"{label}に空いている宿(1泊・大人2名・1室、料金が安い順に各日{per_day}軒まで・計{n}件)"
@@ -3745,7 +3748,7 @@ def render_area(cfg, hotels, state, area, wl, sums, now, demo):
                 lis = "".join(
                     f"<li class='wimg'>{thumb_html(h)}<div>{name_link(h, d)}<small>★{esc(h.get('review'))}(口コミ{(h.get('reviews') or 0):,}件)"
                     + (f" ・ 最安{yen_full(p)}〜" if p else "") + (f"({esc(day_label(d, holidays))})" if len(ds) > 1 else "")
-                    + f' ・ {book_a(h, d, "楽天トラベルで空室を見る【PR】")}</small></div></li>' for h, p, d in top)
+                    + f' ・ {book_a(h, d, "楽天トラベルで空室を見る")}</small></div></li>' for h, p, d in top)
                 picks_html.append(f'<section class="card"><h2>{esc(alabel)}で{esc(lbl)}空いている、口コミ評価の高い宿</h2><ol class="hl picks">{lis}</ol></section>')
                 ld_items += [h for h, p, d in top]
     pc = price_cells(cfg, hotels, state, area, today)
@@ -4194,7 +4197,7 @@ def render_ugoki(cfg, hotels, state, stats, wl, now, demo):
             st = '<b class="ok">今も空き</b>' if still else "その後また満室"
             lis.append(f"<li>{name_link(h, d)}<small>{esc(day_label(d, holidays))}泊"
                        + (f" ・ {yen_full(c['p'])}〜" if c.get("p") else "") + f" ・ {fmt_dt(at)}に空きを確認 ・ {st}"
-                       + (f' ・ {book_a(h, d, "楽天トラベルで見る【PR】")}' if still else "") + "</small></li>")
+                       + (f' ・ {book_a(h, d, "楽天トラベルで見る")}' if still else "") + "</small></li>")
         more = (f"<p class='legend'>ほか{len(lst) - UGOKI_MAX}件(<a href=\"../{esc(area)}/\">{esc(alabel)}の空室まとめ</a>で最新の空きを確認できます)</p>"
                 if len(lst) > UGOKI_MAX else "")
         sections.append(f'<section class="card"><h2>{esc(alabel)}で空きが出た宿</h2><ul class="hl picks">{"".join(lis)}</ul>{more}</section>')
@@ -4325,7 +4328,7 @@ def picks_html(picks, holidays, title):
         cards.append(f'<div class="pcard"><a class="pin" href="{esc(hotel_href(h))}?d={d.isoformat()}"><img src="{esc(safe_url(img))}" alt="" loading="lazy">'
                      f'<span class="pb"><span class="pa">{esc(al)}</span><b>{esc(h["name"])}</b>{rv}'
                      f'<span class="pp">{esc(day_label(d, holidays))} <em>{yen_full(p)}〜</em><small>(2名1室)</small></span></span></a>'
-                     + rk_btn(h, d, "楽天で空室を見る【PR】", "pbtn") + "</div>")
+                     + rk_btn(h, d, "楽天で空室を見る", "pbtn") + "</div>")
     return (f'<section class="picks" id="picks"><h2>{esc(title)}</h2><div class="pgrid">{"".join(cards)}</div>'
             '<p class="sub">口コミの多い宿のうち、評価(口コミ件数も加味)の高い順に各エリア1軒まで。料金は取得時点の楽天トラベルの掲載額(1泊・大人2名・1室の最安)です。写真・宿名を押すとその日を選んだ宿のページ、ボタンを押すと楽天トラベルのその日のプラン一覧が開きます。</p></section>')
 
