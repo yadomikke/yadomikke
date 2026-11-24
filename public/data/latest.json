@@ -1,7 +1,7 @@
 {
  "name": "ヤドミッケ 温泉地の空室・料金データ",
  "description": "楽天トラベルの空室検索APIから自動で取得し、ヤドミッケが集計した、温泉地の宿の空き数と料金の最新値です。",
- "generated_at": "2026-11-24T08:59:46+09:00",
+ "generated_at": "2026-11-24T09:51:27+09:00",
  "source": "楽天トラベル 空室検索API(楽天ウェブサービス)",
  "attribution": "ヤドミッケ(楽天トラベルの空室データをもとに集計)",
  "site_url": "https://yadomikke.com/",
@@ -47,7 +47,7 @@
     "2026-11-28"
    ],
    "hotels_checked": 4697,
-   "hotels_with_vacancy": 2410,
+   "hotels_with_vacancy": 2406,
    "min_price_jpy": 50,
    "page_url": "https://yadomikke.com/shumatsu/"
   },
@@ -152,9 +152,9 @@
     "wd": {
      "label": "平日(日〜木)",
      "median_jpy": 18590,
-     "p25_jpy": 7907,
+     "p25_jpy": 7931,
      "p75_jpy": 42350,
-     "samples": 3956
+     "samples": 3955
     },
     "fri": {
      "label": "金曜",
@@ -502,10 +502,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 12496,
+     "median_jpy": 12548,
      "p25_jpy": 5922,
-     "p75_jpy": 28000,
-     "samples": 1265
+     "p75_jpy": 28073,
+     "samples": 1266
     },
     "fri": {
      "label": "金曜",
@@ -673,7 +673,7 @@
      "median_jpy": 13596,
      "p25_jpy": 6500,
      "p75_jpy": 24800,
-     "samples": 757
+     "samples": 758
     },
     "fri": {
      "label": "金曜",
@@ -850,8 +850,8 @@
      "label": "平日(日〜木)",
      "median_jpy": 12923,
      "p25_jpy": 8100,
-     "p75_jpy": 25550,
-     "samples": 1065
+     "p75_jpy": 25675,
+     "samples": 1064
     },
     "fri": {
      "label": "金曜",
@@ -1189,10 +1189,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 8100,
+     "median_jpy": 8099,
      "p25_jpy": 4538,
      "p75_jpy": 24200,
-     "samples": 1761
+     "samples": 1760
     },
     "fri": {
      "label": "金曜",
@@ -1357,10 +1357,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 14170,
+     "median_jpy": 14152,
      "p25_jpy": 9200,
      "p75_jpy": 38000,
-     "samples": 1680
+     "samples": 1683
     },
     "fri": {
      "label": "金曜",
@@ -1520,10 +1520,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 12600,
-     "p25_jpy": 7225,
+     "median_jpy": 12760,
+     "p25_jpy": 7200,
      "p75_jpy": 23600,
-     "samples": 2324
+     "samples": 2319
     },
     "fri": {
      "label": "金曜",
@@ -1701,7 +1701,7 @@
      "median_jpy": 9350,
      "p25_jpy": 6100,
      "p75_jpy": 17000,
-     "samples": 1310
+     "samples": 1309
     },
     "fri": {
      "label": "金曜",
@@ -1835,9 +1835,9 @@
       "2026-11-28"
      ],
      "hotels_checked": 71,
-     "hotels_with_vacancy": 43,
+     "hotels_with_vacancy": 42,
      "min_price_jpy": 3600,
-     "fetched_at": "2026-11-23T18:07+09:00"
+     "fetched_at": "2026-11-23T20:05+09:00"
     },
     "renkyu": {
      "label": "1/1〜1/3の3連休",
@@ -1872,16 +1872,16 @@
     "wd": {
      "label": "平日(日〜木)",
      "median_jpy": 14300,
-     "p25_jpy": 6500,
-     "p75_jpy": 24607,
-     "samples": 658
+     "p25_jpy": 6600,
+     "p75_jpy": 24640,
+     "samples": 655
     },
     "fri": {
      "label": "金曜",
-     "median_jpy": 16500,
+     "median_jpy": 15950,
      "p25_jpy": 6200,
-     "p75_jpy": 35200,
-     "samples": 87
+     "p75_jpy": 37125,
+     "samples": 86
     },
     "sat": {
      "label": "土曜・祝前日",
@@ -2003,9 +2003,9 @@
       "2026-11-28"
      ],
      "hotels_checked": 525,
-     "hotels_with_vacancy": 190,
+     "hotels_with_vacancy": 191,
      "min_price_jpy": 2500,
-     "fetched_at": "2026-11-23T18:08+09:00"
+     "fetched_at": "2026-11-23T20:07+09:00"
     },
     "renkyu": {
      "label": "1/1〜1/3の3連休",
@@ -2039,16 +2039,16 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 9700,
-     "p25_jpy": 6996,
-     "p75_jpy": 18700,
-     "samples": 2712
+     "median_jpy": 9680,
+     "p25_jpy": 6966,
+     "p75_jpy": 18665,
+     "samples": 2708
     },
     "fri": {
      "label": "金曜",
-     "median_jpy": 10275,
-     "p25_jpy": 6999,
-     "p75_jpy": 20885,
+     "median_jpy": 10234,
+     "p25_jpy": 7000,
+     "p75_jpy": 21115,
      "samples": 374
     },
     "sat": {
@@ -2176,9 +2176,9 @@
       "2026-11-28"
      ],
      "hotels_checked": 129,
-     "hotels_with_vacancy": 68,
+     "hotels_with_vacancy": 67,
      "min_price_jpy": 3800,
-     "fetched_at": "2026-11-23T18:10+09:00"
+     "fetched_at": "2026-11-23T20:08+09:00"
     },
     "renkyu": {
      "label": "1/1〜1/3の3連休",
@@ -2215,14 +2215,14 @@
      "median_jpy": 15400,
      "p25_jpy": 8138,
      "p75_jpy": 32000,
-     "samples": 1002
+     "samples": 1003
     },
     "fri": {
      "label": "金曜",
      "median_jpy": 12760,
-     "p25_jpy": 7800,
-     "p75_jpy": 36800,
-     "samples": 138
+     "p25_jpy": 7850,
+     "p75_jpy": 37200,
+     "samples": 136
     },
     "sat": {
      "label": "土曜・祝前日",
@@ -2346,7 +2346,7 @@
      "hotels_checked": 67,
      "hotels_with_vacancy": 36,
      "min_price_jpy": 3500,
-     "fetched_at": "2026-11-23T18:10+09:00"
+     "fetched_at": "2026-11-23T20:09+09:00"
     },
     "renkyu": {
      "label": "1/1〜1/3の3連休",
@@ -2387,10 +2387,10 @@
     },
     "fri": {
      "label": "金曜",
-     "median_jpy": 8600,
-     "p25_jpy": 6722,
-     "p75_jpy": 30200,
-     "samples": 65
+     "median_jpy": 8625,
+     "p25_jpy": 6783,
+     "p75_jpy": 30800,
+     "samples": 66
     },
     "sat": {
      "label": "土曜・祝前日",
@@ -2512,9 +2512,9 @@
       "2026-11-28"
      ],
      "hotels_checked": 158,
-     "hotels_with_vacancy": 77,
+     "hotels_with_vacancy": 75,
      "min_price_jpy": 3000,
-     "fetched_at": "2026-11-23T18:11+09:00"
+     "fetched_at": "2026-11-23T20:09+09:00"
     },
     "renkyu": {
      "label": "1/1〜1/3の3連休",
@@ -2550,15 +2550,15 @@
      "label": "平日(日〜木)",
      "median_jpy": 12100,
      "p25_jpy": 7060,
-     "p75_jpy": 24000,
-     "samples": 839
+     "p75_jpy": 24050,
+     "samples": 838
     },
     "fri": {
      "label": "金曜",
-     "median_jpy": 11750,
-     "p25_jpy": 7015,
-     "p75_jpy": 22150,
-     "samples": 136
+     "median_jpy": 11400,
+     "p25_jpy": 7040,
+     "p75_jpy": 22000,
+     "samples": 135
     },
     "sat": {
      "label": "土曜・祝前日",
@@ -2685,9 +2685,9 @@
       "2026-11-28"
      ],
      "hotels_checked": 226,
-     "hotels_with_vacancy": 133,
+     "hotels_with_vacancy": 132,
      "min_price_jpy": 2500,
-     "fetched_at": "2026-11-23T18:13+09:00"
+     "fetched_at": "2026-11-23T20:11+09:00"
     },
     "renkyu": {
      "label": "1/1〜1/3の3連休",
@@ -2724,14 +2724,14 @@
      "median_jpy": 8800,
      "p25_jpy": 5280,
      "p75_jpy": 18000,
-     "samples": 1706
+     "samples": 1705
     },
     "fri": {
      "label": "金曜",
      "median_jpy": 8800,
-     "p25_jpy": 5182,
+     "p25_jpy": 5160,
      "p75_jpy": 18000,
-     "samples": 252
+     "samples": 251
     },
     "sat": {
      "label": "土曜・祝前日",
@@ -2863,9 +2863,9 @@
       "2026-11-28"
      ],
      "hotels_checked": 261,
-     "hotels_with_vacancy": 127,
+     "hotels_with_vacancy": 128,
      "min_price_jpy": 864,
-     "fetched_at": "2026-11-23T18:14+09:00"
+     "fetched_at": "2026-11-23T20:12+09:00"
     },
     "renkyu": {
      "label": "1/1〜1/3の3連休",
@@ -2908,15 +2908,15 @@
      "label": "金曜",
      "median_jpy": 6750,
      "p25_jpy": 3792,
-     "p75_jpy": 20000,
+     "p75_jpy": 20700,
      "samples": 259
     },
     "sat": {
      "label": "土曜・祝前日",
      "median_jpy": 8800,
-     "p25_jpy": 4823,
-     "p75_jpy": 33000,
-     "samples": 125
+     "p25_jpy": 4851,
+     "p75_jpy": 34800,
+     "samples": 119
     }
    },
    "condition_pages": [
@@ -3041,9 +3041,9 @@
       "2026-11-28"
      ],
      "hotels_checked": 88,
-     "hotels_with_vacancy": 33,
+     "hotels_with_vacancy": 32,
      "min_price_jpy": 3300,
-     "fetched_at": "2026-11-23T18:15+09:00"
+     "fetched_at": "2026-11-23T20:12+09:00"
     },
     "renkyu": {
      "label": "1/1〜1/3の3連休",
@@ -3085,16 +3085,16 @@
     "fri": {
      "label": "金曜",
      "median_jpy": 23100,
-     "p25_jpy": 14650,
+     "p25_jpy": 14300,
      "p75_jpy": 48400,
-     "samples": 65
+     "samples": 63
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 28380,
-     "p25_jpy": 15200,
-     "p75_jpy": 55550,
-     "samples": 30
+     "median_jpy": 17000,
+     "p25_jpy": 15000,
+     "p75_jpy": 53900,
+     "samples": 33
     }
    },
    "condition_pages": [
