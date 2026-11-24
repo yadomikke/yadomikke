@@ -368,6 +368,9 @@ with tempfile.TemporaryDirectory() as tmp:
           and all(v.get("light") for k, v in _cfgA["areas"].items() if k in ("shimoda", "misasa"))
           and 'id="aq"' in home and 'id="rchips"' in home and 'class="rg"' in home,
           "エリアは地方ごと(見出し・地方ボタン・名前と県名での絞り込み)。追加した温泉地は軽い取り方(宿単位の空きだけ)")
+    check(_u.LIGHT_EXCLUDE.search("ホテルルートイン天童") and _u.LIGHT_EXCLUDE.search("ビジネスホテル王将")
+          and not _u.LIGHT_EXCLUDE.search("湯田温泉 松田屋ホテル") and not _u.LIGHT_EXCLUDE.search("四万温泉 積善館"),
+          "追加した温泉地では、街のビジネスホテル・チェーンホテルを載せない(温泉旅館は残す)")
     # 宿ページの並び: 宿名 → その日の結果と予約 → 日付を変える → カレンダー → 当てはまる条件 → 文章のまとめ → よくある質問 → 共有
     check(hp1.index('id="dout"') < hp1.index('class="dchg"') < hp1.index('id="calendar"') < hp1.index('id="features"') < hp1.index('id="answer"')
           < hp1.index("よくある質問") < hp1.index('class="share"') and 'data-r="' in hp1 and "1泊・大人2名・1室の最安(取得時点)" in hp1,

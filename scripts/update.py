@@ -14,6 +14,7 @@ import argparse
 import json
 import math
 import os
+import re
 import sys
 import time
 from datetime import date, datetime, timedelta, timezone
@@ -157,6 +158,9 @@ def _km(a, b, c, d):
     return 2 * 6371.0 * math.asin(math.sqrt(h))
 
 
+LIGHT_EXCLUDE = re.compile(r"ビジネスホテル|ルートイン|アパホテル|東横|コンフォートホテル|スーパーホテル|ドーミーイン|ステーションホテル|カプセル|ホステル")
+
+
 def tidy_radius_areas(cfg, areas):
     """位置+半径のエリアを整える(楽天APIは使わない)。
     ・宿の位置が中心から半径より遠い宿を外す(半径を小さくしたときも、宿一覧の取り直しを待たずに効く)
@@ -172,6 +176,8 @@ def tidy_radius_areas(cfg, areas):
         for h in areas[k]:
             if h["no"] in coded:
                 continue
+            if a.get("light") and LIGHT_EXCLUDE.search(str(h.get("name", ""))):
+                continue   # 追加した温泉地では、街のビジネスホテル・チェーンホテルは載せない(温泉地の宿を探す人向けのため)
             try:
                 if _km(float(a["lat"]), float(a["lng"]), float(h.get("lat")), float(h.get("lng"))) > r:
                     continue
