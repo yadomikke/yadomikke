@@ -477,9 +477,11 @@ with tempfile.TemporaryDirectory() as tmp2:
           "位置+半径のエリアは、ほかのエリアと重なる宿と、半径より遠い宿を外す(同じ宿を2回数えない)")
     cfgr = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
     rad = [a for a in cfgr["areas"].values() if "lat" in a]
-    check(len(cfgr["areas"]) == 30 and len(rad) == 12 and all(0 < a["radius"] <= 3.0 for a in rad)
-          and all(any(pg["area"] == k for pg in cfgr["pages"]) for k in cfgr["areas"]),
-          "エリアは30(うち位置+半径で決める温泉地12)。どのエリアにも条件ページがある")
+    full = {k: a for k, a in cfgr["areas"].items() if not a.get("light")}
+    check(len(cfgr["areas"]) == 60 and len(full) == 30 and len([a for a in full.values() if "lat" in a]) == 12
+          and all(0 < a["radius"] <= 3.0 for a in rad)
+          and all(any(pg["area"] == k for pg in cfgr["pages"]) for k in full),
+          "エリアは60(部屋まで見る30・うち位置+半径12、宿単位だけの軽い取り方30)。部屋まで見るエリアには条件ページがある")
 
 # 宿の条件の判定(サウナ・バリアフリーなど)
 import hotelfeat as hf
