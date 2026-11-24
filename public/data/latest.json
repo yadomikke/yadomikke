@@ -1,7 +1,7 @@
 {
  "name": "ヤドミッケ 温泉地の空室・料金データ",
  "description": "楽天トラベルの空室検索APIから自動で取得し、ヤドミッケが集計した、温泉地の宿の空き数と料金の最新値です。",
- "generated_at": "2026-11-25T05:07:58+09:00",
+ "generated_at": "2026-11-25T07:00:22+09:00",
  "source": "楽天トラベル 空室検索API(楽天ウェブサービス)",
  "attribution": "ヤドミッケ(楽天トラベルの空室データをもとに集計)",
  "site_url": "https://yadomikke.com/",
@@ -36,7 +36,7 @@
     "2026-11-26"
    ],
    "hotels_checked": 4688,
-   "hotels_with_vacancy": 1860,
+   "hotels_with_vacancy": 1851,
    "min_price_jpy": 1210,
    "page_url": "https://yadomikke.com/ashita/"
   },
@@ -47,7 +47,7 @@
     "2026-11-28"
    ],
    "hotels_checked": 4697,
-   "hotels_with_vacancy": 2374,
+   "hotels_with_vacancy": 2366,
    "min_price_jpy": 50,
    "page_url": "https://yadomikke.com/shumatsu/"
   },
@@ -104,9 +104,9 @@
       "2026-11-26"
      ],
      "hotels_checked": 370,
-     "hotels_with_vacancy": 146,
+     "hotels_with_vacancy": 137,
      "min_price_jpy": 3980,
-     "fetched_at": "2026-11-24T21:27+09:00"
+     "fetched_at": "2026-11-25T06:20+09:00"
     },
     "shumatsu": {
      "label": "今週末",
@@ -153,8 +153,8 @@
      "label": "平日(日〜木)",
      "median_jpy": 17600,
      "p25_jpy": 7900,
-     "p75_jpy": 42102,
-     "samples": 4050
+     "p75_jpy": 42108,
+     "samples": 4039
     },
     "fri": {
      "label": "金曜",
@@ -330,9 +330,9 @@
     "wd": {
      "label": "平日(日〜木)",
      "median_jpy": 15800,
-     "p25_jpy": 9570,
+     "p25_jpy": 9680,
      "p75_jpy": 34500,
-     "samples": 3291
+     "samples": 3292
     },
     "fri": {
      "label": "金曜",
@@ -503,9 +503,9 @@
     "wd": {
      "label": "平日(日〜木)",
      "median_jpy": 12644,
-     "p25_jpy": 6118,
-     "p75_jpy": 28710,
-     "samples": 1282
+     "p25_jpy": 6184,
+     "p75_jpy": 28600,
+     "samples": 1287
     },
     "fri": {
      "label": "金曜",
@@ -673,7 +673,7 @@
      "median_jpy": 13596,
      "p25_jpy": 6500,
      "p75_jpy": 24800,
-     "samples": 770
+     "samples": 763
     },
     "fri": {
      "label": "金曜",
@@ -848,9 +848,9 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 13050,
+     "median_jpy": 12961,
      "p25_jpy": 8382,
-     "p75_jpy": 25910,
+     "p75_jpy": 25955,
      "samples": 1070
     },
     "fri": {
@@ -1023,8 +1023,8 @@
      "label": "平日(日〜木)",
      "median_jpy": 12111,
      "p25_jpy": 6675,
-     "p75_jpy": 23200,
-     "samples": 1987
+     "p75_jpy": 23400,
+     "samples": 1983
     },
     "fri": {
      "label": "金曜",
@@ -1189,10 +1189,10 @@
    "price_next_30_days": {
     "wd": {
      "label": "平日(日〜木)",
-     "median_jpy": 8204,
-     "p25_jpy": 4590,
-     "p75_jpy": 26950,
-     "samples": 1768
+     "median_jpy": 8234,
+     "p25_jpy": 4538,
+     "p75_jpy": 26600,
+     "samples": 1767
     },
     "fri": {
      "label": "金曜",
@@ -1359,8 +1359,8 @@
      "label": "平日(日〜木)",
      "median_jpy": 14000,
      "p25_jpy": 9200,
-     "p75_jpy": 37400,
-     "samples": 1725
+     "p75_jpy": 37000,
+     "samples": 1715
     },
     "fri": {
      "label": "金曜",
@@ -1523,7 +1523,7 @@
      "median_jpy": 12600,
      "p25_jpy": 7200,
      "p75_jpy": 23600,
-     "samples": 2342
+     "samples": 2340
     },
     "fri": {
      "label": "金曜",
@@ -2906,9 +2906,9 @@
     },
     "fri": {
      "label": "金曜",
-     "median_jpy": 6730,
-     "p25_jpy": 3760,
-     "p75_jpy": 20925,
+     "median_jpy": 6705,
+     "p25_jpy": 3675,
+     "p75_jpy": 20000,
      "samples": 256
     },
     "sat": {
@@ -3085,9 +3085,9 @@
     "fri": {
      "label": "金曜",
      "median_jpy": 23100,
-     "p25_jpy": 14475,
-     "p75_jpy": 48400,
-     "samples": 64
+     "p25_jpy": 14150,
+     "p75_jpy": 50150,
+     "samples": 65
     },
     "sat": {
      "label": "土曜・祝前日",
@@ -3540,9 +3540,9 @@
       "2026-11-28"
      ],
      "hotels_checked": 72,
-     "hotels_with_vacancy": 42,
+     "hotels_with_vacancy": 38,
      "min_price_jpy": 4100,
-     "fetched_at": "2026-11-24T13:36+09:00"
+     "fetched_at": "2026-11-24T20:26+09:00"
     },
     "renkyu": {
      "label": "1/1〜1/3の3連休",
@@ -3579,14 +3579,14 @@
      "median_jpy": 19800,
      "p25_jpy": 10250,
      "p75_jpy": 37840,
-     "samples": 519
+     "samples": 520
     },
     "fri": {
      "label": "金曜",
-     "median_jpy": 19998,
+     "median_jpy": 21610,
      "p25_jpy": 9312,
-     "p75_jpy": 37840,
-     "samples": 72
+     "p75_jpy": 38500,
+     "samples": 68
     },
     "sat": {
      "label": "土曜・祝前日",
@@ -3703,9 +3703,9 @@
       "2026-11-28"
      ],
      "hotels_checked": 42,
-     "hotels_with_vacancy": 24,
+     "hotels_with_vacancy": 23,
      "min_price_jpy": 5230,
-     "fetched_at": "2026-11-24T13:41+09:00"
+     "fetched_at": "2026-11-24T20:26+09:00"
     },
     "renkyu": {
      "label": "1/1〜1/3の3連休",
@@ -3746,10 +3746,10 @@
     },
     "fri": {
      "label": "金曜",
-     "median_jpy": 13340,
-     "p25_jpy": 9674,
-     "p75_jpy": 36625,
-     "samples": 50
+     "median_jpy": 14370,
+     "p25_jpy": 8947,
+     "p75_jpy": 38700,
+     "samples": 48
     },
     "sat": {
      "label": "土曜・祝前日",
@@ -3871,9 +3871,9 @@
       "2026-11-28"
      ],
      "hotels_checked": 69,
-     "hotels_with_vacancy": 45,
+     "hotels_with_vacancy": 43,
      "min_price_jpy": 3500,
-     "fetched_at": "2026-11-24T13:43+09:00"
+     "fetched_at": "2026-11-24T20:27+09:00"
     },
     "renkyu": {
      "label": "1/1〜1/3の3連休",
@@ -3910,14 +3910,14 @@
      "median_jpy": 15796,
      "p25_jpy": 8816,
      "p75_jpy": 36000,
-     "samples": 523
+     "samples": 522
     },
     "fri": {
      "label": "金曜",
      "median_jpy": 17000,
      "p25_jpy": 8816,
      "p75_jpy": 29000,
-     "samples": 87
+     "samples": 83
     },
     "sat": {
      "label": "土曜・祝前日",
@@ -4034,9 +4034,9 @@
       "2026-11-28"
      ],
      "hotels_checked": 60,
-     "hotels_with_vacancy": 32,
+     "hotels_with_vacancy": 31,
      "min_price_jpy": 3200,
-     "fetched_at": "2026-11-24T13:43+09:00"
+     "fetched_at": "2026-11-24T20:27+09:00"
     },
     "renkyu": {
      "label": "1/1〜1/3の3連休",
@@ -4077,10 +4077,10 @@
     },
     "fri": {
      "label": "金曜",
-     "median_jpy": 8236,
+     "median_jpy": 8518,
      "p25_jpy": 5500,
-     "p75_jpy": 26400,
-     "samples": 59
+     "p75_jpy": 24475,
+     "samples": 58
     },
     "sat": {
      "label": "土曜・祝前日",
@@ -4202,9 +4202,9 @@
       "2026-11-28"
      ],
      "hotels_checked": 44,
-     "hotels_with_vacancy": 31,
+     "hotels_with_vacancy": 30,
      "min_price_jpy": 2620,
-     "fetched_at": "2026-11-24T13:43+09:00"
+     "fetched_at": "2026-11-24T20:27+09:00"
     },
     "renkyu": {
      "label": "1/1〜1/3の3連休",
@@ -4245,10 +4245,10 @@
     },
     "fri": {
      "label": "金曜",
-     "median_jpy": 13596,
+     "median_jpy": 13498,
      "p25_jpy": 8000,
-     "p75_jpy": 30800,
-     "samples": 59
+     "p75_jpy": 31100,
+     "samples": 58
     },
     "sat": {
      "label": "土曜・祝前日",
@@ -4367,7 +4367,7 @@
      "hotels_checked": 16,
      "hotels_with_vacancy": 13,
      "min_price_jpy": 4950,
-     "fetched_at": "2026-11-24T13:43+09:00"
+     "fetched_at": "2026-11-24T20:27+09:00"
     },
     "renkyu": {
      "label": "1/1〜1/3の3連休",
@@ -4515,7 +4515,7 @@
      "hotels_checked": 44,
      "hotels_with_vacancy": 26,
      "min_price_jpy": 1210,
-     "fetched_at": "2026-11-24T13:44+09:00"
+     "fetched_at": "2026-11-24T20:27+09:00"
     },
     "renkyu": {
      "label": "1/1〜1/3の3連休",
@@ -4552,14 +4552,14 @@
      "median_jpy": 9344,
      "p25_jpy": 7540,
      "p75_jpy": 19500,
-     "samples": 399
+     "samples": 398
     },
     "fri": {
      "label": "金曜",
      "median_jpy": 10788,
-     "p25_jpy": 7555,
+     "p25_jpy": 7550,
      "p75_jpy": 24000,
-     "samples": 50
+     "samples": 49
     },
     "sat": {
      "label": "土曜・祝前日",
@@ -4683,7 +4683,7 @@
      "hotels_checked": 25,
      "hotels_with_vacancy": 21,
      "min_price_jpy": 5500,
-     "fetched_at": "2026-11-24T13:47+09:00"
+     "fetched_at": "2026-11-24T20:28+09:00"
     },
     "renkyu": {
      "label": "1/1〜1/3の3連休",
@@ -4724,10 +4724,10 @@
     },
     "fri": {
      "label": "金曜",
-     "median_jpy": 22000,
-     "p25_jpy": 8200,
-     "p75_jpy": 32960,
-     "samples": 35
+     "median_jpy": 24200,
+     "p25_jpy": 8500,
+     "p75_jpy": 32980,
+     "samples": 33
     },
     "sat": {
      "label": "土曜・祝前日",
@@ -4844,9 +4844,9 @@
       "2026-11-28"
      ],
      "hotels_checked": 43,
-     "hotels_with_vacancy": 23,
+     "hotels_with_vacancy": 24,
      "min_price_jpy": 5000,
-     "fetched_at": "2026-11-24T13:47+09:00"
+     "fetched_at": "2026-11-24T20:28+09:00"
     },
     "renkyu": {
      "label": "1/1〜1/3の3連休",
@@ -4882,15 +4882,15 @@
      "label": "平日(日〜木)",
      "median_jpy": 17000,
      "p25_jpy": 11000,
-     "p75_jpy": 32525,
-     "samples": 264
+     "p75_jpy": 33200,
+     "samples": 265
     },
     "fri": {
      "label": "金曜",
      "median_jpy": 17500,
-     "p25_jpy": 10250,
-     "p75_jpy": 33300,
-     "samples": 44
+     "p25_jpy": 10000,
+     "p75_jpy": 33600,
+     "samples": 46
     },
     "sat": {
      "label": "土曜・祝前日",
@@ -5009,7 +5009,7 @@
      "hotels_checked": 22,
      "hotels_with_vacancy": 12,
      "min_price_jpy": 3480,
-     "fetched_at": "2026-11-24T13:47+09:00"
+     "fetched_at": "2026-11-24T20:28+09:00"
     },
     "renkyu": {
      "label": "1/1〜1/3の3連休",
@@ -5046,7 +5046,7 @@
      "median_jpy": 14520,
      "p25_jpy": 7150,
      "p75_jpy": 27500,
-     "samples": 240
+     "samples": 238
     },
     "fri": {
      "label": "金曜",
@@ -7274,7 +7274,48 @@
     }
    },
    "price_next_30_days": {},
-   "condition_pages": []
+   "condition_pages": [
+    {
+     "condition": "大浴場のある宿",
+     "url": "https://yadomikke.com/kanzanji-daiyoku/",
+     "url_with_date": "https://yadomikke.com/kanzanji-daiyoku/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "小さな宿(客室10室以下)",
+     "url": "https://yadomikke.com/kanzanji-chiisana/",
+     "url_with_date": "https://yadomikke.com/kanzanji-chiisana/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "夜遅くても泊まれる宿(最終チェックイン22時以降)",
+     "url": "https://yadomikke.com/kanzanji-osoitsuki/",
+     "url_with_date": "https://yadomikke.com/kanzanji-osoitsuki/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "夕食の口コミ評価が高い宿",
+     "url": "https://yadomikke.com/kanzanji-yushoku/",
+     "url_with_date": "https://yadomikke.com/kanzanji-yushoku/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "清潔さの口コミ評価が高い宿",
+     "url": "https://yadomikke.com/kanzanji-seiketsu/",
+     "url_with_date": "https://yadomikke.com/kanzanji-seiketsu/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "子連れ向けの宿",
+     "url": "https://yadomikke.com/kanzanji-kids/",
+     "url_with_date": "https://yadomikke.com/kanzanji-kids/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "サウナのある宿",
+     "url": "https://yadomikke.com/kanzanji-sauna/",
+     "url_with_date": "https://yadomikke.com/kanzanji-sauna/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "バリアフリー対応の宿(車椅子可など)",
+     "url": "https://yadomikke.com/kanzanji-barrierfree/",
+     "url_with_date": "https://yadomikke.com/kanzanji-barrierfree/?d=YYYY-MM-DD"
+    }
+   ]
   },
   {
    "key": "jozankei",
@@ -7344,7 +7385,63 @@
     }
    },
    "price_next_30_days": {},
-   "condition_pages": []
+   "condition_pages": [
+    {
+     "condition": "大浴場のある宿",
+     "url": "https://yadomikke.com/jozankei-daiyoku/",
+     "url_with_date": "https://yadomikke.com/jozankei-daiyoku/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "貸切風呂・家族風呂のある宿",
+     "url": "https://yadomikke.com/jozankei-kashikiri/",
+     "url_with_date": "https://yadomikke.com/jozankei-kashikiri/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "小さな宿(客室10室以下)",
+     "url": "https://yadomikke.com/jozankei-chiisana/",
+     "url_with_date": "https://yadomikke.com/jozankei-chiisana/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "夜遅くても泊まれる宿(最終チェックイン22時以降)",
+     "url": "https://yadomikke.com/jozankei-osoitsuki/",
+     "url_with_date": "https://yadomikke.com/jozankei-osoitsuki/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "夕食の口コミ評価が高い宿",
+     "url": "https://yadomikke.com/jozankei-yushoku/",
+     "url_with_date": "https://yadomikke.com/jozankei-yushoku/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "お風呂の口コミ評価が高い宿",
+     "url": "https://yadomikke.com/jozankei-furohyoka/",
+     "url_with_date": "https://yadomikke.com/jozankei-furohyoka/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "清潔さの口コミ評価が高い宿",
+     "url": "https://yadomikke.com/jozankei-seiketsu/",
+     "url_with_date": "https://yadomikke.com/jozankei-seiketsu/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "サウナのある宿",
+     "url": "https://yadomikke.com/jozankei-sauna/",
+     "url_with_date": "https://yadomikke.com/jozankei-sauna/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "岩盤浴のある宿",
+     "url": "https://yadomikke.com/jozankei-ganbanyoku/",
+     "url_with_date": "https://yadomikke.com/jozankei-ganbanyoku/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "送迎のある宿",
+     "url": "https://yadomikke.com/jozankei-sougei/",
+     "url_with_date": "https://yadomikke.com/jozankei-sougei/?d=YYYY-MM-DD"
+    },
+    {
+     "condition": "バリアフリー対応の宿(車椅子可など)",
+     "url": "https://yadomikke.com/jozankei-barrierfree/",
+     "url_with_date": "https://yadomikke.com/jozankei-barrierfree/?d=YYYY-MM-DD"
+    }
+   ]
   },
   {
    "key": "iizaka",
@@ -7415,6 +7512,11 @@
    },
    "price_next_30_days": {},
    "condition_pages": [
+    {
+     "condition": "大浴場のある宿",
+     "url": "https://yadomikke.com/iizaka-daiyoku/",
+     "url_with_date": "https://yadomikke.com/iizaka-daiyoku/?d=YYYY-MM-DD"
+    },
     {
      "condition": "駅から徒歩5分以内の宿",
      "url": "https://yadomikke.com/iizaka-ekichika/",
