@@ -1,7 +1,7 @@
 {
  "name": "ヤドミッケ 温泉地の空室・料金データ",
  "description": "楽天トラベルの空室検索APIから自動で取得し、ヤドミッケが集計した、温泉地の宿の空き数と料金の最新値です。",
- "generated_at": "2026-11-25T13:05:29+09:00",
+ "generated_at": "2026-11-25T15:13:25+09:00",
  "source": "楽天トラベル 空室検索API(楽天ウェブサービス)",
  "attribution": "ヤドミッケ(楽天トラベルの空室データをもとに集計)",
  "site_url": "https://yadomikke.com/",
@@ -26,7 +26,7 @@
     "2026-11-25"
    ],
    "hotels_checked": 4696,
-   "hotels_with_vacancy": 1119,
+   "hotels_with_vacancy": 1046,
    "min_price_jpy": 1210,
    "page_url": "https://yadomikke.com/konya/"
   },
@@ -36,7 +36,7 @@
     "2026-11-26"
    ],
    "hotels_checked": 4688,
-   "hotels_with_vacancy": 1800,
+   "hotels_with_vacancy": 1789,
    "min_price_jpy": 1210,
    "page_url": "https://yadomikke.com/ashita/"
   },
@@ -94,9 +94,9 @@
       "2026-11-25"
      ],
      "hotels_checked": 369,
-     "hotels_with_vacancy": 79,
+     "hotels_with_vacancy": 51,
      "min_price_jpy": 4000,
-     "fetched_at": "2026-11-25T07:40+09:00"
+     "fetched_at": "2026-11-25T15:08+09:00"
     },
     "ashita": {
      "label": "明日",
@@ -104,9 +104,9 @@
       "2026-11-26"
      ],
      "hotels_checked": 370,
-     "hotels_with_vacancy": 137,
+     "hotels_with_vacancy": 126,
      "min_price_jpy": 3980,
-     "fetched_at": "2026-11-25T06:20+09:00"
+     "fetched_at": "2026-11-25T14:32+09:00"
     },
     "shumatsu": {
      "label": "今週末",
@@ -152,9 +152,9 @@
     "wd": {
      "label": "平日(日〜木)",
      "median_jpy": 17600,
-     "p25_jpy": 7900,
+     "p25_jpy": 7898,
      "p75_jpy": 42100,
-     "samples": 4011
+     "samples": 3972
     },
     "fri": {
      "label": "金曜",
@@ -165,10 +165,10 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 17160,
+     "median_jpy": 16500,
      "p25_jpy": 7275,
-     "p75_jpy": 59950,
-     "samples": 569
+     "p75_jpy": 59940,
+     "samples": 565
     }
    },
    "condition_pages": [
@@ -272,9 +272,9 @@
       "2026-11-25"
      ],
      "hotels_checked": 279,
-     "hotels_with_vacancy": 75,
+     "hotels_with_vacancy": 56,
      "min_price_jpy": 2400,
-     "fetched_at": "2026-11-25T07:41+09:00"
+     "fetched_at": "2026-11-25T15:09+09:00"
     },
     "ashita": {
      "label": "明日",
@@ -330,9 +330,9 @@
     "wd": {
      "label": "平日(日〜木)",
      "median_jpy": 15800,
-     "p25_jpy": 9680,
+     "p25_jpy": 9570,
      "p75_jpy": 34500,
-     "samples": 3269
+     "samples": 3251
     },
     "fri": {
      "label": "金曜",
@@ -346,7 +346,7 @@
      "median_jpy": 16936,
      "p25_jpy": 9240,
      "p75_jpy": 46200,
-     "samples": 465
+     "samples": 462
     }
    },
    "condition_pages": [
@@ -445,9 +445,9 @@
       "2026-11-25"
      ],
      "hotels_checked": 153,
-     "hotels_with_vacancy": 53,
+     "hotels_with_vacancy": 35,
      "min_price_jpy": 3350,
-     "fetched_at": "2026-11-25T07:42+09:00"
+     "fetched_at": "2026-11-25T15:09+09:00"
     },
     "ashita": {
      "label": "明日",
@@ -503,9 +503,9 @@
     "wd": {
      "label": "平日(日〜木)",
      "median_jpy": 12644,
-     "p25_jpy": 6184,
-     "p75_jpy": 29610,
-     "samples": 1276
+     "p25_jpy": 5922,
+     "p75_jpy": 28600,
+     "samples": 1258
     },
     "fri": {
      "label": "金曜",
@@ -516,10 +516,10 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 15517,
-     "p25_jpy": 7737,
-     "p75_jpy": 42625,
-     "samples": 126
+     "median_jpy": 14535,
+     "p25_jpy": 7400,
+     "p75_jpy": 42500,
+     "samples": 127
     }
    },
    "condition_pages": [
@@ -613,9 +613,9 @@
       "2026-11-25"
      ],
      "hotels_checked": 98,
-     "hotels_with_vacancy": 28,
+     "hotels_with_vacancy": 20,
      "min_price_jpy": 3190,
-     "fetched_at": "2026-11-25T07:43+09:00"
+     "fetched_at": "2026-11-25T15:11+09:00"
     },
     "ashita": {
      "label": "明日",
@@ -673,7 +673,7 @@
      "median_jpy": 13596,
      "p25_jpy": 6500,
      "p75_jpy": 24800,
-     "samples": 757
+     "samples": 749
     },
     "fri": {
      "label": "金曜",
@@ -684,10 +684,10 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 13290,
-     "p25_jpy": 6480,
-     "p75_jpy": 37400,
-     "samples": 100
+     "median_jpy": 15796,
+     "p25_jpy": 6490,
+     "p75_jpy": 41250,
+     "samples": 97
     }
    },
    "condition_pages": [
@@ -862,10 +862,10 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 12350,
-     "p25_jpy": 8145,
+     "median_jpy": 12100,
+     "p25_jpy": 7900,
      "p75_jpy": 42900,
-     "samples": 109
+     "samples": 111
     }
    },
    "condition_pages": [
@@ -1035,10 +1035,10 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 13927,
+     "median_jpy": 14000,
      "p25_jpy": 7000,
-     "p75_jpy": 33930,
-     "samples": 260
+     "p75_jpy": 34000,
+     "samples": 258
     }
    },
    "condition_pages": [
@@ -1203,10 +1203,10 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 7968,
-     "p25_jpy": 4095,
-     "p75_jpy": 44701,
-     "samples": 166
+     "median_jpy": 7600,
+     "p25_jpy": 4000,
+     "p75_jpy": 44000,
+     "samples": 163
     }
    },
    "condition_pages": [
@@ -1371,10 +1371,10 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 15400,
-     "p25_jpy": 6960,
-     "p75_jpy": 47000,
-     "samples": 99
+     "median_jpy": 15356,
+     "p25_jpy": 6970,
+     "p75_jpy": 51350,
+     "samples": 92
     }
    },
    "condition_pages": [
@@ -1536,8 +1536,8 @@
      "label": "土曜・祝前日",
      "median_jpy": 12500,
      "p25_jpy": 7000,
-     "p75_jpy": 25990,
-     "samples": 316
+     "p75_jpy": 25960,
+     "samples": 313
     }
    },
    "condition_pages": [
@@ -1712,10 +1712,10 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 10000,
+     "median_jpy": 10424,
      "p25_jpy": 6050,
-     "p75_jpy": 22960,
-     "samples": 171
+     "p75_jpy": 24651,
+     "samples": 169
     }
    },
    "condition_pages": [
@@ -1885,10 +1885,10 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 14550,
-     "p25_jpy": 6050,
-     "p75_jpy": 47850,
-     "samples": 48
+     "median_jpy": 10672,
+     "p25_jpy": 6100,
+     "p75_jpy": 42350,
+     "samples": 45
     }
    },
    "condition_pages": [
@@ -2053,8 +2053,8 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 9850,
-     "p25_jpy": 6961,
+     "median_jpy": 9976,
+     "p25_jpy": 6840,
      "p75_jpy": 22885,
      "samples": 324
     }
@@ -2226,10 +2226,10 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 13200,
-     "p25_jpy": 7295,
-     "p75_jpy": 42900,
-     "samples": 92
+     "median_jpy": 13750,
+     "p25_jpy": 7260,
+     "p75_jpy": 43175,
+     "samples": 94
     }
    },
    "condition_pages": [
@@ -2394,10 +2394,10 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 10600,
+     "median_jpy": 9325,
      "p25_jpy": 6844,
-     "p75_jpy": 54600,
-     "samples": 51
+     "p75_jpy": 53250,
+     "samples": 48
     }
    },
    "condition_pages": [
@@ -2564,8 +2564,8 @@
      "label": "土曜・祝前日",
      "median_jpy": 10950,
      "p25_jpy": 7000,
-     "p75_jpy": 20570,
-     "samples": 90
+     "p75_jpy": 20377,
+     "samples": 88
     }
    },
    "condition_pages": [
@@ -2736,9 +2736,9 @@
     "sat": {
      "label": "土曜・祝前日",
      "median_jpy": 8800,
-     "p25_jpy": 5262,
-     "p75_jpy": 27475,
-     "samples": 220
+     "p25_jpy": 5206,
+     "p75_jpy": 27425,
+     "samples": 218
     }
    },
    "condition_pages": [
@@ -2913,10 +2913,10 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 7700,
+     "median_jpy": 7315,
      "p25_jpy": 4500,
-     "p75_jpy": 31340,
-     "samples": 115
+     "p75_jpy": 22000,
+     "samples": 120
     }
    },
    "condition_pages": [
@@ -3091,10 +3091,10 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 17000,
-     "p25_jpy": 12725,
-     "p75_jpy": 52800,
-     "samples": 32
+     "median_jpy": 26400,
+     "p25_jpy": 15400,
+     "p75_jpy": 56900,
+     "samples": 36
     }
    },
    "condition_pages": [
@@ -3242,8 +3242,8 @@
      "label": "平日(日〜木)",
      "median_jpy": 12000,
      "p25_jpy": 5800,
-     "p75_jpy": 20196,
-     "samples": 527
+     "p75_jpy": 20372,
+     "samples": 526
     },
     "fri": {
      "label": "金曜",
@@ -3254,10 +3254,10 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 14200,
+     "median_jpy": 14195,
      "p25_jpy": 5800,
-     "p75_jpy": 31575,
-     "samples": 69
+     "p75_jpy": 31765,
+     "samples": 68
     }
    },
    "condition_pages": [
@@ -3410,8 +3410,8 @@
      "label": "平日(日〜木)",
      "median_jpy": 13044,
      "p25_jpy": 7700,
-     "p75_jpy": 30300,
-     "samples": 2181
+     "p75_jpy": 30400,
+     "samples": 2177
     },
     "fri": {
      "label": "金曜",
@@ -3424,7 +3424,7 @@
      "label": "土曜・祝前日",
      "median_jpy": 13860,
      "p25_jpy": 7800,
-     "p75_jpy": 36900,
+     "p75_jpy": 36880,
      "samples": 249
     }
    },
@@ -3579,7 +3579,7 @@
      "median_jpy": 19800,
      "p25_jpy": 10250,
      "p75_jpy": 37840,
-     "samples": 517
+     "samples": 518
     },
     "fri": {
      "label": "金曜",
@@ -3590,10 +3590,10 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 28325,
-     "p25_jpy": 9932,
+     "median_jpy": 24750,
+     "p25_jpy": 9296,
      "p75_jpy": 62250,
-     "samples": 50
+     "samples": 48
     }
    },
    "condition_pages": [
@@ -3753,10 +3753,10 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 14612,
-     "p25_jpy": 10130,
-     "p75_jpy": 46975,
-     "samples": 40
+     "median_jpy": 15884,
+     "p25_jpy": 10038,
+     "p75_jpy": 49100,
+     "samples": 37
     }
    },
    "condition_pages": [
@@ -3921,10 +3921,10 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 19396,
+     "median_jpy": 20000,
      "p25_jpy": 8816,
-     "p75_jpy": 45555,
-     "samples": 64
+     "p75_jpy": 56050,
+     "samples": 66
     }
    },
    "condition_pages": [
@@ -4084,9 +4084,9 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 11000,
-     "p25_jpy": 6350,
-     "p75_jpy": 48400,
+     "median_jpy": 8800,
+     "p25_jpy": 5500,
+     "p75_jpy": 48000,
      "samples": 31
     }
    },
@@ -4253,9 +4253,9 @@
     "sat": {
      "label": "土曜・祝前日",
      "median_jpy": 12100,
-     "p25_jpy": 6800,
-     "p75_jpy": 40700,
-     "samples": 49
+     "p25_jpy": 7250,
+     "p75_jpy": 38285,
+     "samples": 50
     }
    },
    "condition_pages": [
@@ -4417,7 +4417,7 @@
      "label": "土曜・祝前日",
      "median_jpy": 11000,
      "p25_jpy": 5650,
-     "p75_jpy": 34400,
+     "p75_jpy": 35400,
      "samples": 25
     }
    },
@@ -4552,7 +4552,7 @@
      "median_jpy": 9344,
      "p25_jpy": 7540,
      "p75_jpy": 19500,
-     "samples": 388
+     "samples": 385
     },
     "fri": {
      "label": "金曜",
@@ -4566,7 +4566,7 @@
      "median_jpy": 9344,
      "p25_jpy": 7128,
      "p75_jpy": 30250,
-     "samples": 49
+     "samples": 45
     }
    },
    "condition_pages": [
@@ -4731,10 +4731,10 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 27280,
+     "median_jpy": 28600,
      "p25_jpy": 8200,
-     "p75_jpy": 56070,
-     "samples": 30
+     "p75_jpy": 59400,
+     "samples": 31
     }
    },
    "condition_pages": [
@@ -4883,7 +4883,7 @@
      "median_jpy": 17500,
      "p25_jpy": 11000,
      "p75_jpy": 33400,
-     "samples": 262
+     "samples": 263
     },
     "fri": {
      "label": "金曜",
@@ -4894,10 +4894,10 @@
     },
     "sat": {
      "label": "土曜・祝前日",
-     "median_jpy": 27840,
-     "p25_jpy": 12540,
-     "p75_jpy": 54200,
-     "samples": 35
+     "median_jpy": 20900,
+     "p25_jpy": 11770,
+     "p75_jpy": 54750,
+     "samples": 37
     }
    },
    "condition_pages": [
