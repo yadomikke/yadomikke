@@ -2,7 +2,7 @@
 
 > 温泉地の宿の空室を、条件(客室露天風呂・ペット可・大浴場など)と日付ごとにまとめた日本語サイトです。楽天トラベルの空室検索APIから自動で取得し、今日・明日の日程は約4時間ごと、7日以内は約8時間ごと、14日以内は約16時間ごと、それ以降は約48時間ごとを目安に更新しています。料金は1泊・大人2名・1部屋の最安値です。リアルタイムの在庫ではないため、予約前に楽天トラベルでの確認が必要です。
 
-最終更新: 2026-11-25 09:04(日本時間)
+最終更新: 2026-11-25 09:55(日本時間)
 
 ## 空室ページ(エリア×条件)
 
@@ -694,10 +694,31 @@
 - [天橋立で今空いているサウナのある宿](https://yadomikke.com/amanohashidate-sauna/): 天橋立のサウナのある宿 6軒の空室表(本日空き0軒)
 - [天橋立で今空いている送迎のある宿](https://yadomikke.com/amanohashidate-sougei/): 天橋立の送迎のある宿 15軒の空室表(本日空き0軒)
 - [天橋立で今空いているバリアフリー対応の宿(車椅子可など)](https://yadomikke.com/amanohashidate-barrierfree/): 天橋立のバリアフリー対応の宿(車椅子可など) 11軒の空室表(本日空き0軒)
-- [鳴子で今空いている大浴場のある宿](https://yadomikke.com/naruko-daiyoku/): 鳴子の大浴場のある宿 8軒の空室表(本日空き0軒)
-- [鳴子で今空いている貸切風呂・家族風呂のある宿](https://yadomikke.com/naruko-kashikiri/): 鳴子の貸切風呂・家族風呂のある宿 3軒の空室表(本日空き0軒)
+- [鳴子で今空いている大浴場のある宿](https://yadomikke.com/naruko-daiyoku/): 鳴子の大浴場のある宿 21軒の空室表(本日空き0軒)
+- [鳴子で今空いている貸切風呂・家族風呂のある宿](https://yadomikke.com/naruko-kashikiri/): 鳴子の貸切風呂・家族風呂のある宿 9軒の空室表(本日空き0軒)
+- [鳴子で今空いている小さな宿(客室10室以下)](https://yadomikke.com/naruko-chiisana/): 鳴子の小さな宿(客室10室以下) 6軒の空室表(本日空き0軒)
+- [鳴子で今空いている夜遅くても泊まれる宿(最終チェックイン22時以降)](https://yadomikke.com/naruko-osoitsuki/): 鳴子の夜遅くても泊まれる宿(最終チェックイン22時以降) 6軒の空室表(本日空き0軒)
 - [鳴子で今空いている駅から徒歩5分以内の宿](https://yadomikke.com/naruko-ekichika/): 鳴子の駅から徒歩5分以内の宿 5軒の空室表(本日空き0軒)
-- [鳴子で今空いている送迎のある宿](https://yadomikke.com/naruko-sougei/): 鳴子の送迎のある宿 5軒の空室表(本日空き0軒)
+- [鳴子で今空いている夕食の口コミ評価が高い宿](https://yadomikke.com/naruko-yushoku/): 鳴子の夕食の口コミ評価が高い宿 6軒の空室表(本日空き0軒)
+- [鳴子で今空いているお風呂の口コミ評価が高い宿](https://yadomikke.com/naruko-furohyoka/): 鳴子のお風呂の口コミ評価が高い宿 7軒の空室表(本日空き0軒)
+- [鳴子で今空いている清潔さの口コミ評価が高い宿](https://yadomikke.com/naruko-seiketsu/): 鳴子の清潔さの口コミ評価が高い宿 4軒の空室表(本日空き0軒)
+- [鳴子で今空いている子連れ向けの宿](https://yadomikke.com/naruko-kids/): 鳴子の子連れ向けの宿 3軒の空室表(本日空き0軒)
+- [鳴子で今空いている硫黄泉の宿](https://yadomikke.com/naruko-iou/): 鳴子の硫黄泉の宿 8軒の空室表(本日空き0軒)
+- [鳴子で今空いている送迎のある宿](https://yadomikke.com/naruko-sougei/): 鳴子の送迎のある宿 17軒の空室表(本日空き0軒)
+- [鳴子で今空いているバリアフリー対応の宿(車椅子可など)](https://yadomikke.com/naruko-barrierfree/): 鳴子のバリアフリー対応の宿(車椅子可など) 4軒の空室表(本日空き0軒)
+- [蒲郡で今空いている大浴場のある宿](https://yadomikke.com/gamagori-daiyoku/): 蒲郡の大浴場のある宿 9軒の空室表(本日空き0軒)
+- [蒲郡で今空いている夜遅くても泊まれる宿(最終チェックイン22時以降)](https://yadomikke.com/gamagori-osoitsuki/): 蒲郡の夜遅くても泊まれる宿(最終チェックイン22時以降) 7軒の空室表(本日空き0軒)
+- [蒲郡で今空いているサウナのある宿](https://yadomikke.com/gamagori-sauna/): 蒲郡のサウナのある宿 4軒の空室表(本日空き0軒)
+- [蒲郡で今空いている送迎のある宿](https://yadomikke.com/gamagori-sougei/): 蒲郡の送迎のある宿 7軒の空室表(本日空き0軒)
+- [蒲郡で今空いているバリアフリー対応の宿(車椅子可など)](https://yadomikke.com/gamagori-barrierfree/): 蒲郡のバリアフリー対応の宿(車椅子可など) 9軒の空室表(本日空き0軒)
+- [奥飛騨で今空いている大浴場のある宿](https://yadomikke.com/okuhida-daiyoku/): 奥飛騨の大浴場のある宿 21軒の空室表(本日空き0軒)
+- [奥飛騨で今空いている貸切風呂・家族風呂のある宿](https://yadomikke.com/okuhida-kashikiri/): 奥飛騨の貸切風呂・家族風呂のある宿 15軒の空室表(本日空き0軒)
+- [奥飛騨で今空いている小さな宿(客室10室以下)](https://yadomikke.com/okuhida-chiisana/): 奥飛騨の小さな宿(客室10室以下) 18軒の空室表(本日空き0軒)
+- [奥飛騨で今空いている夜遅くても泊まれる宿(最終チェックイン22時以降)](https://yadomikke.com/okuhida-osoitsuki/): 奥飛騨の夜遅くても泊まれる宿(最終チェックイン22時以降) 6軒の空室表(本日空き0軒)
+- [奥飛騨で今空いている夕食の口コミ評価が高い宿](https://yadomikke.com/okuhida-yushoku/): 奥飛騨の夕食の口コミ評価が高い宿 10軒の空室表(本日空き0軒)
+- [奥飛騨で今空いているお風呂の口コミ評価が高い宿](https://yadomikke.com/okuhida-furohyoka/): 奥飛騨のお風呂の口コミ評価が高い宿 8軒の空室表(本日空き0軒)
+- [奥飛騨で今空いている清潔さの口コミ評価が高い宿](https://yadomikke.com/okuhida-seiketsu/): 奥飛騨の清潔さの口コミ評価が高い宿 6軒の空室表(本日空き0軒)
+- [奥飛騨で今空いているバリアフリー対応の宿(車椅子可など)](https://yadomikke.com/okuhida-barrierfree/): 奥飛騨のバリアフリー対応の宿(車椅子可など) 3軒の空室表(本日空き0軒)
 - [鴨川で今空いている駅から徒歩5分以内の宿](https://yadomikke.com/kamogawa-ekichika/): 鴨川の駅から徒歩5分以内の宿 7軒の空室表(本日空き0軒)
 
 ## 条件ごとの全エリアまとめ(おすすめ・エリア比較)
