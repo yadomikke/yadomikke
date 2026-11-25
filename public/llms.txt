@@ -2,7 +2,7 @@
 
 > 温泉地の宿の空室を、条件(客室露天風呂・ペット可・大浴場など)と日付ごとにまとめた日本語サイトです。楽天トラベルの空室検索APIから自動で取得し、今日・明日の日程は約4時間ごと、7日以内は約8時間ごと、14日以内は約16時間ごと、それ以降は約48時間ごとを目安に更新しています。料金は1泊・大人2名・1部屋の最安値です。リアルタイムの在庫ではないため、予約前に楽天トラベルでの確認が必要です。
 
-最終更新: 2026-11-25 08:02(日本時間)
+最終更新: 2026-11-25 09:04(日本時間)
 
 ## 空室ページ(エリア×条件)
 
@@ -675,15 +675,29 @@
 - [山中で今空いている岩盤浴のある宿](https://yadomikke.com/yamanaka-ganbanyoku/): 山中の岩盤浴のある宿 3軒の空室表(本日空き0軒)
 - [山中で今空いている送迎のある宿](https://yadomikke.com/yamanaka-sougei/): 山中の送迎のある宿 15軒の空室表(本日空き0軒)
 - [山中で今空いているバリアフリー対応の宿(車椅子可など)](https://yadomikke.com/yamanaka-barrierfree/): 山中のバリアフリー対応の宿(車椅子可など) 8軒の空室表(本日空き0軒)
-- [玉造で今空いている大浴場のある宿](https://yadomikke.com/tamatsukuri-daiyoku/): 玉造の大浴場のある宿 10軒の空室表(本日空き0軒)
+- [玉造で今空いている大浴場のある宿](https://yadomikke.com/tamatsukuri-daiyoku/): 玉造の大浴場のある宿 13軒の空室表(本日空き0軒)
 - [玉造で今空いている貸切風呂・家族風呂のある宿](https://yadomikke.com/tamatsukuri-kashikiri/): 玉造の貸切風呂・家族風呂のある宿 3軒の空室表(本日空き0軒)
+- [玉造で今空いている夜遅くても泊まれる宿(最終チェックイン22時以降)](https://yadomikke.com/tamatsukuri-osoitsuki/): 玉造の夜遅くても泊まれる宿(最終チェックイン22時以降) 3軒の空室表(本日空き0軒)
 - [玉造で今空いている夕食の口コミ評価が高い宿](https://yadomikke.com/tamatsukuri-yushoku/): 玉造の夕食の口コミ評価が高い宿 4軒の空室表(本日空き0軒)
 - [玉造で今空いているお風呂の口コミ評価が高い宿](https://yadomikke.com/tamatsukuri-furohyoka/): 玉造のお風呂の口コミ評価が高い宿 4軒の空室表(本日空き0軒)
 - [玉造で今空いている清潔さの口コミ評価が高い宿](https://yadomikke.com/tamatsukuri-seiketsu/): 玉造の清潔さの口コミ評価が高い宿 3軒の空室表(本日空き0軒)
-- [玉造で今空いている送迎のある宿](https://yadomikke.com/tamatsukuri-sougei/): 玉造の送迎のある宿 8軒の空室表(本日空き0軒)
-- [玉造で今空いているバリアフリー対応の宿(車椅子可など)](https://yadomikke.com/tamatsukuri-barrierfree/): 玉造のバリアフリー対応の宿(車椅子可など) 8軒の空室表(本日空き0軒)
+- [玉造で今空いているサウナのある宿](https://yadomikke.com/tamatsukuri-sauna/): 玉造のサウナのある宿 4軒の空室表(本日空き0軒)
+- [玉造で今空いている送迎のある宿](https://yadomikke.com/tamatsukuri-sougei/): 玉造の送迎のある宿 10軒の空室表(本日空き0軒)
+- [玉造で今空いているバリアフリー対応の宿(車椅子可など)](https://yadomikke.com/tamatsukuri-barrierfree/): 玉造のバリアフリー対応の宿(車椅子可など) 11軒の空室表(本日空き0軒)
+- [天橋立で今空いている大浴場のある宿](https://yadomikke.com/amanohashidate-daiyoku/): 天橋立の大浴場のある宿 22軒の空室表(本日空き0軒)
+- [天橋立で今空いている貸切風呂・家族風呂のある宿](https://yadomikke.com/amanohashidate-kashikiri/): 天橋立の貸切風呂・家族風呂のある宿 10軒の空室表(本日空き0軒)
+- [天橋立で今空いている小さな宿(客室10室以下)](https://yadomikke.com/amanohashidate-chiisana/): 天橋立の小さな宿(客室10室以下) 35軒の空室表(本日空き0軒)
+- [天橋立で今空いている夜遅くても泊まれる宿(最終チェックイン22時以降)](https://yadomikke.com/amanohashidate-osoitsuki/): 天橋立の夜遅くても泊まれる宿(最終チェックイン22時以降) 12軒の空室表(本日空き0軒)
 - [天橋立で今空いている駅から徒歩5分以内の宿](https://yadomikke.com/amanohashidate-ekichika/): 天橋立の駅から徒歩5分以内の宿 10軒の空室表(本日空き0軒)
+- [天橋立で今空いている夕食の口コミ評価が高い宿](https://yadomikke.com/amanohashidate-yushoku/): 天橋立の夕食の口コミ評価が高い宿 14軒の空室表(本日空き0軒)
+- [天橋立で今空いている清潔さの口コミ評価が高い宿](https://yadomikke.com/amanohashidate-seiketsu/): 天橋立の清潔さの口コミ評価が高い宿 13軒の空室表(本日空き0軒)
+- [天橋立で今空いているサウナのある宿](https://yadomikke.com/amanohashidate-sauna/): 天橋立のサウナのある宿 6軒の空室表(本日空き0軒)
+- [天橋立で今空いている送迎のある宿](https://yadomikke.com/amanohashidate-sougei/): 天橋立の送迎のある宿 15軒の空室表(本日空き0軒)
+- [天橋立で今空いているバリアフリー対応の宿(車椅子可など)](https://yadomikke.com/amanohashidate-barrierfree/): 天橋立のバリアフリー対応の宿(車椅子可など) 11軒の空室表(本日空き0軒)
+- [鳴子で今空いている大浴場のある宿](https://yadomikke.com/naruko-daiyoku/): 鳴子の大浴場のある宿 8軒の空室表(本日空き0軒)
+- [鳴子で今空いている貸切風呂・家族風呂のある宿](https://yadomikke.com/naruko-kashikiri/): 鳴子の貸切風呂・家族風呂のある宿 3軒の空室表(本日空き0軒)
 - [鳴子で今空いている駅から徒歩5分以内の宿](https://yadomikke.com/naruko-ekichika/): 鳴子の駅から徒歩5分以内の宿 5軒の空室表(本日空き0軒)
+- [鳴子で今空いている送迎のある宿](https://yadomikke.com/naruko-sougei/): 鳴子の送迎のある宿 5軒の空室表(本日空き0軒)
 - [鴨川で今空いている駅から徒歩5分以内の宿](https://yadomikke.com/kamogawa-ekichika/): 鴨川の駅から徒歩5分以内の宿 7軒の空室表(本日空き0軒)
 
 ## 条件ごとの全エリアまとめ(おすすめ・エリア比較)
